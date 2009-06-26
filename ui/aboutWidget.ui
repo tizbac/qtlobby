@@ -1,0 +1,62 @@
+<ui version="4.0" >
+ <class>aboutWidget</class>
+ <widget class="QWidget" name="aboutWidget" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>380</width>
+    <height>287</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" >
+   <item row="0" column="0" >
+    <widget class="QLabel" name="label" >
+     <property name="text" >
+      <string>©2008 Contributors. 
+
+This Program is released under the ... license. 
+This program comes with absolutely no warranty.
+
+http://lastlog.de/svn/qtlobby/
+
+Contributors:
+Joachim Schiele http://lastlog.de
+Jakob Dettner http://jakob.dettner.de
+Mirko Windhoff http://mirko.windhoff.net
+</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" >
+    <widget class="QPushButton" name="pushButton" >
+     <property name="text" >
+      <string>Close</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>aboutWidget</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>265</x>
+     <y>239</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>335</x>
+     <y>230</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
