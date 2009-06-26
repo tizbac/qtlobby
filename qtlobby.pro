@@ -13,11 +13,10 @@ DEPENDPATH += .
 INCLUDEPATH += .
 RESOURCES = resources.qrc
 UI_HEADERS_DIR = src
-
 DEFINES += 'SVN_REV=\\"$(shell svnversion -n .)\\"'
+
 # SVNDEF := -DSVN_REV=444
 # DEFINES += SVN_REV=444
-
 # QMAKE_CFLAGS += $(SVNDEF)
 # QMAKE_CXXFLAGS += $(SVNDEF)
 include(src/modeltest/modeltest.pri)
@@ -62,7 +61,8 @@ HEADERS += src/MainWindow.h \
     src/ConfigElement.h \
     src/Singleton.h \
     src/ModOption.h \
-    src/ModOptionNumber.h
+    src/ModOptionNumber.h \
+    src/StylesheetDialog.h
 SOURCES += src/main.cpp \
     src/MainWindow.cpp \
     src/ServerContextState.cpp \
@@ -103,7 +103,8 @@ SOURCES += src/main.cpp \
     src/ConfigElement.cpp \
     src/Singleton.cpp \
     src/ModOption.cpp \
-    src/ModOptionNumber.cpp
+    src/ModOptionNumber.cpp \
+    src/StylesheetDialog.cpp
 win32 { 
     CONFIG += release
     CONFIG -= debug
@@ -123,7 +124,8 @@ FORMS += ui/mainWidget.ui \
     ui/agreementWidget.ui \
     ui/abstractChannelWidget.ui \
     ui/preferenceWidget.ui \
-    ui/configElement.ui
+    ui/configElement.ui \
+    ui/StylesheetDialog.ui
 DISTFILES += doc/ProtocolDescription.xml \
     TODO \
     doc/xml2html.xsl \

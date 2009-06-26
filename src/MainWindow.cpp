@@ -32,6 +32,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
   commandAssigner     = new CommandAssigner( this );
   statusTracker       = new StatusTracker( statusbar );
   mapSelector         = new MapSelector();
+  stylesheetDialog    = new StylesheetDialog();
 
 
 
@@ -284,4 +285,7 @@ void MainWindow::playSample( SampleCollection sample ) {
   audioBackend.playSample( sample );
 }
 
+void MainWindow::showStylesheetEditor() {
+    stylesheetDialog->exec();
+}
 

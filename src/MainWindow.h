@@ -33,6 +33,7 @@
 #include "UnitSyncLib.h"
 #include "Preference.h"
 #include "MapSelector.h"
+#include "StylesheetDialog.h"
 
 class MainWindow : public QMainWindow, private Ui::MainWindow {
   Q_OBJECT
@@ -55,6 +56,7 @@ private:
   UnitSyncLib* unitSyncLib;
   UserPreference* preference;
   MapSelector* mapSelector;
+  StylesheetDialog* stylesheetDialog;
 
   //the status bar text
   StatusTracker* statusTracker;
@@ -80,6 +82,7 @@ private slots:
   void startSpring();
   void startSpringSettings();
   void hideBattleList( bool isBattleTab );
+  void showStylesheetEditor();
 public slots:
   void playSample( SampleCollection sample );
   void sendTrayMessage( QString message, int milliseconds = 2000);
