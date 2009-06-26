@@ -22,6 +22,7 @@
 #include <QImage>
 #include <QByteArray>
 #include <QFileInfo>
+#include <QDir>
 
 #include <Settings.h>
 

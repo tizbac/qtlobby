@@ -17,7 +17,7 @@ UnitSyncLib::UnitSyncLib( QObject *parent ) : QObject( parent ) {
     library_loaded = false;
     QString libstring = settings->value("unitsync").toString();
 
-    if(!unitsynclib->isLoaded())
+    if(!unitsynclib->isLoaded()) // maybe this was useless after all (aj)
     {
         if ( loadLibrary( libstring ) ) {
             //     qDebug() << "library is usable";
@@ -40,6 +40,12 @@ UnitSyncLib::UnitSyncLib( QObject *parent ) : QObject( parent ) {
 bool UnitSyncLib::loadLibrary( QString lib_with_path ) {
     QFileInfo fi( lib_with_path );
 
+#ifdef WIN32
+    /*  Change current dir cause otherwise windows cant load unitsync (aj) */
+    QString originaldir = QDir::currentPath();
+    QDir::setCurrent(fi.absolutePath());
+#endif
+
     /* the next line is very important to load/find the shared libraries used by
      the shared library we are using, namely unitsync.dll (js)*/
     QApplication::instance()->addLibraryPath(fi.absolutePath());
@@ -59,6 +65,11 @@ bool UnitSyncLib::loadLibrary( QString lib_with_path ) {
                                   .arg( lib_with_path ) );
         return false;
     }
+
+#ifdef WIN32
+    /* Change current dir back to default */
+    QDir::setCurrent(originaldir);
+#endif
 
     m_GetSpringVersion  = ( GetSpringVersion ) unitsynclib->resolve( "GetSpringVersion" );
     m_Message  = ( Message ) unitsynclib->resolve( "Message" );
