@@ -6,6 +6,7 @@
 class ModOption {
 public:
     ModOption(QString str = QString(), bool game = false);
+    ~ModOption(){}
     virtual QString toString() const;
     virtual void fromString(QString str);
     virtual float toFloat() const;
