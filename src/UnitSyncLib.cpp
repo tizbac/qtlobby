@@ -16,13 +16,18 @@ UnitSyncLib::UnitSyncLib( QObject *parent ) : QObject( parent ) {
     settings = Settings::Instance();
     library_loaded = false;
     QString libstring = settings->value("unitsync").toString();
-    if ( loadLibrary( libstring ) ) {
-        //     qDebug() << "library is usable";
-        TestCall();
-        //     QMessageBox::information( NULL, "unitSyncLib", "library loaded");
-    } else {
-        qDebug() << "library is not usable!";
+
+    if(!unitsynclib->isLoaded())
+    {
+        if ( loadLibrary( libstring ) ) {
+            //     qDebug() << "library is usable";
+            TestCall();
+            //     QMessageBox::information( NULL, "unitSyncLib", "library loaded");
+        } else {
+            qDebug() << "library is not usable!";
+        }
     }
+
     m_gameOptionKeys << "diminishingmms"
             << "disablemapdamage"
             << "fixedallies"
