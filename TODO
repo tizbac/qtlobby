@@ -1,0 +1,16 @@
+//   QStandardItemModel
+  projectname: Qt::Lobby
+
+  - create static windows build with:
+    http://www.rag.com.au/linux/qt4howto.html
+  - when starting spring we have to keep the stdout/stderr and write it to a
+    buffer the user can read (QTextBrowser) which can have a buffer limit not
+  - new clanmate has come online sound
+  	- possibility to enable/disable this feature
+	- possibility to enter regexp for clanmate detection e.g. for [CLAN]
+	- possibility to manually enter clanmates
+
+  - BUG: when closing the mainWindow and then closing the connectionWidget the program is still
+        running, but can't be stopped because the gui is gone....
+  - http://qtnode.net/wiki?title=Building_static#How_to_set_up_static_linking_for_your_application
+  - BUG: model isn't resetted when logout occures
