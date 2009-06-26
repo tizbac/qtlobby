@@ -61,8 +61,8 @@ HEADERS += src/MainWindow.h \
     src/mapElementWidget.h \
     src/ConfigElement.h \
     src/Singleton.h \
-    ModOption.h \
-    ModOptionNumber.h
+    src/ModOption.h \
+    src/ModOptionNumber.h
 SOURCES += src/main.cpp \
     src/MainWindow.cpp \
     src/ServerContextState.cpp \
@@ -102,8 +102,8 @@ SOURCES += src/main.cpp \
     src/mapElementWidget.cpp \
     src/ConfigElement.cpp \
     src/Singleton.cpp \
-    ModOption.cpp \
-    ModOptionNumber.cpp
+    src/ModOption.cpp \
+    src/ModOptionNumber.cpp
 win32 { 
     CONFIG += release
     CONFIG -= debug
