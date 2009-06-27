@@ -62,7 +62,8 @@ HEADERS += src/MainWindow.h \
     src/Singleton.h \
     src/ModOption.h \
     src/ModOptionNumber.h \
-    src/StylesheetDialog.h
+    src/StylesheetDialog.h \
+    src/ChannelTextBrowser.h
 SOURCES += src/main.cpp \
     src/MainWindow.cpp \
     src/ServerContextState.cpp \
@@ -104,7 +105,8 @@ SOURCES += src/main.cpp \
     src/Singleton.cpp \
     src/ModOption.cpp \
     src/ModOptionNumber.cpp \
-    src/StylesheetDialog.cpp
+    src/StylesheetDialog.cpp \
+    src/ChannelTextBrowser.cpp
 win32 { 
     CONFIG += release
     CONFIG -= debug
