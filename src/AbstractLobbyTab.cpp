@@ -18,7 +18,7 @@ AbstractLobbyTab::AbstractLobbyTab( QObject * parent ) {
 AbstractLobbyTab::~AbstractLobbyTab() {}
 
 QString AbstractLobbyTab::flag( const QString userName ) {
-  QString flag = "<img width=\"10\" height=\"10\" src=\":/flags/%1.xpm\" />&nbsp;";
+  QString flag = "<img width=\"16\" height=\"16\" src=\":/flags/%1.xpm\" />&nbsp;";
   if( userNameCountryCodeMap->contains( userName ) )
     return flag.arg( userNameCountryCodeMap->value( userName ) );
   return "";
