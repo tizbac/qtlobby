@@ -19,6 +19,7 @@
 #include "Command.h"
 #include "AbstractLobbyTab.h"
 #include "ui_abstractChannelWidget.h"
+#include "ChannelTextBrowser.h"
 
 /**
  @author Mirko Windhoff <qtlobby.reg@ncnever.de>
@@ -40,7 +41,7 @@ protected:
   bool executeChannelInput( QString input );
   void insertLine( QString line );
   QString makeHtml( QString in );
-  QTextBrowser * channelTextBrowser;
+  ChannelTextBrowser * channelTextBrowser;
   QGridLayout * gridLayout;
   QIcon activeIcon;
   QIcon inactiveIcon;

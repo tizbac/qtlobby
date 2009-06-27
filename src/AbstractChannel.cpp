@@ -22,7 +22,7 @@ AbstractChannel::~AbstractChannel() {}
 void AbstractChannel::setupUi( QWidget * channelTabWidget ) {
   //FIXME inherit from abstractChannelWidget
   channelTabWidget->setObjectName( QString::fromUtf8( "channelTabWidget" ) + objectName() );
-  channelTextBrowser = new QTextBrowser( channelTabWidget );
+  channelTextBrowser = new ChannelTextBrowser( channelTabWidget );
   channelTextBrowser->setObjectName( "channelTextBrowser" + objectName() );
   channelTextBrowser->setOpenExternalLinks( true );
   channelTextBrowser->setReadOnly( true );
