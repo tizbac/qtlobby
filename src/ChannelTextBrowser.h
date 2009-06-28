@@ -5,7 +5,6 @@
 #include <QMimeData>
 #include <QDebug>
 #include <QMessageBox>
-#include <QRegExp>
 #include <QTextDocumentFragment>
 
 class ChannelTextBrowser : public QTextBrowser
