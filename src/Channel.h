@@ -11,6 +11,7 @@
 //
 #ifndef CHANNEL_H
 #define CHANNEL_H
+#include <QDateTime>
 #include "AbstractChannel.h"
 
 /**

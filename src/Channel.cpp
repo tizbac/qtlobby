@@ -70,10 +70,24 @@ void Channel::receiveCommand( Command command ) {
                   .arg( command.attributes.join( " " ) ) );
     }
   }
-  else if ( command.name == "CHANNELTOPIC" ) {
-    if (command.attributes.takeFirst() == objectName())
-      insertLine(line.arg(command.toQString()));
-  }
+    else if ( command.name == "CHANNELTOPIC" ) {
+        if (command.attributes.takeFirst() == objectName())
+        {
+             QString name = command.attributes.takeFirst();
+             QString time_t = command.attributes.takeFirst();
+             QString msg = command.attributes.join(" ");
+             msg.replace("\\n","<br/>");
+
+             QDateTime date;
+             date.setTime_t(uint(time_t.toULong()/1000));
+
+             insertLine(line
+                        .arg("<span style=\"color: darkred;\">** Topic is ' %1 ' set by %2 %3</span>")
+                        .arg( msg )
+                        .arg( name )
+                        .arg( date.toString("dd.MM.yyyy hh:mm") ));
+        }
+    }
 }
 
 void Channel::receiveInput( QString input ) {
