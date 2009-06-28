@@ -34,6 +34,8 @@ public:
 
 signals:
   void readyStateChanged( bool isReady );
+  void specStateChanged( bool isSpec ); // NEW
+  void sideChanged( int index ); // NEW
   void playSample( SampleCollection sample );
   void newTrayMessage( QString );
 public slots:
@@ -41,7 +43,10 @@ public slots:
   void receiveCommand( Command command );
   void updateMapImage( QString );
   void fillModOptions();
+  void fillSides(); // NEW
   void onReadyCheckBoxChanged( bool isChecked );
+  void onSpecCheckBoxChanged( bool isChecked ); // NEW
+  void onSideComboBoxChanged( int index ); // New
   void onStartScriptPushButtonClicked( bool checked );
 private:
   Ui::battleWindowForm * battleWindowForm;

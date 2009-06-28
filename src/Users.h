@@ -51,6 +51,8 @@ public slots:
   void inv();
   void onMyBattleStateChanged( User u );
   void onReadyStateChanged( bool isReady );
+  void onSpecStateChanged( bool isSpec ); // NEW
+  void onSideComboBoxChanged( int index ); // NEW
 protected slots:
   void customContextMenuRequestedSlot( const QPoint & point );
   void doubleClickedSlot( const QModelIndex & index );

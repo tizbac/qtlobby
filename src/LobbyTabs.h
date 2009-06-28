@@ -52,6 +52,8 @@ signals:
   void currentTabChanged( QString name, QString lobbyTabType );
   void hideBattleList( bool isBattleTab );
   void readyStateChanged( bool isReady );
+  void specStateChanged( bool isSpec ); // NEW
+  void sideChanged( int index ); // NEW
 
 public slots:
   //sets the internal state occording the global connection state
@@ -67,6 +69,8 @@ public slots:
   //close current tab
   void closeTab();
   void onReadyStateChanged( bool isReady );
+  void onSpecStateChanged( bool isSpec ); // NEW
+  void onSideComboBoxChanged( int index );
 
 private:
   //users and battles will acces this and update

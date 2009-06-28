@@ -23,6 +23,7 @@
 #include <QByteArray>
 #include <QFileInfo>
 #include <QDir>
+#include <QIcon>
 
 #include <Settings.h>
 
@@ -102,6 +103,11 @@ public:
     QString getOptionListDef(int optIndex);
     float getOptionNumberDef(int optIndex);
     QString getOptionStringDef(int optIndex);
+
+    //New
+    int getSideNameCount(QString modname);
+    QIcon getSideIcon(QString modname, QString sidename);
+
 private:
     QSettings* settings;
     QString m_currentModName;

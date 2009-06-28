@@ -106,6 +106,10 @@ void LobbyTabs::receiveCommand( Command command ) {
     if ( !found ) {
       battleChannel = new BattleChannel( command.attributes.first(), battles, lobbyTabWidget );
       createLobbyTab( battleChannel );
+      connect(battleChannel, SIGNAL(sideChanged(int)),
+              this, SLOT(onSideComboBoxChanged(int)));
+      connect( battleChannel, SIGNAL(specStateChanged(bool)),
+               this, SLOT(onSpecStateChanged(bool))); // NEW
       connect( battleChannel, SIGNAL( readyStateChanged( bool ) ),
                this, SLOT( onReadyStateChanged( bool ) ) );
       connect( battleChannel, SIGNAL( playSample( SampleCollection ) ),
@@ -245,7 +249,18 @@ void LobbyTabs::privateChannelOpen( QString userName ) {
   if ( !found )
     createLobbyTab( new PrivateChannel( userName, lobbyTabWidget ) );
 }
+/* NEW */
+void LobbyTabs::onSideComboBoxChanged( int index )
+{
+    qDebug() << "LOBBYTABS! TRACKING!";
+    emit sideChanged(index);
+}
+/* NEW */
+void LobbyTabs::onSpecStateChanged( bool isSpec ) {
+    emit specStateChanged( isSpec );
+}
 
 void LobbyTabs::onReadyStateChanged( bool isReady ) {
   emit readyStateChanged( isReady );
 }
+

@@ -48,6 +48,7 @@ User Users::getUser( const QString userName ) {
 }
 
 QList<User>& Users::getUserList( const int battleId ) {
+    qDebug() << "battleIdUserManagerMap size:" << battleIdUserManagerMap.count() << " and requested battle id is"<< battleId;
   Q_ASSERT( battleIdUserManagerMap.contains( battleId ) );
     return battleIdUserManagerMap[battleId]->model()->userList();
 }
@@ -228,6 +229,24 @@ void Users::onMyBattleStateChanged( User u ) {
   Command command( "MYBATTLESTATUS" );
   command.attributes << QString( "%1 %2" ).arg( u.battleState.state ).arg( u.color() );
   emit sendCommand( command );
+}
+
+/* NEW */
+void Users::onSideComboBoxChanged( int index ){
+   qDebug()<< "WE GOD SIDE CHANGE! NEW IS "<< index;
+   User u = infoChannelUserManager->getUser( url.userName() );
+   u.battleState.s.side = index;
+   emit onMyBattleStateChanged( u );
+}
+
+/* NEW */
+void Users::onSpecStateChanged( bool isSpec )
+{
+    qDebug()<< "BE SPEC!";
+    User u = infoChannelUserManager->getUser( url.userName() );
+    u.battleState.s.isNotSpectator = !isSpec;
+    u.battleState.s.isReady = isSpec;
+    emit onMyBattleStateChanged( u );
 }
 
 void Users::onReadyStateChanged( bool isReady ) {

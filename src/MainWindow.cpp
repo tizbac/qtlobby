@@ -114,6 +114,12 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
   // lobbyTabs to send the ready state
   connect( lobbyTabs, SIGNAL( readyStateChanged( bool ) ),
            users, SLOT( onReadyStateChanged( bool ) ) );
+  // lobbyTabs to send the spec state // NEW
+  connect( lobbyTabs, SIGNAL(specStateChanged(bool)),
+           users, SLOT( onSpecStateChanged(bool)));
+  // lobbyTabs to send  side state changed // NEW
+  connect( lobbyTabs, SIGNAL(sideChanged(int)),
+           users, SLOT(onSideComboBoxChanged( int )));
 
   // users, for the userlist to show
   connect( lobbyTabs, SIGNAL( currentTabChanged( QString, QString ) ),

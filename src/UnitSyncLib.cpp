@@ -248,8 +248,36 @@ bool UnitSyncLib::setCurrentMod(QString modname) {
     return true;
 }
 
+QIcon UnitSyncLib::getSideIcon(QString modname, QString sidename){
+    // Maybe some cleaning needed here (aj)
+    if(!libraryLoaded()) return QIcon();
+
+    m_AddAllArchives( m_GetPrimaryModArchive( m_GetPrimaryModIndex( modname.toAscii().constData() ) ) );
+    QString filepath = QString("SidePics/%1.bmp").arg(sidename.toUpper());
+    int ret = m_OpenFileVFS(filepath.toStdString().c_str());
+    if(ret < 0) return QIcon();
+    int filesize = m_FileSizeVFS(ret);
+    if(filesize == 0) return QIcon();
+
+    qDebug() << "Icon filesize: "<< filesize << ", filepath: " << filepath;
+
+    QByteArray sideicon;
+    sideicon.resize(filesize);
+    m_ReadFileVFS(ret, sideicon.data(), filesize);
+
+    QPixmap rawicon;
+    rawicon.loadFromData(sideicon);
+    return QIcon(rawicon);
+
+}
+
 QString UnitSyncLib::getSpringVersion() {
     return libraryLoaded() ? QString(m_GetSpringVersion()) : "";
+}
+
+int UnitSyncLib::getSideNameCount(QString modname)
+{
+    return libraryLoaded() ? m_GetSideCount(modname.toAscii().constData() ) : -1;
 }
 
 QString UnitSyncLib::sideName( QString modName, int index ) {

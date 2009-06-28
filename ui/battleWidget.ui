@@ -354,6 +354,16 @@
       </widget>
      </item>
      <item>
+      <widget class="QComboBox" name="factionsComboBox"/>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="specCheckBox">
+       <property name="text">
+        <string>Spectator</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QCheckBox" name="readyCheckBox">
        <property name="text">
         <string>&amp;Ready</string>

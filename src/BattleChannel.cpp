@@ -27,8 +27,13 @@ void BattleChannel::setupUi( QWidget * tab ) {
     gridLayout->addWidget( t, 0, 0, 1, 1 );
     connect( battleWindowForm->readyCheckBox, SIGNAL( toggled( bool ) ),
              this, SLOT( onReadyCheckBoxChanged( bool ) ) );
+    connect(battleWindowForm->specCheckBox, SIGNAL( toggled ( bool ) ),
+            this,SLOT(onSpecCheckBoxChanged(bool))); // NEW
+    connect(battleWindowForm->factionsComboBox, SIGNAL( currentIndexChanged( int)),
+            this,SLOT(onSideComboBoxChanged(int)));
     battleWindowForm->mapGraphicsView->setScene( scene );
     fillModOptions();
+    fillSides();
     //   gameHostingStartPushButton->setEnabled(false);
 }
 
@@ -240,6 +245,20 @@ void BattleChannel::receiveCommand( Command command ) {
     }
 }
 
+void BattleChannel::fillSides()
+{
+    UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
+    if(!unitSyncLib->setCurrentMod(m_battle.modName)) {
+        return;
+    }
+    int sidec = unitSyncLib->getSideNameCount(m_battle.modName);
+    for(int i=0;i<sidec;i++)
+    {
+        QString sidename = unitSyncLib->sideName(m_battle.modName, i);
+        battleWindowForm->factionsComboBox->addItem(unitSyncLib->getSideIcon(m_battle.modName,sidename) ,sidename, QVariant(sidename.toUpper()));
+    }
+}
+
 void BattleChannel::receiveInput( QString input ) {
     if ( executeChannelInput( input ) )
         return;
@@ -270,6 +289,18 @@ void BattleChannel::onReadyCheckBoxChanged( bool isChecked ) {
     emit readyStateChanged( isChecked );
 }
 
+/* NEW */
+void BattleChannel::onSideComboBoxChanged( int index )
+{
+    qDebug() << "onSideComboBoxChanged called!";
+    emit sideChanged(index);
+}
+
+/* NEW */
+void BattleChannel::onSpecCheckBoxChanged(bool isChecked ) {
+    emit specStateChanged( isChecked );
+    battleWindowForm->readyCheckBox->setDisabled( isChecked );
+}
 
 void BattleChannel::fillModOptions() {
     UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
