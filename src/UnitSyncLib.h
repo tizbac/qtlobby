@@ -85,10 +85,10 @@ public:
     bool libraryLoaded();
     unsigned int mapChecksum( QString mapname );
     unsigned int modChecksum( QString mapname );
-    unsigned int modIndex( QString modName );
+    signed int modIndex( QString modName );
     QString modArchive( int modIndex );
     QString sideName( QString modName, int modIndex );
-    unsigned int mapIndex( QString mapName );
+    signed int mapIndex( QString mapName );
     QLibrary* unitsynclib;
     bool setCurrentMod(QString modname);
     QString getSpringVersion();

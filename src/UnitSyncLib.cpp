@@ -223,12 +223,12 @@ unsigned int UnitSyncLib::modChecksum( QString modName ) {
     return libraryLoaded() ? m_GetPrimaryModChecksumFromName( modName.toAscii() ) : 0;
 }
 
-unsigned int UnitSyncLib::modIndex( QString modName ) {
+signed int UnitSyncLib::modIndex( QString modName ) {
     qDebug() << "modName: " << modName;
     return libraryLoaded() ? m_GetPrimaryModIndex( modName.toAscii() ) : -1;
 }
 
-unsigned int UnitSyncLib::mapIndex( QString mapName ) {
+signed int UnitSyncLib::mapIndex( QString mapName ) {
     //   qDebug() << "mapName: " << mapName;
     return libraryLoaded() ? m_GetMapArchiveCount( mapName.toAscii() ) : -1;
 }
