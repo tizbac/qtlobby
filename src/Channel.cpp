@@ -95,6 +95,10 @@ void Channel::receiveInput( QString input ) {
     return;
   input.replace( "<", "&lt;" );
   input.replace( ">", "&gt;" );
+
+    // Remove Right to Left mark so text doesnt get messed up
+    input.replace(QChar(0x202E),"");
+
   QStringList inputList = input.split( " " );
   QString firstWord = inputList.takeFirst();
   Command ret;
