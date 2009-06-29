@@ -10,6 +10,7 @@
 //
 //
 #include "UnitSyncLib.h"
+#include <QColor>
 
 UnitSyncLib::UnitSyncLib( QObject *parent ) : QObject( parent ) {
     unitsynclib = new QLibrary( this );
@@ -101,6 +102,8 @@ bool UnitSyncLib::loadLibrary( QString lib_with_path ) {
     m_GetMapChecksum  = ( GetMapChecksum ) unitsynclib->resolve( "GetMapChecksum" );
     m_GetMapChecksumFromName  = ( GetMapChecksumFromName ) unitsynclib->resolve( "GetMapChecksumFromName" );
     m_GetMinimap  = ( GetMinimap ) unitsynclib->resolve( "GetMinimap" );
+    m_GetInfoMapSize = ( GetInfoMapSize ) unitsynclib->resolve( "GetInfoMapSize" );
+    m_GetInfoMap = ( GetInfoMap ) unitsynclib->resolve( "GetInfoMap" );
     m_GetPrimaryModCount  = ( GetPrimaryModCount ) unitsynclib->resolve( "GetPrimaryModCount" );
     m_GetPrimaryModName  = ( GetPrimaryModName ) unitsynclib->resolve( "GetPrimaryModName" );
     m_GetPrimaryModShortName  = ( GetPrimaryModShortName ) unitsynclib->resolve( "GetPrimaryModShortName" );
@@ -213,6 +216,35 @@ QImage UnitSyncLib::GetMinimapQImage( const QString mapFileName, int miplevel ) 
 
     QImage mapImage(( uchar* ) map.constData(), width, height, QImage::Format_RGB16 );
     return mapImage.copy();
+}
+
+QImage UnitSyncLib::GetHeightMapQImage( const QString mapFileName ) {
+    if ( !libraryLoaded() )
+        return QImage();
+    int height;
+    int width;
+    const int HueLow = 210;
+    const int HueHigh = 0;
+    int shortMax = 65535;
+    m_GetInfoMapSize(mapFileName.toStdString().c_str(), "height", &width, &height);
+    qDebug("width: %d, height: %d", width, height);
+    unsigned char *ptr = new unsigned char[width*height];
+    unsigned char *rgb = new unsigned char[width*height*4];
+    m_GetInfoMap(mapFileName.toStdString().c_str(), "height", ptr, 1);
+    for(int i = 0, j = 0; i < width * height; i++, j+=4) {
+        //ptr[i] = QColor::fromHsv(ptr[i]/(float)shortMax*(HueHigh-HueLow)+HueLow, 255, 255).rgb();
+        rgb[j] = ptr[i];
+        rgb[j+1] = ptr[i];
+        rgb[j+2] = ptr[i];
+        rgb[j+3] = 0xFF;
+    }
+    QByteArray map((char*)rgb);
+    QImage mapImage(( uchar* ) map.constData(), width, height, QImage::Format_ARGB32 );
+    mapImage.save("/home/lupus/tmp/heightmap.png");
+    QImage ret = mapImage.copy();
+    delete[] ptr;
+    delete[] rgb;
+    return ret;
 }
 
 unsigned int UnitSyncLib::mapChecksum( QString mapName ) {

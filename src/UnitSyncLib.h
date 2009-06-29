@@ -80,6 +80,7 @@ class UnitSyncLib : public QObject, public Singleton<UnitSyncLib> {
     friend class Singleton<UnitSyncLib>;
 public:
     QImage GetMinimapQImage( const QString, int miplevel = 0 );
+    QImage GetHeightMapQImage( const QString mapFileName );
     void TestCall();
     bool loadLibrary( QString path );
     bool library_loaded;
@@ -144,6 +145,8 @@ private:
     typedef unsigned int ( * GetMapChecksum )( int index );
     typedef unsigned int ( * GetMapChecksumFromName )( const char* mapName );
     typedef void* ( * GetMinimap )( const char* filename, int miplevel );
+    typedef int ( * GetInfoMapSize )( const char * filename, const char * name, int * width, int * height);
+    typedef int ( * GetInfoMap )( const char * filename, const char * name, void * data, int typeHint);
     typedef int ( * GetPrimaryModCount )();
     typedef const char*( * GetPrimaryModName )( int index );
     typedef const char*( * GetPrimaryModShortName )( int index );
@@ -233,6 +236,8 @@ private:
     GetMapChecksum m_GetMapChecksum;
     GetMapChecksumFromName m_GetMapChecksumFromName;
     GetMinimap m_GetMinimap;
+    GetInfoMapSize m_GetInfoMapSize;
+    GetInfoMap m_GetInfoMap;
     GetPrimaryModCount m_GetPrimaryModCount;
     GetPrimaryModName m_GetPrimaryModName;
     GetPrimaryModShortName m_GetPrimaryModShortName;
