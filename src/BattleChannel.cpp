@@ -22,6 +22,7 @@ void BattleChannel::setupUi( QWidget * tab ) {
     AbstractChannel::setupUi( tab );
     QWidget * t = new QWidget( tab );
     battleWindowForm->setupUi( t );
+    battleWindowForm->descriptionLabel->setWordWrap(true);
     gridLayout->addWidget( t, 0, 0, 1, 1 );
     connect( battleWindowForm->readyCheckBox, SIGNAL( toggled( bool ) ),
              this, SLOT( onReadyCheckBoxChanged( bool ) ) );
@@ -397,11 +398,16 @@ void BattleChannel::updateMapMetalImage( QString mapName ) {
 
 void BattleChannel::updateMapInfo( QString mapName ) {
     MapInfo mi;
+    char description[255];
+    char author[200];
+    mi.description = description;
+    mi.author = author;
     UnitSyncLib::getInstance()->getMapInfo(mapName, &mi);
     battleWindowForm->nameLabel->setText(mapName);
     battleWindowForm->sizeLabel->setText(QString("%1x%2").arg(mi.width).arg(mi.height));
     battleWindowForm->windspeedLabel->setText(QString("%1x%2").arg(mi.minWind).arg(mi.maxWind));
     battleWindowForm->tidalLabel->setText(QString::number(mi.tidalStrength));
-    //battleWindowForm->authorLabel->setText(mi.author);
+    battleWindowForm->authorLabel->setText(mi.author);
+    battleWindowForm->descriptionLabel->setText(mi.description);
 }
 

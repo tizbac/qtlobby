@@ -196,13 +196,19 @@ void UnitSyncLib::TestCall() {
     //   example to get the checksum of a mod by name
 }
 
-QImage UnitSyncLib::getMinimapQImage( const QString mapFileName, int miplevel ) {
+QImage UnitSyncLib::getMinimapQImage( const QString mapFileName, int miplevel, bool scaled ) {
     if ( !libraryLoaded() )
         return QImage();
     const unsigned int height = 1 << ( 10 - miplevel );
     const unsigned int width  = 1 << ( 10 - miplevel );
     QByteArray map(( char* ) m_GetMinimap( mapFileName.toUtf8(), miplevel ), width*height*3 );
     QImage mapImage(( uchar* ) map.constData(), width, height, QImage::Format_RGB16 );
+    if(scaled) {
+        int height;
+        int width;
+        m_GetInfoMapSize(mapFileName.toStdString().c_str(), "height", &width, &height);
+        mapImage = mapImage.scaled(width, height);
+    }
     return mapImage.copy();
 }
 
@@ -249,11 +255,11 @@ QImage UnitSyncLib::getMetalMapQImage( const QString mapFileName ) {
 }
 
 void UnitSyncLib::getMapInfo(QString mapFileName, MapInfo* info) {
-    memset(info, 0, sizeof(MapInfo));
-    return;
+    //memset(info, 0, sizeof(MapInfo));
+    //return;
     qDebug() << "mapFileName: " << mapFileName;
     if(!libraryLoaded()) return;
-    m_GetMapInfo(mapFileName.toStdString().c_str(), info);
+    m_GetMapInfoEx(mapFileName.toStdString().c_str(), info, 1);
 }
 
 unsigned int UnitSyncLib::mapChecksum( QString mapName ) {

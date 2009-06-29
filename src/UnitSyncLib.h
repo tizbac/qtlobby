@@ -79,7 +79,7 @@ class UnitSyncLib : public QObject, public Singleton<UnitSyncLib> {
     Q_OBJECT
     friend class Singleton<UnitSyncLib>;
 public:
-    QImage getMinimapQImage( const QString, int miplevel = 0 );
+    QImage getMinimapQImage( const QString, int miplevel = 0, bool scaled = true );
     QImage getHeightMapQImage( const QString mapFileName );
     QImage getMetalMapQImage( const QString mapFileName );
     void getMapInfo(QString mapFileName, MapInfo* info);
