@@ -16,8 +16,6 @@ BattleChannel::BattleChannel( QString id, Battles* battles, QObject * parent ) :
     m_battle = battles->battleManager->getBattle( id.toInt() );
     battleWindowForm = new Ui::battleWindowForm();
     activeIcon = QIcon( ":/icons/battle.xpm" );
-    scene = new QGraphicsScene( this );
-    updateMapImage( m_battle.mapName );
 }
 
 void BattleChannel::setupUi( QWidget * tab ) {
@@ -31,7 +29,10 @@ void BattleChannel::setupUi( QWidget * tab ) {
             this,SLOT(onSpecCheckBoxChanged(bool))); // NEW
     connect(battleWindowForm->factionsComboBox, SIGNAL( currentIndexChanged( int)),
             this,SLOT(onSideComboBoxChanged(int)));
-    battleWindowForm->mapGraphicsView->setScene( scene );
+    updateMapImage( m_battle.mapName );
+    updateMapHeightImage( m_battle.mapName );
+    updateMapMetalImage( m_battle.mapName );
+    updateMapInfo( m_battle.mapName );
     fillModOptions();
     fillSides();
     //   gameHostingStartPushButton->setEnabled(false);
@@ -208,6 +209,9 @@ void BattleChannel::receiveCommand( Command command ) {
                 battleWindowForm->lockGameCheckBox->setChecked( locked );
             }
             updateMapImage( mapName );
+            updateMapHeightImage( mapName );
+            updateMapMetalImage( mapName );
+            updateMapInfo( mapName );
         }
     }
     else if ( command.name == "SETSCRIPTTAGS" ) {
@@ -368,24 +372,36 @@ void BattleChannel::fillModOptions() {
 }
 
 void BattleChannel::updateMapImage( QString mapName ) {
-    QList<QGraphicsItem *> items = scene->items();
-    foreach( QGraphicsItem * n, items )
-        scene->removeItem( n );
-    UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
-    qDebug() << unitSyncLib->mapIndex(mapName);
-    if (unitSyncLib->mapIndex(mapName) > 0) {
-        //   qDebug() << "Updating map image "  << mapName;
-        QGraphicsTextItem * textitem = scene->addText( mapName );
-        textitem->setPos( textitem->pos() + QPointF( 0, -20 ) );
-        scene->addText( QString( "checksum %1" ).arg( unitSyncLib->mapChecksum( mapName ) ) );
-        scene->addPixmap( QPixmap::fromImage( unitSyncLib->GetMinimapQImage( mapName, 2 ) ) );
+    if (UnitSyncLib::getInstance()->mapIndex(mapName) > 0) {
+        battleWindowForm->minimapWidget->setImage(UnitSyncLib::getInstance()->getMinimapQImage(mapName, 2));
     } else {
-        QGraphicsTextItem * textitem = scene->addText( mapName );
-        textitem->setPos( textitem->pos() + QPointF( 0, -20 ) );
-        scene->addText( QString( "map not found, download it" ));
+        battleWindowForm->minimapWidget->setErrorMessage("map not found, download it");
     }
 }
 
-void BattleChannel::onStartScriptPushButtonClicked(bool checked) {
-
+void BattleChannel::updateMapHeightImage( QString mapName ) {
+     if (UnitSyncLib::getInstance()->mapIndex(mapName) > 0) {
+        battleWindowForm->heightmapWidget->setImage(UnitSyncLib::getInstance()->getHeightMapQImage(mapName));
+    } else {
+        battleWindowForm->heightmapWidget->setErrorMessage("map not found, download it");
+    }
 }
+
+void BattleChannel::updateMapMetalImage( QString mapName ) {
+     if (UnitSyncLib::getInstance()->mapIndex(mapName) > 0) {
+        battleWindowForm->metalmapWidget->setImage(UnitSyncLib::getInstance()->getMetalMapQImage(mapName));
+    } else {
+        battleWindowForm->metalmapWidget->setErrorMessage("map not found, download it");
+    }
+}
+
+void BattleChannel::updateMapInfo( QString mapName ) {
+    MapInfo mi;
+    UnitSyncLib::getInstance()->getMapInfo(mapName, &mi);
+    battleWindowForm->nameLabel->setText(mapName);
+    battleWindowForm->sizeLabel->setText(QString("%1x%2").arg(mi.width).arg(mi.height));
+    battleWindowForm->windspeedLabel->setText(QString("%1x%2").arg(mi.minWind).arg(mi.maxWind));
+    battleWindowForm->tidalLabel->setText(QString::number(mi.tidalStrength));
+    //battleWindowForm->authorLabel->setText(mi.author);
+}
+

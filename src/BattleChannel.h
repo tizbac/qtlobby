@@ -12,7 +12,6 @@
 #ifndef BATTLECHANNEL_H
 #define BATTLECHANNEL_H
 
-#include <QGraphicsPixmapItem>
 #include <QDebug>
 
 #include "Channel.h"
@@ -42,15 +41,16 @@ public slots:
   void receiveInput( QString input );
   void receiveCommand( Command command );
   void updateMapImage( QString );
+  void updateMapHeightImage( QString mapName );
+  void updateMapMetalImage( QString mapName );
+  void updateMapInfo( QString mapName );
   void fillModOptions();
   void fillSides(); // NEW
   void onReadyCheckBoxChanged( bool isChecked );
   void onSpecCheckBoxChanged( bool isChecked ); // NEW
   void onSideComboBoxChanged( int index ); // New
-  void onStartScriptPushButtonClicked( bool checked );
 private:
   Ui::battleWindowForm * battleWindowForm;
-  QGraphicsScene* scene;
   Battle m_battle;
 protected:
   Battles* battles;

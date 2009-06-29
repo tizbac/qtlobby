@@ -69,7 +69,7 @@ struct MapInfo {
     int width;
     int height;
     int posCount;
-    StartPos positions[16];   // I'd rather not allocate memory, this should be enough
+    StartPos positions[16];
 
     // VERSION>=1
     char* author; // max 200 chars
@@ -79,8 +79,10 @@ class UnitSyncLib : public QObject, public Singleton<UnitSyncLib> {
     Q_OBJECT
     friend class Singleton<UnitSyncLib>;
 public:
-    QImage GetMinimapQImage( const QString, int miplevel = 0 );
-    QImage GetHeightMapQImage( const QString mapFileName );
+    QImage getMinimapQImage( const QString, int miplevel = 0 );
+    QImage getHeightMapQImage( const QString mapFileName );
+    QImage getMetalMapQImage( const QString mapFileName );
+    void getMapInfo(QString mapFileName, MapInfo* info);
     void TestCall();
     bool loadLibrary( QString path );
     bool library_loaded;

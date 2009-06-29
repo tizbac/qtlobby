@@ -63,7 +63,8 @@ HEADERS += src/MainWindow.h \
     src/ModOption.h \
     src/ModOptionNumber.h \
     src/StylesheetDialog.h \
-    src/ChannelTextBrowser.h
+    src/ChannelTextBrowser.h \
+    src/MapWidget.h
 SOURCES += src/main.cpp \
     src/MainWindow.cpp \
     src/ServerContextState.cpp \
@@ -106,7 +107,8 @@ SOURCES += src/main.cpp \
     src/ModOption.cpp \
     src/ModOptionNumber.cpp \
     src/StylesheetDialog.cpp \
-    src/ChannelTextBrowser.cpp
+    src/ChannelTextBrowser.cpp \
+    src/MapWidget.cpp
 win32 { 
     CONFIG += release
     CONFIG -= debug

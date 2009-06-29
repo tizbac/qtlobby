@@ -196,29 +196,17 @@ void UnitSyncLib::TestCall() {
     //   example to get the checksum of a mod by name
 }
 
-QImage UnitSyncLib::GetMinimapQImage( const QString mapFileName, int miplevel ) {
-    // FIXME this code produces some artefacts in the graphics which isn't nice (js)
+QImage UnitSyncLib::getMinimapQImage( const QString mapFileName, int miplevel ) {
     if ( !libraryLoaded() )
         return QImage();
     const unsigned int height = 1 << ( 10 - miplevel );
     const unsigned int width  = 1 << ( 10 - miplevel );
-
-    //   unsigned short* colours = (unsigned short*) m_GetMinimap( mapFileName.toUtf8(), 0 );
-    //   char* true_colours = ( char* ) malloc( width * height * 3 );
-    //   for ( int i = 0; i < width*height; i++ ) {
-    //     true_colours[( i*3 )] = char((( colours[i] >> 11 ) / 31.0 ) * 255.0 );
-    //     true_colours[( i*3 )+1] = char(((( colours[i] >> 5 ) & 63 ) / 63.0 ) * 255.0 );
-    //     true_colours[( i*3 )+2] = char((( colours[i] & 31 ) / 31.0 ) * 255.0 );
-    //   }
-    //   QByteArray map( true_colours, width*height*3 );
-
     QByteArray map(( char* ) m_GetMinimap( mapFileName.toUtf8(), miplevel ), width*height*3 );
-
     QImage mapImage(( uchar* ) map.constData(), width, height, QImage::Format_RGB16 );
     return mapImage.copy();
 }
 
-QImage UnitSyncLib::GetHeightMapQImage( const QString mapFileName ) {
+QImage UnitSyncLib::getHeightMapQImage( const QString mapFileName ) {
     if ( !libraryLoaded() )
         return QImage();
     int height;
@@ -228,23 +216,44 @@ QImage UnitSyncLib::GetHeightMapQImage( const QString mapFileName ) {
     int shortMax = 65535;
     m_GetInfoMapSize(mapFileName.toStdString().c_str(), "height", &width, &height);
     qDebug("width: %d, height: %d", width, height);
-    unsigned char *ptr = new unsigned char[width*height];
-    unsigned char *rgb = new unsigned char[width*height*4];
-    m_GetInfoMap(mapFileName.toStdString().c_str(), "height", ptr, 1);
-    for(int i = 0, j = 0; i < width * height; i++, j+=4) {
-        //ptr[i] = QColor::fromHsv(ptr[i]/(float)shortMax*(HueHigh-HueLow)+HueLow, 255, 255).rgb();
-        rgb[j] = ptr[i];
-        rgb[j+1] = ptr[i];
-        rgb[j+2] = ptr[i];
-        rgb[j+3] = 0xFF;
+    unsigned short *ptr = new unsigned short[width*height];
+    unsigned int *rgb = new unsigned int[width*height];
+    m_GetInfoMap(mapFileName.toStdString().c_str(), "height", ptr, 2);
+    for(int i = 0; i < width * height; i++) {
+        rgb[i] = QColor::fromHsv(ptr[i]/(float)shortMax*(HueHigh-HueLow)+HueLow, 255, ptr[i]/(float)shortMax*155+100).rgb();
     }
-    QByteArray map((char*)rgb);
-    QImage mapImage(( uchar* ) map.constData(), width, height, QImage::Format_ARGB32 );
-    mapImage.save("/home/lupus/tmp/heightmap.png");
-    QImage ret = mapImage.copy();
+    QByteArray map((char*)rgb, width*height*4);
+    QImage mapImage(( uchar* ) map.constData(), width, height, QImage::Format_RGB32 );
     delete[] ptr;
     delete[] rgb;
-    return ret;
+    return mapImage.copy();
+}
+
+QImage UnitSyncLib::getMetalMapQImage( const QString mapFileName ) {
+    if ( !libraryLoaded() )
+        return QImage();
+    int height;
+    int width;
+    m_GetInfoMapSize(mapFileName.toStdString().c_str(), "metal", &width, &height);
+    unsigned char *ptr = new unsigned char[width*height];
+    unsigned int *rgb = new unsigned int[width*height];
+    m_GetInfoMap(mapFileName.toStdString().c_str(), "metal", ptr, 1);
+    for(int i = 0; i < width * height; i++) {
+        rgb[i] = QColor::fromHsv(150, 255, ptr[i]).rgb();
+    }
+    QByteArray map((char*)rgb, width*height*4);
+    QImage mapImage(( uchar* ) map.constData(), width, height, QImage::Format_RGB32 );
+    delete[] ptr;
+    delete[] rgb;
+    return mapImage.copy();
+}
+
+void UnitSyncLib::getMapInfo(QString mapFileName, MapInfo* info) {
+    memset(info, 0, sizeof(MapInfo));
+    return;
+    qDebug() << "mapFileName: " << mapFileName;
+    if(!libraryLoaded()) return;
+    m_GetMapInfo(mapFileName.toStdString().c_str(), info);
 }
 
 unsigned int UnitSyncLib::mapChecksum( QString mapName ) {
