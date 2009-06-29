@@ -61,7 +61,6 @@ HEADERS += src/MainWindow.h \
     src/ConfigElement.h \
     src/Singleton.h \
     src/ModOption.h \
-    src/ModOptionNumber.h \
     src/StylesheetDialog.h \
     src/ChannelTextBrowser.h \
     src/MapWidget.h
@@ -105,7 +104,6 @@ SOURCES += src/main.cpp \
     src/ConfigElement.cpp \
     src/Singleton.cpp \
     src/ModOption.cpp \
-    src/ModOptionNumber.cpp \
     src/StylesheetDialog.cpp \
     src/ChannelTextBrowser.cpp \
     src/MapWidget.cpp
