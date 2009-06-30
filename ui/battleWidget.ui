@@ -43,7 +43,7 @@
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>3</number>
        </property>
        <widget class="QWidget" name="tab_2">
         <attribute name="title">
@@ -189,9 +189,9 @@ p, li { white-space: pre-wrap; }
           </widget>
          </item>
          <item row="7" column="0">
-          <widget class="QPushButton" name="overviePushButton">
+          <widget class="QPushButton" name="overviewPushButton">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="text">
             <string>3D Map Overview</string>
@@ -446,7 +446,7 @@ p, li { white-space: pre-wrap; }
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="../resources.qrc">
+              <iconset>
                <normaloff>:/icons/trolltech/plus.png</normaloff>:/icons/trolltech/plus.png</iconset>
              </property>
             </widget>
@@ -457,7 +457,7 @@ p, li { white-space: pre-wrap; }
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="../resources.qrc">
+              <iconset>
                <normaloff>:/icons/trolltech/minus.png</normaloff>:/icons/trolltech/minus.png</iconset>
              </property>
             </widget>
@@ -595,8 +595,9 @@ p, li { white-space: pre-wrap; }
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
+ <slots>
+  <slot>openMapOverview()</slot>
+ </slots>
 </ui>

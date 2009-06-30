@@ -18,6 +18,8 @@
 #include "ui_battleWidget.h"
 #include "UnitSyncLib.h"
 #include "AudioBackend.h"
+#include "MapInfoLoader.h"
+#include "MapOverviewDialog.h"
 
 /**
 represents the battle tab with chat, map and options overview
@@ -47,9 +49,14 @@ public slots:
   void onReadyCheckBoxChanged( bool isChecked );
   void onSpecCheckBoxChanged( bool isChecked ); // NEW
   void onSideComboBoxChanged( int index ); // New
+private slots:
+  void openMapOverview();
 private:
   Ui::battleWindowForm * battleWindowForm;
+  MapOverviewDialog* mapOverviewDialog;
+  MapInfoLoader* loader;
   Battle m_battle;
+  bool noMapUpdates;
 protected:
   Battles* battles;
 };

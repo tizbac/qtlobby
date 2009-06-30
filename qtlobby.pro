@@ -66,7 +66,9 @@ HEADERS += src/MainWindow.h \
     src/MapWidget.h \
     src/RawHeightMap.h \
     src/MapInfoLoader.h \
-    src/CompletionListWidget.h
+    src/CompletionListWidget.h \
+    src/MapOverviewDialog.h \
+    src/MapRendererWidget.h
 SOURCES += src/main.cpp \
     src/MainWindow.cpp \
     src/ServerContextState.cpp \
@@ -112,7 +114,9 @@ SOURCES += src/main.cpp \
     src/MapWidget.cpp \
     src/RawHeightMap.cpp \
     src/MapInfoLoader.cpp \
-    src/CompletionListWidget.cpp
+    src/CompletionListWidget.cpp \
+    src/MapOverviewDialog.cpp \
+    src/MapRendererWidget.cpp
 win32 { 
     CONFIG += release
     CONFIG -= debug
@@ -122,7 +126,8 @@ unix {
     CONFIG += debug
 }
 QT += gui \
-    network
+    network \
+    opengl
 FORMS += ui/mainWidget.ui \
     ui/connectionWidget.ui \
     ui/mapSelectorWidget.ui \
@@ -133,7 +138,8 @@ FORMS += ui/mainWidget.ui \
     ui/abstractChannelWidget.ui \
     ui/preferenceWidget.ui \
     ui/configElement.ui \
-    ui/StylesheetDialog.ui
+    ui/StylesheetDialog.ui \
+    ui/MapOverviewDialog.ui
 DISTFILES += doc/ProtocolDescription.xml \
     TODO \
     doc/xml2html.xsl \

@@ -10,13 +10,15 @@
 //
 //
 #include "BattleChannel.h"
-#include "MapInfoLoader.h"
 
 BattleChannel::BattleChannel( QString id, Battles* battles, QObject * parent ) : AbstractChannel( id, parent ) {
     this->battles = battles;
     m_battle = battles->battleManager->getBattle( id.toInt() );
     battleWindowForm = new Ui::battleWindowForm();
     activeIcon = QIcon( ":/icons/battle.xpm" );
+    mapOverviewDialog = new MapOverviewDialog();
+    loader = 0;
+    noMapUpdates = false;
 }
 
 void BattleChannel::setupUi( QWidget * tab ) {
@@ -31,7 +33,8 @@ void BattleChannel::setupUi( QWidget * tab ) {
             this,SLOT(onSpecCheckBoxChanged(bool))); // NEW
     connect(battleWindowForm->factionsComboBox, SIGNAL( currentIndexChanged( int)),
             this,SLOT(onSideComboBoxChanged(int)));
-    requestMapInfo( m_battle.mapName );
+    //requestMapInfo( m_battle.mapName );
+    connect(battleWindowForm->overviewPushButton, SIGNAL(clicked()), SLOT(openMapOverview()));
     fillModOptions();
     fillSides();
     //   gameHostingStartPushButton->setEnabled(false);
@@ -208,6 +211,8 @@ void BattleChannel::receiveCommand( Command command ) {
                 battleWindowForm->lockGameCheckBox->setChecked( locked );
             }
             requestMapInfo( mapName );
+            fillModOptions();
+            fillSides();
         }
     }
     else if ( command.name == "SETSCRIPTTAGS" ) {
@@ -277,6 +282,7 @@ void BattleChannel::receiveInput( QString input ) {
     }
     else if ( QString( "/leave" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
         ret.name = "LEAVEBATTLE";
+        noMapUpdates = true;
     }
     else {
         ret.name = "SAYBATTLE";
@@ -368,7 +374,9 @@ void BattleChannel::fillModOptions() {
 }
 
 void BattleChannel::requestMapInfo( QString mapName ) {
-    MapInfoLoader* loader = new MapInfoLoader(mapName, this);
+    if(noMapUpdates) return;
+    if(loader) return;
+    loader = new MapInfoLoader(mapName, this);
     battleWindowForm->minimapWidget->setErrorMessage("Loading " + mapName + "...");
     battleWindowForm->heightmapWidget->setErrorMessage("Loading " + mapName + "...");
     battleWindowForm->metalmapWidget->setErrorMessage("Loading " + mapName + "...");
@@ -377,6 +385,7 @@ void BattleChannel::requestMapInfo( QString mapName ) {
 }
 
 void BattleChannel::updateMapInfo( QString mapName ) {
+    if(noMapUpdates) return;
     MapInfoLoader* loader = qobject_cast<MapInfoLoader*>(sender());
     if(!loader) return;
     battleWindowForm->nameLabel->setText(mapName);
@@ -398,7 +407,10 @@ void BattleChannel::updateMapInfo( QString mapName ) {
         battleWindowForm->metalmapWidget->setImage(loader->metalmap);
     }
     loader->rawHeightmap.free();
-    delete loader;
-    //loader->deleteLater();
+    loader->deleteLater();
+    this->loader = 0;
 }
 
+void BattleChannel::openMapOverview() {
+    mapOverviewDialog->show();
+}
