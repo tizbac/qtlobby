@@ -262,8 +262,8 @@ void BattleChannel::fillSides()
 void BattleChannel::receiveInput( QString input ) {
     if ( executeChannelInput( input ) )
         return;
-    input.replace( "<", "&lt;" );
-    input.replace( ">", "&gt;" );
+    //input.replace( "<", "&lt;" );
+    //input.replace( ">", "&gt;" );
     QStringList inputList = input.split( " " );
     QString firstWord = inputList.takeFirst();
     Command ret;

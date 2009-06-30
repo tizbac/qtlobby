@@ -93,8 +93,8 @@ void Channel::receiveCommand( Command command ) {
 void Channel::receiveInput( QString input ) {
   if ( executeChannelInput( input ) )
     return;
-  input.replace( "<", "&lt;" );
-  input.replace( ">", "&gt;" );
+  //input.replace( "<", "&lt;" );
+  //input.replace( ">", "&gt;" );
 
     // Remove Right to Left mark so text doesnt get messed up
     input.replace(QChar(0x202E),"");
