@@ -53,6 +53,15 @@ QList<User>& Users::getUserList( const int battleId ) {
     return battleIdUserManagerMap[battleId]->model()->userList();
 }
 
+QStringList Users::getUsernamesList() {
+    QList<User>& users = infoChannelUserManager->model()->userList();
+    QStringList ret;
+    for(int i = 0; i < users.size(); i++) {
+        ret << users[i].name;
+    }
+    return ret;
+}
+
 void Users::receiveCommand( Command command ) {
 //   qDebug() << "command: " << command.toQString();
   command.name = command.name.toUpper();

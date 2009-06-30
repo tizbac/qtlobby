@@ -13,6 +13,7 @@
 #define INPUTLINE_H
 
 #include "AbstractStateClient.h"
+#include "Users.h"
 #include <QStringList>
 #include <QString>
 #include <QLineEdit>
@@ -25,23 +26,29 @@ the input line provides a message history, user name tab completion etc.
 
  @author Mirko Windhoff <qtlobby.reg@ncnever.de>
 */
-class InputLine : public QLineEdit
-{
-  Q_OBJECT
+class InputLine : public QLineEdit {
+    Q_OBJECT
 public:
-  InputLine( QWidget * parent = 0 );
-  virtual ~InputLine();
+    InputLine( QWidget * parent = 0 );
+    virtual ~InputLine();
+    void setUsers(Users* users);
+
+    public slots:
+    void onCompletionSelected(int start, int length, QString text);
 
 signals:
-  void sendInput( QString input );
+    void sendInput( QString input );
+    void requestCompletionList(QString str);
 
-public slots:
-  void keyPressEvent( QKeyEvent * event );
+protected:
+    void keyPressEvent( QKeyEvent * event );
+    bool event(QEvent* event);
 
 private:
-  void returnPressed();
-  int historyIndex;
-  QStringList history;
+    void returnPressed();
+    int historyIndex;
+    QStringList history;
+    Users* users;
 };
 
 #endif

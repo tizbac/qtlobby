@@ -39,6 +39,7 @@ public:
   ~Users();
   User getUser( const QString userName );
   QList<User>& getUserList( const int battleId );
+  QStringList getUsernamesList();
   QUrl url;
 signals:
   void sendCommand( Command command );

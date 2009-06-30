@@ -23,6 +23,7 @@
  @author Joachim Schiele <js@lastlog.de>
 */
 class UserTreeModel : public QAbstractItemModel {
+    Q_OBJECT
 public:
   UserTreeModel( QObject* parent = 0 );
   ~UserTreeModel();

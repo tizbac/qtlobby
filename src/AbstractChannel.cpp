@@ -48,8 +48,8 @@ bool AbstractChannel::executeChannelInput( QString input ) {
     receiveInput( l );
     return true;
   }
-  input.replace( "<", "&lt;" );
-  input.replace( ">", "&gt;" );
+  //input.replace( "<", "&lt;" );
+  //input.replace( ">", "&gt;" );
   QStringList inputList = input.split( " " );
   QString firstWord = inputList.takeFirst();
   Command ret;

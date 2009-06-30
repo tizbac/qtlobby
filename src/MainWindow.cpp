@@ -137,6 +137,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
            mapSelector, SLOT( show() ) );
 
   // inputLine
+  inputLineEdit->setUsers(users);
+
   connect( inputLineEdit, SIGNAL( sendInput( QString ) ),
            lobbyTabs, SLOT( receiveInput( QString ) ) );
 

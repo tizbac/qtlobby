@@ -68,8 +68,7 @@ private:
   QColor regexpColor;
   QSettings* settings;
 signals:
-  void newTrayMessage( QString );
-
+  void newTrayMessage(QString);
 private slots:
 
   void about();
