@@ -283,6 +283,7 @@ void MainWindow::sendTrayMessage( QString message, int milliseconds ) {
 }
 
 void MainWindow::startSpringSettings() {
+  if(settings->value( "springsettings+" ).toString().isEmpty()) return;
   emit newTrayMessage( "spring settings dialog started" );
   qp.start( settings->value( "springsettings+" ).toString() );
 }
