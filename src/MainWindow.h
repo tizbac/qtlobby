@@ -69,8 +69,9 @@ private:
   QSettings* settings;
 signals:
   void newTrayMessage(QString);
+protected:
+  void closeEvent(QCloseEvent *event);
 private slots:
-
   void about();
   void newUserTextInput();
   void toggleUserListVisible();

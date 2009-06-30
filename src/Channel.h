@@ -19,8 +19,7 @@ this channel displays the chat messages
 
  @author Mirko Windhoff <qtlobby.reg@ncnever.de>
 */
-class Channel : public AbstractChannel
-{
+class Channel : public AbstractChannel {
   Q_OBJECT
 public:
   Channel( QString name, QObject * parent = 0 );
