@@ -10,6 +10,7 @@
 //
 //
 #include "BattleChannel.h"
+#include "MapInfoLoader.h"
 
 BattleChannel::BattleChannel( QString id, Battles* battles, QObject * parent ) : AbstractChannel( id, parent ) {
     this->battles = battles;
@@ -30,10 +31,7 @@ void BattleChannel::setupUi( QWidget * tab ) {
             this,SLOT(onSpecCheckBoxChanged(bool))); // NEW
     connect(battleWindowForm->factionsComboBox, SIGNAL( currentIndexChanged( int)),
             this,SLOT(onSideComboBoxChanged(int)));
-    updateMapImage( m_battle.mapName );
-    updateMapHeightImage( m_battle.mapName );
-    updateMapMetalImage( m_battle.mapName );
-    updateMapInfo( m_battle.mapName );
+    requestMapInfo( m_battle.mapName );
     fillModOptions();
     fillSides();
     //   gameHostingStartPushButton->setEnabled(false);
@@ -209,10 +207,7 @@ void BattleChannel::receiveCommand( Command command ) {
                             .arg( locked ? tr( "Battle locked." ) : tr( "Battle unlocked." ) ) );
                 battleWindowForm->lockGameCheckBox->setChecked( locked );
             }
-            updateMapImage( mapName );
-            updateMapHeightImage( mapName );
-            updateMapMetalImage( mapName );
-            updateMapInfo( mapName );
+            requestMapInfo( mapName );
         }
     }
     else if ( command.name == "SETSCRIPTTAGS" ) {
@@ -372,42 +367,38 @@ void BattleChannel::fillModOptions() {
     battleWindowForm->modOptions->setHtml(buffer);
 }
 
-void BattleChannel::updateMapImage( QString mapName ) {
-    if (UnitSyncLib::getInstance()->mapIndex(mapName) > 0) {
-        battleWindowForm->minimapWidget->setImage(UnitSyncLib::getInstance()->getMinimapQImage(mapName, 2));
-    } else {
-        battleWindowForm->minimapWidget->setErrorMessage("map not found, download it");
-    }
-}
-
-void BattleChannel::updateMapHeightImage( QString mapName ) {
-     if (UnitSyncLib::getInstance()->mapIndex(mapName) > 0) {
-        battleWindowForm->heightmapWidget->setImage(UnitSyncLib::getInstance()->getHeightMapQImage(mapName));
-    } else {
-        battleWindowForm->heightmapWidget->setErrorMessage("map not found, download it");
-    }
-}
-
-void BattleChannel::updateMapMetalImage( QString mapName ) {
-     if (UnitSyncLib::getInstance()->mapIndex(mapName) > 0) {
-        battleWindowForm->metalmapWidget->setImage(UnitSyncLib::getInstance()->getMetalMapQImage(mapName));
-    } else {
-        battleWindowForm->metalmapWidget->setErrorMessage("map not found, download it");
-    }
+void BattleChannel::requestMapInfo( QString mapName ) {
+    MapInfoLoader* loader = new MapInfoLoader(mapName, this);
+    battleWindowForm->minimapWidget->setErrorMessage("Loading " + mapName + "...");
+    battleWindowForm->heightmapWidget->setErrorMessage("Loading " + mapName + "...");
+    battleWindowForm->metalmapWidget->setErrorMessage("Loading " + mapName + "...");
+    connect(loader, SIGNAL(loadCompleted(QString)), SLOT(updateMapInfo(QString)));
+    loader->start();
 }
 
 void BattleChannel::updateMapInfo( QString mapName ) {
-    MapInfo mi;
-    char description[255];
-    char author[200];
-    mi.description = description;
-    mi.author = author;
-    UnitSyncLib::getInstance()->getMapInfo(mapName, &mi);
+    MapInfoLoader* loader = qobject_cast<MapInfoLoader*>(sender());
+    if(!loader) return;
     battleWindowForm->nameLabel->setText(mapName);
-    battleWindowForm->sizeLabel->setText(QString("%1x%2").arg(mi.width).arg(mi.height));
-    battleWindowForm->windspeedLabel->setText(QString("%1x%2").arg(mi.minWind).arg(mi.maxWind));
-    battleWindowForm->tidalLabel->setText(QString::number(mi.tidalStrength));
-    battleWindowForm->authorLabel->setText(mi.author);
-    battleWindowForm->descriptionLabel->setText(mi.description);
+    if(!loader->mapPresent) {
+        battleWindowForm->minimapWidget->setErrorMessage("Map " + mapName + " not found");
+        battleWindowForm->heightmapWidget->setErrorMessage("Map " + mapName + " not found");
+        battleWindowForm->metalmapWidget->setErrorMessage("Map " + mapName + " not found");
+    } else {
+        battleWindowForm->minimapWidget->setErrorMessage(QString::null);
+        battleWindowForm->heightmapWidget->setErrorMessage(QString::null);
+        battleWindowForm->metalmapWidget->setErrorMessage(QString::null);
+        battleWindowForm->sizeLabel->setText(QString("%1x%2").arg(loader->mapinfo.width).arg(loader->mapinfo.height));
+        battleWindowForm->windspeedLabel->setText(QString("%1x%2").arg(loader->mapinfo.minWind).arg(loader->mapinfo.maxWind));
+        battleWindowForm->tidalLabel->setText(QString::number(loader->mapinfo.tidalStrength));
+        battleWindowForm->authorLabel->setText(loader->mapinfo.author);
+        battleWindowForm->descriptionLabel->setText(loader->mapinfo.description);
+        battleWindowForm->minimapWidget->setImage(loader->minimap);
+        battleWindowForm->heightmapWidget->setImage(loader->heightmap);
+        battleWindowForm->metalmapWidget->setImage(loader->metalmap);
+    }
+    loader->rawHeightmap.free();
+    delete loader;
+    //loader->deleteLater();
 }
 

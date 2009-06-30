@@ -6,11 +6,11 @@ MapWidget::MapWidget(QWidget* parent) : QWidget(parent) {
 
 void MapWidget::setImage(QImage image) {
     m_pixmap = QPixmap::fromImage(image);
+    update();
     //m_pixmap = m_pixmap.scaled(size(), Qt::KeepAspectRatio);
 }
 
 void MapWidget::paintEvent ( QPaintEvent * event ) {
-    QPixmap scaled = m_pixmap.scaled(size(), Qt::KeepAspectRatio);
     QPainter p(this);
     if(!m_error.isNull()) {
         QFontMetrics fm(font());
@@ -19,6 +19,7 @@ void MapWidget::paintEvent ( QPaintEvent * event ) {
         p.drawText(x, y, m_error);
         return;
     }
+    QPixmap scaled = m_pixmap.scaled(size(), Qt::KeepAspectRatio);
     if(scaled.isNull()) return;
     int x = (width() - scaled.width()) / 2;
     int y = (height() - scaled.height()) / 2;

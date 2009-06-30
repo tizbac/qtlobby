@@ -235,6 +235,17 @@ QImage UnitSyncLib::getHeightMapQImage( const QString mapFileName ) {
     return mapImage.copy();
 }
 
+RawHeightMap UnitSyncLib::getHeightMapRaw( const QString mapFileName ) {
+    if ( !libraryLoaded() )
+        return RawHeightMap(0,0,0);
+    int height;
+    int width;
+    m_GetInfoMapSize(mapFileName.toStdString().c_str(), "height", &width, &height);
+    unsigned short *ptr = new unsigned short[width*height];
+    m_GetInfoMap(mapFileName.toStdString().c_str(), "height", ptr, 2);
+    return RawHeightMap(width,height,ptr);
+}
+
 QImage UnitSyncLib::getMetalMapQImage( const QString mapFileName ) {
     if ( !libraryLoaded() )
         return QImage();
@@ -255,9 +266,6 @@ QImage UnitSyncLib::getMetalMapQImage( const QString mapFileName ) {
 }
 
 void UnitSyncLib::getMapInfo(QString mapFileName, MapInfo* info) {
-    //memset(info, 0, sizeof(MapInfo));
-    //return;
-    qDebug() << "mapFileName: " << mapFileName;
     if(!libraryLoaded()) return;
     m_GetMapInfoEx(mapFileName.toStdString().c_str(), info, 1);
 }

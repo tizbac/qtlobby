@@ -40,9 +40,7 @@ signals:
 public slots:
   void receiveInput( QString input );
   void receiveCommand( Command command );
-  void updateMapImage( QString );
-  void updateMapHeightImage( QString mapName );
-  void updateMapMetalImage( QString mapName );
+  void requestMapInfo( QString mapName );
   void updateMapInfo( QString mapName );
   void fillModOptions();
   void fillSides(); // NEW

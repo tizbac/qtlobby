@@ -63,7 +63,9 @@ HEADERS += src/MainWindow.h \
     src/ModOption.h \
     src/StylesheetDialog.h \
     src/ChannelTextBrowser.h \
-    src/MapWidget.h
+    src/MapWidget.h \
+    src/RawHeightMap.h \
+    src/MapInfoLoader.h
 SOURCES += src/main.cpp \
     src/MainWindow.cpp \
     src/ServerContextState.cpp \
@@ -106,7 +108,9 @@ SOURCES += src/main.cpp \
     src/ModOption.cpp \
     src/StylesheetDialog.cpp \
     src/ChannelTextBrowser.cpp \
-    src/MapWidget.cpp
+    src/MapWidget.cpp \
+    src/RawHeightMap.cpp \
+    src/MapInfoLoader.cpp
 win32 { 
     CONFIG += release
     CONFIG -= debug

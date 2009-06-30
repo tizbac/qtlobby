@@ -36,6 +36,7 @@
 #include <QMessageBox>
 
 #include "Singleton.h"
+#include "RawHeightMap.h"
 
 /**
  @author Joachim Schiele <js@lastlog.de>
@@ -81,6 +82,7 @@ class UnitSyncLib : public QObject, public Singleton<UnitSyncLib> {
 public:
     QImage getMinimapQImage( const QString, int miplevel = 0, bool scaled = true );
     QImage getHeightMapQImage( const QString mapFileName );
+    RawHeightMap getHeightMapRaw( const QString mapFileName );
     QImage getMetalMapQImage( const QString mapFileName );
     void getMapInfo(QString mapFileName, MapInfo* info);
     void TestCall();
