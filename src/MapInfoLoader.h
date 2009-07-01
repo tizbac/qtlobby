@@ -2,6 +2,8 @@
 #define MAPINFOLOADER_H
 
 #include <QThread>
+#include <QDataStream>
+#include <QFile>
 #include "UnitSyncLib.h"
 #include "RawHeightMap.h"
 
@@ -18,6 +20,8 @@ public:
     QImage metalmap;
     MapInfo mapinfo;
     void run();
+    bool loadCache();
+    void saveCache();
 signals:
     void loadCompleted(QString mapName);
 private slots:
