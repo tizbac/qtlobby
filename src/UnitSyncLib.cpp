@@ -69,7 +69,7 @@ bool UnitSyncLib::loadLibrary( QString lib_with_path ) {
         return false;
     }
 
-#ifdef WIN32
+#ifdef Q_WS_WIN
     /* Change current dir back to default */
     QDir::setCurrent(originaldir);
 #endif
