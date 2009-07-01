@@ -298,4 +298,5 @@ void MainWindow::showStylesheetEditor() {
 void MainWindow::closeEvent(QCloseEvent *event) {
     Settings::Instance()->setValue("channels", lobbyTabs->getChannelList());
     event->accept();
+    QApplication::exit(0);
 }

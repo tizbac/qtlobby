@@ -52,6 +52,7 @@ public slots:
 private slots:
   void openMapOverview();
 private:
+  QString currentMap;
   Ui::battleWindowForm * battleWindowForm;
   MapOverviewDialog* mapOverviewDialog;
   MapInfoLoader* loader;

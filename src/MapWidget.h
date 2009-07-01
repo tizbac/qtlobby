@@ -11,8 +11,11 @@ public:
     void paintEvent(QPaintEvent * event);
     void setImage(QImage image);
     void setErrorMessage(QString msg);
-private:
+protected:
+    void resizeEvent(QResizeEvent * event);
+
     QPixmap m_pixmap;
+    QPixmap m_scaled;
     QString m_error;
 };
 

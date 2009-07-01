@@ -17,7 +17,8 @@ BattleChannel::BattleChannel( QString id, Battles* battles, QObject * parent ) :
     battleWindowForm = new Ui::battleWindowForm();
     activeIcon = QIcon( ":/icons/battle.xpm" );
     mapOverviewDialog = new MapOverviewDialog();
-    loader = 0;
+    loader = new MapInfoLoader(this);
+    connect(loader, SIGNAL(loadCompleted(QString)), SLOT(updateMapInfo(QString)));
     noMapUpdates = false;
 }
 
@@ -33,7 +34,8 @@ void BattleChannel::setupUi( QWidget * tab ) {
             this,SLOT(onSpecCheckBoxChanged(bool))); // NEW
     connect(battleWindowForm->factionsComboBox, SIGNAL( currentIndexChanged( int)),
             this,SLOT(onSideComboBoxChanged(int)));
-    //requestMapInfo( m_battle.mapName );
+    currentMap = m_battle.mapName;
+    requestMapInfo( m_battle.mapName );
     connect(battleWindowForm->overviewPushButton, SIGNAL(clicked()), SLOT(openMapOverview()));
     fillModOptions();
     fillSides();
@@ -210,7 +212,9 @@ void BattleChannel::receiveCommand( Command command ) {
                             .arg( locked ? tr( "Battle locked." ) : tr( "Battle unlocked." ) ) );
                 battleWindowForm->lockGameCheckBox->setChecked( locked );
             }
-            requestMapInfo( mapName );
+            qDebug() << "UPDATEBATTLEINFO";
+            if(currentMap != mapName) requestMapInfo( mapName );
+            currentMap = mapName;
         }
     }
     else if ( command.name == "SETSCRIPTTAGS" ) {
@@ -373,19 +377,21 @@ void BattleChannel::fillModOptions() {
 
 void BattleChannel::requestMapInfo( QString mapName ) {
     if(noMapUpdates) return;
-    if(loader) return;
-    loader = new MapInfoLoader(mapName, this);
+    qDebug() << "comparing " << mapName << " with " << currentMap;
+    if(loader->isRunning()) {
+        loader->cleanup();
+        loader = new MapInfoLoader(this);
+        connect(loader, SIGNAL(loadCompleted(QString)), SLOT(updateMapInfo(QString)));
+    }
+    loader->setMap(mapName);
     battleWindowForm->minimapWidget->setErrorMessage("Loading " + mapName + "...");
     battleWindowForm->heightmapWidget->setErrorMessage("Loading " + mapName + "...");
     battleWindowForm->metalmapWidget->setErrorMessage("Loading " + mapName + "...");
-    connect(loader, SIGNAL(loadCompleted(QString)), SLOT(updateMapInfo(QString)));
     loader->start();
 }
 
 void BattleChannel::updateMapInfo( QString mapName ) {
     if(noMapUpdates) return;
-    MapInfoLoader* loader = qobject_cast<MapInfoLoader*>(sender());
-    if(!loader) return;
     battleWindowForm->nameLabel->setText(mapName);
     if(!loader->mapPresent) {
         battleWindowForm->minimapWidget->setErrorMessage("Map " + mapName + " not found");
@@ -405,10 +411,8 @@ void BattleChannel::updateMapInfo( QString mapName ) {
         battleWindowForm->metalmapWidget->setImage(loader->metalmap);
         mapOverviewDialog->setSource(loader->minimap, loader->rawHeightmap);
     }
-    loader->deleteLater();
-    this->loader = 0;
 }
 
 void BattleChannel::openMapOverview() {
-    mapOverviewDialog->show();
+    mapOverviewDialog->exec();
 }

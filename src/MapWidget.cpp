@@ -7,7 +7,7 @@ MapWidget::MapWidget(QWidget* parent) : QWidget(parent) {
 void MapWidget::setImage(QImage image) {
     m_pixmap = QPixmap::fromImage(image);
     update();
-    //m_pixmap = m_pixmap.scaled(size(), Qt::KeepAspectRatio);
+    m_scaled = m_pixmap.scaled(size(), Qt::KeepAspectRatio);
 }
 
 void MapWidget::paintEvent ( QPaintEvent * event ) {
@@ -19,12 +19,16 @@ void MapWidget::paintEvent ( QPaintEvent * event ) {
         p.drawText(x, y, m_error);
         return;
     }
-    QPixmap scaled = m_pixmap.scaled(size(), Qt::KeepAspectRatio);
-    if(scaled.isNull()) return;
-    int x = (width() - scaled.width()) / 2;
-    int y = (height() - scaled.height()) / 2;
-    p.drawPixmap(x,y,scaled.width(), scaled.height(), scaled);
+    if(m_scaled.isNull()) return;
+    int x = (width() - m_scaled.width()) / 2;
+    int y = (height() - m_scaled.height()) / 2;
+    p.drawPixmap(x,y,m_scaled.width(), m_scaled.height(), m_scaled);
     event->accept();
+}
+
+void MapWidget::resizeEvent(QResizeEvent * event) {
+    if(event->oldSize() == size()) return;
+    m_scaled = m_pixmap.scaled(size(), Qt::KeepAspectRatio);
 }
 
 void MapWidget::setErrorMessage(QString msg) {

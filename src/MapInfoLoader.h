@@ -8,7 +8,9 @@
 class MapInfoLoader : public QThread {
     Q_OBJECT
 public:
-    MapInfoLoader(QString mapName, QObject* parent = 0);
+    MapInfoLoader(QObject* parent = 0);
+    void setMap(QString mapName);
+    void cleanup();
     bool mapPresent;
     QImage minimap;
     QImage heightmap;
@@ -18,7 +20,10 @@ public:
     void run();
 signals:
     void loadCompleted(QString mapName);
+private slots:
+    void clearData();
 private:
+    bool m_autoclean;
     QString m_mapName;
     char m_description[255];
     char m_author[200];

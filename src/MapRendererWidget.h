@@ -54,6 +54,8 @@ private:
     int xRot;
     int yRot;
     int zRot;
+    float dx;
+    float dy;
 };
 
 #endif // MAPRENDERERWIDGET_H

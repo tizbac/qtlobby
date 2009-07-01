@@ -9,6 +9,8 @@ MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
     xRot = 0;
     yRot = 0;
     zRot = 0;
+    dx = 0;
+    dy = 0;
     lastZoom = 1.0;
     compileObject = false;
 }
@@ -36,11 +38,13 @@ void MapRendererWidget::resizeGL(int w, int h) {
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity();
     if (w <= h)
-        glOrtho (-100, 100, -100*(GLfloat)h/(GLfloat)w,
-                 100*(GLfloat)h/(GLfloat)w, -200.0, 200.0);
+        glOrtho (dx+lastZoom*-100, dx+lastZoom*100,/*left,right*/
+                 dy+lastZoom*-100*(GLfloat)h/(GLfloat)w, dy+lastZoom*100*(GLfloat)h/(GLfloat)w,/*top,bottom*/
+                 -2000.0, 2000.0);/*near,far*/
     else
-        glOrtho (-100*(GLfloat)w/(GLfloat)h,
-                 100*(GLfloat)w/(GLfloat)h, -100, 100, -200.0, 200.0);
+        glOrtho (dx+lastZoom*-100*(GLfloat)w/(GLfloat)h, dx+lastZoom*100*(GLfloat)w/(GLfloat)h,/*left,right*/
+                 dy+lastZoom*-100, dy+lastZoom*100,/*top,bottom*/
+                 -2000.0, 2000.0);/*near,far*/
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     /*float mapRadius = sqrt(pow(m_heightmap.getWidth()*CELL_SIZE, 2)+pow(m_heightmap.getWidth()*CELL_SIZE, 2));
@@ -59,18 +63,17 @@ void MapRendererWidget::paintGL() {
     GLfloat light_position[] = { 5, 5, MAX_HEIGHT*1.3, 0.0 };
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    glTranslatef(-m_heightmap.getWidth()*CELL_SIZE/2., m_heightmap.getHeight()*CELL_SIZE/2., 0);
-    glRotatef(-90, 0, 0, 1);
-    glRotated(xRot / 16.0, 1.0, 0.0, 0.0);
-    glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
-    glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
-    glScaled(lastZoom, lastZoom, lastZoom);
     if(compileObject) {
         object = makeObject();
         compileObject = false;
     }
-    glCallList(object);
+    glRotatef(-90, 0, 0, 1);
+    glRotated(xRot / 16.0, 1.0, 0.0, 0.0);
+    glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
+    glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
+    glTranslatef(-m_heightmap.getHeight()*CELL_SIZE/2., -m_heightmap.getWidth()*CELL_SIZE/2., 0);
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    glCallList(object);
 }
 
 GLuint MapRendererWidget::makeObject() {
@@ -151,8 +154,9 @@ void MapRendererWidget::normalizeAngle(int *angle) {
 }
 
 void MapRendererWidget::wheelEvent ( QWheelEvent * event ) {
-    if(lastZoom + event->delta() * 0.002 < 0.5 || lastZoom + event->delta() * 0.002 > 2) return;
-    lastZoom += event->delta() * 0.002;
+    if(lastZoom + event->delta() * 0.0005 < 0.5 || lastZoom + event->delta() * 0.0005 > 10) return;
+    lastZoom += event->delta() * 0.0005;
+    resizeGL(width(), height());
     updateGL();
 }
 
@@ -166,10 +170,15 @@ void MapRendererWidget::mouseMoveEvent(QMouseEvent *event) {
 
      if (event->buttons() & Qt::LeftButton) {
          //setXRotation(xRot + 8 * dy);
-         setYRotation(yRot + 8 * dx);
+         setYRotation(yRot + 8 * dy);
      } else if (event->buttons() & Qt::RightButton) {
          //setXRotation(xRot + 8 * dy);
          setZRotation(zRot + 8 * dx);
+     } else if (event->buttons() & Qt::MidButton) {
+        this->dx += -dx * 0.2;
+        this->dy += dy * 0.2;
+        resizeGL(width(), height());
+        updateGL();
      }
      lastPos = event->pos();
 }
