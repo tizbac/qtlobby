@@ -21,3 +21,7 @@ void MapOverviewDialog::changeEvent(QEvent *e) {
         break;
     }
 }
+
+void MapOverviewDialog::setSource(QImage minimap, RawHeightMap heightmap) {
+    m_ui->glWidget->setSource(minimap, heightmap);
+}

@@ -2,6 +2,7 @@
 #define MAPOVERVIEWDIALOG_H
 
 #include <QtGui/QDialog>
+#include "RawHeightMap.h"
 
 namespace Ui {
     class MapOverviewDialog;
@@ -12,6 +13,7 @@ class MapOverviewDialog : public QDialog {
 public:
     explicit MapOverviewDialog(QWidget *parent = 0);
     virtual ~MapOverviewDialog();
+    void setSource(QImage minimap, RawHeightMap heightmap);
 
 protected:
     virtual void changeEvent(QEvent *e);

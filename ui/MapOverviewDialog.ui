@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="MapRendererWidget" name="widget" native="true"/>
+    <widget class="MapRendererWidget" name="glWidget" native="true"/>
    </item>
   </layout>
  </widget>

@@ -128,6 +128,7 @@ unix {
 QT += gui \
     network \
     opengl
+
 FORMS += ui/mainWidget.ui \
     ui/connectionWidget.ui \
     ui/mapSelectorWidget.ui \

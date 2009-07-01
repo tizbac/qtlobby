@@ -211,8 +211,6 @@ void BattleChannel::receiveCommand( Command command ) {
                 battleWindowForm->lockGameCheckBox->setChecked( locked );
             }
             requestMapInfo( mapName );
-            fillModOptions();
-            fillSides();
         }
     }
     else if ( command.name == "SETSCRIPTTAGS" ) {
@@ -405,8 +403,8 @@ void BattleChannel::updateMapInfo( QString mapName ) {
         battleWindowForm->minimapWidget->setImage(loader->minimap);
         battleWindowForm->heightmapWidget->setImage(loader->heightmap);
         battleWindowForm->metalmapWidget->setImage(loader->metalmap);
+        mapOverviewDialog->setSource(loader->minimap, loader->rawHeightmap);
     }
-    loader->rawHeightmap.free();
     loader->deleteLater();
     this->loader = 0;
 }

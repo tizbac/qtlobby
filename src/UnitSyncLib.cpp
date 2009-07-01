@@ -12,6 +12,8 @@
 #include "UnitSyncLib.h"
 #include <QColor>
 
+#define UNITSYNC_DUMP
+
 UnitSyncLib::UnitSyncLib( QObject *parent ) : QObject( parent ) {
     unitsynclib = new QLibrary( this );
     settings = Settings::Instance();
@@ -268,36 +270,42 @@ QImage UnitSyncLib::getMetalMapQImage( const QString mapFileName ) {
 void UnitSyncLib::getMapInfo(QString mapFileName, MapInfo* info) {
     if(!libraryLoaded()) return;
     m_GetMapInfoEx(mapFileName.toStdString().c_str(), info, 1);
+    qDebug() << "UNITSYNC_DUMP: " << "GetMapInfoEx";
 }
 
 unsigned int UnitSyncLib::mapChecksum( QString mapName ) {
+    qDebug() << "UNITSYNC_DUMP: " << "GetMapChecksumFromName";
     return libraryLoaded() ? m_GetMapChecksumFromName( mapName.toAscii() ) : 0;
 }
 
 unsigned int UnitSyncLib::modChecksum( QString modName ) {
+    qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModChecksumFromName";
     return libraryLoaded() ? m_GetPrimaryModChecksumFromName( modName.toAscii() ) : 0;
 }
 
 signed int UnitSyncLib::modIndex( QString modName ) {
-    qDebug() << "modName: " << modName;
+    qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModInde";
     return libraryLoaded() ? m_GetPrimaryModIndex( modName.toAscii() ) : -1;
 }
 
 signed int UnitSyncLib::mapIndex( QString mapName ) {
-    //   qDebug() << "mapName: " << mapName;
+    qDebug() << "UNITSYNC_DUMP: " << "GetMapArchiveCount";
     return libraryLoaded() ? m_GetMapArchiveCount( mapName.toAscii() ) : -1;
 }
 
 QString UnitSyncLib::modArchive( int modIndex ) {
-    qDebug() << "modIndex: " << modIndex;
+    qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModCount";
     return libraryLoaded() && modIndex < m_GetPrimaryModCount() ? QString( m_GetPrimaryModArchive( modIndex ) ) : "";
 }
 
 bool UnitSyncLib::setCurrentMod(QString modname) {
     if(!libraryLoaded()) return false;
     if(m_currentModName == modname) return true;
+    qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModIndex";
     int index = m_GetPrimaryModIndex(modname.toStdString().c_str());
     if(index < 0) return false;
+    qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModArchive";
+    qDebug() << "UNITSYNC_DUMP: " << "AddAllArchives";
     m_AddAllArchives(m_GetPrimaryModArchive(index));
     m_currentModName = modname;
     return true;
@@ -307,10 +315,14 @@ QIcon UnitSyncLib::getSideIcon(QString modname, QString sidename){
     // Maybe some cleaning needed here (aj)
     if(!libraryLoaded()) return QIcon();
 
+    qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModArchive";
+    qDebug() << "UNITSYNC_DUMP: " << "AddAllArchives";
     m_AddAllArchives( m_GetPrimaryModArchive( m_GetPrimaryModIndex( modname.toAscii().constData() ) ) );
     QString filepath = QString("SidePics/%1.bmp").arg(sidename.toUpper());
+    qDebug() << "UNITSYNC_DUMP: " << "OpenFileVFS";
     int ret = m_OpenFileVFS(filepath.toStdString().c_str());
     if(ret < 0) return QIcon();
+    qDebug() << "UNITSYNC_DUMP: " << "FileSizeVFS";
     int filesize = m_FileSizeVFS(ret);
     if(filesize == 0) return QIcon();
 
@@ -318,6 +330,7 @@ QIcon UnitSyncLib::getSideIcon(QString modname, QString sidename){
 
     QByteArray sideicon;
     sideicon.resize(filesize);
+    qDebug() << "UNITSYNC_DUMP: " << "ReadFileVFS";
     m_ReadFileVFS(ret, sideicon.data(), filesize);
 
     QPixmap rawicon;
@@ -327,17 +340,21 @@ QIcon UnitSyncLib::getSideIcon(QString modname, QString sidename){
 }
 
 QString UnitSyncLib::getSpringVersion() {
+    qDebug() << "UNITSYNC_DUMP: " << "GetSpringVersion";
     return libraryLoaded() ? QString(m_GetSpringVersion()) : "";
 }
 
-int UnitSyncLib::getSideNameCount(QString modname)
-{
+int UnitSyncLib::getSideNameCount(QString modname) {
+    qDebug() << "UNITSYNC_DUMP: " << "GetSideCount";
     return libraryLoaded() ? m_GetSideCount(modname.toAscii().constData() ) : -1;
 }
 
 QString UnitSyncLib::sideName( QString modName, int index ) {
     if ( libraryLoaded() ) {
+        qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModArchive";
+        qDebug() << "UNITSYNC_DUMP: " << "AddAllArchives";
         m_AddAllArchives( m_GetPrimaryModArchive( m_GetPrimaryModIndex( modName.toAscii().constData() ) ) );
+        qDebug() << "UNITSYNC_DUMP: " << "GetSideCount";
         if ( m_GetSideCount( modName.toAscii().constData() ) > index )
             return QString( m_GetSideName( index ) );
     }
@@ -353,10 +370,12 @@ bool UnitSyncLib::libraryLoaded() {
 }
 
 int UnitSyncLib::getModOptionCount() {
+    qDebug() << "UNITSYNC_DUMP: " << "GetModOptionCount";
     return m_GetModOptionCount();
 }
 
 OptionType UnitSyncLib::getOptionType(int optIndex) {
+    qDebug() << "UNITSYNC_DUMP: " << "GetOptionType";
     int type = m_GetOptionType(optIndex);
     switch(type) {
     case 1: return BOOLEAN;
@@ -369,34 +388,42 @@ OptionType UnitSyncLib::getOptionType(int optIndex) {
 }
 
 QString UnitSyncLib::getOptionName(int optIndex) {
+    qDebug() << "UNITSYNC_DUMP: " << "GetOptionName";
     return m_GetOptionName(optIndex);
 }
 
 QString UnitSyncLib::getOptionSection(int optIndex) {
+    qDebug() << "UNITSYNC_DUMP: " << "GetOptionSection";
     return m_GetOptionSection(optIndex);
 }
 
 QString UnitSyncLib::getOptionKey(int optIndex) {
+    qDebug() << "UNITSYNC_DUMP: " << "GetOptionKey";
     return m_GetOptionKey(optIndex);
 }
 
 bool UnitSyncLib::isGameOption(int optIndex) {
+    qDebug() << "UNITSYNC_DUMP: " << "GetOptionKey";
     return m_gameOptionKeys.contains(m_GetOptionKey(optIndex));
 }
 
 bool UnitSyncLib::getOptionBoolDef(int optIndex){
+    qDebug() << "UNITSYNC_DUMP: " << "GetOptionBoolDef";
     return m_GetOptionBoolDef(optIndex);
 }
 
 QString UnitSyncLib::getOptionListDef(int optIndex){
+    qDebug() << "UNITSYNC_DUMP: " << "GetOptionListDef";
     return m_GetOptionListDef(optIndex);
 }
 
 float UnitSyncLib::getOptionNumberDef(int optIndex){
+    qDebug() << "UNITSYNC_DUMP: " << "GetOptionNumberDef";
     return m_GetOptionNumberDef(optIndex);
 }
 
 QString UnitSyncLib::getOptionStringDef(int optIndex){
+    qDebug() << "UNITSYNC_DUMP: " << "GetOptionStringDef";
     return m_GetOptionStringDef(optIndex);
 }
 
