@@ -1,5 +1,8 @@
 #include "MapRendererWidget.h"
+#include "GLProgressDialog.h"
 #include <cmath>
+#include <QDebug>
+#include <QApplication>
 
 #define CELL_SIZE 0.1
 #define MAX_HEIGHT 15
@@ -13,12 +16,13 @@ MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
     dy = 0;
     lastZoom = 1.0;
     compileObject = false;
+    blockRerender = false;
 }
 
 void MapRendererWidget::initializeGL() {
     GLfloat mat_ambient[] = { 0.8, 0.2, 0.2, 1.0 };
     GLfloat mat_specular[] = { 1.0, 0.8, 0.8, 0.0 };
-    GLfloat mat_shininess[] = { 30.0 };
+    GLfloat mat_shininess[] = { 100.0 };
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glShadeModel (GL_SMOOTH);
 
@@ -59,7 +63,7 @@ void MapRendererWidget::resizeGL(int w, int h) {
 }
 
 void MapRendererWidget::paintGL() {
-    if(!m_heightmap.getWidth()) return;
+    if(!m_heightmap.getWidth() || blockRerender) return;
     GLfloat light_position[] = { 5, 5, MAX_HEIGHT*1.3, 0.0 };
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
@@ -77,9 +81,17 @@ void MapRendererWidget::paintGL() {
 }
 
 GLuint MapRendererWidget::makeObject() {
+    blockRerender = true;
+    glDeleteLists(object, 1);
     GLuint list = glGenLists(1);
     glNewList(list, GL_COMPILE);
     glBegin(GL_TRIANGLES);
+    GLProgressDialog* progress = new GLProgressDialog(this);
+    progress->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+    progress->setMax(m_heightmap.getHeight());
+    progress->updateProgress(0);
+    progress->show();
+    QApplication::processEvents();
     for(int i = 1; i < m_heightmap.getHeight(); i++) {
         for(int j = 1; j < m_heightmap.getWidth(); j++) {
             Vertex v00 = vertexes[i-1][j-1];
@@ -97,13 +109,23 @@ GLuint MapRendererWidget::makeObject() {
             glVertex3f(v10.x, v10.y, v10.z);
             glVertex3f(v11.x, v11.y, v11.z);
         }
+        progress->updateProgress(i);
+        QApplication::processEvents();
     }
     glEnd();
     glEndList();
+    QApplication::processEvents();
+    progress->hide();
+    delete progress;
+    vertexes.clear();
+    m_heightmap.free();
+    blockRerender = false;
     return list;
 }
 
-void MapRendererWidget::setSource(QImage minimap, RawHeightMap heightmap) {
+void MapRendererWidget::setSource(QString mapName, QImage minimap, RawHeightMap heightmap) {
+    if(currentMap == mapName) return;
+    currentMap = mapName;
     m_minimap = minimap;
     m_heightmap.free();
     m_heightmap = heightmap;
@@ -118,7 +140,7 @@ void MapRendererWidget::setSource(QImage minimap, RawHeightMap heightmap) {
         vertexes << line;
     }
     compileObject = true;
-    updateGL();
+    if(hasFocus()) updateGL();
 }
 
 
@@ -154,8 +176,9 @@ void MapRendererWidget::normalizeAngle(int *angle) {
 }
 
 void MapRendererWidget::wheelEvent ( QWheelEvent * event ) {
-    if(lastZoom + event->delta() * 0.0005 < 0.5 || lastZoom + event->delta() * 0.0005 > 10) return;
-    lastZoom += event->delta() * 0.0005;
+    float newZoom = lastZoom - event->delta() * 0.0005;
+    if(newZoom > 1 || newZoom < 0.1) return;
+    lastZoom = newZoom;
     resizeGL(width(), height());
     updateGL();
 }
@@ -237,4 +260,5 @@ void Vertex::sub(Vertex& v2) {
     y -= v2.y;
     z -= v2.z;
 }
+
 

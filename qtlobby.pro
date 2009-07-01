@@ -68,7 +68,8 @@ HEADERS += src/MainWindow.h \
     src/MapInfoLoader.h \
     src/CompletionListWidget.h \
     src/MapOverviewDialog.h \
-    src/MapRendererWidget.h
+    src/MapRendererWidget.h \
+    src/GLProgressDialog.h
 SOURCES += src/main.cpp \
     src/MainWindow.cpp \
     src/ServerContextState.cpp \
@@ -116,7 +117,8 @@ SOURCES += src/main.cpp \
     src/MapInfoLoader.cpp \
     src/CompletionListWidget.cpp \
     src/MapOverviewDialog.cpp \
-    src/MapRendererWidget.cpp
+    src/MapRendererWidget.cpp \
+    src/GLProgressDialog.cpp
 win32 { 
     CONFIG += release
     CONFIG -= debug
@@ -128,7 +130,6 @@ unix {
 QT += gui \
     network \
     opengl
-
 FORMS += ui/mainWidget.ui \
     ui/connectionWidget.ui \
     ui/mapSelectorWidget.ui \
@@ -140,7 +141,8 @@ FORMS += ui/mainWidget.ui \
     ui/preferenceWidget.ui \
     ui/configElement.ui \
     ui/StylesheetDialog.ui \
-    ui/MapOverviewDialog.ui
+    ui/MapOverviewDialog.ui \
+    ui/GLProgressDialog.ui
 DISTFILES += doc/ProtocolDescription.xml \
     TODO \
     doc/xml2html.xsl \

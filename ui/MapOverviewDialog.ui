@@ -15,7 +15,11 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="MapRendererWidget" name="glWidget" native="true"/>
+    <widget class="MapRendererWidget" name="glWidget" native="true">
+     <property name="focusPolicy">
+      <enum>Qt::ClickFocus</enum>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

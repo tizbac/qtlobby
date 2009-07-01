@@ -25,7 +25,7 @@ public:
 class MapRendererWidget : public QGLWidget {
 public:
     MapRendererWidget(QWidget* parent = 0);
-    void setSource(QImage minimap, RawHeightMap heightmap);
+    void setSource(QString mapName, QImage minimap, RawHeightMap heightmap);
 
 public slots:
     void setXRotation(int angle);
@@ -44,6 +44,7 @@ private:
     GLuint makeObject();
 
 private:
+    QString currentMap;
     GLuint object;
     bool compileObject;
     QPoint lastPos;
@@ -51,6 +52,7 @@ private:
     QImage m_minimap;
     RawHeightMap m_heightmap;
     QVector<QVector<Vertex> > vertexes;
+    bool blockRerender;
     int xRot;
     int yRot;
     int zRot;

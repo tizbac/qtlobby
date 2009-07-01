@@ -409,7 +409,7 @@ void BattleChannel::updateMapInfo( QString mapName ) {
         battleWindowForm->minimapWidget->setImage(loader->minimap);
         battleWindowForm->heightmapWidget->setImage(loader->heightmap);
         battleWindowForm->metalmapWidget->setImage(loader->metalmap);
-        mapOverviewDialog->setSource(loader->minimap, loader->rawHeightmap);
+        mapOverviewDialog->setSource(mapName, loader->minimap, loader->rawHeightmap);
     }
 }
 
