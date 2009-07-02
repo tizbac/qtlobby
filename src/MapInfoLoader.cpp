@@ -159,13 +159,15 @@ QDataStream & operator<< (QDataStream& stream, const RawHeightMap& rawhm)
 void MapInfoLoader::saveCache()
 {
     QDir userDir(Settings::Instance()->value("spring_user_dir").toString());
-    if(!userDir.exists("qtlobby")) return;
+    userDir.mkdir("qtlobby");
     userDir.cd("qtlobby");
     QFile file(QString("%1/%2.qmc")
                .arg(userDir.absolutePath())
                .arg(m_mapName));
     file.open(QIODevice::WriteOnly);
-    QDataStream out(&file);
+    QDataStream fileStream(&file);
+    QByteArray buffer;
+    QDataStream out(&buffer, QIODevice::WriteOnly);
 
     out.setVersion(QDataStream::Qt_4_4);
 
@@ -176,20 +178,25 @@ void MapInfoLoader::saveCache()
     out << metalmap;
     out << mapinfo;
     out << rawHeightmap;
+    fileStream << qCompress(buffer, 9);
+    file.close();
 }
 
 bool MapInfoLoader::loadCache()
 {
     QDir userDir(Settings::Instance()->value("spring_user_dir").toString());
-    userDir.mkdir("qtlobby");
+    if(!userDir.exists("qtlobby")) return false;
     userDir.cd("qtlobby");
     QFile file(QString("%1/%2.qmc")
                .arg(userDir.absolutePath())
                .arg(m_mapName));
-
     if(!file.exists()) return false;
     file.open(QIODevice::ReadOnly);
-    QDataStream in(&file);
+    QDataStream fileStream(&file);
+    QByteArray  buffer;
+    fileStream >> buffer;
+    buffer = qUncompress(buffer);
+    QDataStream in(&buffer, QIODevice::ReadOnly);
     in.setVersion(QDataStream::Qt_4_4);
 
     quint32 magic;
