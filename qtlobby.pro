@@ -16,7 +16,6 @@ RESOURCES = resources.qrc
 UI_HEADERS_DIR = src
 DEFINES += 'SVN_REV=\\"$(shell svnversion -n .)\\"'
 DEFINES += RPM_OPT_FLAGS
-
 target.path += "/usr/bin"
 INSTALLS += target
 
@@ -147,7 +146,8 @@ FORMS += ui/mainWidget.ui \
     ui/configElement.ui \
     ui/StylesheetDialog.ui \
     ui/MapOverviewDialog.ui \
-    ui/GLProgressDialog.ui
+    ui/GLProgressDialog.ui \
+    ui/LoginDialog.ui
 DISTFILES += doc/ProtocolDescription.xml \
     TODO \
     doc/xml2html.xsl \
