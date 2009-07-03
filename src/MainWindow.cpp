@@ -161,6 +161,11 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     // this is the trigger for the login dialog popup
     QTimer::singleShot( 0, connectionWidget, SLOT( show_if_wanted() ) );
     //   qDebug() << timer->msec() << "ms elapsed";
+    QSettings* s = Settings::Instance();
+    if(s->contains("mainwindow/geometry")) {
+        restoreGeometry(s->value("mainwindow/geometry").toByteArray());
+        restoreState(s->value("mainwindow/state").toByteArray());
+    }
 }
 
 MainWindow::~MainWindow() {
@@ -289,7 +294,10 @@ void MainWindow::showStylesheetEditor() {
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
-    Settings::Instance()->setValue("channels", lobbyTabs->getChannelList());
+    QSettings* s = Settings::Instance();
+    s->setValue("channels", lobbyTabs->getChannelList());
+    s->setValue("mainwindow/geometry", saveGeometry());
+    s->setValue("mainwindow/state", saveState());
     event->accept();
     QApplication::exit(0);
 }
