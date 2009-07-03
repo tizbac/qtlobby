@@ -198,7 +198,8 @@ void LobbyTabs::createLobbyTab( AbstractLobbyTab * lobbyTab ) {
     //save the lobbyTab at position c
     lobbyTabList.insert( c, lobbyTab );
     //focus the inserted tab
-    lobbyTabWidget->setCurrentIndex( c );
+    //TODO: make an option may be?
+    //lobbyTabWidget->setCurrentIndex( c );
 }
 
 AbstractLobbyTab * LobbyTabs::getActiveLobbyTab() {
