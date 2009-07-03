@@ -121,8 +121,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     // users, for the userlist to show
     connect( lobbyTabs, SIGNAL( currentTabChanged( QString, QString ) ),
              users, SLOT( currentTabChanged( QString, QString ) ) );
-    connect( lobbyTabs, SIGNAL( hideBattleList( bool ) ),
-             this, SLOT( hideBattleList( bool ) ) );
+    //connect( lobbyTabs, SIGNAL( hideBattleList( bool ) ),
+    //         this, SLOT( hideBattleList( bool ) ) );
     // aboutDialog
     connect( action_About, SIGNAL( triggered() ),
              this, SLOT( about() ) );

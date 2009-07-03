@@ -16,6 +16,7 @@
 #include "Users.h"
 #include <QStringList>
 #include <QString>
+#include <QMap>
 #include <QLineEdit>
 #include <QWidget>
 #include <QObject>
@@ -33,8 +34,9 @@ public:
     virtual ~InputLine();
     void setUsers(Users* users);
 
-    public slots:
+public slots:
     void onCompletionSelected(int start, int length, QString text);
+    void onTabChanged(int index);
 
 signals:
     void sendInput( QString input );
@@ -45,6 +47,8 @@ protected:
     bool event(QEvent* event);
 
 private:
+    QMap <int, QString> buffers;
+    int currentIndex;
     void returnPressed();
     int historyIndex;
     QStringList history;

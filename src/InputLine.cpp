@@ -17,6 +17,7 @@
 InputLine::InputLine( QWidget * parent ) : QLineEdit( parent ), historyIndex( 0 ) {
     history << "" << "";
     users = 0;
+    currentIndex = -1;
 }
 InputLine::~InputLine() {
 }
@@ -116,4 +117,12 @@ void InputLine::returnPressed() {
         history.removeLast();
     emit sendInput( input );
     emit returnPressed();
+}
+
+void InputLine::onTabChanged(int index) {
+    buffers[currentIndex] = text();
+    clear();
+    if(buffers.contains(index))
+        setText(buffers[index]);
+    currentIndex = index;
 }
