@@ -15,6 +15,7 @@ INCLUDEPATH += .
 RESOURCES = resources.qrc
 UI_HEADERS_DIR = src
 DEFINES += 'SVN_REV=\\"$(shell svnversion -n .)\\"'
+DEFINES += RPM_OPT_FLAGS
 
 target.path += "/usr/bin"
 INSTALLS += target
