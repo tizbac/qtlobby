@@ -81,7 +81,6 @@ private slots:
   void setColorInducatorBattles( QString regExp );
   void startSpring();
   void startSpringSettings();
-  void hideBattleList( bool isBattleTab );
   void showStylesheetEditor();
 public slots:
   void playSample( SampleCollection sample );

@@ -91,14 +91,14 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     connect( action_Disconnect, SIGNAL( triggered() ),
              serverContextState, SLOT( forceDisconnect() ) );
     // view menue
-    connect( action_Battle_list, SIGNAL( triggered() ),
-             gameTreeVisibleCheckBox, SLOT( toggle() ) );
-    connect( gameTreeVisibleCheckBox, SIGNAL( toggled( bool ) ),
-             action_Battle_list, SLOT( setChecked( bool ) ) );
-    connect( action_User_list, SIGNAL( triggered() ),
-             this, SLOT( toggleUserListVisible() ) );
-    connect( userListDockWidget, SIGNAL( visibilityChanged( bool ) ),
-             action_User_list, SLOT( setChecked( bool ) ) );
+    //connect( action_Battle_list, SIGNAL( triggered() ),
+    //         gameTreeVisibleCheckBox, SLOT( toggle() ) );
+    //connect( gameTreeVisibleCheckBox, SIGNAL( toggled( bool ) ),
+    //         action_Battle_list, SLOT( setChecked( bool ) ) );
+    //connect( action_User_list, SIGNAL( triggered() ),
+    //         this, SLOT( toggleUserListVisible() ) );
+    //connect( userListDockWidget, SIGNAL( visibilityChanged( bool ) ),
+    //         action_User_list, SLOT( setChecked( bool ) ) );
     // chat menue
     connect( actionLeave, SIGNAL( triggered() ),
              lobbyTabs, SLOT( closeTab() ) );
@@ -216,13 +216,6 @@ void MainWindow::showConnectionWidget( bool ) {
     //FIXME this code might be unneeded, please remove it if you are (js)
     //   connectionWidget->hide();
     connectionWidget->show();
-}
-
-void MainWindow::hideBattleList( bool isBattleTab ) {
-    if ( gameTreeVisibleCheckBox->isChecked() && isBattleTab )
-        gameTreeVisibleCheckBox->toggle();
-    if ( !gameTreeVisibleCheckBox->isChecked() && !isBattleTab )
-        gameTreeVisibleCheckBox->toggle();
 }
 
 void MainWindow::createTrayIcon()
