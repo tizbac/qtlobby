@@ -37,8 +37,8 @@ void BattleChannel::setupUi( QWidget * tab ) {
     currentMap = m_battle.mapName;
     requestMapInfo( m_battle.mapName );
     connect(battleWindowForm->overviewPushButton, SIGNAL(clicked()), SLOT(openMapOverview()));
-    fillModOptions();
-    fillSides();
+    //fillModOptions();
+    //fillSides();
     //   gameHostingStartPushButton->setEnabled(false);
 }
 
