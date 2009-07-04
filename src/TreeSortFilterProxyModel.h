@@ -27,7 +27,14 @@ public:
     ~TreeSortFilterProxyModel();
     void sort( int col, Qt::SortOrder order = Qt::AscendingOrder );
     void setColRole( int col, Qt::ItemDataRole role = Qt::DisplayRole );
+    void setFilterString(QString str);
     QMap<int, Qt::ItemDataRole> colRoleMap;
+protected:
+    bool filterAcceptsRow (int source_row, const QModelIndex & source_parent) const;
+private:
+    QString m_filterString;
+
+
 };
 
 #endif
