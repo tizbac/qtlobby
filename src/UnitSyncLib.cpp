@@ -43,7 +43,7 @@ UnitSyncLib::UnitSyncLib( QObject *parent ) : QObject( parent ) {
 bool UnitSyncLib::loadLibrary( QString lib_with_path ) {
     QFileInfo fi( lib_with_path );
 
-#ifdef WIN32
+#ifdef Q_WS_WIN
     /*  Change current dir cause otherwise windows cant load unitsync (aj) */
     QString originaldir = QDir::currentPath();
     QDir::setCurrent(fi.absolutePath());
@@ -68,11 +68,6 @@ bool UnitSyncLib::loadLibrary( QString lib_with_path ) {
                                   .arg( lib_with_path ) );
         return false;
     }
-
-#ifdef Q_WS_WIN
-    /* Change current dir back to default */
-    QDir::setCurrent(originaldir);
-#endif
 
     m_GetSpringVersion  = ( GetSpringVersion ) unitsynclib->resolve( "GetSpringVersion" );
     m_Message  = ( Message ) unitsynclib->resolve( "Message" );
@@ -168,6 +163,10 @@ bool UnitSyncLib::loadLibrary( QString lib_with_path ) {
 
     m_Init( 0, 0 );
     library_loaded = true;
+#ifdef Q_WS_WIN
+    /* Change current dir back to default */
+    QDir::setCurrent(originaldir);
+#endif
     return true;
 }
 
