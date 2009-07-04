@@ -782,6 +782,9 @@ p, li { white-space: pre-wrap; }
    <class>InputLine</class>
    <extends>QLineEdit</extends>
    <header>src/InputLine.h</header>
+   <slots>
+    <slot>onTabChanged(int)</slot>
+   </slots>
   </customwidget>
   <customwidget>
    <class>Users</class>
@@ -939,6 +942,22 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>-1</x>
      <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lobbyTabWidget</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>inputLineEdit</receiver>
+   <slot>onTabChanged(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>345</x>
+     <y>200</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>345</x>
+     <y>380</y>
     </hint>
    </hints>
   </connection>

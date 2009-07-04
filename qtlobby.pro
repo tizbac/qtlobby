@@ -123,14 +123,7 @@ SOURCES += src/main.cpp \
     src/MapOverviewDialog.cpp \
     src/MapRendererWidget.cpp \
     src/GLProgressDialog.cpp
-win32 { 
-    CONFIG += release
-    CONFIG -= debug
-}
-unix { 
-    CONFIG -= release
-    CONFIG += debug
-}
+
 QT += gui \
     network \
     opengl
