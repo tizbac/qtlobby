@@ -44,7 +44,7 @@ QVariant UserTreeModel::data( const QModelIndex& index, int role ) const {
         } else if ( u.userState.s.isInGame ) {
           fileNameParts << "ingame";
           tip += " is in game";
-        } else if ( u.joinedBattleId != 0 ) {
+        } else if ( u.joinedBattleId != -1 ) {
           fileNameParts << "broom";
           tip += " is in battle room";
         } else
