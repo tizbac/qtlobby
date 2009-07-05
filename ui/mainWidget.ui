@@ -41,6 +41,9 @@
         <property name="elideMode">
          <enum>Qt::ElideLeft</enum>
         </property>
+        <property name="movable">
+         <bool>true</bool>
+        </property>
         <widget class="QWidget" name="infoTabWidget">
          <attribute name="icon">
           <iconset resource="../resources.qrc">
