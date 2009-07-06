@@ -14,7 +14,7 @@ DEPENDPATH += .
 INCLUDEPATH += .
 RESOURCES = resources.qrc
 UI_HEADERS_DIR = src
-DEFINES += 'SVN_REV=$$system(svnversion -n .)'
+DEFINES += 'SVN_REV=\\"$$system(svnversion -n .)\\"'
 DEFINES += RPM_OPT_FLAGS
 target.path += "/usr/bin"
 INSTALLS += target
