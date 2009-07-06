@@ -258,7 +258,7 @@ void BattleChannel::fillSides()
     if(!unitSyncLib->setCurrentMod(m_battle.modName)) {
         return;
     }
-    int sidec = unitSyncLib->getSideNameCount(m_battle.modName);
+    int sidec = unitSyncLib->getSideNameCount();
     for(int i=0;i<sidec;i++)
     {
         QString sidename = unitSyncLib->sideName(m_battle.modName, i);
