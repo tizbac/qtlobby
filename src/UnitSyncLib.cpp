@@ -213,12 +213,12 @@ QImage UnitSyncLib::getMinimapQImage( const QString mapFileName, int miplevel, b
         return QImage();
     const unsigned int height = 1 << ( 10 - miplevel );
     const unsigned int width  = 1 << ( 10 - miplevel );
-    QByteArray map(( char* ) m_GetMinimap( mapFileName.toUtf8(), miplevel ), width*height*3 );
+    QByteArray map(( char* ) m_GetMinimap( mapFileName.toAscii(), miplevel ), width*height*2 );
     QImage mapImage(( uchar* ) map.constData(), width, height, QImage::Format_RGB16 );
     if(scaled) {
         int height;
         int width;
-        m_GetInfoMapSize(mapFileName.toStdString().c_str(), "height", &width, &height);
+        m_GetInfoMapSize(mapFileName.toAscii(), "height", &width, &height);
         mapImage = mapImage.scaled(width, height);
     }
     return mapImage.copy();
@@ -233,11 +233,11 @@ QImage UnitSyncLib::getHeightMapQImage( const QString mapFileName ) {
     const int HueLow = 210;
     const int HueHigh = 0;
     int shortMax = 65535;
-    m_GetInfoMapSize(mapFileName.toStdString().c_str(), "height", &width, &height);
+    m_GetInfoMapSize(mapFileName.toAscii(), "height", &width, &height);
     qDebug("width: %d, height: %d", width, height);
     unsigned short *ptr = new unsigned short[width*height];
     unsigned int *rgb = new unsigned int[width*height];
-    m_GetInfoMap(mapFileName.toStdString().c_str(), "height", ptr, 2);
+    m_GetInfoMap(mapFileName.toAscii(), "height", ptr, 2);
     for(int i = 0; i < width * height; i++) {
         rgb[i] = QColor::fromHsv(ptr[i]/(float)shortMax*(HueHigh-HueLow)+HueLow, 255, ptr[i]/(float)shortMax*155+100).rgb();
     }
@@ -254,9 +254,9 @@ RawHeightMap UnitSyncLib::getHeightMapRaw( const QString mapFileName ) {
         return RawHeightMap(0,0,0);
     int height;
     int width;
-    m_GetInfoMapSize(mapFileName.toStdString().c_str(), "height", &width, &height);
+    m_GetInfoMapSize(mapFileName.toAscii(), "height", &width, &height);
     unsigned short *ptr = new unsigned short[width*height];
-    m_GetInfoMap(mapFileName.toStdString().c_str(), "height", ptr, 2);
+    m_GetInfoMap(mapFileName.toAscii(), "height", ptr, 2);
     return RawHeightMap(width,height,ptr);
 }
 
@@ -266,10 +266,10 @@ QImage UnitSyncLib::getMetalMapQImage( const QString mapFileName ) {
         return QImage();
     int height;
     int width;
-    m_GetInfoMapSize(mapFileName.toStdString().c_str(), "metal", &width, &height);
+    m_GetInfoMapSize(mapFileName.toAscii(), "metal", &width, &height);
     unsigned char *ptr = new unsigned char[width*height];
     unsigned int *rgb = new unsigned int[width*height];
-    m_GetInfoMap(mapFileName.toStdString().c_str(), "metal", ptr, 1);
+    m_GetInfoMap(mapFileName.toAscii(), "metal", ptr, 1);
     for(int i = 0; i < width * height; i++) {
         rgb[i] = QColor::fromHsv(150, 255, ptr[i]).rgb();
     }
@@ -283,7 +283,7 @@ QImage UnitSyncLib::getMetalMapQImage( const QString mapFileName ) {
 void UnitSyncLib::getMapInfo(QString mapFileName, MapInfo* info) {
     NON_REENTRANT
     if(!libraryLoaded()) return;
-    m_GetMapInfoEx(mapFileName.toStdString().c_str(), info, 1);
+    m_GetMapInfoEx(mapFileName.toAscii(), info, 1);
     //qDebug() << "UNITSYNC_DUMP: " << "GetMapInfoEx";
 }
 
@@ -322,7 +322,7 @@ bool UnitSyncLib::setCurrentMod(QString modname) {
     if(!libraryLoaded()) return false;
     if(m_currentModName == modname) return true;
     //qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModIndex";
-    int index = m_GetPrimaryModIndex(modname.toStdString().c_str());
+    int index = m_GetPrimaryModIndex(modname.toAscii());
     if(index < 0) return false;
     //qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModArchive";
     //qDebug() << "UNITSYNC_DUMP: " << "AddAllArchives";
@@ -341,7 +341,7 @@ QIcon UnitSyncLib::getSideIcon(QString modname, QString sidename){
     m_AddAllArchives( m_GetPrimaryModArchive( m_GetPrimaryModIndex( modname.toAscii().constData() ) ) );
     QString filepath = QString("SidePics/%1.bmp").arg(sidename.toUpper());
     //qDebug() << "UNITSYNC_DUMP: " << "OpenFileVFS";
-    int ret = m_OpenFileVFS(filepath.toStdString().c_str());
+    int ret = m_OpenFileVFS(filepath.toAscii());
     if(ret < 0) return QIcon();
     //qDebug() << "UNITSYNC_DUMP: " << "FileSizeVFS";
     int filesize = m_FileSizeVFS(ret);

@@ -85,6 +85,7 @@ private slots:
   void startSpring();
   void startSpringSettings();
   void showStylesheetEditor();
+  void setCurrentUsername( QString username );
 public slots:
   void playSample( SampleCollection sample );
   void sendTrayMessage( QString message, int milliseconds = 2000);

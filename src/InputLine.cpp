@@ -55,7 +55,8 @@ void InputLine::keyPressEvent( QKeyEvent * event ) {
 bool InputLine::event(QEvent* event) {
     if(users && event->type() == QEvent::KeyPress) {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-        if(keyEvent->key() == Qt::Key_Tab) {
+        if(keyEvent->key() == Qt::Key_Tab ||
+           (keyEvent->key() == Qt::Key_Space && keyEvent->modifiers() == Qt::ControlModifier)) {
             QString str = text();
             int start = cursorPosition();
             QFontMetrics fm(font());
@@ -70,15 +71,17 @@ bool InputLine::event(QEvent* event) {
             QStringList usernames = users->getUsernamesList();
             QStringList variants;
             for(int i = 0; i < usernames.size(); i++) {
-                if(usernames[i].startsWith(str, Qt::CaseInsensitive)) variants << usernames[i];
+                if(usernames[i].contains(str, Qt::CaseInsensitive)) variants << usernames[i];
             }
             if(variants.size() > 1) {
                 CompletionListWidget* list = new CompletionListWidget();
                 connect(list, SIGNAL(completionSelected(int,int,QString)), SLOT(onCompletionSelected(int,int,QString)));
+                connect(list, SIGNAL(simulateKeyEvent(QKeyEvent*)), SLOT(emulateKeyEvent(QKeyEvent*)));
                 list->setCompletionParams(start, end-start);
+                list->setInitianBuffer(str);
+                list->setInitianSubstitutions(usernames);
                 list->move(mapToGlobal(QPoint(width, height())));
                 list->setWindowFlags(Qt::Popup);
-                list->addItems(variants);
                 list->sortItems(Qt::AscendingOrder);
                 list->show();
             } else if(variants.size() == 1) {
@@ -125,4 +128,8 @@ void InputLine::onTabChanged(int index) {
     if(buffers.contains(index))
         setText(buffers[index]);
     currentIndex = index;
+}
+
+void InputLine::emulateKeyEvent(QKeyEvent* event) {
+    QLineEdit::keyPressEvent(event);
 }

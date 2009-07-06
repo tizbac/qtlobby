@@ -1,7 +1,6 @@
 #include "ChannelTextBrowser.h"
 
-QMimeData *ChannelTextBrowser::createMimeDataFromSelection() const
-{
+QMimeData *ChannelTextBrowser::createMimeDataFromSelection() const {
         QMimeData *res = QTextEdit::createMimeDataFromSelection();
 
         if(res->hasHtml())

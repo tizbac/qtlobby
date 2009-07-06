@@ -24,12 +24,12 @@
 /**
  @author Mirko Windhoff <qtlobby.reg@ncnever.de>
 */
-class AbstractChannel : public AbstractLobbyTab/*, public Ui_abstractChannelWidget*/
-{
+class AbstractChannel : public AbstractLobbyTab/*, public Ui_abstractChannelWidget*/ {
   Q_OBJECT
 public:
   AbstractChannel( QString name, QObject * parent = 0 );
   virtual ~AbstractChannel();
+  static void setCurrentUsername(QString user);
 
 public slots:
   virtual void receiveInput( QString input ) = 0;
@@ -45,6 +45,7 @@ protected:
   QGridLayout * gridLayout;
   QIcon activeIcon;
   QIcon inactiveIcon;
+  static QString currentUsername;
 };
 
 #endif

@@ -87,6 +87,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
              serverContextState, SLOT( setConfiguration( QUrl ) ) );
     connect( connectionWidget, SIGNAL( usernameChanged(QString ) ),
              battles, SLOT( setCurrentUsername( QString ) ) );
+    connect( connectionWidget, SIGNAL( usernameChanged(QString ) ),
+            this, SLOT( setCurrentUsername( QString ) ) );
 
     // disconnect
     connect( action_Disconnect, SIGNAL( triggered() ),
@@ -311,4 +313,8 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 
 void MainWindow::showGroupsDialog() {
     userGroupsDialog->show();
+}
+
+void MainWindow::setCurrentUsername( QString username ) {
+    AbstractChannel::setCurrentUsername(username);
 }

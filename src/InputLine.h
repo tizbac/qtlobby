@@ -36,6 +36,7 @@ public:
 
 public slots:
     void onCompletionSelected(int start, int length, QString text);
+    void emulateKeyEvent(QKeyEvent* event);
     void onTabChanged(int index);
 
 signals:

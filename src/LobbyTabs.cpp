@@ -71,7 +71,7 @@ void LobbyTabs::connectionStateChanged( ConnectionState connectionState ) {
     if ( connectionState == AUTHENTICATED ) {
         bool qtlobbyChannelFound = false;
         foreach( AbstractLobbyTab * l, lobbyTabList ) {
-            if ( l->metaObject()->className() == "Channel" ) {
+            if ( QString(l->metaObject()->className()) == "Channel" ) {
                 if ( QString(l->objectName()) == "qtlobby" )
                     qtlobbyChannelFound = true;
                 receiveInput( QString( "/j " ) + l->objectName() );

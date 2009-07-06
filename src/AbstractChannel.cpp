@@ -11,6 +11,8 @@
 //
 #include "AbstractChannel.h"
 
+QString AbstractChannel::currentUsername;
+
 AbstractChannel::AbstractChannel( QString name, QObject * parent ) : AbstractLobbyTab( parent ) {
   setObjectName( name );
   activeIcon = QIcon( ":/icons/channel.xpm" );
@@ -98,6 +100,10 @@ bool AbstractChannel::executeChannelInput( QString input ) {
 }
 
 void AbstractChannel::insertLine( QString line ) {
+  QString pattern = currentUsername;
+  pattern.replace("[", "\\[").replace("]", "\\]");
+  pattern += "(?!&gt;)";
+  line.replace(QRegExp(pattern), "<span style=\" font-weight:600; text-decoration: underline; color:#aa0000;\">"+currentUsername+"</span>");
   QString timeString = QString( "<span style=\"color:gray;\">%1</span> " ).arg( QTime().currentTime().toString( "[hh:mm:ss]" ) );
   bool scrollToMaximum = channelTextBrowser->verticalScrollBar()->value() == channelTextBrowser->verticalScrollBar()->maximum();
   QTextCursor c = channelTextBrowser->textCursor();
@@ -132,4 +138,8 @@ QString AbstractChannel::makeHtml( QString in ) {
     ret.replace( placeHolder.arg( i ), linkTag.arg( ct[i], ct[i] ) );
   ret.replace( "\n", "<br>" );
   return ret.prepend( "<p>" ).append( "</p>" );
+}
+
+void AbstractChannel::setCurrentUsername(QString user) {
+    currentUsername = user;
 }
