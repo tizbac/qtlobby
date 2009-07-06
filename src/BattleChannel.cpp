@@ -261,8 +261,8 @@ void BattleChannel::fillSides()
     int sidec = unitSyncLib->getSideNameCount();
     for(int i=0;i<sidec;i++)
     {
-        QString sidename = unitSyncLib->sideName(m_battle.modName, i);
-        battleWindowForm->factionsComboBox->addItem(unitSyncLib->getSideIcon(m_battle.modName,sidename) ,sidename, QVariant(sidename.toUpper()));
+        QString sidename = unitSyncLib->sideName(i);
+        battleWindowForm->factionsComboBox->addItem(unitSyncLib->getSideIcon(sidename) ,sidename, QVariant(sidename.toUpper()));
     }
 }
 

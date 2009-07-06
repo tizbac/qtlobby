@@ -331,14 +331,12 @@ bool UnitSyncLib::setCurrentMod(QString modname) {
     return true;
 }
 
-QIcon UnitSyncLib::getSideIcon(QString modname, QString sidename){
+QIcon UnitSyncLib::getSideIcon(QString sidename){
     NON_REENTRANT
     // Maybe some cleaning needed here (aj)
+    // Done (ko)
     if(!libraryLoaded()) return QIcon();
 
-    //qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModArchive";
-    //qDebug() << "UNITSYNC_DUMP: " << "AddAllArchives";
-    m_AddAllArchives( m_GetPrimaryModArchive( m_GetPrimaryModIndex( modname.toAscii().constData() ) ) );
     QString filepath = QString("SidePics/%1.bmp").arg(sidename.toUpper());
     //qDebug() << "UNITSYNC_DUMP: " << "OpenFileVFS";
     int ret = m_OpenFileVFS(filepath.toAscii());
@@ -372,15 +370,14 @@ int UnitSyncLib::getSideNameCount() {
     return libraryLoaded() ? m_GetSideCount( ) : -1;
 }
 
-QString UnitSyncLib::sideName( QString modName, int index ) {
+QString UnitSyncLib::sideName( int index ) {
     NON_REENTRANT
     if ( libraryLoaded() ) {
-        //qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModArchive";
-        //qDebug() << "UNITSYNC_DUMP: " << "AddAllArchives";
-        m_AddAllArchives( m_GetPrimaryModArchive( m_GetPrimaryModIndex( modName.toAscii().constData() ) ) );
         //qDebug() << "UNITSYNC_DUMP: " << "GetSideCount";
-        if ( m_GetSideCount(  ) > index )
+        if ( m_GetSideCount(  ) > index ) {
+            //qDebug() << "UNITSYNC_DUMP: " << "GetSideName";
             return QString( m_GetSideName( index ) );
+        }
     }
     return "";
 }

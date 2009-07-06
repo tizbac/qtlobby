@@ -329,7 +329,8 @@ QString Battles::generateScript( Battle b ) {
         options["TeamLeader"] = QString::number( teamLeader );
         options["AllyTeam"] = QString::number( allyConv[u.battleState.s.ally] );
         options["RGBColor"] = u.colorForScript();
-        options["Side"] = UnitSyncLib::getInstance()->sideName( b.modName, u.battleState.s.side );
+        UnitSyncLib::getInstance()->setCurrentMod(b.modName);
+        options["Side"] = UnitSyncLib::getInstance()->sideName( u.battleState.s.side );
         options["Handicap"] = QString::number( u.battleState.s.handicap );
         sectionsOptionMap[QString( "TEAM%1" ).arg( i )] = options;
     }

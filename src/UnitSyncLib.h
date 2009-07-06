@@ -99,7 +99,7 @@ public:
     unsigned int modChecksum( QString mapname );
     signed int modIndex( QString modName );
     QString modArchive( int modIndex );
-    QString sideName( QString modName, int modIndex );
+    QString sideName( int modIndex );
     signed int mapIndex( QString mapName );
     QLibrary* unitsynclib;
     bool setCurrentMod(QString modname);
@@ -117,7 +117,7 @@ public:
 
     //New
     int getSideNameCount();
-    QIcon getSideIcon(QString modname, QString sidename);
+    QIcon getSideIcon(QString sidename);
 
 private:
     QSettings* settings;
