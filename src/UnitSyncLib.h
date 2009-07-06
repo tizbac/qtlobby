@@ -171,7 +171,7 @@ private:
     typedef int (CONV * GetPrimaryModIndex )( const char* name );
     typedef unsigned int (CONV * GetPrimaryModChecksum )( int index );
     typedef unsigned int (CONV * GetPrimaryModChecksumFromName )( const char* name );
-    typedef int (CONV * GetSideCount )( const char* modName );
+    typedef int (CONV * GetSideCount )( );
     typedef const char*(CONV * GetSideName )( int side );
     typedef int (CONV * GetLuaAICount )();
     typedef const char*(CONV * GetLuaAIName )( int aiIndex );

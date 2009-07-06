@@ -369,7 +369,7 @@ QString UnitSyncLib::getSpringVersion() {
 int UnitSyncLib::getSideNameCount(QString modname) {
     NON_REENTRANT
     //qDebug() << "UNITSYNC_DUMP: " << "GetSideCount";
-    return libraryLoaded() ? m_GetSideCount(modname.toAscii().constData() ) : -1;
+    return libraryLoaded() ? m_GetSideCount( ) : -1;
 }
 
 QString UnitSyncLib::sideName( QString modName, int index ) {
@@ -379,7 +379,7 @@ QString UnitSyncLib::sideName( QString modName, int index ) {
         //qDebug() << "UNITSYNC_DUMP: " << "AddAllArchives";
         m_AddAllArchives( m_GetPrimaryModArchive( m_GetPrimaryModIndex( modName.toAscii().constData() ) ) );
         //qDebug() << "UNITSYNC_DUMP: " << "GetSideCount";
-        if ( m_GetSideCount( modName.toAscii().constData() ) > index )
+        if ( m_GetSideCount(  ) > index )
             return QString( m_GetSideName( index ) );
     }
     return "";
