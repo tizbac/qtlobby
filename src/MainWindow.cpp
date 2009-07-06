@@ -33,6 +33,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     statusTracker       = new StatusTracker( statusbar );
     mapSelector         = new MapSelector();
     stylesheetDialog    = new StylesheetDialog();
+    userGroupsDialog    = new UserGroupsDialog();
 
     createTrayIcon();
     trayIcon->show();
@@ -157,6 +158,12 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
              this, SLOT( sendTrayMessage( QString ) ) );
     connect( battles, SIGNAL( start() ),
              this, SLOT( startSpring() ) );
+
+    //Groups dialog
+    connect(userGroupsDialog, SIGNAL(groupsChanged()), battles, SLOT(invalidateModel()));
+    connect(userGroupsDialog, SIGNAL(groupsChanged()), users, SLOT(invalidateModel()));
+//    connect(userGroupsDialog, SIGNAL(groupsChanged()), battles, SLOT(reset()));
+//    connect(userGroupsDialog, SIGNAL(groupsChanged()), users, SLOT(reset()));
 
     // this is the trigger for the login dialog popup
     QTimer::singleShot( 0, connectionWidget, SLOT( show_if_wanted() ) );
@@ -300,4 +307,8 @@ void MainWindow::closeEvent(QCloseEvent *event) {
     s->setValue("mainwindow/state", saveState());
     event->accept();
     QApplication::exit(0);
+}
+
+void MainWindow::showGroupsDialog() {
+    userGroupsDialog->show();
 }

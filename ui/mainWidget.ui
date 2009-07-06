@@ -398,6 +398,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="action_Battle_list"/>
     <addaction name="action_User_list"/>
     <addaction name="actionMap_list"/>
+    <addaction name="actionGroups"/>
    </widget>
    <widget class="QMenu" name="menu_Chat">
     <property name="title">
@@ -778,6 +779,11 @@ p, li { white-space: pre-wrap; }
     <string>Battle &amp;info</string>
    </property>
   </action>
+  <action name="actionGroups">
+   <property name="text">
+    <string>Groups</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="4" margin="4"/>
  <customwidgets>
@@ -964,6 +970,22 @@ p, li { white-space: pre-wrap; }
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionGroups</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showGroupsDialog()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>485</x>
+     <y>355</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <designerdata>
   <property name="gridDeltaX">
@@ -984,5 +1006,6 @@ p, li { white-space: pre-wrap; }
  </designerdata>
  <slots>
   <slot>showStylesheetEditor()</slot>
+  <slot>showGroupsDialog()</slot>
  </slots>
 </ui>

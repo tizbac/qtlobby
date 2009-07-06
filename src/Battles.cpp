@@ -208,8 +208,8 @@ void Battles::customContextMenuRequested( const QPoint & point ) {
     QMenu menu( "contextMenu", this );
     menu.addAction( "being funny" );
     menu.addAction( "start private chat", this, SLOT( unsetSlot() ) );
-    menu.addSeparator();
-    menu.addAction( "being funny" );
+    //menu.addSeparator();
+    //menu.addAction( "being funny" );
 
     menu.exec( QCursor::pos() );
     mapToGlobal( point );
@@ -217,6 +217,7 @@ void Battles::customContextMenuRequested( const QPoint & point ) {
 
 void Battles::setUsers( Users* users ) {
     this->users = users;
+    battleManager->setUsers(users);
 }
 
 void Battles::setCurrentUsername(QString a_username) {
@@ -426,5 +427,9 @@ int Battles::resyncStatus() {
         return 2; // 2 = not sync
 
     return 1; // 1 = sync is 'in sync'
+}
+
+void Battles::invalidateModel() {
+    battleManager->model()->onGroupChanged();
 }
 

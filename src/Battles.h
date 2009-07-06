@@ -35,40 +35,41 @@
  @author Joachim Schiele <js@lastlog.de>
  */
 class Battles : public QTreeView {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  Battles( QWidget* parent = 0 );
-  ~Battles();
-  void setUsers( Users* users );
+    Battles( QWidget* parent = 0 );
+    ~Battles();
+    void setUsers( Users* users );
 signals:
-  void sendCommand( Command command );
-  void wantJoinBattle(unsigned int,QString);
-  void start();
+    void sendCommand( Command command );
+    void wantJoinBattle(unsigned int,QString);
+    void start();
 
 public slots:
-  void setRegExp( QString regExp );
-  void receiveCommand( Command command );
-  void setConfiguration( QUrl url );
-  void joinBattleCommand(unsigned int id, QString password);
-  void setCurrentUsername(QString username);
+    void setRegExp( QString regExp );
+    void receiveCommand( Command command );
+    void setConfiguration( QUrl url );
+    void joinBattleCommand(unsigned int id, QString password);
+    void setCurrentUsername(QString username);
+    void invalidateModel();
 
 protected slots:
-  void customContextMenuRequested( const QPoint & point );
-  void doubleClicked( const QModelIndex & index );
+    void customContextMenuRequested( const QPoint & point );
+    void doubleClicked( const QModelIndex & index );
 
 protected:
-  int resyncStatus();
-  void startGame( Battle b );
-  QString generateScript( Battle b );
-  QString currentTabType;
-  QString currentTabName;
-  QString username;
-  Users* users;
-  QUrl url;
-  GamePasswordWidget* gamePasswordWidget;
-  QSettings* settings;
-  public:
-  BattleManager* battleManager;
+    int resyncStatus();
+    void startGame( Battle b );
+    QString generateScript( Battle b );
+    QString currentTabType;
+    QString currentTabName;
+    QString username;
+    Users* users;
+    QUrl url;
+    GamePasswordWidget* gamePasswordWidget;
+    QSettings* settings;
+public:
+    BattleManager* battleManager;
 };
 
 #endif

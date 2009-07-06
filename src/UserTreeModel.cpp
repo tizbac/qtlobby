@@ -10,6 +10,7 @@
 //
 //
 #include "UserTreeModel.h"
+#include "UserGroup.h"
 
 UserTreeModel::UserTreeModel( QObject* parent ) : QAbstractItemModel( parent ) {
   qRegisterMetaType<User>( "User" );
@@ -18,6 +19,13 @@ UserTreeModel::UserTreeModel( QObject* parent ) : QAbstractItemModel( parent ) {
 UserTreeModel::~UserTreeModel() {}
 
 QVariant UserTreeModel::data( const QModelIndex& index, int role ) const {
+  if(role == Qt::BackgroundRole) {
+        QColor c = UserGroupList::getInstance()->getUserColor(m_userList[index.row()].name);
+        if(c.isValid()) {
+            return c;
+        }
+        return QVariant();
+  }
   if ( role == Qt::UserRole ) {
     QVariant a;
     a.setValue<User>( m_userList[index.row()] );
@@ -178,3 +186,14 @@ int UserTreeModel::rowPositionForUser( QString username ) {
 QList<User>& UserTreeModel::userList() {
   return m_userList;
 }
+
+void UserTreeModel::onGroupChanged() {
+//    qDebug() << "Invalidating user model...";
+//    int rows = rowCount(QModelIndex());
+//    int cols = columnCount(QModelIndex());
+//    QModelIndex index1 = index(0,0, QModelIndex());
+//    QModelIndex index2 = index(rows-1,cols-1, QModelIndex());
+//    emit dataChanged(index1, index2);
+    reset();
+}
+

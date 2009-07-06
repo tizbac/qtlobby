@@ -14,6 +14,7 @@
 BattleManager::BattleManager( QObject* parent ) : QObject( parent ) {
   qRegisterMetaType<Battle>( "Battle" );
   m_model = new BattleTreeModel( this );
+
   m_proxyModel = new TreeSortFilterProxyModel( m_model );
   m_selectionModel = new QItemSelectionModel( m_model );
 
@@ -81,4 +82,8 @@ TreeSortFilterProxyModel* BattleManager::proxyModel() {
 
 QItemSelectionModel* BattleManager::selectionModel() {
   return m_selectionModel;
+}
+
+void BattleManager::setUsers(Users* users) {
+    m_model->setUsers(users);
 }

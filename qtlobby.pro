@@ -73,7 +73,9 @@ HEADERS += src/MainWindow.h \
     src/CompletionListWidget.h \
     src/MapOverviewDialog.h \
     src/MapRendererWidget.h \
-    src/GLProgressDialog.h
+    src/GLProgressDialog.h \
+    src/UserGroup.h \
+    src/UserGroupsDialog.h
 SOURCES += src/main.cpp \
     src/MainWindow.cpp \
     src/ServerContextState.cpp \
@@ -122,11 +124,13 @@ SOURCES += src/main.cpp \
     src/CompletionListWidget.cpp \
     src/MapOverviewDialog.cpp \
     src/MapRendererWidget.cpp \
-    src/GLProgressDialog.cpp
-
+    src/GLProgressDialog.cpp \
+    src/UserGroup.cpp \
+    src/UserGroupsDialog.cpp
 QT += gui \
     network \
-    opengl
+    opengl \
+    xml
 FORMS += ui/mainWidget.ui \
     ui/connectionWidget.ui \
     ui/mapSelectorWidget.ui \
@@ -140,7 +144,8 @@ FORMS += ui/mainWidget.ui \
     ui/StylesheetDialog.ui \
     ui/MapOverviewDialog.ui \
     ui/GLProgressDialog.ui \
-    ui/LoginDialog.ui
+    ui/LoginDialog.ui \
+    ui/UserGroupsDialog.ui
 DISTFILES += doc/ProtocolDescription.xml \
     TODO \
     doc/xml2html.xsl \

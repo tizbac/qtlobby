@@ -18,12 +18,14 @@
 
 #include "Battle.h"
 #include "TLDList.h"
+#include "Users.h"
 
 /**
  @author Joachim Schiele <js@lastlog.de>
  */
 class BattleTreeModel : public QAbstractItemModel {
-  public:
+    Q_OBJECT
+public:
     BattleTreeModel( QObject* parent = 0 );
     ~BattleTreeModel();
 
@@ -41,9 +43,13 @@ class BattleTreeModel : public QAbstractItemModel {
     int rowPositionForBattle( int battleId );
     Battle battleForRowPosition( int row );
     QList<Battle>& userList();
-  private:
+    void setUsers(Users* users);
+public slots:
+    void onGroupChanged();
+private:
     QList<Battle> m_battleList;
-//   TLDList tldlist;
+    Users* m_users;
+    //   TLDList tldlist;
 };
 
 #endif

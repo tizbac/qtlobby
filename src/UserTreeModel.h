@@ -25,25 +25,27 @@
 class UserTreeModel : public QAbstractItemModel {
     Q_OBJECT
 public:
-  UserTreeModel( QObject* parent = 0 );
-  ~UserTreeModel();
+    UserTreeModel( QObject* parent = 0 );
+    ~UserTreeModel();
 
-  QModelIndex index( int row, int col, const QModelIndex& parent = QModelIndex() ) const;
-  QModelIndex parent( const QModelIndex& child ) const;
-  int columnCount( const QModelIndex& parent = QModelIndex() ) const;
+    QModelIndex index( int row, int col, const QModelIndex& parent = QModelIndex() ) const;
+    QModelIndex parent( const QModelIndex& child ) const;
+    int columnCount( const QModelIndex& parent = QModelIndex() ) const;
 
-  int rowCount( const QModelIndex& parent = QModelIndex() ) const;
-  QVariant data( const QModelIndex& index, int role ) const;
-  QVariant headerData( int col, Qt::Orientation, int role ) const;
+    int rowCount( const QModelIndex& parent = QModelIndex() ) const;
+    QVariant data( const QModelIndex& index, int role ) const;
+    QVariant headerData( int col, Qt::Orientation, int role ) const;
 
-  bool setData( QModelIndex index, QVariant value, int role ) ;
-  bool insertRows( int position, int rows, const QModelIndex& parent = QModelIndex() );
-  bool removeRows( int position, int rows, const QModelIndex& parent = QModelIndex() );
-  int rowPositionForUser( QString username );
-  QList<User>& userList();
+    bool setData( QModelIndex index, QVariant value, int role ) ;
+    bool insertRows( int position, int rows, const QModelIndex& parent = QModelIndex() );
+    bool removeRows( int position, int rows, const QModelIndex& parent = QModelIndex() );
+    int rowPositionForUser( QString username );
+    QList<User>& userList();
+public slots:
+    void onGroupChanged();
 private:
-  QList<User> m_userList;
-  TLDList tldlist;
+    QList<User> m_userList;
+    TLDList tldlist;
 };
 
 #endif

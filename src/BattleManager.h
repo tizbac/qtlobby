@@ -19,6 +19,7 @@
 #include "BattleTreeModel.h"
 #include "Battle.h"
 #include "TreeSortFilterProxyModel.h"
+#include "Users.h"
 
 /**
  @author Joachim Schiele <js@lastlog.de>
@@ -28,7 +29,7 @@ class BattleManager : public QObject
   friend class Battles;
   Q_OBJECT
 public:
-  BattleManager( QObject* parent = 0 );
+  BattleManager(QObject* parent = 0 );
   ~BattleManager();
   /** get a complete battle record by name */
   Battle getBattle( int id );
@@ -37,6 +38,7 @@ public:
   TreeSortFilterProxyModel* proxyModel();
   QItemSelectionModel* selectionModel();
   void getBattleList(); // returns a list of all users
+  void setUsers(Users* users);
 
 private:
   /** delete a battle based on his name */

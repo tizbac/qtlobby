@@ -34,6 +34,7 @@
 #include "Preference.h"
 #include "MapSelector.h"
 #include "StylesheetDialog.h"
+#include "UserGroupsDialog.h"
 
 class MainWindow : public QMainWindow, private Ui::MainWindow {
   Q_OBJECT
@@ -57,6 +58,7 @@ private:
   UserPreference* preference;
   MapSelector* mapSelector;
   StylesheetDialog* stylesheetDialog;
+  UserGroupsDialog* userGroupsDialog;
 
   //the status bar text
   StatusTracker* statusTracker;
@@ -77,6 +79,7 @@ private slots:
   void toggleUserListVisible();
   void toggleShowHideMainWindow( QSystemTrayIcon::ActivationReason );
   void showConnectionWidget( bool );
+  void showGroupsDialog();
   void setColorInducatorUsers( QString regExp );
   void setColorInducatorBattles( QString regExp );
   void startSpring();

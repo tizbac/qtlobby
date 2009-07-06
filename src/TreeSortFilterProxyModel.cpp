@@ -14,7 +14,9 @@
 #include <QDebug>
 
 TreeSortFilterProxyModel::TreeSortFilterProxyModel( QObject* parent )
-    : QSortFilterProxyModel( parent ) { }
+    : QSortFilterProxyModel( parent ) {
+    setDynamicSortFilter(true);
+}
 
 TreeSortFilterProxyModel::~TreeSortFilterProxyModel() {}
 

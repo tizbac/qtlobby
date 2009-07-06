@@ -38,7 +38,7 @@ public:
   Users( QWidget * parent = 0 );
   ~Users();
   User getUser( const QString userName );
-  QList<User>& getUserList( const int battleId );
+  const QList<User> getUserList( const int battleId );
   QStringList getUsernamesList();
   QUrl url;
 signals:
@@ -54,10 +54,13 @@ public slots:
   void onReadyStateChanged( bool isReady );
   void onSpecStateChanged( bool isSpec ); // NEW
   void onSideComboBoxChanged( int index ); // NEW
+  void invalidateModel();
 protected slots:
   void customContextMenuRequestedSlot( const QPoint & point );
   void doubleClickedSlot( const QModelIndex & index );
   void joinSameBattle( User u );
+  void addUserToGroup(QString user, QString group);
+  void removeUserFromGroup(QString user);
 
 protected:
   QString currentTabType;
@@ -69,11 +72,16 @@ protected:
   QMap<int, UserManager*> battleIdUserManagerMap;
   UserManager* infoChannelUserManager;
   QMenu* userMenu;
+  QMenu* groupsMenu;
+  QAction* removeFromGroupAction;
+  QMenu* clanGroupsMenu;
+  QAction* removeClanFromGroupAction;
   QAction* openPrivateChannelAction;
   QAction* slapAction;
   QAction* joinSameBattleAction;
   void updateUserList();
   TreeSortFilterProxyModel* proxyModel;
+  QRegExp clanRegexp;
 };
 
 #endif
