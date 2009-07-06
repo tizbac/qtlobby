@@ -366,7 +366,7 @@ QString UnitSyncLib::getSpringVersion() {
     return libraryLoaded() ? QString(m_GetSpringVersion()) : "";
 }
 
-int UnitSyncLib::getSideNameCount(QString modname) {
+int UnitSyncLib::getSideNameCount() {
     NON_REENTRANT
     //qDebug() << "UNITSYNC_DUMP: " << "GetSideCount";
     return libraryLoaded() ? m_GetSideCount( ) : -1;

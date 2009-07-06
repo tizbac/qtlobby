@@ -116,7 +116,7 @@ public:
     QString getOptionStringDef(int optIndex);
 
     //New
-    int getSideNameCount(QString modname);
+    int getSideNameCount();
     QIcon getSideIcon(QString modname, QString sidename);
 
 private:
