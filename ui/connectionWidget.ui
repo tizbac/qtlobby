@@ -2,9 +2,6 @@
 <ui version="4.0">
  <class>connectionWidget</class>
  <widget class="QWidget" name="connectionWidget">
-  <property name="windowModality">
-   <enum>Qt::NonModal</enum>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -290,6 +287,9 @@
          <property name="text">
           <string>&amp;Auto open after program start</string>
          </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item row="2" column="3" colspan="3">
@@ -517,7 +517,7 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
+       <item row="3" column="0" colspan="2">
         <spacer>
          <property name="orientation">
           <enum>Qt::Vertical</enum>

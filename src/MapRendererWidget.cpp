@@ -4,8 +4,11 @@
 #include <QDebug>
 #include <QApplication>
 
+
+#define RESOLVE_GL_FUNC(f) ok &= bool((f = (_gl##f) context()->getProcAddress(QLatin1String("gl" #f))));
+
 #define CELL_SIZE 0.1
-#define MAX_HEIGHT 15
+#define MAX_HEIGHT 12
 #define MAX_SHORT 65535
 
 MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
@@ -17,6 +20,21 @@ MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
     lastZoom = 1.0;
     compileObject = false;
     blockRerender = false;
+    m_vertexes = 0;
+    m_normals = 0;
+    m_texCoords = 0;
+    m_vbo = resolve();
+    m_computedNormals = false;
+    m_indexes = 0;
+}
+
+bool MapRendererWidget::resolve() {
+    bool ok = true;
+    RESOLVE_GL_FUNC(GenBuffers);
+    RESOLVE_GL_FUNC(BindBuffer);
+    RESOLVE_GL_FUNC(BufferData);
+    RESOLVE_GL_FUNC(DeleteBuffers);
+    return ok;
 }
 
 void MapRendererWidget::initializeGL() {
@@ -26,14 +44,15 @@ void MapRendererWidget::initializeGL() {
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glShadeModel (GL_SMOOTH);
 
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_ambient);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+    //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_ambient);
+    //glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    //glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
+    //glEnable(GL_LIGHTING);
+    //glEnable(GL_LIGHT0);
     //glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_2D);
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 }
 
@@ -51,15 +70,6 @@ void MapRendererWidget::resizeGL(int w, int h) {
                  -2000.0, 2000.0);/*near,far*/
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    /*float mapRadius = sqrt(pow(m_heightmap.getWidth()*CELL_SIZE, 2)+pow(m_heightmap.getWidth()*CELL_SIZE, 2));
-    float scale = 1;
-    if(mapRadius > 100) {
-        scale = 100 / mapRadius;
-    } else {
-        scale = mapRadius / 100;
-    }
-    glScalef(scale, scale, scale);
-    //glTranslated(-m_heightmap.getWidth()*CELL_SIZE/2, scale*m_heightmap.getHeight()*CELL_SIZE/2, 0);*/
 }
 
 void MapRendererWidget::paintGL() {
@@ -68,7 +78,7 @@ void MapRendererWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
     if(compileObject) {
-        object = makeObject();
+        makeObject();
         compileObject = false;
     }
     glRotatef(-90, 0, 0, 1);
@@ -77,50 +87,129 @@ void MapRendererWidget::paintGL() {
     glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
     glTranslatef(-m_heightmap.getHeight()*CELL_SIZE/2., -m_heightmap.getWidth()*CELL_SIZE/2., 0);
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-    glCallList(object);
+    if( m_vbo ) {
+        glEnableClientState( GL_VERTEX_ARRAY );
+        glEnableClientState( GL_TEXTURE_COORD_ARRAY );
+        //glEnableClientState( GL_NORMAL_ARRAY );
+
+
+        BindBuffer(GL_ARRAY_BUFFER, m_VBOVertices);
+        glVertexPointer( 3, GL_FLOAT, 0, (char *) NULL );
+
+        
+        //BindBuffer(GL_ARRAY_BUFFER, m_VBONormals);
+        //glNormalPointer(GL_FLOAT, 0, (char *) NULL );
+
+        BindBuffer( GL_ARRAY_BUFFER, m_VBOTexCoords );
+        glTexCoordPointer( 2, GL_FLOAT, 0, (char *) NULL );
+
+        glBindTexture(GL_TEXTURE_2D, m_texture);
+        glDrawElements(GL_TRIANGLE_STRIP, m_numIndexes, GL_UNSIGNED_INT, m_indexes);
+
+        glDisableClientState( GL_VERTEX_ARRAY );
+        //glDisableClientState( GL_NORMAL_ARRAY );
+        glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+    }
+}
+
+void MapRendererWidget::generateTexCoords() {
+    if(m_texCoords) delete m_texCoords;
+    m_texCoords = new TexCoord[m_vertexNumber];
+    for(int i = 0; i < m_heightmap.getHeight(); i++) {
+        for(int j = 0; j < m_heightmap.getWidth(); j++) {
+            m_texCoords[i*m_heightmap.getWidth()+j].u = (float)j/m_heightmap.getWidth();
+            m_texCoords[i*m_heightmap.getWidth()+j].v = m_heightmap.getHeight() - (float)i/m_heightmap.getHeight();
+        }
+    }
+}
+
+void MapRendererWidget::generateIndexes() {
+    m_numIndexes = (m_heightmap.getWidth() * 2) * (m_heightmap.getHeight() - 1) + (m_heightmap.getHeight() - 2);
+
+    if(m_indexes) delete m_indexes;
+    m_indexes = new unsigned int[m_numIndexes];
+
+    int index = 0;
+    for ( int z = 0; z < m_heightmap.getHeight() - 1; z++ ) {
+        // Even rows move left to right, odd rows move right to left.
+        if ( z % 2 == 0 ) {
+            // Even row
+            int x;
+            for ( x = 0; x < m_heightmap.getWidth(); x++ ) {
+                m_indexes[index++] = x + (z * m_heightmap.getWidth());
+                m_indexes[index++] = x + (z * m_heightmap.getWidth()) + m_heightmap.getWidth();
+            }
+            // Insert degenerate vertex if this isn't the last row
+            if ( z != m_heightmap.getHeight() - 2) {
+                m_indexes[index++] = --x + (z * m_heightmap.getWidth());
+            }
+        } else {
+            // Odd row
+            int x;
+            for ( x = m_heightmap.getWidth() - 1; x >= 0; x-- ) {
+                m_indexes[index++] = x + (z * m_heightmap.getWidth());
+                m_indexes[index++] = x + (z * m_heightmap.getWidth()) + m_heightmap.getWidth();
+            }
+            // Insert degenerate vertex if this isn't the last row
+            if ( z != m_heightmap.getHeight() - 2) {
+                m_indexes[index++] = ++x + (z * m_heightmap.getWidth());
+            }
+        }
+    }
 }
 
 GLuint MapRendererWidget::makeObject() {
     blockRerender = true;
-    glDeleteLists(object, 1);
-    GLuint list = glGenLists(1);
-    glNewList(list, GL_COMPILE);
-    glBegin(GL_TRIANGLES);
-    GLProgressDialog* progress = new GLProgressDialog(this);
+    /*GLProgressDialog* progress = new GLProgressDialog(this);
     progress->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
     progress->setMax(m_heightmap.getHeight());
     progress->updateProgress(0);
     progress->show();
-    QApplication::processEvents();
-    for(int i = 1; i < m_heightmap.getHeight(); i++) {
-        for(int j = 1; j < m_heightmap.getWidth(); j++) {
-            Vertex v00 = vertexes[i-1][j-1];
-            Vertex v01 = vertexes[i][j-1];
-            Vertex v10 = vertexes[i-1][j];
-            Vertex v11 = vertexes[i][j];
-            Vertex n = Vertex::getNormal(v00, v01, v11);
-
-            glNormal3f(n.x, n.y, n.z);
-            glVertex3f(v00.x, v00.y, v00.z);
-            glVertex3f(v01.x, v01.y, v01.z);
-            glVertex3f(v11.x, v11.y, v11.z);
-
-            glVertex3f(v00.x, v00.y, v00.z);
-            glVertex3f(v10.x, v10.y, v10.z);
-            glVertex3f(v11.x, v11.y, v11.z);
-        }
-        progress->updateProgress(i);
-        QApplication::processEvents();
-    }
-    glEnd();
-    glEndList();
-    QApplication::processEvents();
-    progress->hide();
-    delete progress;
-    vertexes.clear();
+    QApplication::processEvents();*/
+    GenBuffers( 1, &m_VBOVertices );
+    BindBuffer( GL_ARRAY_BUFFER, m_VBOVertices );
+    BufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(Vertex), m_vertexes, GL_STATIC_DRAW );
+    //computeNormals();
+    //GenBuffers( 1, &m_VBONormals );
+    //BindBuffer( GL_ARRAY_BUFFER, m_VBONormals );
+    //BufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(Vertex), m_normals, GL_STATIC_DRAW );
+    generateTexCoords();
+    GenBuffers( 1, &m_VBOTexCoords );
+    BindBuffer( GL_ARRAY_BUFFER, m_VBOTexCoords );
+    BufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(TexCoord), m_texCoords, GL_STATIC_DRAW );
+    m_texture = bindTexture(QPixmap::fromImage(m_minimap), GL_TEXTURE_2D);
+    generateIndexes();
+    //QApplication::processEvents();
+    //progress->hide();
+    //delete progress;
     m_heightmap.free();
     blockRerender = false;
-    return list;
+    return 0;//list;
+}
+
+
+#define V(i,j) m_vertexes[(i)*m_heightmap.getWidth()+(j)]
+#define N(i,j) m_normals[(i)*m_heightmap.getWidth()+(j)]
+
+void MapRendererWidget::computeNormals() {
+    if(m_normals) delete m_normals;
+    Vertex* m_normals = new Vertex[m_vertexNumber];
+    memset(m_normals, 0, m_vertexNumber*sizeof(Vertex));
+    for(int i = 0; i < m_heightmap.getHeight(); i++) {
+        for(int j = 0; j < m_heightmap.getWidth(); j++) {
+            Vertex left, right, top, bottom, current;
+            current = V(i,j);
+            if(i > 0) left = V(i-1,j);
+            if(j > 0) top = V(i,j-1);
+            if(i < m_heightmap.getHeight() - 1) right = V(i+1,j);
+            if(j < m_heightmap.getWidth() - 1) bottom = V(i,j+1);
+            N(i,j).add(Vertex::getNormal(current, left, top));
+            N(i,j).add(Vertex::getNormal(current, left, bottom));
+            N(i,j).add(Vertex::getNormal(current, right, top));
+            N(i,j).add(Vertex::getNormal(current, right, bottom));
+            N(i,j).normalize();
+        }
+    }
 }
 
 void MapRendererWidget::setSource(QString mapName, QImage minimap, RawHeightMap heightmap) {
@@ -129,15 +218,19 @@ void MapRendererWidget::setSource(QString mapName, QImage minimap, RawHeightMap 
     m_minimap = minimap;
     m_heightmap.free();
     m_heightmap = heightmap;
-    vertexes.clear();
+    DeleteBuffers(1, &m_VBOVertices);
+    DeleteBuffers(1, &m_VBONormals);
+    DeleteBuffers(1, &m_VBOTexCoords);
+    m_vertexNumber = heightmap.getWidth()*(heightmap.getHeight()-1)*2;
+    m_vertexes = new Vertex[m_vertexNumber];
     for(int i = 0; i < heightmap.getHeight(); i++) {
-        QVector<Vertex> line;
         for(int j = 0; j < heightmap.getWidth(); j++) {
             unsigned short int value = heightmap.getData()[i*heightmap.getWidth()+j];
-            Vertex v(i * CELL_SIZE, j * CELL_SIZE, value/(float)MAX_SHORT*MAX_HEIGHT);
-            line << v;
+            int offset = i*heightmap.getWidth()+j;
+            m_vertexes[offset].x = i * CELL_SIZE;
+            m_vertexes[offset].y = j * CELL_SIZE;
+            m_vertexes[offset].z = value/(float)MAX_SHORT*MAX_HEIGHT;
         }
-        vertexes << line;
     }
     compileObject = true;
     if(hasFocus()) updateGL();
@@ -145,34 +238,34 @@ void MapRendererWidget::setSource(QString mapName, QImage minimap, RawHeightMap 
 
 
 void MapRendererWidget::setXRotation(int angle) {
-     normalizeAngle(&angle);
-     if (angle != xRot) {
-         xRot = angle;
-         updateGL();
-     }
- }
-
-void MapRendererWidget::setYRotation(int angle) {
-     normalizeAngle(&angle);
-     if (angle != yRot) {
-         yRot = angle;
-         updateGL();
-     }
+    normalizeAngle(&angle);
+    if (angle != xRot) {
+        xRot = angle;
+        updateGL();
+    }
 }
 
- void MapRendererWidget::setZRotation(int angle) {
-     normalizeAngle(&angle);
-     if (angle != zRot) {
-         zRot = angle;
-         updateGL();
-     }
+void MapRendererWidget::setYRotation(int angle) {
+    normalizeAngle(&angle);
+    if (angle != yRot) {
+        yRot = angle;
+        updateGL();
+    }
+}
+
+void MapRendererWidget::setZRotation(int angle) {
+    normalizeAngle(&angle);
+    if (angle != zRot) {
+        zRot = angle;
+        updateGL();
+    }
 }
 
 void MapRendererWidget::normalizeAngle(int *angle) {
-     while (*angle < 0)
-         *angle += 360 * 16;
-     while (*angle > 360 * 16)
-         *angle -= 360 * 16;
+    while (*angle < 0)
+        *angle += 360 * 16;
+    while (*angle > 360 * 16)
+        *angle -= 360 * 16;
 }
 
 void MapRendererWidget::wheelEvent ( QWheelEvent * event ) {
@@ -184,33 +277,39 @@ void MapRendererWidget::wheelEvent ( QWheelEvent * event ) {
 }
 
 void MapRendererWidget::mousePressEvent(QMouseEvent *event) {
-     lastPos = event->pos();
+    lastPos = event->pos();
 }
 
 void MapRendererWidget::mouseMoveEvent(QMouseEvent *event) {
-     int dx = event->x() - lastPos.x();
-     int dy = event->y() - lastPos.y();
+    int dx = event->x() - lastPos.x();
+    int dy = event->y() - lastPos.y();
 
-     if (event->buttons() & Qt::LeftButton) {
-         //setXRotation(xRot + 8 * dy);
-         setYRotation(yRot + 8 * dy);
-     } else if (event->buttons() & Qt::RightButton) {
-         //setXRotation(xRot + 8 * dy);
-         setZRotation(zRot + 8 * dx);
-     } else if (event->buttons() & Qt::MidButton) {
+    if (event->buttons() & Qt::LeftButton) {
+        //setXRotation(xRot + 8 * dy);
+        setYRotation(yRot + 8 * dy);
+    } else if (event->buttons() & Qt::RightButton) {
+        //setXRotation(xRot + 8 * dy);
+        setZRotation(zRot + 8 * dx);
+    } else if (event->buttons() & Qt::MidButton) {
         this->dx += -dx * 0.2;
         this->dy += dy * 0.2;
         resizeGL(width(), height());
         updateGL();
-     }
-     lastPos = event->pos();
+    }
+    lastPos = event->pos();
 }
+
+
 
 
 
 // Vertex
 
-Vertex::Vertex() {}
+Vertex::Vertex() {
+    this->x = x;
+    this->y = y;
+    this->z = z;
+}
 
 Vertex::Vertex(float x, float y, float z) {
     this->x = x;
@@ -241,7 +340,6 @@ Vertex Vertex::getNormal(Vertex& a, Vertex& b, Vertex& c) {
     return n;
 }
 
-
 void Vertex::normalize() {
     float Mn = sqrtf(powf(x, 2) + powf(y, 2) + powf(z, 2));
     x /= Mn;
@@ -249,13 +347,13 @@ void Vertex::normalize() {
     z /= Mn;
 }
 
-void Vertex::add(Vertex& v2) {
+void Vertex::add(Vertex v2) {
     x += v2.x;
     y += v2.y;
     z += v2.z;
 }
 
-void Vertex::sub(Vertex& v2) {
+void Vertex::sub(Vertex v2) {
     x -= v2.x;
     y -= v2.y;
     z -= v2.z;

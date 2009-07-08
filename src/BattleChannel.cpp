@@ -10,6 +10,7 @@
 //
 //
 #include "BattleChannel.h"
+#include <QSplitter>
 
 BattleChannel::BattleChannel( QString id, Battles* battles, QObject * parent ) : AbstractChannel( id, parent ) {
     this->battles = battles;
@@ -24,10 +25,18 @@ BattleChannel::BattleChannel( QString id, Battles* battles, QObject * parent ) :
 
 void BattleChannel::setupUi( QWidget * tab ) {
     AbstractChannel::setupUi( tab );
-    QWidget * t = new QWidget( tab );
+    QSplitter* s = new QSplitter(Qt::Vertical, tab);
+    gridLayout->removeWidget(channelTextBrowser);
+    QWidget * t = new QWidget;
     battleWindowForm->setupUi( t );
     battleWindowForm->descriptionLabel->setWordWrap(true);
-    gridLayout->addWidget( t, 0, 0, 1, 1 );
+    s->addWidget(t);
+    s->addWidget(channelTextBrowser);
+    QSettings* settings = Settings::Instance();
+    if(settings->contains("mainwindow/chatsplitter"))
+        s->restoreState(settings->value("mainwindow/chatsplitter").toByteArray());
+    connect(s, SIGNAL(splitterMoved(int,int)), SLOT(onChatSplitterMoved(int,int)));
+    gridLayout->addWidget( s, 0, 0, 1, 1 );
     /*void onReadyStateChanged( bool isReady );
   void onSpecStateChanged( bool isSpec ); // NEW
   void onSideComboBoxChanged( int index ); // NEW*/
@@ -392,7 +401,7 @@ void BattleChannel::updateMapInfo( QString mapName ) {
         battleWindowForm->sizeLabel->setText(QString("%1x%2").arg(loader->mapinfo.width).arg(loader->mapinfo.height));
         battleWindowForm->windspeedLabel->setText(QString("%1x%2").arg(loader->mapinfo.minWind).arg(loader->mapinfo.maxWind));
         battleWindowForm->tidalLabel->setText(QString::number(loader->mapinfo.tidalStrength));
-        battleWindowForm->authorLabel->setText(loader->mapinfo.author);
+        //battleWindowForm->authorLabel->setText(loader->mapinfo.author);
         battleWindowForm->descriptionLabel->setText(loader->mapinfo.description);
         battleWindowForm->minimapWidget->setImage(loader->minimap);
         battleWindowForm->heightmapWidget->setImage(loader->heightmap);
@@ -403,4 +412,14 @@ void BattleChannel::updateMapInfo( QString mapName ) {
 
 void BattleChannel::openMapOverview() {
     mapOverviewDialog->exec();
+}
+
+void BattleChannel::onChatSplitterMoved ( int pos, int index ) {
+    QSplitter* splitter = qobject_cast<QSplitter*>(sender());
+    if(!splitter) return;
+    Settings::Instance()->setValue("mainwindow/chatsplitter", splitter->saveState());
+}
+
+void BattleChannel::onBattleSplitterMoved ( int pos, int index ) {
+
 }

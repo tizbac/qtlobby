@@ -39,7 +39,7 @@ void MapInfoLoader::run() {
         }
         else {
             USELESS_CHECK;
-            minimap = unitSyncLib->getMinimapQImage(m_mapName, 2);
+            minimap = unitSyncLib->getMinimapQImage(m_mapName, 0);
             USELESS_CHECK;
             heightmap = unitSyncLib->getHeightMapQImage(m_mapName);
             USELESS_CHECK;

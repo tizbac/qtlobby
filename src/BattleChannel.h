@@ -47,6 +47,8 @@ public slots:
   void onSpecCheckBoxChanged( int state ); // NEW
 private slots:
   void openMapOverview();
+  void onChatSplitterMoved ( int pos, int index );
+  void onBattleSplitterMoved ( int pos, int index );
 private:
   QString currentMap;
   Ui::battleWindowForm * battleWindowForm;
