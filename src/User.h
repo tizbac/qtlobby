@@ -16,6 +16,11 @@
 #include <QColor>
 #include <QDebug>
 
+#ifdef _MSC_VER
+//Fuck msvc
+#define uint8_t unsigned char
+#endif
+
 #define TB(a, n) (a & (1 << (n)))
 #define SB(a, n) a |= (1 << (n))
 #define CB(a, n) a &= ~(1 << (n))
