@@ -234,7 +234,6 @@ QImage UnitSyncLib::getHeightMapQImage( const QString mapFileName ) {
     const int HueHigh = 0;
     int shortMax = 65535;
     m_GetInfoMapSize(mapFileName.toAscii(), "height", &width, &height);
-    qDebug("width: %d, height: %d", width, height);
     unsigned short *ptr = new unsigned short[width*height];
     unsigned int *rgb = new unsigned int[width*height];
     m_GetInfoMap(mapFileName.toAscii(), "height", ptr, 2);
@@ -344,8 +343,6 @@ QIcon UnitSyncLib::getSideIcon(QString sidename){
     //qDebug() << "UNITSYNC_DUMP: " << "FileSizeVFS";
     int filesize = m_FileSizeVFS(ret);
     if(filesize == 0) return QIcon();
-
-    qDebug() << "Icon filesize: "<< filesize << ", filepath: " << filepath;
 
     QByteArray sideicon;
     sideicon.resize(filesize);

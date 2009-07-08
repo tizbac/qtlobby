@@ -12,6 +12,8 @@
 #include "Users.h"
 #include "UserGroup.h"
 
+Users* Users::lastThis = 0;
+
 Users::Users( QWidget* parent ) : QTreeView( parent )
 {
     infoChannelUserManager = new UserManager( this );
@@ -44,6 +46,7 @@ Users::Users( QWidget* parent ) : QTreeView( parent )
     connect( this, SIGNAL( doubleClicked( const QModelIndex & ) ),
              this, SLOT( doubleClickedSlot( const QModelIndex & ) ) );
     clanRegexp.setPattern(".*(\\[.*\\]).*");
+    lastThis = this;
 }
 
 Users::~Users() { }
@@ -72,14 +75,13 @@ void Users::receiveCommand( Command command ) {
     command.name = command.name.toUpper();
     if ( command.name == "CLIENTSTATUS" ) {
         User u = infoChannelUserManager->getUser( command.attributes[0] );
-        u.userState.state = command.attributes[1].toInt();
+        u.userState.setState(command.attributes[1].toInt());
         modUserInAllManagers( u );
     } else if ( command.name == "ADDUSER" ) {
         User u;
         u.name = command.attributes[0];
         u.countryCode = command.attributes[1];
         u.cpu = command.attributes[2];
-        u.userState.s.skill = 0;
         infoChannelUserManager->addUser( u );
     }
     else if ( command.name == "REMOVEUSER" ) {
@@ -92,7 +94,7 @@ void Users::receiveCommand( Command command ) {
     }
     else if ( command.name == "CLIENTBATTLESTATUS" ) {
         User u = infoChannelUserManager->getUser( command.attributes.takeFirst() );
-        u.battleState.state = command.attributes.takeFirst().toInt();
+        u.battleState.setState(command.attributes.takeFirst().toInt());
         u.setColor( command.attributes.takeFirst().toInt() );
         modUserInAllManagers( u );
     }
@@ -131,7 +133,7 @@ void Users::receiveCommand( Command command ) {
         battleIdUserManagerMap[command.attributes[0].toInt()]->delUser( command.attributes[1] );
         User u = infoChannelUserManager->getUser( command.attributes[1] );
         u.joinedBattleId = -1;
-        u.userState.s.isInGame = false;
+        u.userState.setIngame(false);
         modUserInAllManagers( u );
     }
     else if ( command.name == "FORCELEAVECHANNEL" ) {
@@ -210,7 +212,7 @@ void Users::doubleClickedSlot( const QModelIndex & index ) {
 }
 
 void Users::joinSameBattle( User u ) {
-    if ( !u.userState.s.isInGame && u.joinedBattleId >= 0 ) {
+    if ( !u.userState.isIngame() && u.joinedBattleId >= 0 ) {
         Command command( "JOINBATTLE" );
         command.attributes << QString( "%1" ).arg( u.joinedBattleId );
         emit sendCommand( command );
@@ -304,32 +306,38 @@ void Users::inv() {
 
 void Users::onMyBattleStateChanged( User u ) {
     Command command( "MYBATTLESTATUS" );
-    command.attributes << QString( "%1 %2" ).arg( u.battleState.state ).arg( u.color() );
+    command.attributes << QString( "%1 %2" ).arg( u.battleState.getState() ).arg( u.color() );
     emit sendCommand( command );
 }
 
 /* NEW */
 void Users::onSideComboBoxChanged( int index ){
-    qDebug()<< "WE GOD SIDE CHANGE! NEW IS "<< index;
+    qDebug() << "void Users::onSideComboBoxChanged( int index )";
     User u = infoChannelUserManager->getUser( url.userName() );
-    u.battleState.s.side = index;
-    emit onMyBattleStateChanged( u );
+    u.battleState.setSide(index);
+    onMyBattleStateChanged( u );
 }
 
 /* NEW */
-void Users::onSpecStateChanged( bool isSpec )
-{
-    qDebug()<< "BE SPEC!";
+void Users::onSpecStateChanged( int state ) {
+    bool isSpec = state == Qt::Checked;
+    qDebug() << "void Users::onSpecStateChanged( bool isSpec )";
     User u = infoChannelUserManager->getUser( url.userName() );
-    u.battleState.s.isNotSpectator = !isSpec;
-    u.battleState.s.isReady = isSpec;
-    emit onMyBattleStateChanged( u );
+    qDebug() << u.name;
+    u.battleState.setPlayer(!isSpec);
+    //u.battleState.setReady(isSpec);
+    qDebug() << "u.battleState.setPlayer("<<!isSpec<<");";
+    onMyBattleStateChanged( u );
 }
 
-void Users::onReadyStateChanged( bool isReady ) {
+void Users::onReadyStateChanged( int state ) {
+    bool isReady = state == Qt::Checked;
+    qDebug() << "void Users::onReadyStateChanged( bool isReady )";
     User u = infoChannelUserManager->getUser( url.userName() );
-    u.battleState.s.isReady = isReady;
-    emit onMyBattleStateChanged( u );
+    qDebug() << u.name;
+    u.battleState.setReady(isReady);
+    qDebug() << "u.battleState.setReady("<<isReady<<");";
+    onMyBattleStateChanged( u );
 }
 
 void Users::invalidateModel() {
@@ -340,4 +348,8 @@ void Users::invalidateModel() {
     for(int i = 0; i < managers.size(); i++) {
         managers.at(i)->model()->onGroupChanged();
     }
+}
+
+Users* Users::getCurrentUsers() {
+    return lastThis;
 }

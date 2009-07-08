@@ -28,12 +28,17 @@ void BattleChannel::setupUi( QWidget * tab ) {
     battleWindowForm->setupUi( t );
     battleWindowForm->descriptionLabel->setWordWrap(true);
     gridLayout->addWidget( t, 0, 0, 1, 1 );
-    connect( battleWindowForm->readyCheckBox, SIGNAL( toggled( bool ) ),
-             this, SLOT( onReadyCheckBoxChanged( bool ) ) );
-    connect(battleWindowForm->specCheckBox, SIGNAL( toggled ( bool ) ),
-            this,SLOT(onSpecCheckBoxChanged(bool))); // NEW
+    /*void onReadyStateChanged( bool isReady );
+  void onSpecStateChanged( bool isSpec ); // NEW
+  void onSideComboBoxChanged( int index ); // NEW*/
+    connect(battleWindowForm->specCheckBox, SIGNAL( stateChanged ( int ) ),
+            this,SLOT(onSpecCheckBoxChanged(int))); // NEW
+    connect( battleWindowForm->readyCheckBox, SIGNAL( stateChanged ( int ) ),
+             Users::getCurrentUsers(), SLOT( onReadyStateChanged( int ) ));
+    connect(battleWindowForm->specCheckBox, SIGNAL( stateChanged ( int ) ),
+            Users::getCurrentUsers(),SLOT(onSpecStateChanged( int ))); // NEW
     connect(battleWindowForm->factionsComboBox, SIGNAL( currentIndexChanged( int)),
-            this,SLOT(onSideComboBoxChanged(int)));
+            Users::getCurrentUsers(),SLOT(onSideComboBoxChanged( int )));
     currentMap = m_battle.mapName;
     requestMapInfo( m_battle.mapName );
     connect(battleWindowForm->overviewPushButton, SIGNAL(clicked()), SLOT(openMapOverview()));
@@ -212,14 +217,12 @@ void BattleChannel::receiveCommand( Command command ) {
                             .arg( locked ? tr( "Battle locked." ) : tr( "Battle unlocked." ) ) );
                 battleWindowForm->lockGameCheckBox->setChecked( locked );
             }
-            qDebug() << "UPDATEBATTLEINFO";
             if(currentMap != mapName) requestMapInfo( mapName );
             currentMap = mapName;
         }
     }
     else if ( command.name == "SETSCRIPTTAGS" ) {
         command.attributes = command.attributes.join( " " ).split( "\t" );
-        qDebug("SETSCRIPTTAGS %s", command.attributes.join( " " ).toStdString().c_str());
         foreach( QString s, command.attributes ) {
             QString key = s.section( "=", 0, 0 ).section( "/", 1, 1 ).toLower();
             int val = s.section( "=", 1, 1 ).toInt();
@@ -245,7 +248,6 @@ void BattleChannel::receiveCommand( Command command ) {
             if(key == "modoptions") {
                 key = s.section( "=", 0, 0 ).section( "/", 2, 2 ).toLower();
                 m_battle.options[key] = s.section( "=", 1, 1 );
-                qDebug("%s set to %s", key.toStdString().c_str(), s.section( "=", 1, 1 ).toStdString().c_str());
             }
         }
         fillModOptions();
@@ -293,21 +295,9 @@ void BattleChannel::receiveInput( QString input ) {
     emit sendCommand( ret );
 }
 
-void BattleChannel::onReadyCheckBoxChanged( bool isChecked ) {
-    emit readyStateChanged( isChecked );
-}
-
 /* NEW */
-void BattleChannel::onSideComboBoxChanged( int index )
-{
-    qDebug() << "onSideComboBoxChanged called!";
-    emit sideChanged(index);
-}
-
-/* NEW */
-void BattleChannel::onSpecCheckBoxChanged(bool isChecked ) {
-    emit specStateChanged( isChecked );
-    battleWindowForm->readyCheckBox->setDisabled( isChecked );
+void BattleChannel::onSpecCheckBoxChanged(int state) {
+    battleWindowForm->readyCheckBox->setDisabled(state == Qt::Checked);
 }
 
 void BattleChannel::fillModOptions() {
@@ -334,7 +324,6 @@ void BattleChannel::fillModOptions() {
         buffer.append("</td>");
         buffer.append("<td>");
         bool nondefault = m_battle.options.contains(unitSyncLib->getOptionKey(i));
-        qDebug("Parsing %s, nondefault is %s", unitSyncLib->getOptionKey(i).toStdString().c_str(), nondefault ? "true" : "false");
         switch(unitSyncLib->getOptionType(i)) {
         case UNDEFINED:
             buffer.append("Undefined");
@@ -377,7 +366,6 @@ void BattleChannel::fillModOptions() {
 
 void BattleChannel::requestMapInfo( QString mapName ) {
     if(noMapUpdates) return;
-    qDebug() << "comparing " << mapName << " with " << currentMap;
     if(loader->isRunning()) {
         loader->cleanup();
         loader = new MapInfoLoader(this);

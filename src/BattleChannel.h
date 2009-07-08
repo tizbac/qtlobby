@@ -20,6 +20,7 @@
 #include "AudioBackend.h"
 #include "MapInfoLoader.h"
 #include "MapOverviewDialog.h"
+#include "Users.h"
 
 /**
 represents the battle tab with chat, map and options overview
@@ -34,9 +35,6 @@ public:
   void setupUi( QWidget * tab );
 
 signals:
-  void readyStateChanged( bool isReady );
-  void specStateChanged( bool isSpec ); // NEW
-  void sideChanged( int index ); // NEW
   void playSample( SampleCollection sample );
   void newTrayMessage( QString );
 public slots:
@@ -46,9 +44,7 @@ public slots:
   void updateMapInfo( QString mapName );
   void fillModOptions();
   void fillSides(); // NEW
-  void onReadyCheckBoxChanged( bool isChecked );
-  void onSpecCheckBoxChanged( bool isChecked ); // NEW
-  void onSideComboBoxChanged( int index ); // New
+  void onSpecCheckBoxChanged( int state ); // NEW
 private slots:
   void openMapOverview();
 private:

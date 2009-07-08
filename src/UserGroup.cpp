@@ -81,7 +81,6 @@ void UserGroupList::removeGroup(QString name) {
             delete groups.at(i);
             groups.removeAt(i);
             groupsMap.remove(name);
-            qDebug() << getGroupNames();
             return;
         }
     }
@@ -118,7 +117,6 @@ UserGroup* UserGroupList::at(int i) {
 }
 
 void UserGroupList::save() {
-    qDebug() << "Saving: " << getGroupNames();
     QSettings* s = Settings::Instance();
     s->setValue("userGroups", toXml());
 }

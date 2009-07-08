@@ -37,19 +37,19 @@ QVariant UserTreeModel::data( const QModelIndex& index, int role ) const {
         User u = m_userList[index.row()];
         QString tip;
         QStringList fileNameParts;
-        if ( u.userState.s.isModerator ) {
+        if ( u.userState.isModerator() ) {
           fileNameParts << "chan_op";
           tip += tr( "Moderator" );
-        } else if ( u.userState.s.isBot ) {
+        } else if ( u.userState.isBot() ) {
           fileNameParts << "bot";
           tip += tr( "Bot" );
         } else {
           tip += tr( "Player" );
         }
-        if ( u.userState.s.isAway ) {
+        if ( u.userState.isAway() ) {
           fileNameParts << "away";
           tip += " is away";
-        } else if ( u.userState.s.isInGame ) {
+        } else if ( u.userState.isIngame() ) {
           fileNameParts << "ingame";
           tip += " is in game";
         } else if ( u.joinedBattleId != -1 ) {
@@ -77,12 +77,12 @@ QVariant UserTreeModel::data( const QModelIndex& index, int role ) const {
       break;
     case 2: //rank
       if ( role == Qt::DecorationRole ) {
-        int rank = m_userList[index.row()].userState.s.skill;
+        int rank = m_userList[index.row()].userState.getRank();
         if ( rank > 6 ) return QVariant();
         return QIcon( QString( ":/icons/rank%1.xpm" ).arg( rank ) );
       }
       if ( role == Qt::ToolTipRole ) {
-        switch ( m_userList[index.row()].userState.s.skill ) {
+        switch ( m_userList[index.row()].userState.getRank() ) {
           case 0:
             return "1/7 Newbie";
           case 1:

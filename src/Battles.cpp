@@ -56,8 +56,8 @@ void Battles::receiveCommand( Command command ) {
             return;
         Battle b = battleManager->getBattle( joinedBattleId );
         if ( b.founder == u.name ) {
-            u.userState.state = command.attributes[1].toInt();
-            b.isStarted = u.userState.s.isInGame;
+            u.userState.setState(command.attributes[1].toInt());
+            b.isStarted = u.userState.isIngame();
             battleManager->modBattle( b );
             if ( users->getUser( url.userName() ).joinedBattleId == b.id && b.isStarted )
                 startGame( b );
@@ -111,7 +111,7 @@ void Battles::receiveCommand( Command command ) {
         battleManager->modBattle( b );
         if ( users->getUser( url.userName() ).joinedBattleId == battleId ) {
             User u = users->getUser( url.userName() );
-            u.battleState.s.sync = resyncStatus();
+            u.battleState.setSyncState(resyncStatus());
             users->onMyBattleStateChanged( u );
         }
     }
@@ -155,13 +155,20 @@ void Battles::receiveCommand( Command command ) {
     }
     else if ( command.name == "REQUESTBATTLESTATUS" ) {
         User u = users->getUser( url.userName() );
-        u.userState.s.isInGame = true;
-        u.battleState.s.ally = 5;
-        u.battleState.s.team = 5;
-        u.battleState.s.side = 0;
+        QList<User> list = users->getUserList(u.joinedBattleId);
+        int playersNum;
+        for(int i = 0; i < list.size(); i++) {
+            if(list.at(i).battleState.isPlayer())
+                playersNum++;
+        }
+        playersNum++;
+        u.userState.setIngame(true);
+        u.battleState.setTeamNo(playersNum);
+        u.battleState.setAllyTeamNo(playersNum);
+        u.battleState.setSide(0);
         u.m_color = QColor( "red" );
-        u.battleState.s.isNotSpectator = true;
-        u.battleState.s.sync = resyncStatus();
+        u.battleState.setPlayer(true);
+        u.battleState.setSyncState(resyncStatus());
         users->onMyBattleStateChanged( u );
     }
 }
@@ -255,13 +262,13 @@ QString Battles::generateScript( Battle b ) {
         User u = battleUsers[i];
         if ( u.name == url.userName() )
             myPlayerNum = i;
-        if ( !u.battleState.s.isNotSpectator )
+        if ( !u.battleState.isPlayer() )
             continue;
-        if ( !teamConv.contains( u.battleState.s.team ) )
-            teamConv[u.battleState.s.team] = numTeams++;  // to skip empty teams
-        if ( !allyConv.contains( u.battleState.s.ally ) ) {
-            allyConv[u.battleState.s.ally] = numAllies++; // to skip empty allies
-            allyReverseConv[i] = u.battleState.s.ally;
+        if ( !teamConv.contains( u.battleState.getTeamNo() ) )
+            teamConv[u.battleState.getTeamNo()] = numTeams++;  // to skip empty teams
+        if ( !allyConv.contains( u.battleState.getAllyTeamNo() ) ) {
+            allyConv[u.battleState.getAllyTeamNo()] = numAllies++; // to skip empty allies
+            allyReverseConv[i] = u.battleState.getAllyTeamNo();
         }
     }
 
@@ -310,16 +317,16 @@ QString Battles::generateScript( Battle b ) {
         options.clear();
         options["Name"]        = battleUsers[i].name;
         options["CountryCode"] = battleUsers[i].countryCode;
-        options["Spectator"]   = battleUsers[i].battleState.s.isNotSpectator ? "0" : "1";
-        options["Team"]        = QString::number( teamConv[battleUsers[i].battleState.s.team] );
+        options["Spectator"]   = battleUsers[i].battleState.isPlayer() ? "0" : "1";
+        options["Team"]        = QString::number( teamConv[battleUsers[i].battleState.getTeamNo()] );
         sectionsOptionMap[QString( "PLAYER%1" ).arg( i )] = options;
     }
 
     // first user in team is the leader, though he's the last one who will overwrite the value for the team
     QMap<int, int> teamNumberLeaderUserNumberMap;
     for ( int j = battleUsers.size() - 1; j >= 0; --j ) {
-        teamNumberLeaderUserNumberMap[battleUsers[j].battleState.s.team] = j;
-        qDebug() << battleUsers[j].battleState.s.team << " " << j;
+        teamNumberLeaderUserNumberMap[battleUsers[j].battleState.getTeamNo()] = j;
+        qDebug() << battleUsers[j].battleState.getTeamNo() << " " << j;
     }
 
     for ( int i = 0; i < numTeams; i++ ) {
@@ -327,11 +334,11 @@ QString Battles::generateScript( Battle b ) {
         int teamLeader = teamNumberLeaderUserNumberMap.values()[i];
         User u = battleUsers[teamLeader];
         options["TeamLeader"] = QString::number( teamLeader );
-        options["AllyTeam"] = QString::number( allyConv[u.battleState.s.ally] );
+        options["AllyTeam"] = QString::number( allyConv[u.battleState.getAllyTeamNo()] );
         options["RGBColor"] = u.colorForScript();
         UnitSyncLib::getInstance()->setCurrentMod(b.modName);
-        options["Side"] = UnitSyncLib::getInstance()->sideName( u.battleState.s.side );
-        options["Handicap"] = QString::number( u.battleState.s.handicap );
+        options["Side"] = UnitSyncLib::getInstance()->sideName( u.battleState.getSide() );
+        options["Handicap"] = QString::number( u.battleState.getHandicap() );
         sectionsOptionMap[QString( "TEAM%1" ).arg( i )] = options;
     }
 

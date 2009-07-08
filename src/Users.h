@@ -41,6 +41,7 @@ public:
   const QList<User> getUserList( const int battleId );
   QStringList getUsernamesList();
   QUrl url;
+  static Users* getCurrentUsers();
 signals:
   void sendCommand( Command command );
   void sendInput( QString input );
@@ -51,8 +52,8 @@ public slots:
   void currentTabChanged( QString name, QString lobbyTabType );
   void inv();
   void onMyBattleStateChanged( User u );
-  void onReadyStateChanged( bool isReady );
-  void onSpecStateChanged( bool isSpec ); // NEW
+  void onReadyStateChanged( int state );
+  void onSpecStateChanged( int state ); // NEW
   void onSideComboBoxChanged( int index ); // NEW
   void invalidateModel();
 protected slots:
@@ -82,6 +83,7 @@ protected:
   void updateUserList();
   TreeSortFilterProxyModel* proxyModel;
   QRegExp clanRegexp;
+  static Users* lastThis;
 };
 
 #endif

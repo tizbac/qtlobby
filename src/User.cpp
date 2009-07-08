@@ -12,8 +12,6 @@
 #include "User.h"
 
 User::User() {
-  battleState.state = 0;
-  userState.state = 0;
   joinedBattleId = -1; // -1 == not in a battle
   m_color = QColor( "red" );
 }

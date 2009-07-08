@@ -24,7 +24,6 @@ void MapInfoLoader::setMap(QString mapName) {
 #define USELESS_CHECK \
 clean.lock(); \
         if(m_autoclean) { \
-                          qDebug() << "Early data cleaning..."; \
                           clearData(); \
                           clean.unlock(); \
                           return; \
@@ -32,12 +31,10 @@ clean.lock(); \
 clean.unlock();
 
 void MapInfoLoader::run() {
-    qDebug() << "Loader working for " << m_mapName << "...";
     QMutexLocker lock(&mutex);
     UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
     if(unitSyncLib->mapIndex(m_mapName) > 0) {
         if(loadCache()){
-            qDebug()<<"Cache Found!";
             mapPresent=true;
         }
         else {
@@ -57,16 +54,12 @@ void MapInfoLoader::run() {
     } else {
         mapPresent = false;
     }
-    qDebug() << "Loader finished...";
     QMutexLocker lock2(&clean);
     if(!m_autoclean) {
-        qDebug() << "Signaling...";
         emit loadCompleted(m_mapName);
     } else {
-        qDebug() << "Clearing data...";
         clearData();
     }
-    qDebug() << "Loader done";
 }
 
 void MapInfoLoader::cleanup() {

@@ -21,7 +21,14 @@ void NetworkInterface::socketInit( QUrl url ) {
  */
 void NetworkInterface::socketRead() {
   while ( tcpSocket->canReadLine() )
+#ifdef NETWORKDEBUG
+    { QString msg = QString::fromUtf8( tcpSocket->readLine() );
+      qDebug() << " << " << msg.trimmed();
+      emit incommingMessage( msg ); }
+#else
     emit incommingMessage( QString::fromUtf8( tcpSocket->readLine() ) );
+#endif
+
 }
 
 void NetworkInterface::socketWrite( QString out ) {

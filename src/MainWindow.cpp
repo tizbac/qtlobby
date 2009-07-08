@@ -28,6 +28,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     preference          = new UserPreference();
     serverContextState  = new ServerContextState( this );
     connectionWidget    = new ConnectionWidget( serverContextState );
+    connectionWidget->setWindowFlags(Qt::Window);
     lobbyTabs           = new LobbyTabs( this, battles, UnitSyncLib::getInstance(), lobbyTabWidget );
     commandAssigner     = new CommandAssigner( this );
     statusTracker       = new StatusTracker( statusbar );
@@ -111,15 +112,6 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     // lobbyTabs to open private channel, when requested in user list
     connect( users, SIGNAL( sendInput( QString ) ),
              lobbyTabs, SLOT( receiveInput( QString ) ) );
-    // lobbyTabs to send the ready state
-    connect( lobbyTabs, SIGNAL( readyStateChanged( bool ) ),
-             users, SLOT( onReadyStateChanged( bool ) ) );
-    // lobbyTabs to send the spec state // NEW
-    connect( lobbyTabs, SIGNAL(specStateChanged(bool)),
-             users, SLOT( onSpecStateChanged(bool)));
-    // lobbyTabs to send  side state changed // NEW
-    connect( lobbyTabs, SIGNAL(sideChanged(int)),
-             users, SLOT(onSideComboBoxChanged( int )));
 
     // users, for the userlist to show
     connect( lobbyTabs, SIGNAL( currentTabChanged( QString, QString ) ),

@@ -173,10 +173,10 @@ void ConnectionWidget::establishConnection() {
 }
 
 void ConnectionWidget::logWrite( QString l ) {
-  if ( this->isVisible() ) {
+  //if ( this->isVisible() ) {
     QString time = QTime().currentTime().toString( "hh:mm:ss " );
     connectionLogTextBrowser->append( time + l );
-  }
+  //}
 }
 
 void ConnectionWidget::closeDialogCheckBoxValueChanged( int ) {
