@@ -4,7 +4,6 @@
 #include <QDebug>
 #include <QApplication>
 
-
 #define RESOLVE_GL_FUNC(f) ok &= bool((f = (_gl##f) context()->getProcAddress(QLatin1String("gl" #f))));
 
 #define CELL_SIZE 0.1
@@ -74,6 +73,7 @@ void MapRendererWidget::resizeGL(int w, int h) {
 
 void MapRendererWidget::paintGL() {
     if(!m_heightmap.getWidth() || blockRerender) return;
+	if(!m_vbo) return;
     GLfloat light_position[] = { 5, 5, MAX_HEIGHT*1.3, 0.0 };
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
@@ -87,29 +87,27 @@ void MapRendererWidget::paintGL() {
     glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
     glTranslatef(-m_heightmap.getHeight()*CELL_SIZE/2., -m_heightmap.getWidth()*CELL_SIZE/2., 0);
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-    if( m_vbo ) {
-        glEnableClientState( GL_VERTEX_ARRAY );
-        glEnableClientState( GL_TEXTURE_COORD_ARRAY );
-        //glEnableClientState( GL_NORMAL_ARRAY );
+    glEnableClientState( GL_VERTEX_ARRAY );
+    glEnableClientState( GL_TEXTURE_COORD_ARRAY );
+    //glEnableClientState( GL_NORMAL_ARRAY );
 
 
-        BindBuffer(GL_ARRAY_BUFFER, m_VBOVertices);
-        glVertexPointer( 3, GL_FLOAT, 0, (char *) NULL );
+    BindBuffer(GL_ARRAY_BUFFER, m_VBOVertices);
+    glVertexPointer( 3, GL_FLOAT, 0, (char *) NULL );
 
-        
-        //BindBuffer(GL_ARRAY_BUFFER, m_VBONormals);
-        //glNormalPointer(GL_FLOAT, 0, (char *) NULL );
+    
+    //BindBuffer(GL_ARRAY_BUFFER, m_VBONormals);
+    //glNormalPointer(GL_FLOAT, 0, (char *) NULL );
 
-        BindBuffer( GL_ARRAY_BUFFER, m_VBOTexCoords );
-        glTexCoordPointer( 2, GL_FLOAT, 0, (char *) NULL );
+    BindBuffer( GL_ARRAY_BUFFER, m_VBOTexCoords );
+    glTexCoordPointer( 2, GL_FLOAT, 0, (char *) NULL );
 
-        glBindTexture(GL_TEXTURE_2D, m_texture);
-        glDrawElements(GL_TRIANGLE_STRIP, m_numIndexes, GL_UNSIGNED_INT, m_indexes);
+    glBindTexture(GL_TEXTURE_2D, m_texture);
+    glDrawElements(GL_TRIANGLE_STRIP, m_numIndexes, GL_UNSIGNED_INT, m_indexes);
 
-        glDisableClientState( GL_VERTEX_ARRAY );
-        //glDisableClientState( GL_NORMAL_ARRAY );
-        glDisableClientState( GL_TEXTURE_COORD_ARRAY );
-    }
+    glDisableClientState( GL_VERTEX_ARRAY );
+    //glDisableClientState( GL_NORMAL_ARRAY );
+    glDisableClientState( GL_TEXTURE_COORD_ARRAY );
 }
 
 void MapRendererWidget::generateTexCoords() {
@@ -213,6 +211,7 @@ void MapRendererWidget::computeNormals() {
 }
 
 void MapRendererWidget::setSource(QString mapName, QImage minimap, RawHeightMap heightmap) {
+	if(!m_vbo) return;
     if(currentMap == mapName) return;
     currentMap = mapName;
     m_minimap = minimap;

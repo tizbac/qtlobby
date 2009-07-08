@@ -8,15 +8,13 @@
 #include "RawHeightMap.h"
 
 
+#if _MSC_VER
+//fuck msvc
+#define GL_ARRAY_BUFFER 0x8892
+#define GL_STATIC_DRAW 0x88E4
 
-
-
-
-
-
-
-
-
+typedef ptrdiff_t GLsizeiptrARB;
+#endif
 
 class Vertex {
 public:
