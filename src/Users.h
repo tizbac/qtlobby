@@ -45,6 +45,7 @@ public:
 signals:
   void sendCommand( Command command );
   void sendInput( QString input );
+  void myStateChanged(User u);
 public slots:
   void setRegExp( QString regExp );
   void receiveCommand( Command command );
@@ -55,6 +56,9 @@ public slots:
   void onReadyStateChanged( int state );
   void onSpecStateChanged( int state ); // NEW
   void onSideComboBoxChanged( int index ); // NEW
+  void onColorChanged(QColor c);
+  void onTeamNumberChanged( int i );
+  void onAllyTeamNumberChanged( int i );
   void invalidateModel();
 protected slots:
   void customContextMenuRequestedSlot( const QPoint & point );

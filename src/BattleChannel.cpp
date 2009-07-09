@@ -48,6 +48,16 @@ void BattleChannel::setupUi( QWidget * tab ) {
             Users::getCurrentUsers(),SLOT(onSpecStateChanged( int ))); // NEW
     connect(battleWindowForm->factionsComboBox, SIGNAL( currentIndexChanged( int)),
             Users::getCurrentUsers(),SLOT(onSideComboBoxChanged( int )));
+    connect(battleWindowForm->colorLabel, SIGNAL(linkActivated (const QString &)),
+            this, SLOT(onColorClicked()));
+    connect(this, SIGNAL( colorChanged(QColor)),
+            Users::getCurrentUsers(),SLOT(onColorChanged(QColor)));
+    connect(battleWindowForm->teamNoSpinBox, SIGNAL(valueChanged(int)),
+            Users::getCurrentUsers(), SLOT(onTeamNumberChanged(int)));
+    connect(battleWindowForm->teamAllyNoSpinBox, SIGNAL(valueChanged(int)),
+            Users::getCurrentUsers(), SLOT(onAllyTeamNumberChanged(int)));
+    connect(Users::getCurrentUsers(), SIGNAL(myStateChanged(User)),
+            this, SLOT(onMyStateChanged(User)));
     currentMap = m_battle.mapName;
     requestMapInfo( m_battle.mapName );
     connect(battleWindowForm->overviewPushButton, SIGNAL(clicked()), SLOT(openMapOverview()));
@@ -220,12 +230,12 @@ void BattleChannel::receiveCommand( Command command ) {
             bool locked = command.attributes.takeFirst().toInt() > 0;
             command.attributes.removeFirst(); // map hash
             QString mapName = command.attributes.join( " " );
-            if ( battleWindowForm->lockGameCheckBox->isChecked() != locked ) {
+            /*if ( battleWindowForm->lockGameCheckBox->isChecked() != locked ) {
                 insertLine( line
                             .arg( "<span style=\"color:blue;\">** %1</span>" )
                             .arg( locked ? tr( "Battle locked." ) : tr( "Battle unlocked." ) ) );
                 battleWindowForm->lockGameCheckBox->setChecked( locked );
-            }
+            }*/
             if(currentMap != mapName) requestMapInfo( mapName );
             currentMap = mapName;
         }
@@ -423,3 +433,35 @@ void BattleChannel::onChatSplitterMoved ( int pos, int index ) {
 void BattleChannel::onBattleSplitterMoved ( int pos, int index ) {
 
 }
+
+void BattleChannel::onColorClicked() {
+    QColor newColor = QColorDialog::getColor (currentcolor, 0, "Select color for group");
+    currentcolor = newColor;
+    battleWindowForm->colorLabel->setText(QString("<a href=\"#\"><span style=\" text-decoration: underline; color:%1;\">%1</span></a>").arg(newColor.name()));
+    emit colorChanged(newColor);
+}
+
+void BattleChannel::onMyStateChanged(User u) {
+    battleWindowForm->readyCheckBox->blockSignals(true);
+    battleWindowForm->specCheckBox->blockSignals(true);
+    battleWindowForm->factionsComboBox->blockSignals(true);
+    battleWindowForm->teamNoSpinBox->blockSignals(true);
+    battleWindowForm->teamAllyNoSpinBox->blockSignals(true);
+    battleWindowForm->colorLabel->blockSignals(true);
+
+    battleWindowForm->readyCheckBox->setChecked(u.battleState.isReady());
+    battleWindowForm->specCheckBox->setChecked(!u.battleState.isPlayer());
+    battleWindowForm->factionsComboBox->setCurrentIndex(u.battleState.getSide());
+    battleWindowForm->teamNoSpinBox->setValue(u.battleState.getTeamNo()+1);
+    battleWindowForm->teamAllyNoSpinBox->setValue(u.battleState.getAllyTeamNo()+1);
+    battleWindowForm->colorLabel->setText(QString("<a href=\"#\"><span style=\" text-decoration: underline; color:%1;\">%1</span></a>").arg(u.m_color.name()));
+    currentcolor = u.m_color;
+
+    battleWindowForm->readyCheckBox->blockSignals(false);
+    battleWindowForm->specCheckBox->blockSignals(false);
+    battleWindowForm->factionsComboBox->blockSignals(false);
+    battleWindowForm->teamNoSpinBox->blockSignals(false);
+    battleWindowForm->teamAllyNoSpinBox->blockSignals(false);
+    battleWindowForm->colorLabel->blockSignals(false);
+}
+

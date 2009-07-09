@@ -21,6 +21,7 @@
 #include "MapInfoLoader.h"
 #include "MapOverviewDialog.h"
 #include "Users.h"
+#include <QColorDialog>
 
 /**
 represents the battle tab with chat, map and options overview
@@ -37,6 +38,7 @@ public:
 signals:
   void playSample( SampleCollection sample );
   void newTrayMessage( QString );
+  void colorChanged(QColor color);
 public slots:
   void receiveInput( QString input );
   void receiveCommand( Command command );
@@ -45,10 +47,12 @@ public slots:
   void fillModOptions();
   void fillSides(); // NEW
   void onSpecCheckBoxChanged( int state ); // NEW
+  void onMyStateChanged(User u);
 private slots:
   void openMapOverview();
   void onChatSplitterMoved ( int pos, int index );
   void onBattleSplitterMoved ( int pos, int index );
+  void onColorClicked();
 private:
   QString currentMap;
   Ui::battleWindowForm * battleWindowForm;
@@ -56,6 +60,7 @@ private:
   MapInfoLoader* loader;
   Battle m_battle;
   bool noMapUpdates;
+  QColor currentcolor;
 protected:
   Battles* battles;
 };

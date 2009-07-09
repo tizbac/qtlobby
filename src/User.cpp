@@ -21,9 +21,9 @@ User::~User() { }
  * @param TASColor Color in the TAS representation 0x00bbggrr.
  */
 void User::setColor( int TASColor ) {
-  int red = TASColor & 0xff;
-  int green = TASColor & 0x00ff;
-  int blue = TASColor & 0x0000ff;
+  int red   = (TASColor & 0x000000ff);
+  int green = (TASColor & 0x0000ff00) >> 8;
+  int blue  = (TASColor & 0x00ff0000) >> 16;
   m_color = QColor( red, green, blue );
 }
 

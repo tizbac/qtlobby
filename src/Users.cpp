@@ -97,6 +97,8 @@ void Users::receiveCommand( Command command ) {
         u.battleState.setState(command.attributes.takeFirst().toInt());
         u.setColor( command.attributes.takeFirst().toInt() );
         modUserInAllManagers( u );
+        if(u.name == url.userName())
+            emit myStateChanged(u);
     }
     else if ( command.name == "JOINBATTLE" ) {
         int id = command.attributes.takeFirst().toInt();
@@ -186,9 +188,10 @@ void Users::updateUserList() {
 }
 
 void Users::setRegExp( QString regExp ) {
-    proxyModel->setFilterRegExp(
+    proxyModel->setFilterString(regExp);
+    /*proxyModel->setFilterRegExp(
             QRegExp( regExp, Qt::CaseInsensitive, QRegExp::FixedString ) );
-    proxyModel->setFilterKeyColumn( 3 );
+    proxyModel->setFilterKeyColumn( 3 );*/
 }
 
 void Users::delUserFromAllManagers( QString userName ) {
@@ -338,6 +341,24 @@ void Users::onReadyStateChanged( int state ) {
     u.battleState.setReady(isReady);
     qDebug() << "u.battleState.setReady("<<isReady<<");";
     onMyBattleStateChanged( u );
+}
+
+void Users::onColorChanged(QColor c) {
+    User u = infoChannelUserManager->getUser( url.userName() );
+    u.m_color = c;
+    onMyBattleStateChanged(u);
+}
+
+void Users::onTeamNumberChanged( int i ) {
+    User u = infoChannelUserManager->getUser( url.userName() );
+    u.battleState.setTeamNo(i-1);
+    onMyBattleStateChanged(u);
+}
+
+void Users::onAllyTeamNumberChanged( int i ) {
+    User u = infoChannelUserManager->getUser( url.userName() );
+    u.battleState.setAllyTeamNo(i-1);
+    onMyBattleStateChanged(u);
 }
 
 void Users::invalidateModel() {
