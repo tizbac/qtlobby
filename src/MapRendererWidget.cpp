@@ -216,9 +216,11 @@ void MapRendererWidget::setSource(QString mapName, QImage minimap, RawHeightMap 
     m_minimap = minimap;
     m_heightmap.free();
     m_heightmap = heightmap;
-    glDeleteBuffers(1, &m_VBOVertices);
-    glDeleteBuffers(1, &m_VBONormals);
-    glDeleteBuffers(1, &m_VBOTexCoords);
+	if(getGLExtensionFunctions().openGL15Supported()) {
+		glDeleteBuffers(1, &m_VBOVertices);
+		glDeleteBuffers(1, &m_VBONormals);
+		glDeleteBuffers(1, &m_VBOTexCoords);
+	}
     m_vertexNumber = heightmap.getWidth()*(heightmap.getHeight()-1)*2;
     if(m_vertexes) delete m_vertexes;
     m_vertexes = new Vertex[m_vertexNumber];
