@@ -122,7 +122,6 @@ bool GLExtensionFunctions::fboSupported() {
 }
 
 bool GLExtensionFunctions::openGL15Supported() {
-    return false;
     return ActiveTexture
             && TexImage3D
             && GenBuffers
