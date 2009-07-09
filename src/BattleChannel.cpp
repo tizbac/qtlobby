@@ -442,6 +442,7 @@ void BattleChannel::onColorClicked() {
 }
 
 void BattleChannel::onMyStateChanged(User u) {
+    if(noMapUpdates) return;
     battleWindowForm->readyCheckBox->blockSignals(true);
     battleWindowForm->specCheckBox->blockSignals(true);
     battleWindowForm->factionsComboBox->blockSignals(true);

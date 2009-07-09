@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QApplication>
 
+
 #define RESOLVE_GL_FUNC(f) ok &= bool((f = (_gl##f) context()->getProcAddress(QLatin1String("gl" #f))));
 
 #define CELL_SIZE 0.1
@@ -22,18 +23,9 @@ MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
     m_vertexes = 0;
     m_normals = 0;
     m_texCoords = 0;
-    m_vbo = resolve();
     m_computedNormals = false;
     m_indexes = 0;
-}
-
-bool MapRendererWidget::resolve() {
-    bool ok = true;
-    RESOLVE_GL_FUNC(GenBuffers);
-    RESOLVE_GL_FUNC(BindBuffer);
-    RESOLVE_GL_FUNC(BufferData);
-    RESOLVE_GL_FUNC(DeleteBuffers);
-    return ok;
+    getGLExtensionFunctions().resolve(context());
 }
 
 void MapRendererWidget::initializeGL() {
@@ -73,7 +65,6 @@ void MapRendererWidget::resizeGL(int w, int h) {
 
 void MapRendererWidget::paintGL() {
     if(!m_heightmap.getWidth() || blockRerender) return;
-	if(!m_vbo) return;
     GLfloat light_position[] = { 5, 5, MAX_HEIGHT*1.3, 0.0 };
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
@@ -91,16 +82,20 @@ void MapRendererWidget::paintGL() {
     glEnableClientState( GL_TEXTURE_COORD_ARRAY );
     //glEnableClientState( GL_NORMAL_ARRAY );
 
+    if(getGLExtensionFunctions().openGL15Supported()) {
+        glBindBuffer(GL_ARRAY_BUFFER, m_VBOVertices);
+        glVertexPointer( 3, GL_FLOAT, 0, (char *) NULL );
 
-    BindBuffer(GL_ARRAY_BUFFER, m_VBOVertices);
-    glVertexPointer( 3, GL_FLOAT, 0, (char *) NULL );
+        //glBindBuffer(GL_ARRAY_BUFFER, m_VBONormals);
+        //glNormalPointer(GL_FLOAT, 0, (char *) NULL );
 
-    
-    //BindBuffer(GL_ARRAY_BUFFER, m_VBONormals);
-    //glNormalPointer(GL_FLOAT, 0, (char *) NULL );
-
-    BindBuffer( GL_ARRAY_BUFFER, m_VBOTexCoords );
-    glTexCoordPointer( 2, GL_FLOAT, 0, (char *) NULL );
+        glBindBuffer( GL_ARRAY_BUFFER, m_VBOTexCoords );
+        glTexCoordPointer( 2, GL_FLOAT, 0, (char *) NULL );
+    } else {
+        glVertexPointer( 3, GL_FLOAT, 0, m_vertexes );
+        //glNormalPointer(GL_FLOAT, 0, m_normals );
+        glTexCoordPointer( 2, GL_FLOAT, 0, m_texCoords );
+    }
 
     glBindTexture(GL_TEXTURE_2D, m_texture);
     glDrawElements(GL_TRIANGLE_STRIP, m_numIndexes, GL_UNSIGNED_INT, m_indexes);
@@ -156,7 +151,7 @@ void MapRendererWidget::generateIndexes() {
     }
 }
 
-GLuint MapRendererWidget::makeObject() {
+void MapRendererWidget::makeObject() {
     blockRerender = true;
     /*GLProgressDialog* progress = new GLProgressDialog(this);
     progress->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
@@ -164,17 +159,23 @@ GLuint MapRendererWidget::makeObject() {
     progress->updateProgress(0);
     progress->show();
     QApplication::processEvents();*/
-    GenBuffers( 1, &m_VBOVertices );
-    BindBuffer( GL_ARRAY_BUFFER, m_VBOVertices );
-    BufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(Vertex), m_vertexes, GL_STATIC_DRAW );
+    if(getGLExtensionFunctions().openGL15Supported()) {
+        glGenBuffers( 1, &m_VBOVertices );
+        glBindBuffer( GL_ARRAY_BUFFER, m_VBOVertices );
+        glBufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(Vertex), m_vertexes, GL_STATIC_DRAW );
+    }
     //computeNormals();
+    //if(getGLExtensionFunctions().openGL15Supported()) {
     //GenBuffers( 1, &m_VBONormals );
     //BindBuffer( GL_ARRAY_BUFFER, m_VBONormals );
     //BufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(Vertex), m_normals, GL_STATIC_DRAW );
+    //}
     generateTexCoords();
-    GenBuffers( 1, &m_VBOTexCoords );
-    BindBuffer( GL_ARRAY_BUFFER, m_VBOTexCoords );
-    BufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(TexCoord), m_texCoords, GL_STATIC_DRAW );
+    if(getGLExtensionFunctions().openGL15Supported()) {
+        glGenBuffers( 1, &m_VBOTexCoords );
+        glBindBuffer( GL_ARRAY_BUFFER, m_VBOTexCoords );
+        glBufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(TexCoord), m_texCoords, GL_STATIC_DRAW );
+    }
     m_texture = bindTexture(QPixmap::fromImage(m_minimap), GL_TEXTURE_2D);
     generateIndexes();
     //QApplication::processEvents();
@@ -182,7 +183,6 @@ GLuint MapRendererWidget::makeObject() {
     //delete progress;
     m_heightmap.free();
     blockRerender = false;
-    return 0;//list;
 }
 
 
@@ -211,16 +211,16 @@ void MapRendererWidget::computeNormals() {
 }
 
 void MapRendererWidget::setSource(QString mapName, QImage minimap, RawHeightMap heightmap) {
-	if(!m_vbo) return;
     if(currentMap == mapName) return;
     currentMap = mapName;
     m_minimap = minimap;
     m_heightmap.free();
     m_heightmap = heightmap;
-    DeleteBuffers(1, &m_VBOVertices);
-    DeleteBuffers(1, &m_VBONormals);
-    DeleteBuffers(1, &m_VBOTexCoords);
+    glDeleteBuffers(1, &m_VBOVertices);
+    glDeleteBuffers(1, &m_VBONormals);
+    glDeleteBuffers(1, &m_VBOTexCoords);
     m_vertexNumber = heightmap.getWidth()*(heightmap.getHeight()-1)*2;
+    if(m_vertexes) delete m_vertexes;
     m_vertexes = new Vertex[m_vertexNumber];
     for(int i = 0; i < heightmap.getHeight(); i++) {
         for(int j = 0; j < heightmap.getWidth(); j++) {

@@ -75,7 +75,8 @@ HEADERS += src/MainWindow.h \
     src/MapRendererWidget.h \
     src/GLProgressDialog.h \
     src/UserGroup.h \
-    src/UserGroupsDialog.h
+    src/UserGroupsDialog.h \
+    src/glextensions.h
 SOURCES += src/main.cpp \
     src/MainWindow.cpp \
     src/ServerContextState.cpp \
@@ -126,7 +127,8 @@ SOURCES += src/main.cpp \
     src/MapRendererWidget.cpp \
     src/GLProgressDialog.cpp \
     src/UserGroup.cpp \
-    src/UserGroupsDialog.cpp
+    src/UserGroupsDialog.cpp \
+    src/glextensions.cpp
 QT += gui \
     network \
     opengl \

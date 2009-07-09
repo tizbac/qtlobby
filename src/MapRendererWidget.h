@@ -6,15 +6,7 @@
 #include <QImage>
 #include <QVector>
 #include "RawHeightMap.h"
-
-
-#if _MSC_VER
-//fuck msvc
-#define GL_ARRAY_BUFFER 0x8892
-#define GL_STATIC_DRAW 0x88E4
-
-typedef ptrdiff_t GLsizeiptrARB;
-#endif
+#include "glextensions.h"
 
 class Vertex {
 public:
@@ -54,24 +46,13 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent * event);
 private:
-    typedef void (APIENTRY *_glGenBuffers) (GLsizei, GLuint *);
-    typedef void (APIENTRY *_glBindBuffer) (GLenum, GLuint);
-    typedef void (APIENTRY *_glBufferData) (GLenum, GLsizeiptrARB, const GLvoid *, GLenum);
-    typedef void (APIENTRY *_glDeleteBuffers) (GLsizei, const GLuint *);
-
     void normalizeAngle(int *angle);
-    GLuint makeObject();
-    bool resolve();
+    void makeObject();
     void computeNormals();
     void generateIndexes();
     void generateTexCoords();
 
 private:
-    _glGenBuffers GenBuffers;
-    _glBindBuffer BindBuffer;
-    _glBufferData BufferData;
-    _glDeleteBuffers DeleteBuffers;
-    bool m_vbo;
     bool m_computedNormals;
     QString currentMap;
     unsigned int* m_indexes;
