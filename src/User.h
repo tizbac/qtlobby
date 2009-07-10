@@ -16,14 +16,6 @@
 #include <QColor>
 #include <QDebug>
 
-
-#ifdef _MSC_VER
-//Fuck msvc
-#define uint8_t unsigned char
-#else
-#include <stdint.h>
-#endif
-
 #define TB(a, n) (a & (1 << (n)))
 #define SB(a, n) a |= (1 << (n))
 #define CB(a, n) a &= ~(1 << (n))
@@ -76,20 +68,20 @@ class BattleState {
     BattleState() {m_state = 0;}
     bool isReady() const {return EXTRACT(m_state, 1, 0x1);}
     void setReady(bool b) {COPYBIT(b, 0, m_state, 1);}
-    uint8_t getTeamNo() const {return EXTRACT(m_state, 2, 0xF);}
-    void setTeamNo(uint8_t b) {COPYBITS(b, 0, m_state, 2, 4);}
-    uint8_t getAllyTeamNo() const {return EXTRACT(m_state, 6, 0xF);}
-    void setAllyTeamNo(uint8_t b) {COPYBITS(b, 0, m_state, 6, 4);}
+    quint8 getTeamNo() const {return EXTRACT(m_state, 2, 0xF);}
+    void setTeamNo(quint8 b) {COPYBITS(b, 0, m_state, 2, 4);}
+    quint8 getAllyTeamNo() const {return EXTRACT(m_state, 6, 0xF);}
+    void setAllyTeamNo(quint8 b) {COPYBITS(b, 0, m_state, 6, 4);}
     bool isPlayer() const {return EXTRACT(m_state, 10, 0x1);}
     void setPlayer(bool b) {COPYBIT(b, 0, m_state, 10);}
-    uint8_t getHandicap() const {return EXTRACT(m_state, 11, 0x7F);}
-    void setHandicap(uint8_t b) {COPYBITS(b, 0, m_state, 11, 7);}
-    uint8_t getColor() const {return EXTRACT(m_state, 18, 0xF);}
-    void setColor(uint8_t b) {COPYBITS(b, 0, m_state, 18, 4);}
-    uint8_t syncState() const {return EXTRACT(m_state, 22, 0x3);}
-    void setSyncState(uint8_t b) {COPYBITS(b, 0, m_state, 22, 2);}
-    uint8_t getSide() const {return EXTRACT(m_state, 24, 0xF);}
-    void setSide(uint8_t b) {COPYBITS(b, 0, m_state, 24, 4);}
+    quint8 getHandicap() const {return EXTRACT(m_state, 11, 0x7F);}
+    void setHandicap(quint8 b) {COPYBITS(b, 0, m_state, 11, 7);}
+    quint8 getColor() const {return EXTRACT(m_state, 18, 0xF);}
+    void setColor(quint8 b) {COPYBITS(b, 0, m_state, 18, 4);}
+    quint8 syncState() const {return EXTRACT(m_state, 22, 0x3);}
+    void setSyncState(quint8 b) {COPYBITS(b, 0, m_state, 22, 2);}
+    quint8 getSide() const {return EXTRACT(m_state, 24, 0xF);}
+    void setSide(quint8 b) {COPYBITS(b, 0, m_state, 24, 4);}
     void setState(int state) {m_state = state;}
     int getState() const {return m_state;}
 private:
