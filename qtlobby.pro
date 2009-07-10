@@ -16,7 +16,7 @@ RESOURCES = resources.qrc
 UI_HEADERS_DIR = src
 DEFINES += 'SVN_REV=\\"$$system(svnversion -n .)\\"'
 DEFINES += RPM_OPT_FLAGS
-target.path += "/usr/bin"
+target.path += $$INSTALL_ROOT/bin
 INSTALLS += target
 
 # SVNDEF := -DSVN_REV=444
