@@ -20,9 +20,6 @@ Users::Users( QWidget* parent ) : QTreeView( parent )
 
     setModel( infoChannelUserManager->proxyModel() );
     sortByColumn( 3, Qt::AscendingOrder );
-    setColumnWidth( 0, 20 );
-    setColumnWidth( 1, 20 );
-    setColumnWidth( 2, 20 );
 
     //   selectionModel = infoChannelUserManager->selectionModel();
     proxyModel = infoChannelUserManager->proxyModel();
@@ -103,7 +100,7 @@ void Users::receiveCommand( Command command ) {
     else if ( command.name == "JOINBATTLE" ) {
         int id = command.attributes.takeFirst().toInt();
         if ( !battleIdUserManagerMap.contains( id ) )
-            battleIdUserManagerMap[id] = new UserManager( this );
+            battleIdUserManagerMap[id] = new UserManager( this, true );
         User u = infoChannelUserManager->getUser( url.userName() );
         u.joinedBattleId = id;
         modUserInAllManagers( u );
@@ -112,7 +109,7 @@ void Users::receiveCommand( Command command ) {
     else if ( command.name == "JOINEDBATTLE" ) {
         int id = command.attributes.takeFirst().toInt();
         if ( !battleIdUserManagerMap.contains( id ) )
-            battleIdUserManagerMap[id] = new UserManager( this );
+            battleIdUserManagerMap[id] = new UserManager( this, true );
         if ( url.userName() != command.attributes.first() ) {
             User u = infoChannelUserManager->getUser( command.attributes.first() );
             u.joinedBattleId = id;
@@ -125,7 +122,7 @@ void Users::receiveCommand( Command command ) {
         int id = command.attributes.takeFirst().toInt();
         command.attributes.removeFirst();
         command.attributes.removeFirst();
-        battleIdUserManagerMap[id] = new UserManager( this );
+        battleIdUserManagerMap[id] = new UserManager( this, true );
         User u = infoChannelUserManager->getUser( command.attributes.first() );
         u.joinedBattleId = id;
         modUserInAllManagers( u );
@@ -373,4 +370,8 @@ void Users::invalidateModel() {
 
 Users* Users::getCurrentUsers() {
     return lastThis;
+}
+
+UserTreeModel* Users::getUserModel(int battleId) {
+    return battleIdUserManagerMap[battleId]->model();
 }

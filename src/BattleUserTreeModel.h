@@ -1,31 +1,17 @@
-//
-// C++ Interface: BattleUserTreeModel
-//
-// Description: 
-//
-//
-// Author: Mirko Windhoff <qtlobby.reg@ncnever.de>, (C) 2008
-//
-// Copyright: See COPYING file that comes with this distribution
-//
-//
 #ifndef BATTLEUSERTREEMODEL_H
 #define BATTLEUSERTREEMODEL_H
 
-#include <QAbstractItemModel>
+#include "UserTreeModel.h"
 
-/**
-for battlemanagement, teams, ally, colors...
-
-	@author Mirko Windhoff <qtlobby.reg@ncnever.de>
-*/
-class BattleUserTreeModel : public QAbstractItemModel
-{
+class BattleUserTreeModel : public UserTreeModel {
+    Q_OBJECT
 public:
-    BattleUserTreeModel();
-
+    BattleUserTreeModel( QObject* parent = 0 );
     ~BattleUserTreeModel();
 
+    int columnCount( const QModelIndex& /*parent*/ ) const;
+    QVariant data( const QModelIndex& index, int role ) const;
+    QVariant headerData( int col, Qt::Orientation o, int role ) const;
 };
 
 #endif

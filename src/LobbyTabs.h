@@ -13,7 +13,7 @@
 #define LOBBYTABS_H
 #include <QList>
 #include <QWidget>
-#include <QTabWidget>
+#include <QStackedWidget>
 #include <QTabBar>
 #include <QStyleOptionTab>
 #include <QApplication>
@@ -40,7 +40,7 @@ class MainWindow;
 class LobbyTabs : public AbstractStateClient {
     Q_OBJECT
 public:
-    LobbyTabs( QObject * parent = 0, Battles* battles = 0, UnitSyncLib* unitSyncLib = 0, QTabWidget * lobbyTabWidget = 0 );
+    LobbyTabs( QObject * parent = 0, Battles* battles = 0, UnitSyncLib* unitSyncLib = 0, QTabBar* tabBar = 0, QStackedWidget * lobbyStackedWidget = 0 );
     ~LobbyTabs();
     //contains all tabs with their individual functionality
     QList<AbstractLobbyTab *> lobbyTabList;
@@ -50,7 +50,8 @@ signals:
     //outgoing commands to commandAssigner
     void sendCommand( Command command );
     void currentTabChanged( QString name, QString lobbyTabType );
-    void hideBattleList( bool isBattleTab );
+    void changedToBattleTab();
+    void changedFromBattleTab();
 
 public slots:
     //sets the internal state occording the global connection state
@@ -63,14 +64,19 @@ public slots:
     void sendCommandSlot( Command command );
     //sets the tab icon and emits the update signal for the user list
     void currentTabChangedSlot( int index );
-    //close current tab
+    //close tab
+    void closeTab(int i);
     void closeTab();
 
 private:
+    //last tab index
+    int lastIndex;
     //users and battles will acces this and update
     BattleChannel* battleChannel;
     //this is for displaying the lobbyTabs
-    QTabWidget * lobbyTabWidget;
+    QTabBar* tabBar;
+    QStackedWidget* lobbyStackedWidget;
+    QList<QWidget*> widgets;
     Battles* battles;
     UnitSyncLib* unitSyncLib;
     QString myUserName;
@@ -79,11 +85,12 @@ private:
     void createLobbyTab( AbstractLobbyTab * lobbyTab );
     //refreshes the tab icon, needed when the unfocused channels get changed
     void setTabIcon( int index );
-    void updateCloseTabState();
+    //void updateCloseTabState();
     // opens an empty private channel if not existing
     void privateChannelOpen( QString userName );
     //needed to delegate the input to the active channel
     AbstractLobbyTab * getActiveLobbyTab();
+    int mapToLobbyTabs(int index);
 };
 
 #endif

@@ -30,20 +30,21 @@ public:
 
     QModelIndex index( int row, int col, const QModelIndex& parent = QModelIndex() ) const;
     QModelIndex parent( const QModelIndex& child ) const;
-    int columnCount( const QModelIndex& parent = QModelIndex() ) const;
+    virtual int columnCount( const QModelIndex& parent = QModelIndex() ) const;
 
     int rowCount( const QModelIndex& parent = QModelIndex() ) const;
-    QVariant data( const QModelIndex& index, int role ) const;
-    QVariant headerData( int col, Qt::Orientation, int role ) const;
+    virtual QVariant data( const QModelIndex& index, int role ) const;
+    virtual QVariant headerData( int col, Qt::Orientation, int role ) const;
 
     bool setData( QModelIndex index, QVariant value, int role ) ;
     bool insertRows( int position, int rows, const QModelIndex& parent = QModelIndex() );
     bool removeRows( int position, int rows, const QModelIndex& parent = QModelIndex() );
     int rowPositionForUser( QString username );
     QList<User>& userList();
+    void invalidateModel();
 public slots:
     void onGroupChanged();
-private:
+protected:
     QList<User> m_userList;
     TLDList tldlist;
 };

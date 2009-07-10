@@ -14,6 +14,8 @@
 AbstractLobbyTab::AbstractLobbyTab( QObject * parent ) {
   this->setParent( parent );
   isActive = false;
+  currentWidget = 0;
+  currentTabIndex = -1;
 }
 AbstractLobbyTab::~AbstractLobbyTab() {}
 

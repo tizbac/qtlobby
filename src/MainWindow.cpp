@@ -29,12 +29,18 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     serverContextState  = new ServerContextState( this );
     connectionWidget    = new ConnectionWidget( serverContextState );
     connectionWidget->setWindowFlags(Qt::Window);
-    lobbyTabs           = new LobbyTabs( this, battles, UnitSyncLib::getInstance(), lobbyTabWidget );
+    tabBar = new QTabBar(this);
+    lobbyTabs           = new LobbyTabs( this, battles, UnitSyncLib::getInstance(), tabBar, lobbyStackedWidget );
     commandAssigner     = new CommandAssigner( this );
     statusTracker       = new StatusTracker( statusbar );
     mapSelector         = new MapSelector();
     stylesheetDialog    = new StylesheetDialog();
     userGroupsDialog    = new UserGroupsDialog();
+
+    tabBar->setTabsClosable(true);
+    tabBar->setDocumentMode(true);
+    QAction* a = tabsToolBar->addWidget(tabBar);
+    a->setVisible(true);
 
     createTrayIcon();
     trayIcon->show();
@@ -89,7 +95,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     connect( connectionWidget, SIGNAL( usernameChanged(QString ) ),
              battles, SLOT( setCurrentUsername( QString ) ) );
     connect( connectionWidget, SIGNAL( usernameChanged(QString ) ),
-            this, SLOT( setCurrentUsername( QString ) ) );
+             this, SLOT( setCurrentUsername( QString ) ) );
 
     // disconnect
     connect( action_Disconnect, SIGNAL( triggered() ),
@@ -112,10 +118,13 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     // lobbyTabs to open private channel, when requested in user list
     connect( users, SIGNAL( sendInput( QString ) ),
              lobbyTabs, SLOT( receiveInput( QString ) ) );
-
     // users, for the userlist to show
     connect( lobbyTabs, SIGNAL( currentTabChanged( QString, QString ) ),
              users, SLOT( currentTabChanged( QString, QString ) ) );
+    connect( lobbyTabs, SIGNAL(changedToBattleTab()),
+             this, SLOT( onChangedToBattleTab()) );
+    connect( lobbyTabs, SIGNAL(changedFromBattleTab()),
+             this, SLOT( onChangedFromBattleTab()) );
     //connect( lobbyTabs, SIGNAL( hideBattleList( bool ) ),
     //         this, SLOT( hideBattleList( bool ) ) );
     // aboutDialog
@@ -156,8 +165,12 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     //Groups dialog
     connect(userGroupsDialog, SIGNAL(groupsChanged()), battles, SLOT(invalidateModel()));
     connect(userGroupsDialog, SIGNAL(groupsChanged()), users, SLOT(invalidateModel()));
-//    connect(userGroupsDialog, SIGNAL(groupsChanged()), battles, SLOT(reset()));
-//    connect(userGroupsDialog, SIGNAL(groupsChanged()), users, SLOT(reset()));
+    //    connect(userGroupsDialog, SIGNAL(groupsChanged()), battles, SLOT(reset()));
+    //    connect(userGroupsDialog, SIGNAL(groupsChanged()), users, SLOT(reset()));
+
+    //Battle info view
+    connect(battles->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
+            this, SLOT(onCurrentChanged(QModelIndex,QModelIndex)));
 
     // this is the trigger for the login dialog popup
     QTimer::singleShot( 0, connectionWidget, SLOT( show_if_wanted() ) );
@@ -167,6 +180,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
         restoreGeometry(s->value("mainwindow/geometry").toByteArray());
         restoreState(s->value("mainwindow/state").toByteArray());
     }
+    for(int i = 0; i < 4; i++)
+        users->resizeColumnToContents(i);
 }
 
 MainWindow::~MainWindow() {
@@ -310,3 +325,43 @@ void MainWindow::showGroupsDialog() {
 void MainWindow::setCurrentUsername( QString username ) {
     AbstractChannel::setCurrentUsername(username);
 }
+
+void MainWindow::onChangedToBattleTab() {
+    QSettings* s = Settings::Instance();
+    s->setValue("mainwindow/state", saveState());
+    if(s->contains("mainwindow/battlestate")) {
+        restoreState(s->value("mainwindow/battlestate").toByteArray());
+    }
+    //FIXME: make this working. It breaks TreeView when restoring state after some columns have moved
+    /*s->setValue("mainwindow/usersHeaderViewState", users->header()->saveState());
+    if(s->contains("mainwindow/usersHeaderViewBattleState")) {
+        users->header()->restoreState(s->value("mainwindow/usersHeaderViewBattleState").toByteArray());
+    }*/
+    for(int i = 0; i < 9; i++)
+        users->resizeColumnToContents(i);
+}
+
+void MainWindow::onChangedFromBattleTab() {
+    QSettings* s = Settings::Instance();
+    s->setValue("mainwindow/battlestate", saveState());
+    if(s->contains("mainwindow/state")) {
+        restoreState(s->value("mainwindow/state").toByteArray());
+    }
+    /*s->setValue("mainwindow/usersHeaderViewBattleState", users->header()->saveState());
+    if(s->contains("mainwindow/usersHeaderViewState")) {
+        users->header()->restoreState(s->value("mainwindow/usersHeaderViewState").toByteArray());
+    }*/
+    for(int i = 0; i < 4; i++)
+        users->resizeColumnToContents(i);
+}
+
+void MainWindow::onCurrentChanged(const QModelIndex & current, const QModelIndex & /*previous*/) {
+    QModelIndex sourceIndex = battles->battleManager->proxyModel()->mapToSource(current);
+    Battle b = battles->battleManager->model()->battleList()[sourceIndex.row()];
+    battleInfoTreeView->setModel((UserTreeModel*)users->getUserModel(b.id));
+    for(int i = 0; i < 9; i++)
+        battleInfoTreeView->resizeColumnToContents(i);
+    for(int i = 4; i <= 9; i++)
+        battleInfoTreeView->hideColumn(i);
+}
+

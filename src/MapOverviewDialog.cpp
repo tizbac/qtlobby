@@ -22,6 +22,8 @@ void MapOverviewDialog::changeEvent(QEvent *e) {
     }
 }
 
-void MapOverviewDialog::setSource(QString mapName, QImage minimap, RawHeightMap heightmap) {
+void MapOverviewDialog::setSource(QString mapName, QString mapDescription, QImage minimap, RawHeightMap heightmap) {
     m_ui->glWidget->setSource(mapName, minimap, heightmap);
+    m_ui->mapNameLabel->setText("<b>"+mapName+"</b");
+    m_ui->mapDescriptionLabel->setText(mapDescription);
 }

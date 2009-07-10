@@ -42,6 +42,7 @@ public:
   QStringList getUsernamesList();
   QUrl url;
   static Users* getCurrentUsers();
+  UserTreeModel* getUserModel(int battleId);
 signals:
   void sendCommand( Command command );
   void sendInput( QString input );

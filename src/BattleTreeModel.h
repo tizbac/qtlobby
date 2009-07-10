@@ -42,7 +42,7 @@ public:
     bool removeRows( int position, int rows, const QModelIndex& parent = QModelIndex() );
     int rowPositionForBattle( int battleId );
     Battle battleForRowPosition( int row );
-    QList<Battle>& userList();
+    QList<Battle>& battleList();
     void setUsers(Users* users);
 public slots:
     void onGroupChanged();

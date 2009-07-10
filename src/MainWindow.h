@@ -60,6 +60,8 @@ private:
   StylesheetDialog* stylesheetDialog;
   UserGroupsDialog* userGroupsDialog;
 
+  QTabBar* tabBar;
+
   //the status bar text
   StatusTracker* statusTracker;
 
@@ -86,6 +88,10 @@ private slots:
   void startSpringSettings();
   void showStylesheetEditor();
   void setCurrentUsername( QString username );
+  void onCurrentChanged(const QModelIndex & current, const QModelIndex & previous);
+
+  void onChangedToBattleTab();
+  void onChangedFromBattleTab();
 public slots:
   void playSample( SampleCollection sample );
   void sendTrayMessage( QString message, int milliseconds = 2000);

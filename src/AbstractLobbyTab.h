@@ -37,6 +37,8 @@ public:
   QString myUserName;
   QIcon icon;
   bool isActive;
+  QWidget* currentWidget;
+  int currentTabIndex;
 
 signals:
   void sendCommand( Command );

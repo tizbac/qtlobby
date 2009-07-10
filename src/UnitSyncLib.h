@@ -99,7 +99,6 @@ public:
     unsigned int modChecksum( QString mapname );
     signed int modIndex( QString modName );
     QString modArchive( int modIndex );
-    QString sideName( int modIndex );
     signed int mapIndex( QString mapName );
     QLibrary* unitsynclib;
     bool setCurrentMod(QString modname);
@@ -117,9 +116,12 @@ public:
 
     //New
     int getSideNameCount();
+    QString sideName( int index );
     QIcon getSideIcon(QString sidename);
 
 private:
+    QMap<QString, QIcon> m_sideIconsCache;
+    QMap<int, QString> m_sideNamesCache;
     QSettings* settings;
     QString m_currentModName;
     QStringList m_gameOptionKeys;

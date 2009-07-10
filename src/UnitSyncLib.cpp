@@ -327,10 +327,14 @@ bool UnitSyncLib::setCurrentMod(QString modname) {
     //qDebug() << "UNITSYNC_DUMP: " << "AddAllArchives";
     m_AddAllArchives(m_GetPrimaryModArchive(index));
     m_currentModName = modname;
+    m_sideIconsCache.clear();
+    m_sideNamesCache.clear();
     return true;
 }
 
 QIcon UnitSyncLib::getSideIcon(QString sidename){
+    if(m_sideIconsCache.contains(sidename))
+            return m_sideIconsCache[sidename];
     NON_REENTRANT
     // Maybe some cleaning needed here (aj)
     // Done (ko)
@@ -351,8 +355,9 @@ QIcon UnitSyncLib::getSideIcon(QString sidename){
 
     QPixmap rawicon;
     rawicon.loadFromData(sideicon);
-    return QIcon(rawicon);
-
+    QIcon ico = QIcon(rawicon);
+    m_sideIconsCache[sidename] = ico;
+    return ico;
 }
 
 QString UnitSyncLib::getSpringVersion() {
@@ -368,12 +373,16 @@ int UnitSyncLib::getSideNameCount() {
 }
 
 QString UnitSyncLib::sideName( int index ) {
+    if(m_sideNamesCache.contains(index))
+            return m_sideNamesCache[index];
     NON_REENTRANT
     if ( libraryLoaded() ) {
         //qDebug() << "UNITSYNC_DUMP: " << "GetSideCount";
         if ( m_GetSideCount(  ) > index ) {
             //qDebug() << "UNITSYNC_DUMP: " << "GetSideName";
-            return QString( m_GetSideName( index ) );
+            QString name = m_GetSideName( index );
+            m_sideNamesCache[index] = name;
+            return name;
         }
     }
     return "";

@@ -13,7 +13,7 @@ class MapOverviewDialog : public QDialog {
 public:
     explicit MapOverviewDialog(QWidget *parent = 0);
     virtual ~MapOverviewDialog();
-    void setSource(QString mapName, QImage minimap, RawHeightMap heightmap);
+    void setSource(QString mapName, QString description, QImage minimap, RawHeightMap heightmap);
 
 protected:
     virtual void changeEvent(QEvent *e);

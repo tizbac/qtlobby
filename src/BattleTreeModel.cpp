@@ -241,3 +241,9 @@ void BattleTreeModel::setUsers(Users* users) {
 void BattleTreeModel::onGroupChanged() {
     reset();
 }
+
+
+QList<Battle>& BattleTreeModel::battleList() {
+    return m_battleList;
+}
+
