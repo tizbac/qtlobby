@@ -152,6 +152,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
 
     connect( inputLineEdit, SIGNAL( sendInput( QString ) ),
              lobbyTabs, SLOT( receiveInput( QString ) ) );
+    connect (tabBar, SIGNAL(currentChanged(int)),
+             inputLineEdit, SLOT(onTabChanged(int)));
 
     // regular expresion line edits
     connect( userListLineEdit, SIGNAL( textChanged( QString ) ),
