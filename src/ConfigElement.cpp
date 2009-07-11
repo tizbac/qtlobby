@@ -34,10 +34,13 @@ ConfigElement::ConfigElement( QStringList config, QWidget* parent ) : QWidget( p
                 .arg( fi.exists() ? "green" : "red" )
                 .arg( examples[i] )
                 .arg( i % 3 == 2 ? "<br>" : "&nbsp;" ) );
-    if ( !found && !hasSetting ) {
-      found = true;
-      lineEdit->setText( examples[i] );
-    }
+	if(fi.exists()) {
+		lineEdit->setText( examples[i] );
+	}
+	//if ( !found ) {// && !hasSetting ) {
+    //  found = true;
+      
+    //}
   }
 
   descriptionLabel->setText( QString( "<span style=\"font-size:8pt;\">%1<br>%2</span>" ).arg( config[2], tmp ) );
