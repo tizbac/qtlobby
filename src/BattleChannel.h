@@ -61,6 +61,7 @@ private:
   Battle m_battle;
   bool noMapUpdates;
   QColor currentcolor;
+  bool locked;
 protected:
   Battles* battles;
 };

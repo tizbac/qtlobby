@@ -260,7 +260,7 @@ void LobbyTabs::closeTab(int i) {
     QTimer::singleShot( 0, win, SLOT( deleteLater() ) );
     //updateCloseTabState();
     //delete the lobbyTab from the list
-    for(int x = i+1; i < lobbyTabList.size(); i++) {
+    for(; i < lobbyTabList.size(); i++) {
         lobbyTabList[mapToLobbyTabs(i)]->currentTabIndex--;
     }
     lobbyTabList.removeAt( index );

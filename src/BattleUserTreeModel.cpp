@@ -116,6 +116,7 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
     case 5: //side
         if ( role == Qt::DecorationRole || role == Qt::ToolTipRole) {
             UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
+
             User u = m_userList[index.row()];
             QString sideName = unitSyncLib->sideName(u.battleState.getSide());
             if(role == Qt::DecorationRole)

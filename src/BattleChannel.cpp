@@ -21,6 +21,7 @@ BattleChannel::BattleChannel( QString id, Battles* battles, QObject * parent ) :
     loader = new MapInfoLoader(this);
     connect(loader, SIGNAL(loadCompleted(QString)), SLOT(updateMapInfo(QString)));
     noMapUpdates = false;
+    locked = false;
 }
 
 void BattleChannel::setupUi( QWidget * tab ) {
@@ -230,12 +231,12 @@ void BattleChannel::receiveCommand( Command command ) {
             bool locked = command.attributes.takeFirst().toInt() > 0;
             command.attributes.removeFirst(); // map hash
             QString mapName = command.attributes.join( " " );
-            /*if ( battleWindowForm->lockGameCheckBox->isChecked() != locked ) {
+            if ( this->locked != locked ) {
                 insertLine( line
                             .arg( "<span style=\"color:blue;\">** %1</span>" )
                             .arg( locked ? tr( "Battle locked." ) : tr( "Battle unlocked." ) ) );
-                battleWindowForm->lockGameCheckBox->setChecked( locked );
-            }*/
+                this->locked = locked;
+            }
             if(currentMap != mapName) requestMapInfo( mapName );
             currentMap = mapName;
         }

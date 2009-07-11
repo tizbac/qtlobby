@@ -71,6 +71,9 @@ private:
   QAction* restoreAction;
   QColor regexpColor;
   QSettings* settings;
+  bool inBattle;
+  QByteArray lastState;
+  QByteArray lastBattleState;
 signals:
   void newTrayMessage(QString);
 protected:

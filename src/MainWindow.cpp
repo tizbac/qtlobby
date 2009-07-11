@@ -26,10 +26,9 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     battles->setUsers( users );
     preference          = new UserPreference();
     preference->setWindowFlags(Qt::Window);
-    if(!settings->value("unitsync").toString().isEmpty())
-        UnitSyncLib::getInstance();
-    else
+    if(settings->value("unitsync").toString().isEmpty())
         preference->exec();
+    UnitSyncLib::getInstance();
     serverContextState  = new ServerContextState( this );
     connectionWidget    = new ConnectionWidget( serverContextState );
     connectionWidget->setWindowFlags(Qt::Window);
@@ -42,8 +41,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     userGroupsDialog    = new UserGroupsDialog();
 
     tabBar->setTabsClosable(true);
-    tabBar->setDocumentMode(true);
-    tabBar->setDrawBase(false);
+    //tabBar->setDocumentMode(true);
+    //tabBar->setDrawBase(false);
     tabBar->setMovable(true);
     QAction* a = tabsToolBar->addWidget(tabBar);
     a->setVisible(true);
@@ -189,10 +188,13 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     QSettings* s = Settings::Instance();
     if(s->contains("mainwindow/geometry")) {
         restoreGeometry(s->value("mainwindow/geometry").toByteArray());
-        restoreState(s->value("mainwindow/state").toByteArray());
+        lastState = s->value("mainwindow/state").toByteArray();
+        lastBattleState = s->value("mainwindow/battlestate").toByteArray();
+        restoreState(lastState);
     }
     for(int i = 0; i < 4; i++)
         users->resizeColumnToContents(i);
+    inBattle = false;
 }
 
 MainWindow::~MainWindow() {
@@ -222,13 +224,20 @@ void MainWindow::toggleUserListVisible() {
 }
 
 void MainWindow::toggleShowHideMainWindow( QSystemTrayIcon::ActivationReason reason ) {
+    static QByteArray state;
     if ( reason == QSystemTrayIcon::Trigger ) {
         if ( isVisible() ) {
             //       QTimer::singleShot( 0, connectionWidget, SLOT( hide() ) );
+            userListDockWidget->blockSignals(true);
+            battleListDockWidget->blockSignals(true);
+            state = saveState();
             hide();
         }
         else {
             show();
+            restoreState(state);
+            userListDockWidget->blockSignals(false);
+            battleListDockWidget->blockSignals(false);
             //       QTimer::singleShot( 0, connectionWidget, SLOT( show() ) );
         }
     }
@@ -324,7 +333,12 @@ void MainWindow::closeEvent(QCloseEvent *event) {
     QSettings* s = Settings::Instance();
     s->setValue("channels", lobbyTabs->getChannelList());
     s->setValue("mainwindow/geometry", saveGeometry());
-    s->setValue("mainwindow/state", saveState());
+    if(inBattle)
+        lastBattleState = saveState();
+    else
+        lastState = saveState();
+    s->setValue("mainwindow/state", lastState);
+    s->setValue("mainwindow/battlestate", lastBattleState);
     event->accept();
     QApplication::exit(0);
 }
@@ -338,11 +352,8 @@ void MainWindow::setCurrentUsername( QString username ) {
 }
 
 void MainWindow::onChangedToBattleTab() {
-    QSettings* s = Settings::Instance();
-    s->setValue("mainwindow/state", saveState());
-    if(s->contains("mainwindow/battlestate")) {
-        restoreState(s->value("mainwindow/battlestate").toByteArray());
-    }
+    lastState = saveState();
+    restoreState(lastBattleState);
     //FIXME: make this working. It breaks TreeView when restoring state after some columns have moved
     /*s->setValue("mainwindow/usersHeaderViewState", users->header()->saveState());
     if(s->contains("mainwindow/usersHeaderViewBattleState")) {
@@ -350,20 +361,19 @@ void MainWindow::onChangedToBattleTab() {
     }*/
     for(int i = 0; i < 9; i++)
         users->resizeColumnToContents(i);
+    inBattle = true;
 }
 
 void MainWindow::onChangedFromBattleTab() {
-    QSettings* s = Settings::Instance();
-    s->setValue("mainwindow/battlestate", saveState());
-    if(s->contains("mainwindow/state")) {
-        restoreState(s->value("mainwindow/state").toByteArray());
-    }
+    lastBattleState = saveState();
+    restoreState(lastState);
     /*s->setValue("mainwindow/usersHeaderViewBattleState", users->header()->saveState());
     if(s->contains("mainwindow/usersHeaderViewState")) {
         users->header()->restoreState(s->value("mainwindow/usersHeaderViewState").toByteArray());
     }*/
     for(int i = 0; i < 4; i++)
         users->resizeColumnToContents(i);
+    inBattle = false;
 }
 
 void MainWindow::onCurrentChanged(const QModelIndex & current, const QModelIndex & /*previous*/) {
