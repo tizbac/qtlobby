@@ -52,6 +52,21 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
         a.setValue<Battle>( m_battleList[index.row()] );
         return a;
     }
+    if ( role == Qt::UserRole+1 ) {
+        Battle b = m_battleList[index.row()];
+        switch ( index.column() ) {
+        case 0: //status
+            if ( b.isStarted && b.isPasswordProtected ) return 5;
+            if ( b.isLocked && b.isPasswordProtected ) return 4;
+            if ( b.isStarted ) return 3;
+            if ( b.isLocked ) return 2;
+            if ( b.isPasswordProtected ) return 1;
+            return 0;
+        case 7: // spectator count
+            Battle b = m_battleList[index.row()];
+            return QString::number(b.playerCount - b.spectatorCount).rightJustified(5,'0');
+        }
+    }
     switch ( index.column() ) {
     case 0: //status
         if ( role == Qt::DecorationRole ) {

@@ -30,6 +30,33 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
     if(role == Qt::BackgroundRole || role == Qt::UserRole) {
         return UserTreeModel::data(index, role);
     }
+    if(role == Qt::UserRole+1) {
+        User u = m_userList[index.row()];
+        switch ( index.column() ) {
+        case 0: //status
+        case 1: //flags
+        case 2: //rank
+        case 3: //username
+            return UserTreeModel::data(index, Qt::ToolTipRole);
+        case 4: //ready/spec
+            if(u.battleState.isPlayer() && u.battleState.isReady()) return 2;
+            if(u.battleState.isPlayer() && !u.battleState.isReady()) return 1;
+            if(!u.battleState.isPlayer()) return 0;
+        case 5: //side
+            qDebug() << QString::number(u.battleState.getSide()).rightJustified(5,'0');
+            return QString::number(u.battleState.getSide()).rightJustified(5,'0');
+        case 6: //team
+            qDebug() << QString::number(u.battleState.getTeamNo()).rightJustified(5,'0');
+            return QString::number(u.battleState.getTeamNo()).rightJustified(5,'0');
+        case 7: //ally
+            qDebug() << QString::number(u.battleState.getAllyTeamNo()).rightJustified(5,'0');
+            return QString::number(u.battleState.getAllyTeamNo()).rightJustified(5,'0');
+        case 8: //color
+            return u.m_color.name();
+        case 9: //handicap
+            return u.battleState.getHandicap();
+        }
+    }
     switch ( index.column() ) {
     case 0: //status
     case 1: //flags

@@ -212,11 +212,9 @@ void LobbyTabs::currentTabChangedSlot( int index ) {
     // why did it run without any problem on qt 4.3? (js)
     if ( lobbyTabList.size() == 0 )
         return;
-    qDebug() << "Original: " << index;
     index = mapToLobbyTabs(index);
     lobbyStackedWidget->setCurrentWidget(lobbyTabList[index]->currentWidget);
     if(index < 0) return;
-    qDebug() << index;
     setTabIcon( index );
     //updateCloseTabState();
     emit currentTabChanged( lobbyTabList[index]->objectName(),
@@ -303,7 +301,6 @@ int LobbyTabs::mapToLobbyTabs(int i) {
 }
 
 void LobbyTabs::onTabMoved( int from, int to ) {
-    qDebug() << from << " --> " << to;
     if(from == to) return;
     AbstractLobbyTab* t_from = lobbyTabList[mapToLobbyTabs(from)];
     AbstractLobbyTab* t_to = lobbyTabList[mapToLobbyTabs(to)];

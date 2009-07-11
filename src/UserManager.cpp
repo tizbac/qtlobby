@@ -28,19 +28,17 @@ UserManager::UserManager( QObject* parent, bool useBattleUserTreeModel ) : QObje
         m_proxyModel->setSourceModel( m_userModel );
     }
     m_proxyModel->setSortCaseSensitivity( Qt::CaseInsensitive );
-    m_proxyModel->setDynamicSortFilter( false );
-    m_proxyModel->setColRole( 0, Qt::ToolTipRole );
-    m_proxyModel->setColRole( 1, Qt::ToolTipRole );
-    m_proxyModel->setColRole( 2, Qt::ToolTipRole );
-    m_proxyModel->setColRole( 3, Qt::DisplayRole );
-    if(useBattleUserTreeModel ) {
-        m_proxyModel->setColRole( 4, Qt::ToolTipRole );
-        m_proxyModel->setColRole( 5, Qt::ToolTipRole );
-        m_proxyModel->setColRole( 6, Qt::DisplayRole );
-        m_proxyModel->setColRole( 7, Qt::DisplayRole );
-        m_proxyModel->setColRole( 8, Qt::ToolTipRole );
-        m_proxyModel->setColRole( 9, Qt::DisplayRole );
-    }
+    m_proxyModel->setDynamicSortFilter( true );
+    m_proxyModel->colRoleMap[0] = Qt::ToolTipRole;
+    m_proxyModel->colRoleMap[1] = Qt::ToolTipRole;
+    m_proxyModel->colRoleMap[2] = Qt::ToolTipRole;
+    m_proxyModel->colRoleMap[3] = Qt::DisplayRole;
+    m_proxyModel->colRoleMap[4] = (Qt::ItemDataRole)(Qt::UserRole+1);
+    m_proxyModel->colRoleMap[5] = (Qt::ItemDataRole)(Qt::UserRole+1);
+    m_proxyModel->colRoleMap[6] = (Qt::ItemDataRole)(Qt::UserRole+1);
+    m_proxyModel->colRoleMap[7] = (Qt::ItemDataRole)(Qt::UserRole+1);
+    m_proxyModel->colRoleMap[8] = (Qt::ItemDataRole)(Qt::UserRole+1);
+    m_proxyModel->colRoleMap[9] = (Qt::ItemDataRole)(Qt::UserRole+1);
 
     connect( m_proxyModel, SIGNAL( rowsAboutToBeInserted( const QModelIndex & , int , int ) ),
              this, SLOT( rowsAboutToBeInserted( const QModelIndex &, int, int ) ) );
