@@ -23,9 +23,13 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
 
     /* it's important to first init the preferences */
 
-    UnitSyncLib::getInstance();
     battles->setUsers( users );
     preference          = new UserPreference();
+    preference->setWindowFlags(Qt::Window);
+    if(!settings->value("unitsync").toString().isEmpty())
+        UnitSyncLib::getInstance();
+    else
+        preference->exec();
     serverContextState  = new ServerContextState( this );
     connectionWidget    = new ConnectionWidget( serverContextState );
     connectionWidget->setWindowFlags(Qt::Window);
@@ -74,6 +78,9 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
              commandAssigner, SLOT( sendCommand( Command ) ) );
 
     /** other connections **/
+    //Maps/mods reload
+    connect(actionReload_maps_and_mods, SIGNAL(triggered()),
+            UnitSyncLib::getInstance(), SLOT(reboot()));
     // connectionWidget
     connect( action_Connect, SIGNAL( triggered() ),
              connectionWidget, SLOT( show() ) );

@@ -36,9 +36,10 @@ protected:
   bool isDirectory;
   QStringList examples;
 
-protected slots:
+public slots:
   void SaveElement();
   void ResetConfiguration();
+protected slots:
   void openFileBrowser();
   void updateExistingState( QString a = "" );
 };

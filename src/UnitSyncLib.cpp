@@ -26,11 +26,10 @@ UnitSyncLib::UnitSyncLib( QObject *parent ) : QObject( parent ) {
     unitsynclib = new QLibrary( this );
     settings = Settings::Instance();
     library_loaded = false;
-    QString libstring = settings->value("unitsync").toString();
 
     if(!unitsynclib->isLoaded()) // maybe this was useless after all (aj)
     {
-        if ( loadLibrary( libstring ) ) {
+        if ( loadLibrary() ) {
             //     qDebug() << "library is usable";
             TestCall();
             //     QMessageBox::information( NULL, "unitSyncLib", "library loaded");
@@ -48,8 +47,9 @@ UnitSyncLib::UnitSyncLib( QObject *parent ) : QObject( parent ) {
             << "gamemode";
 }
 
-bool UnitSyncLib::loadLibrary( QString lib_with_path ) {
-    NON_REENTRANT
+bool UnitSyncLib::loadLibrary() {
+    NON_REENTRANT;
+    QString lib_with_path = settings->value("unitsync").toString();
     QFileInfo fi( lib_with_path );
 
 #ifdef Q_WS_WIN
@@ -66,6 +66,11 @@ bool UnitSyncLib::loadLibrary( QString lib_with_path ) {
     //   QMessageBox::information( NULL, "unitSyncLib", QString("%1")
     //       .arg(fi.absolutePath()));
 
+    if(!QFile::exists(lib_with_path)) {
+        QMessageBox::information( NULL, "unitSyncLib - library not found",
+                                  "Unitsync library was not found or is unusable.");
+        return false;
+    }
     unitsynclib->setFileName( lib_with_path );
     //   unitsynclib->setLoadHints(QLibrary::ExportExternalSymbolsHint|QLibrary::LoadArchiveMemberHint);
     unitsynclib->load();
@@ -183,7 +188,7 @@ UnitSyncLib::~UnitSyncLib() {
 }
 
 void UnitSyncLib::TestCall() {
-    NON_REENTRANT
+    NON_REENTRANT;
     if ( !library_loaded )
         return;
 
@@ -208,7 +213,7 @@ void UnitSyncLib::TestCall() {
 }
 
 QImage UnitSyncLib::getMinimapQImage( const QString mapFileName, int miplevel, bool scaled ) {
-    NON_REENTRANT
+    NON_REENTRANT;
     if ( !libraryLoaded() )
         return QImage();
     const unsigned int height = 1 << ( 10 - miplevel );
@@ -225,7 +230,7 @@ QImage UnitSyncLib::getMinimapQImage( const QString mapFileName, int miplevel, b
 }
 
 QImage UnitSyncLib::getHeightMapQImage( const QString mapFileName ) {
-    NON_REENTRANT
+    NON_REENTRANT;
     if ( !libraryLoaded() )
         return QImage();
     int height;
@@ -248,7 +253,7 @@ QImage UnitSyncLib::getHeightMapQImage( const QString mapFileName ) {
 }
 
 RawHeightMap UnitSyncLib::getHeightMapRaw( const QString mapFileName ) {
-    NON_REENTRANT
+    NON_REENTRANT;
     if ( !libraryLoaded() )
         return RawHeightMap(0,0,0);
     int height;
@@ -260,7 +265,7 @@ RawHeightMap UnitSyncLib::getHeightMapRaw( const QString mapFileName ) {
 }
 
 QImage UnitSyncLib::getMetalMapQImage( const QString mapFileName ) {
-    NON_REENTRANT
+    NON_REENTRANT;
     if ( !libraryLoaded() )
         return QImage();
     int height;
@@ -280,44 +285,44 @@ QImage UnitSyncLib::getMetalMapQImage( const QString mapFileName ) {
 }
 
 void UnitSyncLib::getMapInfo(QString mapFileName, MapInfo* info) {
-    NON_REENTRANT
+    NON_REENTRANT;
     if(!libraryLoaded()) return;
     m_GetMapInfoEx(mapFileName.toAscii(), info, 1);
     //qDebug() << "UNITSYNC_DUMP: " << "GetMapInfoEx";
 }
 
 unsigned int UnitSyncLib::mapChecksum( QString mapName ) {
-    NON_REENTRANT
+    NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetMapChecksumFromName";
     return libraryLoaded() ? m_GetMapChecksumFromName( mapName.toAscii() ) : 0;
 }
 
 unsigned int UnitSyncLib::modChecksum( QString modName ) {
-    NON_REENTRANT
+    NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModChecksumFromName";
     return libraryLoaded() ? m_GetPrimaryModChecksumFromName( modName.toAscii() ) : 0;
 }
 
 signed int UnitSyncLib::modIndex( QString modName ) {
-    NON_REENTRANT
+    NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModInde";
     return libraryLoaded() ? m_GetPrimaryModIndex( modName.toAscii() ) : -1;
 }
 
 signed int UnitSyncLib::mapIndex( QString mapName ) {
-    NON_REENTRANT
+    NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetMapArchiveCount";
     return libraryLoaded() ? m_GetMapArchiveCount( mapName.toAscii() ) : -1;
 }
 
 QString UnitSyncLib::modArchive( int modIndex ) {
-    NON_REENTRANT
+    NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModCount";
     return libraryLoaded() && modIndex < m_GetPrimaryModCount() ? QString( m_GetPrimaryModArchive( modIndex ) ) : "";
 }
 
 bool UnitSyncLib::setCurrentMod(QString modname) {
-    NON_REENTRANT
+    NON_REENTRANT;
     if(!libraryLoaded()) return false;
     if(m_currentModName == modname) return true;
     //qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModIndex";
@@ -334,8 +339,8 @@ bool UnitSyncLib::setCurrentMod(QString modname) {
 
 QIcon UnitSyncLib::getSideIcon(QString sidename){
     if(m_sideIconsCache.contains(sidename))
-            return m_sideIconsCache[sidename];
-    NON_REENTRANT
+        return m_sideIconsCache[sidename];
+    NON_REENTRANT;
     // Maybe some cleaning needed here (aj)
     // Done (ko)
     if(!libraryLoaded()) return QIcon();
@@ -361,21 +366,21 @@ QIcon UnitSyncLib::getSideIcon(QString sidename){
 }
 
 QString UnitSyncLib::getSpringVersion() {
-    NON_REENTRANT
+    NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetSpringVersion";
     return libraryLoaded() ? QString(m_GetSpringVersion()) : "";
 }
 
 int UnitSyncLib::getSideNameCount() {
-    NON_REENTRANT
+    NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetSideCount";
     return libraryLoaded() ? m_GetSideCount( ) : -1;
 }
 
 QString UnitSyncLib::sideName( int index ) {
     if(m_sideNamesCache.contains(index))
-            return m_sideNamesCache[index];
-    NON_REENTRANT
+        return m_sideNamesCache[index];
+    NON_REENTRANT;
     if ( libraryLoaded() ) {
         //qDebug() << "UNITSYNC_DUMP: " << "GetSideCount";
         if ( m_GetSideCount(  ) > index ) {
@@ -397,13 +402,13 @@ bool UnitSyncLib::libraryLoaded() {
 }
 
 int UnitSyncLib::getModOptionCount() {
-    NON_REENTRANT
+    NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetModOptionCount";
     return m_GetModOptionCount();
 }
 
 OptionType UnitSyncLib::getOptionType(int optIndex) {
-    NON_REENTRANT
+    NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetOptionType";
     int type = m_GetOptionType(optIndex);
     switch(type) {
@@ -417,51 +422,58 @@ OptionType UnitSyncLib::getOptionType(int optIndex) {
 }
 
 QString UnitSyncLib::getOptionName(int optIndex) {
-    NON_REENTRANT
+    NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetOptionName";
     return m_GetOptionName(optIndex);
 }
 
 QString UnitSyncLib::getOptionSection(int optIndex) {
-    NON_REENTRANT
+    NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetOptionSection";
     return m_GetOptionSection(optIndex);
 }
 
 QString UnitSyncLib::getOptionKey(int optIndex) {
-    NON_REENTRANT
+    NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetOptionKey";
     return m_GetOptionKey(optIndex);
 }
 
 bool UnitSyncLib::isGameOption(int optIndex) {
-    NON_REENTRANT
+    NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetOptionKey";
     return m_gameOptionKeys.contains(m_GetOptionKey(optIndex));
 }
 
 bool UnitSyncLib::getOptionBoolDef(int optIndex){
-    NON_REENTRANT
+    NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetOptionBoolDef";
     return m_GetOptionBoolDef(optIndex);
 }
 
 QString UnitSyncLib::getOptionListDef(int optIndex){
-    NON_REENTRANT
+    NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetOptionListDef";
     return m_GetOptionListDef(optIndex);
 }
 
 float UnitSyncLib::getOptionNumberDef(int optIndex){
-    NON_REENTRANT
+    NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetOptionNumberDef";
     return m_GetOptionNumberDef(optIndex);
 }
 
 QString UnitSyncLib::getOptionStringDef(int optIndex){
-    NON_REENTRANT
+    NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetOptionStringDef";
     return m_GetOptionStringDef(optIndex);
 }
 
+void UnitSyncLib::reboot() {
+    NON_REENTRANT;
+    if(library_loaded) {
+        m_UnInit();
+        m_Init(0,0);
+    }
+}
 

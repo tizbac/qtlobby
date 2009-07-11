@@ -92,7 +92,7 @@ public:
     QImage getMetalMapQImage( const QString mapFileName );
     void getMapInfo(QString mapFileName, MapInfo* info);
     void TestCall();
-    bool loadLibrary( QString path );
+    bool loadLibrary();
     bool library_loaded;
     bool libraryLoaded();
     unsigned int mapChecksum( QString mapname );
@@ -118,6 +118,8 @@ public:
     int getSideNameCount();
     QString sideName( int index );
     QIcon getSideIcon(QString sidename);
+public slots:
+    void reboot();
 
 private:
     QMap<QString, QIcon> m_sideIconsCache;

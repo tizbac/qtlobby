@@ -17,6 +17,7 @@
 #include <QScrollArea>
 #include <QDebug>
 #include <QDir>
+#include <QList>
 
 #include "ui_preferenceWidget.h"
 #include "Settings.h"
@@ -27,11 +28,9 @@ class UserPreference : public QDialog, private Ui::PreferenceWidget {
 public:
   UserPreference( QDialog* parent = 0 );
   ~UserPreference();
-signals:
-  void SaveAllElements();
-  void ResetAllElements();
 private:
   QSettings* settings;
+  QList<ConfigElement*> elements;
 private slots:
   void okClicked();
   void applyClicked();
