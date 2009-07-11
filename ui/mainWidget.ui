@@ -355,9 +355,6 @@
    </property>
   </action>
   <action name="actionReload_maps_and_mods">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="text">
     <string>&amp;Reload maps and mods</string>
    </property>

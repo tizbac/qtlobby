@@ -227,7 +227,7 @@ void BattleChannel::receiveCommand( Command command ) {
     else if ( command.name == "UPDATEBATTLEINFO" ) {
         if ( command.attributes.takeFirst() == objectName() ) {
             command.attributes.removeFirst(); // spectator count
-            bool locked = command.attributes.takeFirst().toInt() > 0;
+            //bool locked = command.attributes.takeFirst().toInt() > 0;
             command.attributes.removeFirst(); // map hash
             QString mapName = command.attributes.join( " " );
             /*if ( battleWindowForm->lockGameCheckBox->isChecked() != locked ) {

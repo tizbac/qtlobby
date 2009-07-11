@@ -36,6 +36,7 @@ public:
 
   QString myUserName;
   QIcon icon;
+  QColor color;
   bool isActive;
   QWidget* currentWidget;
   int currentTabIndex;

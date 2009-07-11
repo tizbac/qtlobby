@@ -148,7 +148,7 @@ void LobbyTabs::receiveCommand( Command command ) {
             l->myUserName = myUserName;
     }
     // send the command to every lobbyTab
-    int currentIndex = lobbyStackedWidget->currentIndex();
+    int currentIndex = mapToLobbyTabs(tabBar->currentIndex());
     for ( int i = 0; i < lobbyTabList.count(); ++i ) {
         AbstractLobbyTab * l = lobbyTabList[i];
         //when focused set as active, needed to choose the icon
@@ -156,6 +156,7 @@ void LobbyTabs::receiveCommand( Command command ) {
         l->receiveCommand( command );
         //set the icon
         tabBar->setTabIcon( l->currentTabIndex, l->icon );
+        tabBar->setTabTextColor( l->currentTabIndex, l->color );
     }
 }
 
@@ -211,14 +212,16 @@ void LobbyTabs::currentTabChangedSlot( int index ) {
     // why did it run without any problem on qt 4.3? (js)
     if ( lobbyTabList.size() == 0 )
         return;
+    qDebug() << "Original: " << index;
     index = mapToLobbyTabs(index);
     lobbyStackedWidget->setCurrentWidget(lobbyTabList[index]->currentWidget);
     if(index < 0) return;
+    qDebug() << index;
     setTabIcon( index );
     //updateCloseTabState();
     emit currentTabChanged( lobbyTabList[index]->objectName(),
                             lobbyTabList[index]->metaObject()->className() );
-    bool isBattleTab = QString( lobbyTabList[index]->metaObject()->className() ) == "BattleChannel";
+    //bool isBattleTab = QString( lobbyTabList[index]->metaObject()->className() ) == "BattleChannel";
     if(lastIndex >= 0) {
         if(QString( lobbyTabList[lastIndex]->metaObject()->className() ) == "BattleChannel" && QString( lobbyTabList[index]->metaObject()->className() ) != "BattleChannel")
             emit changedFromBattleTab();
@@ -231,7 +234,7 @@ void LobbyTabs::currentTabChangedSlot( int index ) {
 
 void LobbyTabs::setTabIcon( int index ) {
     //set the current tab to active, to restore the icon
-    lobbyTabList[index]->setActive( lobbyStackedWidget->currentIndex() == index );
+    lobbyTabList[index]->setActive( mapToLobbyTabs(tabBar->currentIndex()) == index );
     //we refresh the icon for the current tab
     tabBar->setTabIcon( lobbyTabList[index]->currentTabIndex, lobbyTabList[index]->icon );
 }
@@ -259,8 +262,8 @@ void LobbyTabs::closeTab(int i) {
     QTimer::singleShot( 0, win, SLOT( deleteLater() ) );
     //updateCloseTabState();
     //delete the lobbyTab from the list
-    for(int i = index+1; i < lobbyTabList.size(); i++) {
-        lobbyTabList[i]->currentTabIndex--;
+    for(int x = i+1; i < lobbyTabList.size(); i++) {
+        lobbyTabList[mapToLobbyTabs(i)]->currentTabIndex--;
     }
     lobbyTabList.removeAt( index );
 }
@@ -292,9 +295,22 @@ int LobbyTabs::mapToLobbyTabs(int i) {
     int index = -1;
     for(int x = 0; x < lobbyTabList.size(); x++) {
         if(lobbyTabList[x]->currentTabIndex == i) {
-            index = i;
+            index = x;
             break;
         }
     }
     return index;
+}
+
+void LobbyTabs::onTabMoved( int from, int to ) {
+    qDebug() << from << " --> " << to;
+    if(from == to) return;
+    AbstractLobbyTab* t_from = lobbyTabList[mapToLobbyTabs(from)];
+    AbstractLobbyTab* t_to = lobbyTabList[mapToLobbyTabs(to)];
+    int fromIndex = t_from->currentTabIndex;
+    t_from->currentTabIndex = t_to->currentTabIndex;
+    t_to->currentTabIndex = fromIndex;
+    currentTabChangedSlot(qMax<int>(from,to));
+    //setTabIcon(mfrom);
+    //setTabIcon(mto);
 }

@@ -43,6 +43,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
 
     tabBar->setTabsClosable(true);
     tabBar->setDocumentMode(true);
+    tabBar->setDrawBase(false);
+    tabBar->setMovable(true);
     QAction* a = tabsToolBar->addWidget(tabBar);
     a->setVisible(true);
 
@@ -132,6 +134,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
              this, SLOT( onChangedToBattleTab()) );
     connect( lobbyTabs, SIGNAL(changedFromBattleTab()),
              this, SLOT( onChangedFromBattleTab()) );
+    connect (tabBar, SIGNAL(tabMoved(int,int)),
+             lobbyTabs, SLOT(onTabMoved(int,int)));
     //connect( lobbyTabs, SIGNAL( hideBattleList( bool ) ),
     //         this, SLOT( hideBattleList( bool ) ) );
     // aboutDialog

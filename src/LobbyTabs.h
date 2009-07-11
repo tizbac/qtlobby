@@ -67,6 +67,7 @@ public slots:
     //close tab
     void closeTab(int i);
     void closeTab();
+    void onTabMoved( int from, int to );
 
 private:
     //last tab index

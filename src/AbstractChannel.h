@@ -45,6 +45,8 @@ protected:
   QGridLayout * gridLayout;
   QIcon activeIcon;
   QIcon inactiveIcon;
+  QColor activeTextColor;
+  QColor inactiveTextColor;
   static QString currentUsername;
 };
 
