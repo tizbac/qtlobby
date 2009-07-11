@@ -74,10 +74,13 @@ private:
   bool inBattle;
   QByteArray lastState;
   QByteArray lastBattleState;
+  QByteArray state;
 signals:
   void newTrayMessage(QString);
 protected:
   void closeEvent(QCloseEvent *event);
+  void hideEvent(QHideEvent * event);
+  void showEvent(QShowEvent * event);
 private slots:
   void about();
   void newUserTextInput();

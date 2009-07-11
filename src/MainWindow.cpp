@@ -226,13 +226,9 @@ void MainWindow::toggleUserListVisible() {
 }
 
 void MainWindow::toggleShowHideMainWindow( QSystemTrayIcon::ActivationReason reason ) {
-    static QByteArray state;
     if ( reason == QSystemTrayIcon::Trigger ) {
         if ( isVisible() ) {
             //       QTimer::singleShot( 0, connectionWidget, SLOT( hide() ) );
-            userListDockWidget->blockSignals(true);
-            battleListDockWidget->blockSignals(true);
-            state = saveState();
             hide();
         }
         else {
@@ -386,5 +382,17 @@ void MainWindow::onCurrentChanged(const QModelIndex & current, const QModelIndex
         battleInfoTreeView->resizeColumnToContents(i);
     for(int i = 4; i <= 9; i++)
         battleInfoTreeView->hideColumn(i);
+}
+
+void MainWindow::hideEvent(QHideEvent * event) {
+    userListDockWidget->blockSignals(true);
+    battleListDockWidget->blockSignals(true);
+    state = saveState();
+}
+
+void MainWindow::showEvent(QShowEvent * event) {
+    userListDockWidget->blockSignals(false);
+    battleListDockWidget->blockSignals(false);
+    restoreState(state);
 }
 
