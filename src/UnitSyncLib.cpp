@@ -340,6 +340,7 @@ bool UnitSyncLib::setCurrentMod(QString modname) {
 QIcon UnitSyncLib::getSideIcon(QString sidename){
     if(m_sideIconsCache.contains(sidename))
         return m_sideIconsCache[sidename];
+    if(sidename.isEmpty()) return QIcon();
     NON_REENTRANT;
     // Maybe some cleaning needed here (aj)
     // Done (ko)
@@ -372,6 +373,7 @@ QString UnitSyncLib::getSpringVersion() {
 }
 
 int UnitSyncLib::getSideNameCount() {
+    if(m_currentModName.isEmpty()) return 0;
     NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetSideCount";
     return libraryLoaded() ? m_GetSideCount( ) : -1;
@@ -380,6 +382,7 @@ int UnitSyncLib::getSideNameCount() {
 QString UnitSyncLib::sideName( int index ) {
     if(m_sideNamesCache.contains(index))
         return m_sideNamesCache[index];
+    if(m_currentModName.isEmpty()) return QString();
     NON_REENTRANT;
     if ( libraryLoaded() ) {
         //qDebug() << "UNITSYNC_DUMP: " << "GetSideCount";
