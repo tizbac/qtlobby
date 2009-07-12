@@ -318,6 +318,7 @@ void BattleChannel::receiveInput( QString input ) {
         ret.name = "LEAVEBATTLE";
         disconnect(battles, SIGNAL(addStartRect(int,QRect)), this, SLOT(onAddStartRect(int,QRect)));
         disconnect(battles, SIGNAL(removeStartRect(int)), this, SLOT(onRemoveStartRect(int)));
+        Settings::Instance()->setValue("mainwindow/chatsplitter", splitterState);
         noMapUpdates = true;
     }
     else {
@@ -440,7 +441,8 @@ void BattleChannel::openMapOverview() {
 void BattleChannel::onChatSplitterMoved ( int /*pos*/, int /*index*/ ) {
     QSplitter* splitter = qobject_cast<QSplitter*>(sender());
     if(!splitter) return;
-    Settings::Instance()->setValue("mainwindow/chatsplitter", splitter->saveState());
+    splitterState = splitter->saveState();
+
 }
 
 void BattleChannel::onBattleSplitterMoved ( int /*pos*/, int /*index*/ ) {

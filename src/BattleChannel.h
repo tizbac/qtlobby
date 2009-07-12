@@ -65,6 +65,7 @@ private:
   bool noMapUpdates;
   QColor currentcolor;
   bool locked;
+  QByteArray splitterState;
 protected:
   Battles* battles;
 };
