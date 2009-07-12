@@ -306,7 +306,7 @@ void LobbyTabs::onTabMoved( int from, int to ) {
     int fromIndex = t_from->currentTabIndex;
     t_from->currentTabIndex = t_to->currentTabIndex;
     t_to->currentTabIndex = fromIndex;
-    currentTabChangedSlot(qMax<int>(from,to));
+    currentTabChangedSlot(from);
     //setTabIcon(mfrom);
     //setTabIcon(mto);
 }
