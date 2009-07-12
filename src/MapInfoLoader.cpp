@@ -96,13 +96,15 @@ QDataStream & operator>> (QDataStream& stream, MapInfo& info)
     stream >> info.maxWind;
     stream >> info.minWind;
     stream >> info.posCount;    
-    stream >> info.tidalStrength;
-    stream >> info.width;
+
 
     for(int i =0; i < info.posCount; i++){
         stream >> info.positions[i].x;
         stream >> info.positions[i].z;
     }
+
+    stream >> info.tidalStrength;
+    stream >> info.width;
     return stream;
 }
 
