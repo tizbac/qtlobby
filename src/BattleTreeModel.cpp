@@ -22,6 +22,7 @@ BattleTreeModel::~BattleTreeModel() {
 }
 
 QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
+    if(index.row() >= m_battleList.size() || index.row() < 0) return QVariant();
     if(role == Qt::BackgroundRole && m_users) {
         QList<User> users = m_users->getUserList(m_battleList[index.row()].id);
         if(users.size() > 0) {

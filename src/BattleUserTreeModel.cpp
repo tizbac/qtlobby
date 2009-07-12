@@ -53,6 +53,7 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
         case 9: //handicap
             return u.battleState.getHandicap();
         }
+        return QVariant();
     }
     switch ( index.column() ) {
     case 0: //status

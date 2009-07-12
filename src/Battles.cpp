@@ -65,6 +65,9 @@ void Battles::receiveCommand( Command command ) {
     }
     else if ( command.name == "JOINBATTLE" ) {
     }
+    else if ( command.name == "JOINBATTLEFAILED" ) {
+        QMessageBox::critical(this, "Join battle failed", command.attributes.join(" "));
+    }
     else if ( command.name == "JOINEDBATTLE" ) {
         Battle b = battleManager->getBattle( command.attributes[0].toInt() );
         b.playerCount++;
@@ -193,7 +196,7 @@ void Battles::setRegExp( QString regExp ) {
 void Battles::doubleClicked( const QModelIndex & index ) {
     Battle b = battleManager->model()-> data(
             battleManager->proxyModel()->mapToSource( index ), Qt::UserRole ).value<Battle>();
-    if ( b.isPasswordProtected ) {
+    if ( !b.isLocked && !b.isStarted && b.isPasswordProtected ) {
         gamePasswordWidget->setBattleId( b.id );
         gamePasswordWidget->resetPassword();
         gamePasswordWidget->show();
