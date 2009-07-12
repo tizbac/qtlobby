@@ -451,6 +451,7 @@ void BattleChannel::onBattleSplitterMoved ( int /*pos*/, int /*index*/ ) {
 
 void BattleChannel::onColorClicked() {
     QColor newColor = QColorDialog::getColor (currentcolor, 0, "Select color for group");
+    if(!newColor.isValid()) return;
     currentcolor = newColor;
     QPixmap color(16,16);
     color.fill(newColor);
