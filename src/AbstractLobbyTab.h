@@ -33,6 +33,7 @@ public:
   virtual void setupUi( QWidget * tab ) = 0;
   virtual void setActive( bool isActive ) = 0;
   void setUserNameCountryCodeMap( QMap<QString, QString>* userNameCountryCodeMap );
+  virtual QString getTabTitle();
 
   QString myUserName;
   QIcon icon;

@@ -115,7 +115,8 @@ UserPreference::UserPreference( QDialog* parent ) : QDialog( parent ) {
             "/usr/local/lib/unitsync.so;"
             "/usr/lib/unitsync.so;"
             "/usr/lib/spring/lib/unitsync.so;"
-            "/usr/games/lib/spring/unitsync.so;";
+            "/usr/games/lib/spring/unitsync.so;"
+            "/usr/games/lib64/libunitsync.so";
 #endif
 
     elements.append( el );

@@ -29,3 +29,7 @@ QString AbstractLobbyTab::flag( const QString userName ) {
 void AbstractLobbyTab::setUserNameCountryCodeMap( QMap<QString, QString>* userNameCountryCodeMap ) {
   this->userNameCountryCodeMap = userNameCountryCodeMap;
 }
+
+QString AbstractLobbyTab::getTabTitle() {
+    return objectName();
+}

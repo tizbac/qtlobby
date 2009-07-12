@@ -58,6 +58,7 @@ void MapWidget::paintEvent ( QPaintEvent * event ) {
 
 void MapWidget::resizeEvent(QResizeEvent * event) {
     if(event->oldSize() == size()) return;
+    if(m_pixmap.isNull()) return;
     m_scaled = m_pixmap.scaled(size(), Qt::KeepAspectRatio);
 }
 

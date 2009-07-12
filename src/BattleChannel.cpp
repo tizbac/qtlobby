@@ -15,6 +15,7 @@
 BattleChannel::BattleChannel( QString id, Battles* battles, QObject * parent ) : AbstractChannel( id, parent ) {
     this->battles = battles;
     m_battle = battles->battleManager->getBattle( id.toInt() );
+    //setObjectName(m_battle.founder);
     battleWindowForm = new Ui::battleWindowForm();
     activeIcon = QIcon( ":/icons/battle.xpm" );
     mapOverviewDialog = new MapOverviewDialog();
@@ -50,7 +51,7 @@ void BattleChannel::setupUi( QWidget * tab ) {
             Users::getCurrentUsers(),SLOT(onSpecStateChanged( int ))); // NEW
     connect(battleWindowForm->factionsComboBox, SIGNAL( currentIndexChanged( int)),
             Users::getCurrentUsers(),SLOT(onSideComboBoxChanged( int )));
-    connect(battleWindowForm->colorLabel, SIGNAL(linkActivated (const QString &)),
+    connect(battleWindowForm->colorToolButton, SIGNAL(clicked()),
             this, SLOT(onColorClicked()));
     connect(this, SIGNAL( colorChanged(QColor)),
             Users::getCurrentUsers(),SLOT(onColorChanged(QColor)));
@@ -420,8 +421,8 @@ void BattleChannel::updateMapInfo( QString mapName ) {
         battleWindowForm->minimapWidget->setErrorMessage(QString::null);
         battleWindowForm->heightmapWidget->setErrorMessage(QString::null);
         battleWindowForm->metalmapWidget->setErrorMessage(QString::null);
-        battleWindowForm->sizeLabel->setText(QString("%1x%2").arg(loader->mapinfo.width).arg(loader->mapinfo.height));
-        battleWindowForm->windspeedLabel->setText(QString("%1x%2").arg(loader->mapinfo.minWind).arg(loader->mapinfo.maxWind));
+        battleWindowForm->sizeLabel->setText(QString("%1x%2").arg(loader->mapinfo.width/512).arg(loader->mapinfo.height/512));
+        battleWindowForm->windspeedLabel->setText(QString("%1-%2").arg(loader->mapinfo.minWind).arg(loader->mapinfo.maxWind));
         battleWindowForm->tidalLabel->setText(QString::number(loader->mapinfo.tidalStrength));
         //battleWindowForm->authorLabel->setText(loader->mapinfo.author);
         //battleWindowForm->descriptionLabel->setText();
@@ -449,7 +450,9 @@ void BattleChannel::onBattleSplitterMoved ( int /*pos*/, int /*index*/ ) {
 void BattleChannel::onColorClicked() {
     QColor newColor = QColorDialog::getColor (currentcolor, 0, "Select color for group");
     currentcolor = newColor;
-    battleWindowForm->colorLabel->setText(QString("<a href=\"#\"><span style=\" text-decoration: underline; color:%1;\">%1</span></a>").arg(newColor.name()));
+    QPixmap color(16,16);
+    color.fill(newColor);
+    battleWindowForm->colorToolButton->setIcon(color);
     emit colorChanged(newColor);
 }
 
@@ -460,14 +463,16 @@ void BattleChannel::onMyStateChanged(User u) {
     battleWindowForm->factionsComboBox->blockSignals(true);
     battleWindowForm->teamNoSpinBox->blockSignals(true);
     battleWindowForm->teamAllyNoSpinBox->blockSignals(true);
-    battleWindowForm->colorLabel->blockSignals(true);
+    battleWindowForm->colorToolButton->blockSignals(true);
 
     battleWindowForm->readyCheckBox->setChecked(u.battleState.isReady());
     battleWindowForm->specCheckBox->setChecked(!u.battleState.isPlayer());
     battleWindowForm->factionsComboBox->setCurrentIndex(u.battleState.getSide());
     battleWindowForm->teamNoSpinBox->setValue(u.battleState.getTeamNo()+1);
     battleWindowForm->teamAllyNoSpinBox->setValue(u.battleState.getAllyTeamNo()+1);
-    battleWindowForm->colorLabel->setText(QString("<a href=\"#\"><span style=\" text-decoration: underline; color:%1;\">%1</span></a>").arg(u.m_color.name()));
+    QPixmap color(16,16);
+    color.fill(u.m_color);
+    battleWindowForm->colorToolButton->setIcon(color);
     currentcolor = u.m_color;
 
     battleWindowForm->readyCheckBox->blockSignals(false);
@@ -475,7 +480,7 @@ void BattleChannel::onMyStateChanged(User u) {
     battleWindowForm->factionsComboBox->blockSignals(false);
     battleWindowForm->teamNoSpinBox->blockSignals(false);
     battleWindowForm->teamAllyNoSpinBox->blockSignals(false);
-    battleWindowForm->colorLabel->blockSignals(false);
+    battleWindowForm->colorToolButton->blockSignals(false);
 }
 
 void BattleChannel::onAddStartRect(int ally, QRect r) {
@@ -490,4 +495,8 @@ void BattleChannel::onRemoveStartRect(int ally) {
     battleWindowForm->heightmapWidget->removeStartRect(ally);
     battleWindowForm->metalmapWidget->removeStartRect(ally);
     mapOverviewDialog->removeStartRect(ally);
+}
+
+QString BattleChannel::getTabTitle() {
+    return m_battle.founder;
 }

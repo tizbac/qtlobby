@@ -186,7 +186,7 @@ void LobbyTabs::createLobbyTab( AbstractLobbyTab * lobbyTab ) {
     //add the widget to the lobbyStackedWidget
 
     // qt 4.4 bug line
-    tabBar->addTab( lobbyTab->icon, lobbyTab->objectName() );
+    tabBar->addTab( lobbyTab->icon, lobbyTab->getTabTitle() );
     lobbyStackedWidget->addWidget(widget);
     //connect the widget to the lobbyTab and fill with default content
     lobbyTab->setupUi( widget );

@@ -34,6 +34,7 @@ class BattleChannel : public AbstractChannel {
 public:
   BattleChannel( QString id, Battles* battles, QObject * parent = 0 );
   void setupUi( QWidget * tab );
+  QString getTabTitle();
 
 signals:
   void playSample( SampleCollection sample );
