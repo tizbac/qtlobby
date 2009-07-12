@@ -95,6 +95,10 @@ bool AbstractChannel::executeChannelInput( QString input ) {
         receiveCommand( ret );
         return true;
     }
+    else if ( QString( "/ingame" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
+        ret.name = "GETINGAMETIME";
+        ret.attributes << inputList;
+    }
     else
         return false;
     emit sendCommand( ret );
