@@ -119,6 +119,7 @@ void InputLine::returnPressed() {
     if( history.count() > 22 )
         history.removeLast();
     input.replace("\\b",QChar::fromAscii(2));
+    input.replace("\\k",QChar::fromAscii(3));
     input.replace("\\o",QChar::fromAscii(15));
     input.replace("\\f",QChar::fromAscii(17));
     input.replace("\\s",QChar::fromAscii(29));
