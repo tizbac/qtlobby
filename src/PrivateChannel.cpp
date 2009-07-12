@@ -25,14 +25,14 @@ void PrivateChannel::receiveCommand( Command command ) {
       insertLine( flag( objectName() ) + line
                   .arg( "&lt;%1&gt; %2" )
                   .arg( objectName() )
-                  .arg( command.attributes.join( " " ) ) );
+                  .arg( processInput(command.attributes.join( " " ))));
     }
   }
   else if ( command.name == "SAYPRIVATE" ) {
     if ( command.attributes.takeFirst() == objectName() && command.attributes.join( " " ).trimmed() != "" ) {
       insertLine( line.arg( "&lt;%1&gt; %2" )
                   .arg( myUserName )
-                  .arg( command.attributes.join( " " ) ) );
+                  .arg( processInput(command.attributes.join( " " ))));
     }
   }
   else if ( command.name == "CLIENTMSG" ) {

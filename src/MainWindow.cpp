@@ -126,6 +126,9 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     // lobbyTabs to open private channel, when requested in user list
     connect( users, SIGNAL( sendInput( QString ) ),
              lobbyTabs, SLOT( receiveInput( QString ) ) );
+    //New group action in users
+    connect( users, SIGNAL(openGroupsDialog()),
+             userGroupsDialog, SLOT(show()));
     // users, for the userlist to show
     connect( lobbyTabs, SIGNAL( currentTabChanged( QString, QString ) ),
              users, SLOT( currentTabChanged( QString, QString ) ) );

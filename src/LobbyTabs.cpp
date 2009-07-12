@@ -197,7 +197,8 @@ void LobbyTabs::createLobbyTab( AbstractLobbyTab * lobbyTab ) {
     lobbyTabList.append(lobbyTab);
     //focus the inserted tab
     //TODO: make an option may be?
-    if ( QString(lobbyTab->metaObject()->className()) == "BattleChannel" ) {
+    if ( QString(lobbyTab->metaObject()->className()) == "BattleChannel"  ||
+         QString(lobbyTab->metaObject()->className()) == "PrivateChannel") {
         lobbyStackedWidget->setCurrentWidget(widget);
         tabBar->setCurrentIndex(c);
     }
@@ -270,11 +271,13 @@ void LobbyTabs::privateChannelOpen( QString userName ) {
     foreach( AbstractLobbyTab * l, lobbyTabList ) {
         if ( l->objectName() == userName && l->metaObject()->className() == QString( "PrivateChannel" ) ) {
             found = true;
+            tabBar->setCurrentIndex(l->currentTabIndex);
             break;
         }
     }
-    if ( !found )
+    if ( !found ) {
         createLobbyTab( new PrivateChannel( userName, lobbyStackedWidget ) );
+    }
 }
 
 QStringList LobbyTabs::getChannelList() {

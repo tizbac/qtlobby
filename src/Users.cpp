@@ -240,8 +240,14 @@ void Users::customContextMenuRequestedSlot( const QPoint & point ) {
             userMenu->addAction(removeClanFromGroupAction);
     } else {
         groupsMenu->clear();
-        if(!clan.isEmpty())
+        QAction* newGroup = groupsMenu->addAction("New Group");
+        newGroup->setObjectName("create_new_group");
+        groupsMenu->addSeparator();
+        if(!clan.isEmpty()) {
             clanGroupsMenu->clear();
+            clanGroupsMenu->addAction(newGroup);
+            clanGroupsMenu->addSeparator();
+        }
         QStringList groups = list->getGroupNames();
         for(int i = 0; i < groups.size(); i++) {
             QAction* a = groupsMenu->addAction(groups.at(i));
@@ -272,6 +278,8 @@ void Users::customContextMenuRequestedSlot( const QPoint & point ) {
             addUserToGroup(u.name, action->text());
         } else if( action->objectName() == "add_clan_to_group") {
             addUserToGroup(clan, action->text());
+        } else if (action->objectName() == "create_new_group") {
+            emit openGroupsDialog();
         }
     }
 }

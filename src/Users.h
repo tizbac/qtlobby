@@ -46,6 +46,7 @@ signals:
   void sendCommand( Command command );
   void sendInput( QString input );
   void myStateChanged(User u);
+  void openGroupsDialog();
 public slots:
   void setRegExp( QString regExp );
   void receiveCommand( Command command );
