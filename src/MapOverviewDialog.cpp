@@ -35,3 +35,7 @@ void MapOverviewDialog::addStartRect(int ally, QRect r) {
 void MapOverviewDialog::setMyAllyTeam(int n) {
     m_ui->glWidget->setMyAllyTeam(n);
 }
+
+void MapOverviewDialog::removeStartRect(int ally) {
+    m_ui->glWidget->removeStartRect(ally);
+}

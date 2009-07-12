@@ -16,6 +16,7 @@ public:
     void setErrorMessage(QString msg);
 public slots:
     void addStartRect(int ally, QRect r);
+    void removeStartRect(int ally);
     void setMyAllyTeam(int n);
 protected:
     void resizeEvent(QResizeEvent * event);

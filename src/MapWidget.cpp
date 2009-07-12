@@ -72,4 +72,10 @@ void MapWidget::addStartRect(int ally, QRect r) {
 
 void MapWidget::setMyAllyTeam(int n) {
     myAlly = n-1;
+    update();
+}
+
+void MapWidget::removeStartRect(int ally) {
+    startRects.remove(ally);
+    update();
 }

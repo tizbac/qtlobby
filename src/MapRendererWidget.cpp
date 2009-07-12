@@ -176,7 +176,10 @@ void MapRendererWidget::makeObject() {
         glBindBuffer( GL_ARRAY_BUFFER, m_VBOTexCoords );
         glBufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(TexCoord), m_texCoords, GL_STATIC_DRAW );
     }
-    m_texture = bindTexture(QPixmap::fromImage(m_minimap), GL_TEXTURE_2D);
+    if(startRects.count())
+        drawStartRecs();
+    else
+        m_texture = bindTexture(QPixmap::fromImage(m_minimap), GL_TEXTURE_2D);
     generateIndexes();
     //QApplication::processEvents();
     //progress->hide();
@@ -216,11 +219,11 @@ void MapRendererWidget::setSource(QString mapName, QImage minimap, RawHeightMap 
     m_minimap = minimap;
     m_heightmap.free();
     m_heightmap = heightmap;
-	if(getGLExtensionFunctions().openGL15Supported()) {
-		glDeleteBuffers(1, &m_VBOVertices);
-		glDeleteBuffers(1, &m_VBONormals);
-		glDeleteBuffers(1, &m_VBOTexCoords);
-	}
+    if(getGLExtensionFunctions().openGL15Supported()) {
+        glDeleteBuffers(1, &m_VBOVertices);
+        glDeleteBuffers(1, &m_VBONormals);
+        glDeleteBuffers(1, &m_VBOTexCoords);
+    }
     m_vertexNumber = heightmap.getWidth()*(heightmap.getHeight()-1)*2;
     if(m_vertexes) delete m_vertexes;
     m_vertexes = new Vertex[m_vertexNumber];
@@ -234,7 +237,6 @@ void MapRendererWidget::setSource(QString mapName, QImage minimap, RawHeightMap 
         }
     }
     compileObject = true;
-    startRects.clear();
     if(hasFocus()) updateGL();
 }
 
@@ -303,14 +305,15 @@ void MapRendererWidget::mouseMoveEvent(QMouseEvent *event) {
 
 
 void MapRendererWidget::drawStartRecs() {
+    if(m_minimap.isNull()) return;
     m_withRects = m_minimap;
     QPainter p(&m_withRects);
     for(QMap<int, QRect>::const_iterator i = startRects.begin(); i != startRects.end(); i++) {
+        qDebug() << "Drawing rect: " << i.value();
         QRect scaled = i.value();
-        scaled.setWidth(scaled.width()/200.*m_withRects.width());
-        scaled.setHeight(scaled.height()/200.*m_withRects.height());
-        scaled.setX(scaled.x()/200.*m_withRects.width());
-        scaled.setY(scaled.y()/200.*m_withRects.height());
+        scaled.setWidth(scaled.width()/201.*m_withRects.width());
+        scaled.setHeight(scaled.height()/201.*m_withRects.height());
+        scaled.moveTo(scaled.x()/201.*m_withRects.width(), scaled.y()/201.*m_withRects.height());
         int alpha = 50;
         int width = 2;
         QColor red(Qt::red);
@@ -348,7 +351,11 @@ void MapRendererWidget::setMyAllyTeam(int n) {
     updateGL();
 }
 
-
+void MapRendererWidget::removeStartRect(int ally) {
+    startRects.remove(ally);
+    drawStartRecs();
+    updateGL();
+}
 
 
 // Vertex

@@ -158,6 +158,7 @@ void Battles::receiveCommand( Command command ) {
         Battle b = battleManager->getBattle( bi );
         b.allyNumberStartRectMap.remove( command.attributes[0].toInt() );
         battleManager->modBattle( b );
+        emit removeStartRect(command.attributes[0].toInt());
     }
     else if ( command.name == "REQUESTBATTLESTATUS" ) {
         User u = users->getUser( url.userName() );

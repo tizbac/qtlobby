@@ -17,6 +17,7 @@ public:
 public slots:
     void addStartRect(int ally, QRect r);
     void setMyAllyTeam(int n);
+    void removeStartRect(int ally);
 
 protected:
     virtual void changeEvent(QEvent *e);

@@ -39,6 +39,7 @@ public slots:
     void setZRotation(int angle);
     void addStartRect(int ally, QRect r);
     void setMyAllyTeam(int n);
+    void removeStartRect(int ally);
 
 protected:
     void initializeGL();

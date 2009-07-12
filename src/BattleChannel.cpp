@@ -67,6 +67,7 @@ void BattleChannel::setupUi( QWidget * tab ) {
     connect(battleWindowForm->teamAllyNoSpinBox, SIGNAL(valueChanged(int)),
             battleWindowForm->metalmapWidget, SLOT(setMyAllyTeam(int)));
     connect(battles, SIGNAL(addStartRect(int,QRect)), SLOT(onAddStartRect(int,QRect)));
+    connect(battles, SIGNAL(removeStartRect(int)), SLOT(onRemoveStartRect(int)));
     currentMap = m_battle.mapName;
     requestMapInfo( m_battle.mapName );
     connect(battleWindowForm->overviewPushButton, SIGNAL(clicked()), SLOT(openMapOverview()));
@@ -315,6 +316,7 @@ void BattleChannel::receiveInput( QString input ) {
     else if ( QString( "/leave" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
         ret.name = "LEAVEBATTLE";
         disconnect(battles, SIGNAL(addStartRect(int,QRect)), this, SLOT(onAddStartRect(int,QRect)));
+        disconnect(battles, SIGNAL(removeStartRect(int)), this, SLOT(onRemoveStartRect(int)));
         noMapUpdates = true;
     }
     else {
@@ -481,4 +483,11 @@ void BattleChannel::onAddStartRect(int ally, QRect r) {
     battleWindowForm->heightmapWidget->addStartRect(ally, r);
     battleWindowForm->metalmapWidget->addStartRect(ally, r);
     mapOverviewDialog->addStartRect(ally, r);
+}
+
+void BattleChannel::onRemoveStartRect(int ally) {
+    battleWindowForm->minimapWidget->removeStartRect(ally);
+    battleWindowForm->heightmapWidget->removeStartRect(ally);
+    battleWindowForm->metalmapWidget->removeStartRect(ally);
+    mapOverviewDialog->removeStartRect(ally);
 }
