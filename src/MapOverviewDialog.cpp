@@ -27,3 +27,11 @@ void MapOverviewDialog::setSource(QString mapName, QString mapDescription, QImag
     m_ui->mapNameLabel->setText("<b>"+mapName+"</b");
     m_ui->mapDescriptionLabel->setText(mapDescription);
 }
+
+void MapOverviewDialog::addStartRect(int ally, QRect r) {
+    m_ui->glWidget->addStartRect(ally, r);
+}
+
+void MapOverviewDialog::setMyAllyTeam(int n) {
+    m_ui->glWidget->setMyAllyTeam(n);
+}

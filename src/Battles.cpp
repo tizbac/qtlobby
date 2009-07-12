@@ -116,7 +116,7 @@ void Battles::receiveCommand( Command command ) {
         }
     }
     else if ( command.name == "SETSCRIPTTAGS" ) {
-        int bi = users->getUser( users->url.userName() ).joinedBattleId;
+        int bi = users->getUser( username ).joinedBattleId;
         Battle b = battleManager->getBattle( bi );
         command.attributes = command.attributes.join( " " ).split( "\t" );
         foreach( QString s, command.attributes ) {
@@ -126,7 +126,7 @@ void Battles::receiveCommand( Command command ) {
         battleManager->modBattle( b );
     }
     else if ( command.name == "REMOVESCRIPTTAGS" ) {
-        int bi = users->getUser( users->url.userName() ).joinedBattleId;
+        int bi = users->getUser( username ).joinedBattleId;
         Battle b = battleManager->getBattle( bi );
         command.attributes = command.attributes.join( " " ).split( "\t" );
         foreach( QString s, command.attributes ) {
@@ -137,7 +137,7 @@ void Battles::receiveCommand( Command command ) {
         battleManager->modBattle( b );
     }
     else if ( command.name == "ADDSTARTRECT" ) { // allyno left top right bottom
-        int bi = users->getUser( users->url.userName() ).joinedBattleId;
+        int bi = users->getUser( username ).joinedBattleId;
         Battle b = battleManager->getBattle( bi );
         b.allyNumberStartRectMap[command.attributes[0].toInt()] = StartRect(
                 command.attributes[1].toInt(),
@@ -145,10 +145,16 @@ void Battles::receiveCommand( Command command ) {
                 command.attributes[3].toInt(),
                 command.attributes[4].toInt()
                 );
+        QRect r;
+        r.setCoords(command.attributes[1].toInt(),
+                    command.attributes[2].toInt(),
+                    command.attributes[3].toInt(),
+                    command.attributes[4].toInt());
+        emit addStartRect(command.attributes[0].toInt(), r);
         battleManager->modBattle( b );
     }
     else if ( command.name == "REMOVESTARTRECT" ) { // allyno
-        int bi = users->getUser( users->url.userName() ).joinedBattleId;
+        int bi = users->getUser( username ).joinedBattleId;
         Battle b = battleManager->getBattle( bi );
         b.allyNumberStartRectMap.remove( command.attributes[0].toInt() );
         battleManager->modBattle( b );
@@ -430,7 +436,7 @@ int Battles::resyncStatus() {
     if ( UnitSyncLib::getInstance()->mapChecksum( b.mapName ) != ( unsigned int ) b.mapHash )
         return 2; // 2 = not sync
 
-    qDebug() << "flux: modindex is: " << UnitSyncLib::getInstance()->modIndex(modName);
+    //qDebug() << "flux: modindex is: " << UnitSyncLib::getInstance()->modIndex(modName);
     if (UnitSyncLib::getInstance()->modIndex(modName) < 0)
         return 2; // 2 = not sync
 

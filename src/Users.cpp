@@ -312,7 +312,6 @@ void Users::onMyBattleStateChanged( User u ) {
 
 /* NEW */
 void Users::onSideComboBoxChanged( int index ){
-    qDebug() << "void Users::onSideComboBoxChanged( int index )";
     User u = infoChannelUserManager->getUser( url.userName() );
     u.battleState.setSide(index);
     onMyBattleStateChanged( u );
@@ -321,22 +320,15 @@ void Users::onSideComboBoxChanged( int index ){
 /* NEW */
 void Users::onSpecStateChanged( int state ) {
     bool isSpec = state == Qt::Checked;
-    qDebug() << "void Users::onSpecStateChanged( bool isSpec )";
     User u = infoChannelUserManager->getUser( url.userName() );
-    qDebug() << u.name;
     u.battleState.setPlayer(!isSpec);
-    //u.battleState.setReady(isSpec);
-    qDebug() << "u.battleState.setPlayer("<<!isSpec<<");";
     onMyBattleStateChanged( u );
 }
 
 void Users::onReadyStateChanged( int state ) {
     bool isReady = state == Qt::Checked;
-    qDebug() << "void Users::onReadyStateChanged( bool isReady )";
     User u = infoChannelUserManager->getUser( url.userName() );
-    qDebug() << u.name;
     u.battleState.setReady(isReady);
-    qDebug() << "u.battleState.setReady("<<isReady<<");";
     onMyBattleStateChanged( u );
 }
 

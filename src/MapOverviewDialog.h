@@ -14,6 +14,9 @@ public:
     explicit MapOverviewDialog(QWidget *parent = 0);
     virtual ~MapOverviewDialog();
     void setSource(QString mapName, QString description, QImage minimap, RawHeightMap heightmap);
+public slots:
+    void addStartRect(int ally, QRect r);
+    void setMyAllyTeam(int n);
 
 protected:
     virtual void changeEvent(QEvent *e);

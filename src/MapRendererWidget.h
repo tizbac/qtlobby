@@ -37,6 +37,8 @@ public slots:
     void setXRotation(int angle);
     void setYRotation(int angle);
     void setZRotation(int angle);
+    void addStartRect(int ally, QRect r);
+    void setMyAllyTeam(int n);
 
 protected:
     void initializeGL();
@@ -51,7 +53,7 @@ private:
     void computeNormals();
     void generateIndexes();
     void generateTexCoords();
-
+    void drawStartRecs();
 private:
     bool m_computedNormals;
     QString currentMap;
@@ -62,6 +64,7 @@ private:
     QPoint lastPos;
     float lastZoom;
     QImage m_minimap;
+    QImage m_withRects;
     RawHeightMap m_heightmap;
     QVector<QVector<Vertex> > vertexes;
     unsigned int m_vertexNumber;
@@ -77,6 +80,8 @@ private:
     int zRot;
     float dx;
     float dy;
+    QMap<int, QRect> startRects;
+    int myAlly;
 };
 
 #endif // MAPRENDERERWIDGET_H

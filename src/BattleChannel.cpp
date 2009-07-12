@@ -20,6 +20,7 @@ BattleChannel::BattleChannel( QString id, Battles* battles, QObject * parent ) :
     mapOverviewDialog = new MapOverviewDialog();
     loader = new MapInfoLoader(this);
     connect(loader, SIGNAL(loadCompleted(QString)), SLOT(updateMapInfo(QString)));
+    connect(battles, SIGNAL(addStartRect(int,QRect)), SLOT(onAddStartRect(int,QRect)));
     noMapUpdates = false;
     locked = false;
 }
@@ -59,6 +60,13 @@ void BattleChannel::setupUi( QWidget * tab ) {
             Users::getCurrentUsers(), SLOT(onAllyTeamNumberChanged(int)));
     connect(Users::getCurrentUsers(), SIGNAL(myStateChanged(User)),
             this, SLOT(onMyStateChanged(User)));
+    connect(battleWindowForm->teamAllyNoSpinBox, SIGNAL(valueChanged(int)),
+            battleWindowForm->minimapWidget, SLOT(setMyAllyTeam(int)));
+    connect(battleWindowForm->teamAllyNoSpinBox, SIGNAL(valueChanged(int)),
+            battleWindowForm->heightmapWidget, SLOT(setMyAllyTeam(int)));
+    connect(battleWindowForm->teamAllyNoSpinBox, SIGNAL(valueChanged(int)),
+            battleWindowForm->metalmapWidget, SLOT(setMyAllyTeam(int)));
+    connect(battles, SIGNAL(addStartRect(int,QRect)), SLOT(onAddStartRect(int,QRect)));
     currentMap = m_battle.mapName;
     requestMapInfo( m_battle.mapName );
     connect(battleWindowForm->overviewPushButton, SIGNAL(clicked()), SLOT(openMapOverview()));
@@ -306,6 +314,7 @@ void BattleChannel::receiveInput( QString input ) {
     }
     else if ( QString( "/leave" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
         ret.name = "LEAVEBATTLE";
+        disconnect(battles, SIGNAL(addStartRect(int,QRect)), this, SLOT(onAddStartRect(int,QRect)));
         noMapUpdates = true;
     }
     else {
@@ -467,3 +476,9 @@ void BattleChannel::onMyStateChanged(User u) {
     battleWindowForm->colorLabel->blockSignals(false);
 }
 
+void BattleChannel::onAddStartRect(int ally, QRect r) {
+    battleWindowForm->minimapWidget->addStartRect(ally, r);
+    battleWindowForm->heightmapWidget->addStartRect(ally, r);
+    battleWindowForm->metalmapWidget->addStartRect(ally, r);
+    mapOverviewDialog->addStartRect(ally, r);
+}

@@ -234,6 +234,7 @@ void MapRendererWidget::setSource(QString mapName, QImage minimap, RawHeightMap 
         }
     }
     compileObject = true;
+    startRects.clear();
     if(hasFocus()) updateGL();
 }
 
@@ -301,6 +302,52 @@ void MapRendererWidget::mouseMoveEvent(QMouseEvent *event) {
 }
 
 
+void MapRendererWidget::drawStartRecs() {
+    m_withRects = m_minimap;
+    QPainter p(&m_withRects);
+    for(QMap<int, QRect>::const_iterator i = startRects.begin(); i != startRects.end(); i++) {
+        QRect scaled = i.value();
+        scaled.setWidth(scaled.width()/200.*m_withRects.width());
+        scaled.setHeight(scaled.height()/200.*m_withRects.height());
+        scaled.setX(scaled.x()/200.*m_withRects.width());
+        scaled.setY(scaled.y()/200.*m_withRects.height());
+        int alpha = 50;
+        int width = 2;
+        QColor red(Qt::red);
+        QColor redFill(Qt::red);
+        redFill.setAlpha(alpha);
+        QColor green(Qt::green);
+        QColor greenFill(Qt::green);
+        greenFill.setAlpha(alpha);
+        if(i.key() == myAlly) {
+            p.setBrush(greenFill);
+            p.setPen(QPen(green, width));
+        } else {
+            p.setBrush(redFill);
+            p.setPen(QPen(red, width));
+        }
+        p.drawRect(scaled);
+    }
+    p.end();
+    m_withRects.save("/home/lupus/tmp/texture.png");
+    deleteTexture(m_texture);
+    m_texture = bindTexture(QPixmap::fromImage(m_withRects), GL_TEXTURE_2D);
+}
+
+void MapRendererWidget::addStartRect(int ally, QRect r) {
+    startRects[ally] = r;
+    drawStartRecs();
+    updateGL();
+}
+
+void MapRendererWidget::setMyAllyTeam(int n) {
+    n--;
+    if(myAlly == n) return;
+    myAlly = n;
+    drawStartRecs();
+    updateGL();
+}
+
 
 
 
@@ -359,5 +406,4 @@ void Vertex::sub(Vertex v2) {
     y -= v2.y;
     z -= v2.z;
 }
-
 

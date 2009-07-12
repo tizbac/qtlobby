@@ -53,6 +53,7 @@ private slots:
   void onChatSplitterMoved ( int pos, int index );
   void onBattleSplitterMoved ( int pos, int index );
   void onColorClicked();
+  void onAddStartRect(int ally, QRect r);
 private:
   QString currentMap;
   Ui::battleWindowForm * battleWindowForm;

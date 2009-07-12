@@ -40,7 +40,6 @@ public:
   User getUser( const QString userName );
   const QList<User> getUserList( const int battleId );
   QStringList getUsernamesList();
-  QUrl url;
   static Users* getCurrentUsers();
   UserTreeModel* getUserModel(int battleId);
 signals:
@@ -88,6 +87,7 @@ protected:
   void updateUserList();
   TreeSortFilterProxyModel* proxyModel;
   QRegExp clanRegexp;
+  QUrl url;
   static Users* lastThis;
 };
 

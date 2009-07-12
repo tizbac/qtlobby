@@ -44,6 +44,7 @@ signals:
     void sendCommand( Command command );
     void wantJoinBattle(unsigned int,QString);
     void start();
+    void addStartRect(int ally, QRect r);
 
 public slots:
     void setRegExp( QString regExp );

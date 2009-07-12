@@ -249,7 +249,6 @@ void LobbyTabs::closeTab() {
 void LobbyTabs::closeTab(int i) {
     int index = mapToLobbyTabs(i);
     if(index < 0) return;
-    qDebug() << "Close: " << QString(lobbyTabList[index]->metaObject()->className());
     if(QString(lobbyTabList[index]->metaObject()->className()) == "InfoChannel")
         return;
     QWidget * win = lobbyTabList[index]->currentWidget;

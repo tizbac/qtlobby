@@ -43,13 +43,10 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
             if(u.battleState.isPlayer() && !u.battleState.isReady()) return 1;
             if(!u.battleState.isPlayer()) return 0;
         case 5: //side
-            qDebug() << QString::number(u.battleState.getSide()).rightJustified(5,'0');
             return QString::number(u.battleState.getSide()).rightJustified(5,'0');
         case 6: //team
-            qDebug() << QString::number(u.battleState.getTeamNo()).rightJustified(5,'0');
             return QString::number(u.battleState.getTeamNo()).rightJustified(5,'0');
         case 7: //ally
-            qDebug() << QString::number(u.battleState.getAllyTeamNo()).rightJustified(5,'0');
             return QString::number(u.battleState.getAllyTeamNo()).rightJustified(5,'0');
         case 8: //color
             return u.m_color.name();
@@ -128,13 +125,13 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
     case 6: //team
         if ( role == Qt::DisplayRole) {
             User u = m_userList[index.row()];
-            return QString::number(u.battleState.getTeamNo());
+            return QString::number(u.battleState.getTeamNo()+1);
         }
         break;
     case 7: //ally
         if ( role == Qt::DisplayRole) {
             User u = m_userList[index.row()];
-            return QString::number(u.battleState.getAllyTeamNo());
+            return QString::number(u.battleState.getAllyTeamNo()+1);
         }
         break;
     case 8: //color
