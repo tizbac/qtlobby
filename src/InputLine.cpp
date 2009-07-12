@@ -118,6 +118,11 @@ void InputLine::returnPressed() {
     // limit the history to 20 history entries
     if( history.count() > 22 )
         history.removeLast();
+    input.replace("\\b",QChar::fromAscii(2));
+    input.replace("\\o",QChar::fromAscii(15));
+    input.replace("\\f",QChar::fromAscii(17));
+    input.replace("\\s",QChar::fromAscii(29));
+    input.replace("\\u",QChar::fromAscii(31));
     emit sendInput( input );
     emit returnPressed();
 }
