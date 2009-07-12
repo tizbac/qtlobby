@@ -1,0 +1,23 @@
+[Desktop Entry]
+Categories=Application;Game;StrategyGame;
+Comment[en_US]=Multiplayer lobby for the Spring engine
+Comment=Multiplayer lobby for the Spring engine
+Comment[de]=Online-Lobby für die Spring-Engine
+Exec=qtlobby
+GenericName[en_US]=
+GenericName=
+Icon=heart.svg
+MimeType=
+Name[en_US]=QTLobby
+Name=QTLobby
+NoDisplay=false
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+TryExec=qtlobby
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=

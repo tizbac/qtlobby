@@ -19,6 +19,10 @@ DEFINES += RPM_OPT_FLAGS
 target.path += $$INSTALL_ROOT/bin
 INSTALLS += target
 
+desktop.files   = src/qtlobby.desktop
+desktop.path    = $$INSTALL_ROOT/share/applications
+INSTALLS        += desktop
+
 # SVNDEF := -DSVN_REV=444
 # DEFINES += SVN_REV=444
 # QMAKE_CFLAGS += $(SVNDEF)
