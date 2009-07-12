@@ -309,7 +309,6 @@ void MapRendererWidget::drawStartRecs() {
     m_withRects = m_minimap;
     QPainter p(&m_withRects);
     for(QMap<int, QRect>::const_iterator i = startRects.begin(); i != startRects.end(); i++) {
-        qDebug() << "Drawing rect: " << i.value();
         QRect scaled = i.value();
         scaled.setWidth(scaled.width()/201.*m_withRects.width());
         scaled.setHeight(scaled.height()/201.*m_withRects.height());

@@ -54,8 +54,6 @@ bool AbstractChannel::executeChannelInput( QString input ) {
             receiveInput( l );
         return true;
     }
-    //input.replace( "<", "&lt;" );
-    //input.replace( ">", "&gt;" );
     QStringList inputList = input.split( " " );
     QString firstWord = inputList.takeFirst();
     Command ret;
@@ -149,3 +147,120 @@ QString AbstractChannel::makeHtml( QString in ) {
 void AbstractChannel::setCurrentUsername(QString user) {
     currentUsername = user;
 }
+
+/*
+ 2  	\b  	Ctrl+B  Bold (toggle)
+15 	\o 	Ctrl+O 	Normal (turn off bold, italic, underline, fixed pitch, reverse, and colors)
+17 	\f 	Ctrl+F 	Fixed pitch (toggle)
+18 	\r 	Ctrl+R 	Reverse foreground/background (toggle)
+29 	\s 	Ctrl+N 	Italic (toggle)
+31 	\u 	Ctrl+U 	Underline (toggle)
+*/
+
+QString AbstractChannel::processIRCCodes(QString in) {
+    bool bold = false;
+    bool fixed = false;
+    bool italic = false;
+    bool underline = false;
+    bool color = false;
+    QMap<int, QColor> colors;
+    colors[0x0] = QColor::fromRgb(000,000,000);
+    colors[0x1] = QColor::fromRgb(000,000,128);
+    colors[0x2] = QColor::fromRgb(000,128,000);
+    colors[0x3] = QColor::fromRgb(000,128,128);
+    colors[0x4] = QColor::fromRgb(128,000,000);
+    colors[0x5] = QColor::fromRgb(128,000,128);
+    colors[0x6] = QColor::fromRgb(128,128,000);
+    colors[0x7] = QColor::fromRgb(204,204,204);
+    colors[0x8] = QColor::fromRgb(128,128,128);
+    colors[0x9] = QColor::fromRgb(000,000,255);
+    colors[0xA] = QColor::fromRgb(000,255,000);
+    colors[0xB] = QColor::fromRgb(000,255,255);
+    colors[0xC] = QColor::fromRgb(255,000,000);
+    colors[0xD] = QColor::fromRgb(255,000,255);
+    colors[0xE] = QColor::fromRgb(255,255,000);
+    colors[0xF] = QColor::fromRgb(255,255,255);
+    for(int i = 0; i < in.size(); i++) {
+        if(in[i].toAscii() == 2) {
+            if(!bold) {
+                in.replace(i, 1, "<b>");
+                bold = true;
+            } else {
+                in.replace(i, 1, "</b>");
+                bold = false;
+            }
+        } else if(in[i].toAscii() == 17) {
+            if(!fixed) {
+                in.replace(i, 1, "<pre>");
+                fixed = true;
+            } else {
+                in.replace(i, 1, "</pre>");
+                fixed = false;
+            }
+        } else if(in[i].toAscii() == 29) {
+            if(!italic) {
+                in.replace(i, 1, "<i>");
+                italic = true;
+            } else {
+                in.replace(i, 1, "</i>");
+                italic = false;
+            }
+        } else if(in[i].toAscii() == 15) {
+            QString r;
+            if(bold) r+= "</b>";
+            if(italic) r+= "</i>";
+            if(underline) r+= "</u>";
+            if(fixed) r+= "</pre>";
+            in.replace(i, 1, "</b>");
+            bold = false;
+            italic = false;
+            underline = false;
+            fixed = false;
+        } else if(in[i].toAscii() == 31) {
+            if(!underline) {
+                in.replace(i, 1, "<u>");
+                underline = true;
+            } else {
+                in.replace(i, 1, "</u>");
+                underline = false;
+            }
+        } else if(in[i].toAscii() == 3) {
+            int numDigits = 0;
+            if(i + 1 < in.length() - 1 && in[i+1].isDigit()) numDigits = 1;
+            if(i + 2 < in.length() - 1 && in[i+2].isDigit()) numDigits = 2;
+            if(numDigits == 0 && color) {
+                in.replace(i, 1, "</span>");
+                color = false;
+            }
+            QColor c = colors[in.mid(i+1, numDigits).toInt()];
+            QString r;
+            if(color) r = "</span>";
+            r += QString("<span style=\"color: %1\">").arg(c.name());
+            in.replace(i, 1+numDigits, r);
+        }
+    }
+    return in;
+}
+
+
+QString AbstractChannel::processBBCodes(QString in) {
+    QString out;
+    QRegExp bbstart("\\[([^]]*)\\]");
+    QRegExp bbimg("\\[img=([^]]*)\\]");
+    QRegExp bbsize("\\[size=([^]]*)\\]");
+    QRegExp bbcolor("\\[color=([^]]*)\\]");
+    QRegExp bbend("\\[/([^]]*?)\\]");
+    in.replace(bbimg, "<img src=\"\\1\">");
+    in.replace(bbsize, "<span style=\"font-size:\\1px;\">");
+    in.replace(bbcolor, "<span style=\"color: \\1\">");
+    in.replace(bbstart, "<\\1>");
+    in.replace(bbend, "</\\1>");
+    return in;
+}
+
+
+QString AbstractChannel::processInput(QString input) {
+    input.replace( "<", "&lt;" ).replace( ">", "&gt;" );
+    return processBBCodes(processIRCCodes(input));
+}
+
