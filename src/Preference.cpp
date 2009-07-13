@@ -85,6 +85,7 @@ UserPreference::UserPreference( QDialog* parent ) : QDialog( parent ) {
 #else
 		<< "/usr/local/lib/libunitsync.so;"
 		"/usr/lib/libunitsync.so;"
+                "/usr/lib64/libunitsync.so;"
 		"/usr/lib/spring/lib/libunitsync.so;"
 		"/usr/games/lib/spring/libunitsync.so;"
 		"/usr/local/lib/unitsync.so;"
