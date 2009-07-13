@@ -30,7 +30,7 @@ void UserGroupsDialog::changeEvent(QEvent *e) {
 
 void UserGroupsDialog::onNewClicked() {
     UserGroupList* groups = UserGroupList::getInstance();
-    if(!groups->size()) {
+    if (!groups->size()) {
         m_ui->nameLineEdit->setEnabled(true);
         m_ui->descrLineEdit->setEnabled(true);
         m_ui->colorLabel->setEnabled(true);
@@ -38,7 +38,7 @@ void UserGroupsDialog::onNewClicked() {
     }
     UserGroup* g = new UserGroup();
     int n = 1;
-    while(groups->findGroup("New group"+QString::number(n))) n++;
+    while (groups->findGroup("New group"+QString::number(n))) n++;
     g->name = "New group"+QString::number(n);
     g->description = "New Descriptioin";
     g->members << "Player1" << "Player2";
@@ -52,7 +52,7 @@ void UserGroupsDialog::onDeleteClicked() {
     groups->removeGroup(currentName);
     m_ui->groupsListWidget->clear();
     m_ui->groupsListWidget->addItems(groups->getGroupNames());
-    if(!groups->size()) {
+    if (!groups->size()) {
         m_ui->nameLineEdit->setEnabled(false);
         m_ui->descrLineEdit->setEnabled(false);
         m_ui->colorLabel->setEnabled(false);
@@ -63,7 +63,7 @@ void UserGroupsDialog::onDeleteClicked() {
 void UserGroupsDialog::onSaveClicked() {
     UserGroupList* groups = UserGroupList::getInstance();
     UserGroup* g = groups->findGroup(currentName);
-    if(g) {
+    if (g) {
         g->name = m_ui->nameLineEdit->text();
         g->description = m_ui->descrLineEdit->text();
         g->color = currentcolor;
@@ -87,7 +87,7 @@ void UserGroupsDialog::onColorClicked() {
 void UserGroupsDialog::onCurrentTextChanged(const QString & currentText) {
     UserGroupList* groups = UserGroupList::getInstance();
     UserGroup* g = groups->findGroup(currentText);
-    if(!g) return;
+    if (!g) return;
     m_ui->nameLineEdit->setText(g->name);
     m_ui->descrLineEdit->setText(g->description);
     currentcolor = g->color;

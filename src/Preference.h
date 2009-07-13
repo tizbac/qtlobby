@@ -24,17 +24,17 @@
 #include "ConfigElement.h"
 
 class UserPreference : public QDialog, private Ui::PreferenceWidget {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  UserPreference( QDialog* parent = 0 );
-  ~UserPreference();
+    UserPreference( QDialog* parent = 0 );
+    ~UserPreference();
 private:
-  QSettings* settings;
-  QList<ConfigElement*> elements;
+    QSettings* settings;
+    QList<ConfigElement*> elements;
 private slots:
-  void okClicked();
-  void applyClicked();
-  void cancelClicked();
+    void okClicked();
+    void applyClicked();
+    void cancelClicked();
 };
 
 #endif

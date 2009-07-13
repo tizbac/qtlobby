@@ -30,44 +30,44 @@ represents the battle tab with chat, map and options overview
 */
 
 class BattleChannel : public AbstractChannel {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  BattleChannel( QString id, Battles* battles, QObject * parent = 0 );
-  void setupUi( QWidget * tab );
-  QString getTabTitle();
+    BattleChannel( QString id, Battles* battles, QObject * parent = 0 );
+    void setupUi( QWidget * tab );
+    QString getTabTitle();
 
 signals:
-  void playSample( SampleCollection sample );
-  void newTrayMessage( QString );
-  void colorChanged(QColor color);
+    void playSample( SampleCollection sample );
+    void newTrayMessage( QString );
+    void colorChanged(QColor color);
 public slots:
-  void receiveInput( QString input );
-  void receiveCommand( Command command );
-  void requestMapInfo( QString mapName );
-  void updateMapInfo( QString mapName );
-  void fillModOptions();
-  void fillSides(); // NEW
-  void onSpecCheckBoxChanged( int state ); // NEW
-  void onMyStateChanged(User u);
+    void receiveInput( QString input );
+    void receiveCommand( Command command );
+    void requestMapInfo( QString mapName );
+    void updateMapInfo( QString mapName );
+    void fillModOptions();
+    void fillSides(); // NEW
+    void onSpecCheckBoxChanged( int state ); // NEW
+    void onMyStateChanged(User u);
 private slots:
-  void openMapOverview();
-  void onChatSplitterMoved ( int pos, int index );
-  void onBattleSplitterMoved ( int pos, int index );
-  void onColorClicked();
-  void onAddStartRect(int ally, QRect r);
-  void onRemoveStartRect(int ally);
+    void openMapOverview();
+    void onChatSplitterMoved ( int pos, int index );
+    void onBattleSplitterMoved ( int pos, int index );
+    void onColorClicked();
+    void onAddStartRect(int ally, QRect r);
+    void onRemoveStartRect(int ally);
 private:
-  QString currentMap;
-  Ui::battleWindowForm * battleWindowForm;
-  MapOverviewDialog* mapOverviewDialog;
-  MapInfoLoader* loader;
-  Battle m_battle;
-  bool noMapUpdates;
-  QColor currentcolor;
-  bool locked;
-  QByteArray splitterState;
+    QString currentMap;
+    Ui::battleWindowForm * battleWindowForm;
+    MapOverviewDialog* mapOverviewDialog;
+    MapInfoLoader* loader;
+    Battle m_battle;
+    bool noMapUpdates;
+    QColor currentcolor;
+    bool locked;
+    QByteArray splitterState;
 protected:
-  Battles* battles;
+    Battles* battles;
 };
 
 #endif

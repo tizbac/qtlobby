@@ -25,24 +25,23 @@
 **
 */
 enum ConnectionState {
-  DISCONNECTED,
-  CONNECTING,
-  CONNECTED,
-  AUTHENTICATING,
-  AUTHENTICATED
+    DISCONNECTED,
+    CONNECTING,
+    CONNECTED,
+    AUTHENTICATING,
+    AUTHENTICATED
 };
 
-class AbstractStateClient : public QObject
-{
-  Q_OBJECT
+class AbstractStateClient : public QObject {
+    Q_OBJECT
 public:
-  AbstractStateClient( QObject *parent = 0 );
-  ~AbstractStateClient();
+    AbstractStateClient( QObject *parent = 0 );
+    ~AbstractStateClient();
 
-  ConnectionState connectionState;
+    ConnectionState connectionState;
 
 public slots:
-  virtual void connectionStateChanged( ConnectionState ) = 0;
+    virtual void connectionStateChanged( ConnectionState ) = 0;
 
 };
 

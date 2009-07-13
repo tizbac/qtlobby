@@ -6,13 +6,27 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QTextDocumentFragment>
+#include <QMenu>
 
-class ChannelTextBrowser : public QTextBrowser
-{
+class ChannelTextBrowser : public QTextBrowser {
+    Q_OBJECT
 public:
-    ChannelTextBrowser(QWidget * parent) : QTextBrowser(parent){}
+    ChannelTextBrowser(QWidget * parent = 0);
+signals:
+    void enableJoinLeave(bool b);
+    void enableJoinLeaveDefault(bool b);
+public slots:
+    void setJoinLeaveMenuEnabled(bool b);
+    void setEnableJoinLeave(bool b);
+    void setEnableJoinLeaveDefault(bool b);
+private slots:
+    void onCustomContextMenuRequested(QPoint p);
 protected:
     QMimeData *createMimeDataFromSelection () const;
+    QMenu* m_contextMenu;
+    bool m_enableJoinLeave;
+    bool m_enableJoinLeaveDefault;
+    bool m_menuEnabled;
 };
 
 #endif // CHANNELTEXTBROWSER_H

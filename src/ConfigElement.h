@@ -22,26 +22,25 @@
 #include "Settings.h"
 #include "ui_configElement.h"
 
-class ConfigElement : public QWidget, public Ui::configElement
-{
-  Q_OBJECT
+class ConfigElement : public QWidget, public Ui::configElement {
+    Q_OBJECT
 public:
-  ConfigElement( QStringList config, QWidget* parent = 0 );
-  ~ConfigElement();
+    ConfigElement( QStringList config, QWidget* parent = 0 );
+    ~ConfigElement();
 
 protected:
-  QStringList m_config;
-  QSettings* settings;
-  bool exists;
-  bool isDirectory;
-  QStringList examples;
+    QStringList m_config;
+    QSettings* settings;
+    bool exists;
+    bool isDirectory;
+    QStringList examples;
 
 public slots:
-  void SaveElement();
-  void ResetConfiguration();
+    void SaveElement();
+    void ResetConfiguration();
 protected slots:
-  void openFileBrowser();
-  void updateExistingState( QString a = "" );
+    void openFileBrowser();
+    void updateExistingState( QString a = "" );
 };
 
 #endif

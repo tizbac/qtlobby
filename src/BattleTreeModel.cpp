@@ -22,29 +22,29 @@ BattleTreeModel::~BattleTreeModel() {
 }
 
 QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
-    if(index.row() >= m_battleList.size() || index.row() < 0) return QVariant();
-    if(role == Qt::BackgroundRole && m_users) {
+    if (index.row() >= m_battleList.size() || index.row() < 0) return QVariant();
+    if (role == Qt::BackgroundRole && m_users) {
         QList<User> users = m_users->getUserList(m_battleList[index.row()].id);
-        if(users.size() > 0) {
-            if(users.size() > 1) {
+        if (users.size() > 0) {
+            if (users.size() > 1) {
                 QList<QColor> colors;
-                for(int i = 0; i < users.size(); i++) {
+                for (int i = 0; i < users.size(); i++) {
                     QColor c = UserGroupList::getInstance()->getUserColor(users.at(i).name);
-                    if(c.isValid())
+                    if (c.isValid())
                         colors << c;
                 }
                 QFontMetrics fm(m_users->font());
-                if(!colors.size()) return QVariant();
+                if (!colors.size()) return QVariant();
                 QLinearGradient linearGrad(QPointF(0, 3), QPointF(0,fm.height()));
                 float step = 1./colors.size();
                 float x = 0;
-                for(int i = 0; i < colors.size(); i++, x+= step) {
+                for (int i = 0; i < colors.size(); i++, x+= step) {
                     linearGrad.setColorAt(x, colors.at(i));
                 }
                 return QBrush(linearGrad);
             }
             QColor c = UserGroupList::getInstance()->getUserColor(users.at(0).name);
-            if(c.isValid()) return c;
+            if (c.isValid()) return c;
         }
         return QVariant();
     }

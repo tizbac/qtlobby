@@ -24,34 +24,33 @@ This is an abstract class, all lobby tab objects should derive from it
 
  @author Mirko Windhoff <qtlobby.reg@ncnever.de>
 */
-class AbstractLobbyTab : public QObject
-{
-  Q_OBJECT
+class AbstractLobbyTab : public QObject {
+    Q_OBJECT
 public:
-  AbstractLobbyTab(  QObject * parent );
-  virtual ~AbstractLobbyTab();
-  virtual void setupUi( QWidget * tab ) = 0;
-  virtual void setActive( bool isActive ) = 0;
-  void setUserNameCountryCodeMap( QMap<QString, QString>* userNameCountryCodeMap );
-  virtual QString getTabTitle();
+    AbstractLobbyTab(  QObject * parent );
+    virtual ~AbstractLobbyTab();
+    virtual void setupUi( QWidget * tab ) = 0;
+    virtual void setActive( bool isActive ) = 0;
+    void setUserNameCountryCodeMap( QMap<QString, QString>* userNameCountryCodeMap );
+    virtual QString getTabTitle();
 
-  QString myUserName;
-  QIcon icon;
-  QColor color;
-  bool isActive;
-  QWidget* currentWidget;
-  int currentTabIndex;
+    QString myUserName;
+    QIcon icon;
+    QColor color;
+    bool isActive;
+    QWidget* currentWidget;
+    int currentTabIndex;
 
 signals:
-  void sendCommand( Command );
+    void sendCommand( Command );
 
 public slots:
-  virtual void receiveInput( QString input ) = 0;
-  virtual void receiveCommand( Command command ) = 0;
+    virtual void receiveInput( QString input ) = 0;
+    virtual void receiveCommand( Command command ) = 0;
 
 protected:
-  QString flag( const QString );
-  QMap<QString, QString>* userNameCountryCodeMap;
+    QString flag( const QString );
+    QMap<QString, QString>* userNameCountryCodeMap;
 };
 
 #endif

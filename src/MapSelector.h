@@ -20,20 +20,20 @@
 #include "mapElementWidget.h"
 
 class MapSelector : public QDialog {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  MapSelector(QDialog* parent = 0 );
-  ~MapSelector();
-  QScrollArea* scrollArea;
+    MapSelector(QDialog* parent = 0 );
+    ~MapSelector();
+    QScrollArea* scrollArea;
 public slots:
-  /*$PUBLIC_SLOTS$*/
+    /*$PUBLIC_SLOTS$*/
 
 protected:
-  /*$PROTECTED_FUNCTIONS$*/
+    /*$PROTECTED_FUNCTIONS$*/
 
 protected slots:
-  /*$PROTECTED_SLOTS$*/
+    /*$PROTECTED_SLOTS$*/
 
 };
 

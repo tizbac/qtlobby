@@ -31,11 +31,11 @@ LobbyTabs::LobbyTabs( QObject * parent, Battles* battles, UnitSyncLib* unitSyncL
     lobbyStackedWidget->setCornerWidget( closeTabButton, Qt::TopRightCorner );
     closeTabButton->setCursor( Qt::ArrowCursor );
     closeTabButton->setAutoRaise( true );
-#ifdef Q_WS_MAC
+    #ifdef Q_WS_MAC
     closeTabButton->setIcon( QIcon( ":/icons/mac_closetab.png" ) );
-#else
+    #else
     closeTabButton->setIcon( QIcon( ":/icons/closetab.png" ) );
-#endif
+    #endif
     closeTabButton->setToolTip( tr( "Close tab" ) );
     closeTabButton->setEnabled( false );
 
@@ -60,6 +60,7 @@ LobbyTabs::LobbyTabs( QObject * parent, Battles* battles, UnitSyncLib* unitSyncL
     //first we need an InfoChannel to display different status messages, this will not close with the close tab
     createLobbyTab( new InfoChannel( "info", lobbyStackedWidget ) );
     currentTabChangedSlot(0);
+    showJoinLeaveDefault = Settings::Instance()->value("joinLeaveFilterDefault", true).toBool();
 }
 
 LobbyTabs::~LobbyTabs() {
@@ -137,7 +138,7 @@ void LobbyTabs::receiveCommand( Command command ) {
             lobbyTabList.removeAt(index);
         }
     } else if ( command.name == "SAIDPRIVATE" || command.name == "SAYPRIVATE" ) {
-        privateChannelOpen( command.attributes.first() );
+        privateChannelOpen( command.attributes.first(), false );
     } else if ( command.name == "ADDUSER" ) {
         userNameCountryCodeMap[command.attributes[0]] = command.attributes[1];
     } else if ( command.name == "ADDUSER" ) {
@@ -177,7 +178,11 @@ void LobbyTabs::receiveInput( QString input ) {
 void LobbyTabs::createLobbyTab( AbstractLobbyTab * lobbyTab ) {
     lobbyTab->myUserName = myUserName;
     lobbyTab->setUserNameCountryCodeMap( &userNameCountryCodeMap );
-
+    if(QString(lobbyTab->metaObject()->className()) == "Channel") {
+        connect((Channel*)lobbyTab, SIGNAL(enableJoinLeaveDefault(bool)),
+                this, SLOT(onEnableJoinLeaveDefault(bool)));
+        ((Channel*)lobbyTab)->setShowJoinLeave(showJoinLeaveDefault);
+    }
     QWidget * widget = new QWidget( lobbyStackedWidget );
     //at new chat windows near the active window
     int c = tabBar->count();
@@ -215,17 +220,17 @@ void LobbyTabs::currentTabChangedSlot( int index ) {
         return;
     index = mapToLobbyTabs(index);
     lobbyStackedWidget->setCurrentWidget(lobbyTabList[index]->currentWidget);
-    if(index < 0) return;
+    if (index < 0) return;
     setTabIcon( index );
     tabBar->setTabTextColor( index, lobbyTabList[index]->color );
     //updateCloseTabState();
     emit currentTabChanged( lobbyTabList[index]->objectName(),
                             lobbyTabList[index]->metaObject()->className() );
     //bool isBattleTab = QString( lobbyTabList[index]->metaObject()->className() ) == "BattleChannel";
-    if(lastIndex >= 0) {
-        if(QString( lobbyTabList[lastIndex]->metaObject()->className() ) == "BattleChannel" && QString( lobbyTabList[index]->metaObject()->className() ) != "BattleChannel")
+    if (lastIndex >= 0) {
+        if (QString( lobbyTabList[lastIndex]->metaObject()->className() ) == "BattleChannel" && QString( lobbyTabList[index]->metaObject()->className() ) != "BattleChannel")
             emit changedFromBattleTab();
-        else if(QString( lobbyTabList[lastIndex]->metaObject()->className() ) != "BattleChannel" && QString( lobbyTabList[index]->metaObject()->className() ) == "BattleChannel"){
+        else if (QString( lobbyTabList[lastIndex]->metaObject()->className() ) != "BattleChannel" && QString( lobbyTabList[index]->metaObject()->className() ) == "BattleChannel") {
             emit changedToBattleTab();
         }
     }
@@ -250,8 +255,8 @@ void LobbyTabs::closeTab() {
 
 void LobbyTabs::closeTab(int i) {
     int index = mapToLobbyTabs(i);
-    if(index < 0) return;
-    if(QString(lobbyTabList[index]->metaObject()->className()) == "InfoChannel")
+    if (index < 0) return;
+    if (QString(lobbyTabList[index]->metaObject()->className()) == "InfoChannel")
         return;
     QWidget * win = lobbyTabList[index]->currentWidget;
     //send the leave command
@@ -261,18 +266,18 @@ void LobbyTabs::closeTab(int i) {
     QTimer::singleShot( 0, win, SLOT( deleteLater() ) );
     //updateCloseTabState();
     //delete the lobbyTab from the list
-    for(; i < lobbyTabList.size(); i++) {
+    for (; i < lobbyTabList.size(); i++) {
         lobbyTabList[mapToLobbyTabs(i)]->currentTabIndex--;
     }
     lobbyTabList.removeAt( index );
 }
 
-void LobbyTabs::privateChannelOpen( QString userName ) {
+void LobbyTabs::privateChannelOpen( QString userName, bool popup ) {
     bool found = false;
     foreach( AbstractLobbyTab * l, lobbyTabList ) {
         if ( l->objectName() == userName && l->metaObject()->className() == QString( "PrivateChannel" ) ) {
             found = true;
-            tabBar->setCurrentIndex(l->currentTabIndex);
+            if(popup) tabBar->setCurrentIndex(l->currentTabIndex);
             break;
         }
     }
@@ -294,8 +299,8 @@ QStringList LobbyTabs::getChannelList() {
 
 int LobbyTabs::mapToLobbyTabs(int i) {
     int index = -1;
-    for(int x = 0; x < lobbyTabList.size(); x++) {
-        if(lobbyTabList[x]->currentTabIndex == i) {
+    for (int x = 0; x < lobbyTabList.size(); x++) {
+        if (lobbyTabList[x]->currentTabIndex == i) {
             index = x;
             break;
         }
@@ -304,7 +309,7 @@ int LobbyTabs::mapToLobbyTabs(int i) {
 }
 
 void LobbyTabs::onTabMoved( int from, int to ) {
-    if(from == to) return;
+    if (from == to) return;
     AbstractLobbyTab* t_from = lobbyTabList[mapToLobbyTabs(from)];
     AbstractLobbyTab* t_to = lobbyTabList[mapToLobbyTabs(to)];
     int fromIndex = t_from->currentTabIndex;
@@ -313,4 +318,14 @@ void LobbyTabs::onTabMoved( int from, int to ) {
     currentTabChangedSlot(from);
     //setTabIcon(mfrom);
     //setTabIcon(mto);
+}
+
+void LobbyTabs::onEnableJoinLeaveDefault(bool b) {
+    showJoinLeaveDefault = b;
+    Settings::Instance()->setValue("joinLeaveFilterDefault", b);
+    foreach( AbstractLobbyTab * l, lobbyTabList ) {
+        if ( QString(l->metaObject()->className()) == "Channel" ) {
+            ((Channel*)l)->setShowJoinLeave(b);
+        }
+    }
 }

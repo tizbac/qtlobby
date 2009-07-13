@@ -1,7 +1,7 @@
 //
 // C++ Interface: TreeSortFilterProxyModel
 //
-// Description: 
+// Description:
 //
 //
 // Author: Mirko Windhoff <qtlobby.reg@ncnever.de>, (C) 2008
@@ -18,10 +18,9 @@
 /**
 Sets the sort roles for the rows before sorting.
 
-	@author Mirko Windhoff <qtlobby.reg@ncnever.de>
+        @author Mirko Windhoff <qtlobby.reg@ncnever.de>
 */
-class TreeSortFilterProxyModel : public QSortFilterProxyModel
-{
+class TreeSortFilterProxyModel : public QSortFilterProxyModel {
 public:
     TreeSortFilterProxyModel( QObject* parent = 0 );
     ~TreeSortFilterProxyModel();

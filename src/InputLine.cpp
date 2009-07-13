@@ -53,27 +53,27 @@ void InputLine::keyPressEvent( QKeyEvent * event ) {
   * handling tab completion
   */
 bool InputLine::event(QEvent* event) {
-    if(users && event->type() == QEvent::KeyPress) {
+    if (users && event->type() == QEvent::KeyPress) {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-        if(keyEvent->key() == Qt::Key_Tab ||
-           (keyEvent->key() == Qt::Key_Space && keyEvent->modifiers() == Qt::ControlModifier)) {
+        if (keyEvent->key() == Qt::Key_Tab ||
+            (keyEvent->key() == Qt::Key_Space && keyEvent->modifiers() == Qt::ControlModifier)) {
             QString str = text();
             int start = cursorPosition();
             QFontMetrics fm(font());
             int width = fm.width(str.left(start));
             int end = start;
-            while(start > 0 && !str[start].isSpace()) {
+            while (start > 0 && !str[start].isSpace()) {
                 start--;
             }
-            if(start == end) return true;
+            if (start == end) return true;
             start = start == 0 ? start : start + 1;
             str = str.mid(start, end - start);
             QStringList usernames = users->getUsernamesList();
             QStringList variants;
-            for(int i = 0; i < usernames.size(); i++) {
-                if(usernames[i].contains(str, Qt::CaseInsensitive)) variants << usernames[i];
+            for (int i = 0; i < usernames.size(); i++) {
+                if (usernames[i].contains(str, Qt::CaseInsensitive)) variants << usernames[i];
             }
-            if(variants.size() > 1) {
+            if (variants.size() > 1) {
                 CompletionListWidget* list = new CompletionListWidget();
                 connect(list, SIGNAL(completionSelected(int,int,QString)), SLOT(onCompletionSelected(int,int,QString)));
                 connect(list, SIGNAL(simulateKeyEvent(QKeyEvent*)), SLOT(emulateKeyEvent(QKeyEvent*)));
@@ -84,7 +84,7 @@ bool InputLine::event(QEvent* event) {
                 list->setWindowFlags(Qt::Popup);
                 list->sortItems(Qt::AscendingOrder);
                 list->show();
-            } else if(variants.size() == 1) {
+            } else if (variants.size() == 1) {
                 setText(text().replace(start, end - start, variants[0]));
             }
             return true;
@@ -113,17 +113,20 @@ void InputLine::returnPressed() {
     input = input.prepend( text().at( 0 ).isSpace() ? " " : "" );
     clear();
     // this disables multiple equal history messages in a series
-    if( history[1] != history[0] )
+    if ( history[1] != history[0] )
         history.prepend( "" );
     // limit the history to 20 history entries
-    if( history.count() > 22 )
+    if ( history.count() > 22 )
         history.removeLast();
+    input.replace("\\\\","___###SLASH__PLACEHOLDER###___");
     input.replace("\\b",QChar::fromAscii(2));
     input.replace("\\k",QChar::fromAscii(3));
     input.replace("\\o",QChar::fromAscii(15));
     input.replace("\\f",QChar::fromAscii(17));
     input.replace("\\s",QChar::fromAscii(29));
     input.replace("\\u",QChar::fromAscii(31));
+    input.replace("\\n","[br]");
+    input.replace("___###SLASH__PLACEHOLDER###___", "\\");
     emit sendInput( input );
     emit returnPressed();
 }
@@ -131,7 +134,7 @@ void InputLine::returnPressed() {
 void InputLine::onTabChanged(int index) {
     buffers[currentIndex] = text();
     clear();
-    if(buffers.contains(index))
+    if (buffers.contains(index))
         setText(buffers[index]);
     currentIndex = index;
 }

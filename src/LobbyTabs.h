@@ -68,6 +68,7 @@ public slots:
     void closeTab(int i);
     void closeTab();
     void onTabMoved( int from, int to );
+    void onEnableJoinLeaveDefault(bool b);
 
 private:
     //last tab index
@@ -88,10 +89,11 @@ private:
     void setTabIcon( int index );
     //void updateCloseTabState();
     // opens an empty private channel if not existing
-    void privateChannelOpen( QString userName );
+    void privateChannelOpen( QString userName, bool popup = true );
     //needed to delegate the input to the active channel
     AbstractLobbyTab * getActiveLobbyTab();
     int mapToLobbyTabs(int index);
+    bool showJoinLeaveDefault;
 };
 
 #endif

@@ -33,17 +33,39 @@
 
 class UserState {
 public:
-    UserState(int state) {m_state = state;}
-    UserState() {m_state = 0;}
-    bool isIngame() const {return EXTRACT(m_state, 0, 0x1);}
-    void setIngame(bool b) {COPYBIT(b, 0, m_state, 0);}
-    bool isAway() const {return EXTRACT(m_state, 1, 0x1)}
-    void setAway(bool b) {COPYBIT(b, 0, m_state, 1);}
-    char getRank() const {return EXTRACT(m_state, 2, 0x7);}
-    bool isModerator() {return EXTRACT(m_state, 5, 0x1);}
-    bool isBot() const {return EXTRACT(m_state, 6, 0x1);}
-    void setState(int state) {m_state = state;}
-    int getState() const {return m_state;}
+    UserState(int state) {
+        m_state = state;
+    }
+    UserState() {
+        m_state = 0;
+    }
+    bool isIngame() const {
+        return EXTRACT(m_state, 0, 0x1);
+    }
+    void setIngame(bool b) {
+        COPYBIT(b, 0, m_state, 0);
+    }
+    bool isAway() const {
+        return EXTRACT(m_state, 1, 0x1)
+            }
+    void setAway(bool b) {
+        COPYBIT(b, 0, m_state, 1);
+    }
+    char getRank() const {
+        return EXTRACT(m_state, 2, 0x7);
+    }
+    bool isModerator() {
+        return EXTRACT(m_state, 5, 0x1);
+    }
+    bool isBot() const {
+        return EXTRACT(m_state, 6, 0x1);
+    }
+    void setState(int state) {
+        m_state = state;
+    }
+    int getState() const {
+        return m_state;
+    }
 private:
     int m_state;
 };
@@ -63,34 +85,74 @@ private:
 */
 
 class BattleState {
-    public:
-    BattleState(int state) {m_state = state;}
-    BattleState() {m_state = 0;}
-    bool isReady() const {return EXTRACT(m_state, 1, 0x1);}
-    void setReady(bool b) {COPYBIT(b, 0, m_state, 1);}
-    quint8 getTeamNo() const {return EXTRACT(m_state, 2, 0xF);}
-    void setTeamNo(quint8 b) {COPYBITS(b, 0, m_state, 2, 4);}
-    quint8 getAllyTeamNo() const {return EXTRACT(m_state, 6, 0xF);}
-    void setAllyTeamNo(quint8 b) {COPYBITS(b, 0, m_state, 6, 4);}
-    bool isPlayer() const {return EXTRACT(m_state, 10, 0x1);}
-    void setPlayer(bool b) {COPYBIT(b, 0, m_state, 10);}
-    quint8 getHandicap() const {return EXTRACT(m_state, 11, 0x7F);}
-    void setHandicap(quint8 b) {COPYBITS(b, 0, m_state, 11, 7);}
-    quint8 getColor() const {return EXTRACT(m_state, 18, 0xF);}
-    void setColor(quint8 b) {COPYBITS(b, 0, m_state, 18, 4);}
-    quint8 syncState() const {return EXTRACT(m_state, 22, 0x3);}
-    void setSyncState(quint8 b) {COPYBITS(b, 0, m_state, 22, 2);}
-    quint8 getSide() const {return EXTRACT(m_state, 24, 0xF);}
-    void setSide(quint8 b) {COPYBITS(b, 0, m_state, 24, 4);}
-    void setState(int state) {m_state = state;}
-    int getState() const {return m_state;}
+public:
+    BattleState(int state) {
+        m_state = state;
+    }
+    BattleState() {
+        m_state = 0;
+    }
+    bool isReady() const {
+        return EXTRACT(m_state, 1, 0x1);
+    }
+    void setReady(bool b) {
+        COPYBIT(b, 0, m_state, 1);
+    }
+    quint8 getTeamNo() const {
+        return EXTRACT(m_state, 2, 0xF);
+    }
+    void setTeamNo(quint8 b) {
+        COPYBITS(b, 0, m_state, 2, 4);
+    }
+    quint8 getAllyTeamNo() const {
+        return EXTRACT(m_state, 6, 0xF);
+    }
+    void setAllyTeamNo(quint8 b) {
+        COPYBITS(b, 0, m_state, 6, 4);
+    }
+    bool isPlayer() const {
+        return EXTRACT(m_state, 10, 0x1);
+    }
+    void setPlayer(bool b) {
+        COPYBIT(b, 0, m_state, 10);
+    }
+    quint8 getHandicap() const {
+        return EXTRACT(m_state, 11, 0x7F);
+    }
+    void setHandicap(quint8 b) {
+        COPYBITS(b, 0, m_state, 11, 7);
+    }
+    quint8 getColor() const {
+        return EXTRACT(m_state, 18, 0xF);
+    }
+    void setColor(quint8 b) {
+        COPYBITS(b, 0, m_state, 18, 4);
+    }
+    quint8 syncState() const {
+        return EXTRACT(m_state, 22, 0x3);
+    }
+    void setSyncState(quint8 b) {
+        COPYBITS(b, 0, m_state, 22, 2);
+    }
+    quint8 getSide() const {
+        return EXTRACT(m_state, 24, 0xF);
+    }
+    void setSide(quint8 b) {
+        COPYBITS(b, 0, m_state, 24, 4);
+    }
+    void setState(int state) {
+        m_state = state;
+    }
+    int getState() const {
+        return m_state;
+    }
 private:
     int m_state;
 };
 /**
         @author Joachim Schiele <js@lastlog.de>
 */
-class User /*: public QObject*/ {
+class User { /*: public QObject*/
     // Q_OBJECT
 public:
     User();

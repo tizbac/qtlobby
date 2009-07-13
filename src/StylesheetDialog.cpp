@@ -30,7 +30,7 @@ void StylesheetDialog::load() {
 
 }
 
-void StylesheetDialog::apply(){
+void StylesheetDialog::apply() {
     qApp->setStyleSheet(m_ui->styleSheetTextEdit->toPlainText());
 }
 

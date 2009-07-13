@@ -33,11 +33,10 @@ clean.unlock();
 void MapInfoLoader::run() {
     QMutexLocker lock(&mutex);
     UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
-    if(unitSyncLib->mapIndex(m_mapName) > 0) {
-        if(loadCache()){
+    if (unitSyncLib->mapIndex(m_mapName) > 0) {
+        if (loadCache()) {
             mapPresent=true;
-        }
-        else {
+        } else {
             USELESS_CHECK;
             minimap = unitSyncLib->getMinimapQImage(m_mapName, 0);
             USELESS_CHECK;
@@ -55,7 +54,7 @@ void MapInfoLoader::run() {
         mapPresent = false;
     }
     QMutexLocker lock2(&clean);
-    if(!m_autoclean) {
+    if (!m_autoclean) {
         emit loadCompleted(m_mapName);
     } else {
         clearData();
@@ -81,8 +80,7 @@ void MapInfoLoader::clearData() {
     QThread::exit(0);
 }
 
-QDataStream & operator>> (QDataStream& stream, MapInfo& info)
-{
+QDataStream & operator>> (QDataStream& stream, MapInfo& info) {
 
 
     stream.readRawData(author, 200);
@@ -95,10 +93,10 @@ QDataStream & operator>> (QDataStream& stream, MapInfo& info)
     stream >> info.maxMetal;
     stream >> info.maxWind;
     stream >> info.minWind;
-    stream >> info.posCount;    
+    stream >> info.posCount;
 
 
-    for(int i =0; i < info.posCount; i++){
+    for (int i =0; i < info.posCount; i++) {
         stream >> info.positions[i].x;
         stream >> info.positions[i].z;
     }
@@ -108,8 +106,7 @@ QDataStream & operator>> (QDataStream& stream, MapInfo& info)
     return stream;
 }
 
-QDataStream & operator<< (QDataStream& stream, const MapInfo& info)
-{
+QDataStream & operator<< (QDataStream& stream, const MapInfo& info) {
     stream.writeRawData(info.author, 200);
     stream.writeRawData(info.description, 255);
 
@@ -121,7 +118,7 @@ QDataStream & operator<< (QDataStream& stream, const MapInfo& info)
             << info.minWind
             << info.posCount;
 
-    for(int i =0; i < info.posCount; i++){
+    for (int i =0; i < info.posCount; i++) {
         stream << info.positions[i].x;
         stream << info.positions[i].z;
     }
@@ -129,8 +126,7 @@ QDataStream & operator<< (QDataStream& stream, const MapInfo& info)
             << info.width;
 }
 
-QDataStream & operator>> (QDataStream& stream, RawHeightMap& rawhm)
-{
+QDataStream & operator>> (QDataStream& stream, RawHeightMap& rawhm) {
     int w,h;
     stream >> h;
     stream >> w;
@@ -142,8 +138,7 @@ QDataStream & operator>> (QDataStream& stream, RawHeightMap& rawhm)
 
 }
 
-QDataStream & operator<< (QDataStream& stream, const RawHeightMap& rawhm)
-{
+QDataStream & operator<< (QDataStream& stream, const RawHeightMap& rawhm) {
     int w = rawhm.getWidth();
     int h = rawhm.getHeight();
     stream << h << w;
@@ -151,8 +146,7 @@ QDataStream & operator<< (QDataStream& stream, const RawHeightMap& rawhm)
     return stream;
 }
 
-void MapInfoLoader::saveCache()
-{
+void MapInfoLoader::saveCache() {
     QDir userDir(Settings::Instance()->value("spring_user_dir").toString());
     userDir.mkdir("qtlobby");
     userDir.cd("qtlobby");
@@ -177,15 +171,14 @@ void MapInfoLoader::saveCache()
     file.close();
 }
 
-bool MapInfoLoader::loadCache()
-{
+bool MapInfoLoader::loadCache() {
     QDir userDir(Settings::Instance()->value("spring_user_dir").toString());
-    if(!userDir.exists("qtlobby")) return false;
+    if (!userDir.exists("qtlobby")) return false;
     userDir.cd("qtlobby");
     QFile file(QString("%1/%2.qmc")
                .arg(userDir.absolutePath())
                .arg(m_mapName));
-    if(!file.exists()) return false;
+    if (!file.exists()) return false;
     file.open(QIODevice::ReadOnly);
     QDataStream fileStream(&file);
     QByteArray  buffer;
@@ -197,7 +190,7 @@ bool MapInfoLoader::loadCache()
     quint32 magic;
 
     in >> magic;
-    if(magic != QMC_MAGIC)
+    if (magic != QMC_MAGIC)
         return false;
 
     in >> minimap;

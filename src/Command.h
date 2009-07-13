@@ -13,18 +13,17 @@
 #define COMMAND_H
 #include <QString>
 #include <QStringList>
-class Command
-{
+class Command {
 public:
-  Command();
-  Command( QString commandString );
-  ~Command() {};
-  QString toQString();
+    Command();
+    Command( QString commandString );
+    ~Command() {};
+    QString toQString();
 
-  quint32 id;
-  QString name;
-  QStringList attributes;
-  bool executed;
+    quint32 id;
+    QString name;
+    QStringList attributes;
+    bool executed;
 };
 
 #endif

@@ -18,21 +18,20 @@
 #include "ui_gamePasswordWidget.h"
 
 /**
-	@author Joachim Schiele <js@lastlog.de>
+        @author Joachim Schiele <js@lastlog.de>
 */
-class GamePasswordWidget : public QDialog, private Ui::gamePasswordWidget
-{
-Q_OBJECT
+class GamePasswordWidget : public QDialog, private Ui::gamePasswordWidget {
+    Q_OBJECT
 public:
     GamePasswordWidget(QDialog *parent = 0);
     ~GamePasswordWidget();
     void setBattleId(int);
     void resetPassword();
-  private:
+private:
     unsigned int id;
-  signals:
+signals:
     void wantJoinBattle(unsigned int,QString);
-  private slots:
+private slots:
     void acceptThis();
 };
 

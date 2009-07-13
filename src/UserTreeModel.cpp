@@ -19,9 +19,9 @@ UserTreeModel::UserTreeModel( QObject* parent ) : QAbstractItemModel( parent ) {
 UserTreeModel::~UserTreeModel() {}
 
 QVariant UserTreeModel::data( const QModelIndex& index, int role ) const {
-    if(role == Qt::BackgroundRole) {
+    if (role == Qt::BackgroundRole) {
         QColor c = UserGroupList::getInstance()->getUserColor(m_userList[index.row()].name);
-        if(c.isValid()) {
+        if (c.isValid()) {
             return c;
         }
         return QVariant();

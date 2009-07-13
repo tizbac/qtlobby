@@ -13,8 +13,8 @@ namespace Ui {
 class UserGroupsDialog : public QDialog {
     Q_OBJECT
     Q_DISABLE_COPY(UserGroupsDialog)
-public:
-    explicit UserGroupsDialog(QWidget *parent = 0);
+        public:
+            explicit UserGroupsDialog(QWidget *parent = 0);
     virtual ~UserGroupsDialog();
 
 protected:

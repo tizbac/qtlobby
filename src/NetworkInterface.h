@@ -5,24 +5,23 @@
 #include <QTcpSocket>
 #include <QUrl>
 
-class NetworkInterface : public QObject
-{
-  Q_OBJECT
+class NetworkInterface : public QObject {
+    Q_OBJECT
 public:
-  NetworkInterface( QObject * parent = 0 );
-  ~NetworkInterface();
-  void login();
-  void socketInit( QUrl );
+    NetworkInterface( QObject * parent = 0 );
+    ~NetworkInterface();
+    void login();
+    void socketInit( QUrl );
 
 signals:
-  void incommingMessage( QString message );
+    void incommingMessage( QString message );
 
 public slots:
-  void socketWrite( QString out );
-  void socketRead();
+    void socketWrite( QString out );
+    void socketRead();
 
 protected:
-  QTcpSocket *tcpSocket;
+    QTcpSocket *tcpSocket;
 };
 
 #endif

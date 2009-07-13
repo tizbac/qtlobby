@@ -70,15 +70,12 @@ bool AbstractChannel::executeChannelInput( QString input ) {
             }
             return true;
         }
-    }
-    else if ( QString( "/channels,/list" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
+    } else if ( QString( "/channels,/list" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
         ret.name = "CHANNELS";
-    }
-    else if ( QString( "/msg,/query" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
+    } else if ( QString( "/msg,/query" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
         ret.name = "SAYPRIVATE";
         ret.attributes << inputList;
-    }
-    else if ( QString( "/h,/help" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
+    } else if ( QString( "/h,/help" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
         ret.name = "CLIENTMSG";
         QString row( "<tr><td style=\"padding:0;border:none;\">%1</td><td style=\"padding:0;border:none;\">%2</td></tr>" );
         ret.attributes << objectName()
@@ -94,12 +91,10 @@ bool AbstractChannel::executeChannelInput( QString input ) {
                         row.arg( "/leave, /wc", tr( "Leave the channel" ) ) );
         receiveCommand( ret );
         return true;
-    }
-    else if ( QString( "/ingame" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
+    } else if ( QString( "/ingame" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
         ret.name = "GETINGAMETIME";
         ret.attributes << inputList;
-    }
-    else
+    } else
         return false;
     emit sendCommand( ret );
     return true;
@@ -129,21 +124,6 @@ void AbstractChannel::insertLine( QString line ) {
 
 QString AbstractChannel::makeHtml( QString in ) {
     QString ret = in;
-    //   QRegExp urlPattern( "(http|ftp)s?://[^/?# ]+[^?# ]*(\?[^# ]*)?(#[^#? ]*)?" );
-    QRegExp urlPattern( "(http|ftp)s?://[^\n<> ]*" );
-    QStringList ct;
-    int pos = 0;
-    while (( pos = urlPattern.indexIn( ret, pos ) ) != -1 ) {
-        pos += urlPattern.matchedLength();
-        ct << urlPattern.cap( 0 );
-    }
-    int count = ct.count();
-    QString placeHolder = "__###PLACEHOLDER:%1###__";
-    QString linkTag = "<a href=\"%1\">%2</a>";
-    for ( int i = 0; i < count; ++i )
-        ret.replace( ct[i], placeHolder.arg( i ) );
-    for ( int i = 0; i < count; ++i )
-        ret.replace( placeHolder.arg( i ), linkTag.arg( ct[i], ct[i] ) );
     ret.replace( "\n", "<br>" );
     return ret.prepend( "<p>" ).append( "</p>" );
 }
@@ -184,61 +164,61 @@ QString AbstractChannel::processIRCCodes(QString in) {
     colors[0xD] = QColor::fromRgb(255,000,255);
     colors[0xE] = QColor::fromRgb(255,255,000);
     colors[0xF] = QColor::fromRgb(255,255,255);
-    for(int i = 0; i < in.size(); i++) {
-        if(in[i].toAscii() == 2) {
-            if(!bold) {
+    for (int i = 0; i < in.size(); i++) {
+        if (in[i].toAscii() == 2) {
+            if (!bold) {
                 in.replace(i, 1, "<b>");
                 bold = true;
             } else {
                 in.replace(i, 1, "</b>");
                 bold = false;
             }
-        } else if(in[i].toAscii() == 17) {
-            if(!fixed) {
+        } else if (in[i].toAscii() == 17) {
+            if (!fixed) {
                 in.replace(i, 1, "<pre>");
                 fixed = true;
             } else {
                 in.replace(i, 1, "</pre>");
                 fixed = false;
             }
-        } else if(in[i].toAscii() == 29) {
-            if(!italic) {
+        } else if (in[i].toAscii() == 29) {
+            if (!italic) {
                 in.replace(i, 1, "<i>");
                 italic = true;
             } else {
                 in.replace(i, 1, "</i>");
                 italic = false;
             }
-        } else if(in[i].toAscii() == 15) {
+        } else if (in[i].toAscii() == 15) {
             QString r;
-            if(bold) r+= "</b>";
-            if(italic) r+= "</i>";
-            if(underline) r+= "</u>";
-            if(fixed) r+= "</pre>";
+            if (bold) r+= "</b>";
+            if (italic) r+= "</i>";
+            if (underline) r+= "</u>";
+            if (fixed) r+= "</pre>";
             in.replace(i, 1, "</b>");
             bold = false;
             italic = false;
             underline = false;
             fixed = false;
-        } else if(in[i].toAscii() == 31) {
-            if(!underline) {
+        } else if (in[i].toAscii() == 31) {
+            if (!underline) {
                 in.replace(i, 1, "<u>");
                 underline = true;
             } else {
                 in.replace(i, 1, "</u>");
                 underline = false;
             }
-        } else if(in[i].toAscii() == 3) {
+        } else if (in[i].toAscii() == 3) {
             int numDigits = 0;
-            if(i + 1 < in.length() - 1 && in[i+1].isDigit()) numDigits = 1;
-            if(i + 2 < in.length() - 1 && in[i+2].isDigit()) numDigits = 2;
-            if(numDigits == 0 && color) {
+            if (i + 1 < in.length() - 1 && in[i+1].isDigit()) numDigits = 1;
+            if (i + 2 < in.length() - 1 && in[i+2].isDigit()) numDigits = 2;
+            if (numDigits == 0 && color) {
                 in.replace(i, 1, "</span>");
                 color = false;
             }
             QColor c = colors[in.mid(i+1, numDigits).toInt()];
             QString r;
-            if(color) r = "</span>";
+            if (color) r = "</span>";
             r += QString("<span style=\"color: %1\">").arg(c.name());
             in.replace(i, 1+numDigits, r);
         }
@@ -249,22 +229,79 @@ QString AbstractChannel::processIRCCodes(QString in) {
 
 QString AbstractChannel::processBBCodes(QString in) {
     QString out;
-    QRegExp bbstart("\\[([^]]*)\\]");
-    QRegExp bbimg("\\[img=([^]]*)\\]");
+
+    //    //   QRegExp urlPattern( "(http|ftp)s?://[^/?# ]+[^?# ]*(\?[^# ]*)?(#[^#? ]*)?" );
+    //    QRegExp urlPattern( "(http|ftp)s?://[^\n<> ]*" );
+    //    QStringList ct;
+    //    int pos = 0;
+    //    while (( pos = urlPattern.indexIn( in, pos ) ) != -1 ) {
+    //        pos += urlPattern.matchedLength();
+    //        ct << urlPattern.cap( 0 );
+    //    }
+    //    int count = ct.count();
+    //    QString placeHolder = "__###PLACEHOLDER:%1###__";
+    //    QString linkTag = "[url]%1[/url]";
+    //    for ( int i = 0; i < count; ++i )
+    //        in.replace( ct[i], placeHolder.arg( i ) );
+    //    for ( int i = 0; i < count; ++i )
+    //        in.replace( placeHolder.arg( i ), linkTag.arg( ct[i] ) );
+    //    qDebug() << "I: " << in;
+
+    QRegExp bbbold("\\[b\\]");
+    QRegExp bbitalic("\\[i\\]");
+    QRegExp bbunderline("\\[u\\]");
+    QRegExp bbstrikethru("\\[s\\]");
+    QRegExp bbimg("\\[img\\]([^]]*)\\[/img\\]");
     QRegExp bbsize("\\[size=([^]]*)\\]");
     QRegExp bbcolor("\\[color=([^]]*)\\]");
-    QRegExp bbend("\\[/([^]]*?)\\]");
-    in.replace(bbimg, "<img src=\"\\1\">");
+    QRegExp bburl_long("\\[url=([^]]*)\\]([^]]*)\\[/url\\]");
+    QRegExp bburl("\\[url\\]([^]]*)\\[/url\\]");
+    QRegExp bbquote("\\[quote\\]");
+    QRegExp bbcode("\\[code\\]");
+    QRegExp bbbr("\\[br\\]");
+
+    QRegExp bbbold_end("\\[/b\\]");
+    QRegExp bbitalic_end("\\[/i\\]");
+    QRegExp bbunderline_end("\\[/u\\]");
+    QRegExp bbstrikethru_end("\\[/s\\]");
+    QRegExp bbimg_end("\\[/img\\]");
+    QRegExp bbsize_end("\\[/size\\]");
+    QRegExp bbcolor_end("\\[/color\\]");
+    QRegExp bburl_end("\\[/url\\]");
+    QRegExp bbquote_end("\\[/quote\\]");
+    QRegExp bbcode_end("\\[/code\\]");
+
+    in.replace(bbbold, "<b>");
+    in.replace(bbitalic, "<i>");
+    in.replace(bbunderline, "<u>");
+    in.replace(bbstrikethru, "<s>");
+    in.replace(bbimg, "<a href=\"\\1\">\\1</a>");
     in.replace(bbsize, "<span style=\"font-size:\\1px;\">");
     in.replace(bbcolor, "<span style=\"color: \\1\">");
-    in.replace(bbstart, "<\\1>");
-    in.replace(bbend, "</\\1>");
+    in.replace(bburl_long, "<a href=\"\\1\">\\2</a>");
+    in.replace(bburl, "<a href=\"\\1\">\\1</a>");
+    in.replace(bbquote, "<blockquote>");
+    in.replace(bbcode, "<pre>");
+    in.replace(bbbr, "<br/>");
+
+
+    in.replace(bbbold_end, "</b>");
+    in.replace(bbitalic_end, "</i>");
+    in.replace(bbunderline_end, "</u>");
+    in.replace(bbstrikethru_end, "</s>");
+    //in.replace(bbimg_end, "</img>");
+    in.replace(bbsize_end, "</span");
+    in.replace(bbcolor_end, "</span>");
+    //in.replace(bburl_end, "</a>");
+    in.replace(bbquote_end, "</blockquote>");
+    in.replace(bbcode_end, "</pre>");
+
     return in;
 }
 
 
 QString AbstractChannel::processInput(QString input) {
-    input.replace( "<", "&lt;" ).replace( ">", "&gt;" );
+    //input.replace( "<", "&lt;" ).replace( ">", "&gt;" );
     return processBBCodes(processIRCCodes(input));
 }
 

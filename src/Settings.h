@@ -16,7 +16,7 @@
 #include <QSettings>
 
 /**
-	@author Joachim Schiele <js@lastlog.de>
+        @author Joachim Schiele <js@lastlog.de>
 */
 
 /*
@@ -26,9 +26,8 @@
   qDebug() << settings->value("abc").toInt();
 */
 
-class Settings : public QObject
-{
-Q_OBJECT
+class Settings : public QObject {
+    Q_OBJECT
 public:
     static QSettings *Instance();
     ~Settings();

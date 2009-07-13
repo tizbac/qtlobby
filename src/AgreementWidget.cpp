@@ -12,7 +12,7 @@
 #include "AgreementWidget.h"
 
 AgreementWidget::AgreementWidget(QWidget *parent) : QDialog(parent) {
-  setupUi(this);
+    setupUi(this);
 }
 
 

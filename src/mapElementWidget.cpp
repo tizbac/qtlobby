@@ -12,12 +12,11 @@
 #include "mapElementWidget.h"
 
 mapElementWidget::mapElementWidget(QWidget *parent) : QWidget(parent) {
-  setupUi(this);
+    setupUi(this);
 }
 
 
-mapElementWidget::~mapElementWidget()
-{
+mapElementWidget::~mapElementWidget() {
 }
 
 

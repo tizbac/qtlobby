@@ -18,7 +18,7 @@ RawHeightMap::RawHeightMap() {
 }*/
 
 void RawHeightMap::free() {
-    if(m_ptr) {
+    if (m_ptr) {
         delete m_ptr;
         m_ptr = 0;
     }

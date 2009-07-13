@@ -10,8 +10,8 @@ namespace Ui {
 class StylesheetDialog : public QDialog {
     Q_OBJECT
     Q_DISABLE_COPY(StylesheetDialog)
-public:
-    explicit StylesheetDialog(QWidget *parent = 0);
+        public:
+            explicit StylesheetDialog(QWidget *parent = 0);
     virtual ~StylesheetDialog();
 
 private slots:

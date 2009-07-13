@@ -4,7 +4,7 @@
 #include <QtGui/QDialog>
 
 namespace Ui {
-    class GLProgressDialog;
+class GLProgressDialog;
 }
 
 class GLProgressDialog : public QDialog {

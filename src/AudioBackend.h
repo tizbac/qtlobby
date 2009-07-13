@@ -17,23 +17,23 @@
 #include <QDebug>
 
 enum SampleCollection {
-  LoginSample,
-  QuerySample,
-  RingSample,
-  BattleRingSample
+    LoginSample,
+    QuerySample,
+    RingSample,
+    BattleRingSample
 };
 
 class AudioBackend : public QObject {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  AudioBackend( QObject *parent = 0 );
-  ~AudioBackend();
+    AudioBackend( QObject *parent = 0 );
+    ~AudioBackend();
 
 public slots:
-  void playSample( SampleCollection  s );
+    void playSample( SampleCollection  s );
 private:
 #if QT_VERSION >= 0x040400
-  //PhononBackend phononBackend;
+    //PhononBackend phononBackend;
 #endif
 };
 

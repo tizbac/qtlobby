@@ -1,7 +1,7 @@
 //
 // C++ Implementation: BattleUserTreeModel
 //
-// Description: 
+// Description:
 //
 //
 // Author: Mirko Windhoff <qtlobby.reg@ncnever.de>, (C) 2008
@@ -13,13 +13,11 @@
 #include "UnitSyncLib.h"
 
 BattleUserTreeModel::BattleUserTreeModel(QObject* parent)
-    : UserTreeModel(parent)
-{
+    : UserTreeModel(parent) {
 }
 
 
-BattleUserTreeModel::~BattleUserTreeModel()
-{
+BattleUserTreeModel::~BattleUserTreeModel() {
 }
 
 int BattleUserTreeModel::columnCount( const QModelIndex& /*parent*/ ) const {
@@ -27,10 +25,10 @@ int BattleUserTreeModel::columnCount( const QModelIndex& /*parent*/ ) const {
 }
 
 QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
-    if(role == Qt::BackgroundRole || role == Qt::UserRole) {
+    if (role == Qt::BackgroundRole || role == Qt::UserRole) {
         return UserTreeModel::data(index, role);
     }
-    if(role == Qt::UserRole+1) {
+    if (role == Qt::UserRole+1) {
         User u = m_userList[index.row()];
         switch ( index.column() ) {
         case 0: //status
@@ -39,9 +37,9 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
         case 3: //username
             return UserTreeModel::data(index, Qt::ToolTipRole);
         case 4: //ready/spec
-            if(u.battleState.isPlayer() && u.battleState.isReady()) return 2;
-            if(u.battleState.isPlayer() && !u.battleState.isReady()) return 1;
-            if(!u.battleState.isPlayer()) return 0;
+            if (u.battleState.isPlayer() && u.battleState.isReady()) return 2;
+            if (u.battleState.isPlayer() && !u.battleState.isReady()) return 1;
+            if (!u.battleState.isPlayer()) return 0;
         case 5: //side
             return QString::number(u.battleState.getSide()).rightJustified(5,'0');
         case 6: //team
@@ -64,39 +62,39 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
     case 4: //ready/spec
         if ( role == Qt::DecorationRole || role == Qt::ToolTipRole) {
             User u = m_userList[index.row()];
-            if(u.battleState.isPlayer()) {
-                if(u.battleState.isReady()) {
-                    switch(u.battleState.syncState()) {
+            if (u.battleState.isPlayer()) {
+                if (u.battleState.isReady()) {
+                    switch (u.battleState.syncState()) {
                     case 0:
-                        if(role == Qt::DecorationRole)
+                        if (role == Qt::DecorationRole)
                             return QIcon( QString( ":/icons/ready_q.xpm" ));
                         else
                             return "Ready, sync status unknown";
                     case 1:
-                        if(role == Qt::DecorationRole)
+                        if (role == Qt::DecorationRole)
                             return QIcon( QString( ":/icons/open_game.xpm" ));
                         else
                             return "Ready";
                     case 2:
-                        if(role == Qt::DecorationRole)
+                        if (role == Qt::DecorationRole)
                             return QIcon( QString( ":/icons/ready_unsync.xpm" ));
                         else
                             return "Ready, unsynced";
                     }
                 } else {
-                    switch(u.battleState.syncState()) {
+                    switch (u.battleState.syncState()) {
                     case 0:
-                        if(role == Qt::DecorationRole)
+                        if (role == Qt::DecorationRole)
                             return QIcon( QString( ":/icons/nready_q.xpm" ));
                         else
                             return "Not ready, sync status unknown";
                     case 1:
-                        if(role == Qt::DecorationRole)
+                        if (role == Qt::DecorationRole)
                             return QIcon( QString( ":/icons/closed_game.xpm" ));
                         else
                             return "Not ready";
                     case 2:
-                        if(role == Qt::DecorationRole)
+                        if (role == Qt::DecorationRole)
                             return QIcon( QString( ":/icons/nready_unsync.xpm" ));
                         else
                             return "Not ready, unsynced";
@@ -104,7 +102,7 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
                 }
 
             } else {
-                if(role == Qt::DecorationRole)
+                if (role == Qt::DecorationRole)
                     return QIcon( QString( ":/icons/spectator.xpm" ));
                 else
                     return "Spectating";
@@ -117,7 +115,7 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
 
             User u = m_userList[index.row()];
             QString sideName = unitSyncLib->sideName(u.battleState.getSide());
-            if(role == Qt::DecorationRole)
+            if (role == Qt::DecorationRole)
                 return QIcon( unitSyncLib->getSideIcon(sideName));
             else
                 return sideName;
@@ -158,7 +156,7 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
 }
 
 QVariant BattleUserTreeModel::headerData( int col, Qt::Orientation o, int role ) const {
-    if(col <= 3) return UserTreeModel::headerData(col, o, role);
+    if (col <= 3) return UserTreeModel::headerData(col, o, role);
     if ( role == Qt::ToolTipRole )
         switch ( col ) {
     case 4:

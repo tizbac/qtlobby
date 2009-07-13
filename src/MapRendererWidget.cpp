@@ -64,11 +64,11 @@ void MapRendererWidget::resizeGL(int w, int h) {
 }
 
 void MapRendererWidget::paintGL() {
-    if(!m_heightmap.getWidth() || blockRerender) return;
+    if (!m_heightmap.getWidth() || blockRerender) return;
     GLfloat light_position[] = { 5, 5, MAX_HEIGHT*1.3, 0.0 };
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-    if(compileObject) {
+    if (compileObject) {
         makeObject();
         compileObject = false;
     }
@@ -82,7 +82,7 @@ void MapRendererWidget::paintGL() {
     glEnableClientState( GL_TEXTURE_COORD_ARRAY );
     //glEnableClientState( GL_NORMAL_ARRAY );
 
-    if(getGLExtensionFunctions().openGL15Supported()) {
+    if (getGLExtensionFunctions().openGL15Supported()) {
         glBindBuffer(GL_ARRAY_BUFFER, m_VBOVertices);
         glVertexPointer( 3, GL_FLOAT, 0, (char *) NULL );
 
@@ -106,10 +106,10 @@ void MapRendererWidget::paintGL() {
 }
 
 void MapRendererWidget::generateTexCoords() {
-    if(m_texCoords) delete m_texCoords;
+    if (m_texCoords) delete m_texCoords;
     m_texCoords = new TexCoord[m_vertexNumber];
-    for(int i = 0; i < m_heightmap.getHeight(); i++) {
-        for(int j = 0; j < m_heightmap.getWidth(); j++) {
+    for (int i = 0; i < m_heightmap.getHeight(); i++) {
+        for (int j = 0; j < m_heightmap.getWidth(); j++) {
             m_texCoords[i*m_heightmap.getWidth()+j].u = (float)j/m_heightmap.getWidth();
             m_texCoords[i*m_heightmap.getWidth()+j].v = m_heightmap.getHeight() - (float)i/m_heightmap.getHeight();
         }
@@ -119,7 +119,7 @@ void MapRendererWidget::generateTexCoords() {
 void MapRendererWidget::generateIndexes() {
     m_numIndexes = (m_heightmap.getWidth() * 2) * (m_heightmap.getHeight() - 1) + (m_heightmap.getHeight() - 2);
 
-    if(m_indexes) delete m_indexes;
+    if (m_indexes) delete m_indexes;
     m_indexes = new unsigned int[m_numIndexes];
 
     int index = 0;
@@ -159,7 +159,7 @@ void MapRendererWidget::makeObject() {
     progress->updateProgress(0);
     progress->show();
     QApplication::processEvents();*/
-    if(getGLExtensionFunctions().openGL15Supported()) {
+    if (getGLExtensionFunctions().openGL15Supported()) {
         glGenBuffers( 1, &m_VBOVertices );
         glBindBuffer( GL_ARRAY_BUFFER, m_VBOVertices );
         glBufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(Vertex), m_vertexes, GL_STATIC_DRAW );
@@ -171,12 +171,12 @@ void MapRendererWidget::makeObject() {
     //BufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(Vertex), m_normals, GL_STATIC_DRAW );
     //}
     generateTexCoords();
-    if(getGLExtensionFunctions().openGL15Supported()) {
+    if (getGLExtensionFunctions().openGL15Supported()) {
         glGenBuffers( 1, &m_VBOTexCoords );
         glBindBuffer( GL_ARRAY_BUFFER, m_VBOTexCoords );
         glBufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(TexCoord), m_texCoords, GL_STATIC_DRAW );
     }
-    if(startRects.count())
+    if (startRects.count())
         drawStartRecs();
     else
         m_texture = bindTexture(QPixmap::fromImage(m_minimap), GL_TEXTURE_2D);
@@ -193,17 +193,17 @@ void MapRendererWidget::makeObject() {
 #define N(i,j) m_normals[(i)*m_heightmap.getWidth()+(j)]
 
 void MapRendererWidget::computeNormals() {
-    if(m_normals) delete m_normals;
+    if (m_normals) delete m_normals;
     Vertex* m_normals = new Vertex[m_vertexNumber];
     memset(m_normals, 0, m_vertexNumber*sizeof(Vertex));
-    for(int i = 0; i < m_heightmap.getHeight(); i++) {
-        for(int j = 0; j < m_heightmap.getWidth(); j++) {
+    for (int i = 0; i < m_heightmap.getHeight(); i++) {
+        for (int j = 0; j < m_heightmap.getWidth(); j++) {
             Vertex left, right, top, bottom, current;
             current = V(i,j);
-            if(i > 0) left = V(i-1,j);
-            if(j > 0) top = V(i,j-1);
-            if(i < m_heightmap.getHeight() - 1) right = V(i+1,j);
-            if(j < m_heightmap.getWidth() - 1) bottom = V(i,j+1);
+            if (i > 0) left = V(i-1,j);
+            if (j > 0) top = V(i,j-1);
+            if (i < m_heightmap.getHeight() - 1) right = V(i+1,j);
+            if (j < m_heightmap.getWidth() - 1) bottom = V(i,j+1);
             N(i,j).add(Vertex::getNormal(current, left, top));
             N(i,j).add(Vertex::getNormal(current, left, bottom));
             N(i,j).add(Vertex::getNormal(current, right, top));
@@ -214,21 +214,21 @@ void MapRendererWidget::computeNormals() {
 }
 
 void MapRendererWidget::setSource(QString mapName, QImage minimap, RawHeightMap heightmap) {
-    if(currentMap == mapName) return;
+    if (currentMap == mapName) return;
     currentMap = mapName;
     m_minimap = minimap;
     m_heightmap.free();
     m_heightmap = heightmap;
-    if(getGLExtensionFunctions().openGL15Supported()) {
+    if (getGLExtensionFunctions().openGL15Supported()) {
         glDeleteBuffers(1, &m_VBOVertices);
         glDeleteBuffers(1, &m_VBONormals);
         glDeleteBuffers(1, &m_VBOTexCoords);
     }
     m_vertexNumber = heightmap.getWidth()*(heightmap.getHeight()-1)*2;
-    if(m_vertexes) delete m_vertexes;
+    if (m_vertexes) delete m_vertexes;
     m_vertexes = new Vertex[m_vertexNumber];
-    for(int i = 0; i < heightmap.getHeight(); i++) {
-        for(int j = 0; j < heightmap.getWidth(); j++) {
+    for (int i = 0; i < heightmap.getHeight(); i++) {
+        for (int j = 0; j < heightmap.getWidth(); j++) {
             unsigned short int value = heightmap.getData()[i*heightmap.getWidth()+j];
             int offset = i*heightmap.getWidth()+j;
             m_vertexes[offset].x = i * CELL_SIZE;
@@ -237,7 +237,7 @@ void MapRendererWidget::setSource(QString mapName, QImage minimap, RawHeightMap 
         }
     }
     compileObject = true;
-    if(hasFocus()) updateGL();
+    if (hasFocus()) updateGL();
 }
 
 
@@ -274,7 +274,7 @@ void MapRendererWidget::normalizeAngle(int *angle) {
 
 void MapRendererWidget::wheelEvent ( QWheelEvent * event ) {
     float newZoom = lastZoom - event->delta() * 0.0005;
-    if(newZoom > 1 || newZoom < 0.1) return;
+    if (newZoom > 1 || newZoom < 0.1) return;
     lastZoom = newZoom;
     resizeGL(width(), height());
     updateGL();
@@ -305,10 +305,10 @@ void MapRendererWidget::mouseMoveEvent(QMouseEvent *event) {
 
 
 void MapRendererWidget::drawStartRecs() {
-    if(m_minimap.isNull()) return;
+    if (m_minimap.isNull()) return;
     m_withRects = m_minimap;
     QPainter p(&m_withRects);
-    for(QMap<int, QRect>::const_iterator i = startRects.begin(); i != startRects.end(); i++) {
+    for (QMap<int, QRect>::const_iterator i = startRects.begin(); i != startRects.end(); i++) {
         QRect scaled = i.value();
         scaled.setWidth(scaled.width()/201.*m_withRects.width());
         scaled.setHeight(scaled.height()/201.*m_withRects.height());
@@ -321,7 +321,7 @@ void MapRendererWidget::drawStartRecs() {
         QColor green(Qt::green);
         QColor greenFill(Qt::green);
         greenFill.setAlpha(alpha);
-        if(i.key() == myAlly) {
+        if (i.key() == myAlly) {
             p.setBrush(greenFill);
             p.setPen(QPen(green, width));
         } else {
@@ -344,7 +344,7 @@ void MapRendererWidget::addStartRect(int ally, QRect r) {
 
 void MapRendererWidget::setMyAllyTeam(int n) {
     n--;
-    if(myAlly == n) return;
+    if (myAlly == n) return;
     myAlly = n;
     drawStartRecs();
     updateGL();

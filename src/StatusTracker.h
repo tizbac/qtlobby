@@ -18,14 +18,13 @@
 /**
  @author Joachim Schiele <js@lastlog.de>
 */
-class StatusTracker : public QObject
-{
-  Q_OBJECT
+class StatusTracker : public QObject {
+    Q_OBJECT
 public:
-  StatusTracker( QStatusBar *s );
-  ~StatusTracker();
+    StatusTracker( QStatusBar *s );
+    ~StatusTracker();
 private:
-  QStatusBar *statusbar;
+    QStatusBar *statusbar;
 
 };
 

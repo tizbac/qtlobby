@@ -15,14 +15,14 @@
 #include <QString>
 #include <QStringList>
 /**
-	@author Joachim Schiele <js@lastlog.de>
+        @author Joachim Schiele <js@lastlog.de>
 */
 
-class TLDList{
+class TLDList {
 public:
-  TLDList();
-  ~TLDList();
-  static QMap<QString,QString>* TLDMap;
+    TLDList();
+    ~TLDList();
+    static QMap<QString,QString>* TLDMap;
 };
 
 #endif

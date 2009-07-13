@@ -90,11 +90,11 @@ UserTreeModel* UserManager::model() {
     return m_userModel;
 }
 
-TreeSortFilterProxyModel* UserManager::proxyModel(){
+TreeSortFilterProxyModel* UserManager::proxyModel() {
     return m_proxyModel;
 }
 
-QItemSelectionModel* UserManager::selectionModel(){
+QItemSelectionModel* UserManager::selectionModel() {
     return m_selectionModel;
 }
 
@@ -103,6 +103,6 @@ void UserManager::rowsAboutToBeInserted( const QModelIndex &, int, int ) {
 }
 
 
-void UserManager::rowsInserted( const QModelIndex &, int, int ){
+void UserManager::rowsInserted( const QModelIndex &, int, int ) {
     //   qDebug() <<"rowsInserted";
 }

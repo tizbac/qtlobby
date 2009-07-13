@@ -27,8 +27,7 @@ UnitSyncLib::UnitSyncLib( QObject *parent ) : QObject( parent ) {
     settings = Settings::Instance();
     library_loaded = false;
 
-    if(!unitsynclib->isLoaded()) // maybe this was useless after all (aj)
-    {
+    if (!unitsynclib->isLoaded()) { // maybe this was useless after all (aj)
         if ( loadLibrary() ) {
             //     qDebug() << "library is usable";
             TestCall();
@@ -66,7 +65,7 @@ bool UnitSyncLib::loadLibrary() {
     //   QMessageBox::information( NULL, "unitSyncLib", QString("%1")
     //       .arg(fi.absolutePath()));
 
-    if(!QFile::exists(lib_with_path)) {
+    if (!QFile::exists(lib_with_path)) {
         QMessageBox::information( NULL, "unitSyncLib - library not found",
                                   "Unitsync library was not found or is unusable.");
         return false;
@@ -75,7 +74,7 @@ bool UnitSyncLib::loadLibrary() {
     //   unitsynclib->setLoadHints(QLibrary::ExportExternalSymbolsHint|QLibrary::LoadArchiveMemberHint);
     unitsynclib->load();
 
-    if ( !unitsynclib->isLoaded() ){
+    if ( !unitsynclib->isLoaded() ) {
         QMessageBox::information( NULL, "unitSyncLib - library not loaded",
                                   QString( "%1 -- %2" )
                                   .arg( unitsynclib->errorString() )
@@ -220,7 +219,7 @@ QImage UnitSyncLib::getMinimapQImage( const QString mapFileName, int miplevel, b
     const unsigned int width  = 1 << ( 10 - miplevel );
     QByteArray map(( char* ) m_GetMinimap( mapFileName.toAscii(), miplevel ), width*height*2 );
     QImage mapImage(( uchar* ) map.constData(), width, height, QImage::Format_RGB16 );
-    if(scaled) {
+    if (scaled) {
         int height;
         int width;
         m_GetInfoMapSize(mapFileName.toAscii(), "height", &width, &height);
@@ -242,7 +241,7 @@ QImage UnitSyncLib::getHeightMapQImage( const QString mapFileName ) {
     unsigned short *ptr = new unsigned short[width*height];
     unsigned int *rgb = new unsigned int[width*height];
     m_GetInfoMap(mapFileName.toAscii(), "height", ptr, 2);
-    for(int i = 0; i < width * height; i++) {
+    for (int i = 0; i < width * height; i++) {
         rgb[i] = QColor::fromHsv(ptr[i]/(float)shortMax*(HueHigh-HueLow)+HueLow, 255, ptr[i]/(float)shortMax*155+100).rgb();
     }
     QByteArray map((char*)rgb, width*height*4);
@@ -274,7 +273,7 @@ QImage UnitSyncLib::getMetalMapQImage( const QString mapFileName ) {
     unsigned char *ptr = new unsigned char[width*height];
     unsigned int *rgb = new unsigned int[width*height];
     m_GetInfoMap(mapFileName.toAscii(), "metal", ptr, 1);
-    for(int i = 0; i < width * height; i++) {
+    for (int i = 0; i < width * height; i++) {
         rgb[i] = QColor::fromHsv(150, 255, ptr[i]).rgb();
     }
     QByteArray map((char*)rgb, width*height*4);
@@ -286,7 +285,7 @@ QImage UnitSyncLib::getMetalMapQImage( const QString mapFileName ) {
 
 void UnitSyncLib::getMapInfo(QString mapFileName, MapInfo* info) {
     NON_REENTRANT;
-    if(!libraryLoaded()) return;
+    if (!libraryLoaded()) return;
     m_GetMapInfoEx(mapFileName.toAscii(), info, 1);
     //qDebug() << "UNITSYNC_DUMP: " << "GetMapInfoEx";
 }
@@ -323,11 +322,11 @@ QString UnitSyncLib::modArchive( int modIndex ) {
 
 bool UnitSyncLib::setCurrentMod(QString modname) {
     NON_REENTRANT;
-    if(!libraryLoaded()) return false;
-    if(m_currentModName == modname) return true;
+    if (!libraryLoaded()) return false;
+    if (m_currentModName == modname) return true;
     //qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModIndex";
     int index = m_GetPrimaryModIndex(modname.toAscii());
-    if(index < 0) return false;
+    if (index < 0) return false;
     //qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModArchive";
     //qDebug() << "UNITSYNC_DUMP: " << "AddAllArchives";
     m_AddAllArchives(m_GetPrimaryModArchive(index));
@@ -337,22 +336,22 @@ bool UnitSyncLib::setCurrentMod(QString modname) {
     return true;
 }
 
-QIcon UnitSyncLib::getSideIcon(QString sidename){
-    if(m_sideIconsCache.contains(sidename))
+QIcon UnitSyncLib::getSideIcon(QString sidename) {
+    if (m_sideIconsCache.contains(sidename))
         return m_sideIconsCache[sidename];
-    if(sidename.isEmpty()) return QIcon();
+    if (sidename.isEmpty()) return QIcon();
     NON_REENTRANT;
     // Maybe some cleaning needed here (aj)
     // Done (ko)
-    if(!libraryLoaded()) return QIcon();
+    if (!libraryLoaded()) return QIcon();
 
     QString filepath = QString("SidePics/%1.bmp").arg(sidename.toUpper());
     //qDebug() << "UNITSYNC_DUMP: " << "OpenFileVFS";
     int ret = m_OpenFileVFS(filepath.toAscii());
-    if(ret < 0) return QIcon();
+    if (ret < 0) return QIcon();
     //qDebug() << "UNITSYNC_DUMP: " << "FileSizeVFS";
     int filesize = m_FileSizeVFS(ret);
-    if(filesize == 0) return QIcon();
+    if (filesize == 0) return QIcon();
 
     QByteArray sideicon;
     sideicon.resize(filesize);
@@ -373,16 +372,16 @@ QString UnitSyncLib::getSpringVersion() {
 }
 
 int UnitSyncLib::getSideNameCount() {
-    if(m_currentModName.isEmpty()) return 0;
+    if (m_currentModName.isEmpty()) return 0;
     NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetSideCount";
     return libraryLoaded() ? m_GetSideCount( ) : -1;
 }
 
 QString UnitSyncLib::sideName( int index ) {
-    if(m_sideNamesCache.contains(index))
+    if (m_sideNamesCache.contains(index))
         return m_sideNamesCache[index];
-    if(m_currentModName.isEmpty()) return QString();
+    if (m_currentModName.isEmpty()) return QString();
     NON_REENTRANT;
     if ( libraryLoaded() ) {
         //qDebug() << "UNITSYNC_DUMP: " << "GetSideCount";
@@ -414,13 +413,19 @@ OptionType UnitSyncLib::getOptionType(int optIndex) {
     NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetOptionType";
     int type = m_GetOptionType(optIndex);
-    switch(type) {
-    case 1: return BOOLEAN;
-    case 2: return LIST;
-    case 3: return FLOAT;
-    case 4: return STRING;
-    case 5: return SECTION;
-    default: return UNDEFINED;
+    switch (type) {
+    case 1:
+        return BOOLEAN;
+    case 2:
+        return LIST;
+    case 3:
+        return FLOAT;
+    case 4:
+        return STRING;
+    case 5:
+        return SECTION;
+    default:
+        return UNDEFINED;
     }
 }
 
@@ -448,25 +453,25 @@ bool UnitSyncLib::isGameOption(int optIndex) {
     return m_gameOptionKeys.contains(m_GetOptionKey(optIndex));
 }
 
-bool UnitSyncLib::getOptionBoolDef(int optIndex){
+bool UnitSyncLib::getOptionBoolDef(int optIndex) {
     NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetOptionBoolDef";
     return m_GetOptionBoolDef(optIndex);
 }
 
-QString UnitSyncLib::getOptionListDef(int optIndex){
+QString UnitSyncLib::getOptionListDef(int optIndex) {
     NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetOptionListDef";
     return m_GetOptionListDef(optIndex);
 }
 
-float UnitSyncLib::getOptionNumberDef(int optIndex){
+float UnitSyncLib::getOptionNumberDef(int optIndex) {
     NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetOptionNumberDef";
     return m_GetOptionNumberDef(optIndex);
 }
 
-QString UnitSyncLib::getOptionStringDef(int optIndex){
+QString UnitSyncLib::getOptionStringDef(int optIndex) {
     NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetOptionStringDef";
     return m_GetOptionStringDef(optIndex);
@@ -474,7 +479,7 @@ QString UnitSyncLib::getOptionStringDef(int optIndex){
 
 void UnitSyncLib::reboot() {
     NON_REENTRANT;
-    if(library_loaded) {
+    if (library_loaded) {
         m_UnInit();
         m_Init(0,0);
     }

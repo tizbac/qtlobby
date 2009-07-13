@@ -12,10 +12,10 @@ void MapWidget::setImage(QImage image) {
 }
 
 void MapWidget::drawStartRecs() {
-    if(m_scaled.isNull()) return;
+    if (m_scaled.isNull()) return;
     m_withRects = m_scaled;
     QPainter p(&m_withRects);
-    for(QMap<int, QRect>::const_iterator i = startRects.begin(); i != startRects.end(); i++) {
+    for (QMap<int, QRect>::const_iterator i = startRects.begin(); i != startRects.end(); i++) {
         QRect scaled = i.value();
         scaled.setWidth(scaled.width()/200.*m_scaled.width());
         scaled.setHeight(scaled.height()/200.*m_scaled.height());
@@ -28,7 +28,7 @@ void MapWidget::drawStartRecs() {
         QColor green(Qt::green);
         QColor greenFill(Qt::green);
         greenFill.setAlpha(alpha);
-        if(i.key() == myAlly) {
+        if (i.key() == myAlly) {
             p.setBrush(greenFill);
             p.setPen(QPen(green, width));
         } else {
@@ -42,14 +42,14 @@ void MapWidget::drawStartRecs() {
 
 void MapWidget::paintEvent ( QPaintEvent * event ) {
     QPainter p(this);
-    if(!m_error.isNull()) {
+    if (!m_error.isNull()) {
         QFontMetrics fm(font());
         int x = (width() - fm.width(m_error)) / 2;
         int y = (height() - fm.height()) / 2;
         p.drawText(x, y, m_error);
         return;
     }
-    if(m_scaled.isNull()) return;
+    if (m_scaled.isNull()) return;
     drawStartRecs();
     int x = (width() - m_scaled.width()) / 2;
     int y = (height() - m_scaled.height()) / 2;
@@ -57,8 +57,8 @@ void MapWidget::paintEvent ( QPaintEvent * event ) {
 }
 
 void MapWidget::resizeEvent(QResizeEvent * event) {
-    if(event->oldSize() == size()) return;
-    if(m_pixmap.isNull()) return;
+    if (event->oldSize() == size()) return;
+    if (m_pixmap.isNull()) return;
     m_scaled = m_pixmap.scaled(size(), Qt::KeepAspectRatio);
 }
 

@@ -17,7 +17,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     //   setAttribute(Qt::WA_DeleteOnClose);
     setUnifiedTitleAndToolBarOnMac( true );
     setupUi( this );
-    setWindowTitle(QString( "0.0.%1-svn" ).arg( SVN_REV ));
+    setWindowTitle(QString( "QTlobby 0.0.%1-svn" ).arg( SVN_REV ));
 
     settings = Settings::Instance();
 
@@ -26,7 +26,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     battles->setUsers( users );
     preference          = new UserPreference();
     preference->setWindowFlags(Qt::Window);
-    if(settings->value("unitsync").toString().isEmpty())
+    if (settings->value("unitsync").toString().isEmpty())
         preference->exec();
     UnitSyncLib::getInstance();
     serverContextState  = new ServerContextState( this );
@@ -39,6 +39,16 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     mapSelector         = new MapSelector();
     stylesheetDialog    = new StylesheetDialog();
     userGroupsDialog    = new UserGroupsDialog();
+
+    usersInCurrentChannel = new QLabel("Users in current channel: 0");
+    battlesOnline = new QLabel("Battles online: 0");
+    usersOnline = new QLabel("Users online: 0");
+    moderatorsOnline = new QLabel("Moderators online: 0");
+    statusBar()->addPermanentWidget(moderatorsOnline);
+    statusBar()->addPermanentWidget(usersOnline);
+    statusBar()->addPermanentWidget(battlesOnline);
+    statusBar()->addPermanentWidget(usersInCurrentChannel);
+    statusBar()->addPermanentWidget(new QLabel());
 
     tabBar->setTabsClosable(true);
     //tabBar->setDocumentMode(true);
@@ -191,13 +201,13 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     QTimer::singleShot( 0, connectionWidget, SLOT( show_if_wanted() ) );
     //   qDebug() << timer->msec() << "ms elapsed";
     QSettings* s = Settings::Instance();
-    if(s->contains("mainwindow/geometry")) {
+    if (s->contains("mainwindow/geometry")) {
         restoreGeometry(s->value("mainwindow/geometry").toByteArray());
         lastState = s->value("mainwindow/state").toByteArray();
         lastBattleState = s->value("mainwindow/battlestate").toByteArray();
         restoreState(lastState);
     }
-    for(int i = 0; i < 4; i++)
+    for (int i = 0; i < 4; i++)
         users->resizeColumnToContents(i);
     inBattle = false;
 }
@@ -233,8 +243,7 @@ void MainWindow::toggleShowHideMainWindow( QSystemTrayIcon::ActivationReason rea
         if ( isVisible() ) {
             //       QTimer::singleShot( 0, connectionWidget, SLOT( hide() ) );
             hide();
-        }
-        else {
+        } else {
             show();
             restoreState(state);
             userListDockWidget->blockSignals(false);
@@ -260,8 +269,7 @@ void MainWindow::showConnectionWidget( bool ) {
     connectionWidget->show();
 }
 
-void MainWindow::createTrayIcon()
-{
+void MainWindow::createTrayIcon() {
     trayIcon = new QSystemTrayIcon( this );
     QIcon icon = QIcon( ":/icons/heart.svg" );
 
@@ -317,7 +325,7 @@ void MainWindow::sendTrayMessage( QString message, int milliseconds ) {
 }
 
 void MainWindow::startSpringSettings() {
-    if(settings->value( "springsettings+" ).toString().isEmpty()) return;
+    if (settings->value( "springsettings+" ).toString().isEmpty()) return;
     emit newTrayMessage( "spring settings dialog started" );
     qp.start( settings->value( "springsettings+" ).toString() );
 }
@@ -334,7 +342,7 @@ void MainWindow::closeEvent(QCloseEvent *event) {
     QSettings* s = Settings::Instance();
     s->setValue("channels", lobbyTabs->getChannelList());
     s->setValue("mainwindow/geometry", saveGeometry());
-    if(inBattle)
+    if (inBattle)
         lastBattleState = saveState();
     else
         lastState = saveState();
@@ -360,7 +368,7 @@ void MainWindow::onChangedToBattleTab() {
     if(s->contains("mainwindow/usersHeaderViewBattleState")) {
         users->header()->restoreState(s->value("mainwindow/usersHeaderViewBattleState").toByteArray());
     }*/
-    for(int i = 0; i < 9; i++)
+    for (int i = 0; i < 9; i++)
         users->resizeColumnToContents(i);
     inBattle = true;
 }
@@ -372,7 +380,7 @@ void MainWindow::onChangedFromBattleTab() {
     if(s->contains("mainwindow/usersHeaderViewState")) {
         users->header()->restoreState(s->value("mainwindow/usersHeaderViewState").toByteArray());
     }*/
-    for(int i = 0; i < 4; i++)
+    for (int i = 0; i < 4; i++)
         users->resizeColumnToContents(i);
     inBattle = false;
 }
@@ -381,9 +389,9 @@ void MainWindow::onCurrentChanged(const QModelIndex & current, const QModelIndex
     QModelIndex sourceIndex = battles->battleManager->proxyModel()->mapToSource(current);
     Battle b = battles->battleManager->model()->battleList()[sourceIndex.row()];
     battleInfoTreeView->setModel((UserTreeModel*)users->getUserModel(b.id));
-    for(int i = 0; i < 9; i++)
+    for (int i = 0; i < 9; i++)
         battleInfoTreeView->resizeColumnToContents(i);
-    for(int i = 4; i <= 9; i++)
+    for (int i = 4; i <= 9; i++)
         battleInfoTreeView->hideColumn(i);
 }
 

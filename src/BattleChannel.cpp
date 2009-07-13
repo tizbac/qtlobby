@@ -36,13 +36,13 @@ void BattleChannel::setupUi( QWidget * tab ) {
     s->addWidget(t);
     s->addWidget(channelTextBrowser);
     QSettings* settings = Settings::Instance();
-    if(settings->contains("mainwindow/chatsplitter"))
+    if (settings->contains("mainwindow/chatsplitter"))
         s->restoreState(settings->value("mainwindow/chatsplitter").toByteArray());
     connect(s, SIGNAL(splitterMoved(int,int)), SLOT(onChatSplitterMoved(int,int)));
     gridLayout->addWidget( s, 0, 0, 1, 1 );
     /*void onReadyStateChanged( bool isReady );
-  void onSpecStateChanged( bool isSpec ); // NEW
-  void onSideComboBoxChanged( int index ); // NEW*/
+    void onSpecStateChanged( bool isSpec ); // NEW
+    void onSideComboBoxChanged( int index ); // NEW*/
     connect(battleWindowForm->specCheckBox, SIGNAL( stateChanged ( int ) ),
             this,SLOT(onSpecCheckBoxChanged(int))); // NEW
     connect( battleWindowForm->readyCheckBox, SIGNAL( stateChanged ( int ) ),
@@ -82,102 +82,102 @@ void BattleChannel::receiveCommand( Command command ) {
     command.name = command.name.toUpper();
     QStringList battleChannelCommands;
     battleChannelCommands
-            << "BATTLECLOSED"
-            << "JOINBATTLE"
-            << "JOINEDBATTLE"
-            << "LEFTBATTLE"
-            << "JOINBATTLEFAILED"
-            << "OPENBATTLEFAILED"
-            << "UPDATEBATTLEINFO"
-            << "SAIDBATTLE"
-            << "SAIDBATTLEEX"
-            << "CLIENTSTATUS"
-            << "CLIENTBATTLESTATUS"
-            << "FORCEQUITBATTLE"
-            << "DISABLEUNITS"
-            << "ENABLEUNITS"
-            << "ENABLEALLUNITS"
-            << "RING"
-            << "REDIRECT"
-            << "BROADCAST"
-            << "ADDBOT"
-            << "REMOVEBOT"
-            << "UPDATEBOT"
-            << "ADDSTARTRECT"
-            << "REMOVESTARTRECT"
-            << "MAPGRADES"
-            << "SCRIPTSTART"
-            << "SCRIPT"
-            << "SCRIPTEND"
-            << "SETSCRIPTTAGS"
-            << "REMOVESCRIPTTAGS";
+    << "BATTLECLOSED"
+    << "JOINBATTLE"
+    << "JOINEDBATTLE"
+    << "LEFTBATTLE"
+    << "JOINBATTLEFAILED"
+    << "OPENBATTLEFAILED"
+    << "UPDATEBATTLEINFO"
+    << "SAIDBATTLE"
+    << "SAIDBATTLEEX"
+    << "CLIENTSTATUS"
+    << "CLIENTBATTLESTATUS"
+    << "FORCEQUITBATTLE"
+    << "DISABLEUNITS"
+    << "ENABLEUNITS"
+    << "ENABLEALLUNITS"
+    << "RING"
+    << "REDIRECT"
+    << "BROADCAST"
+    << "ADDBOT"
+    << "REMOVEBOT"
+    << "UPDATEBOT"
+    << "ADDSTARTRECT"
+    << "REMOVESTARTRECT"
+    << "MAPGRADES"
+    << "SCRIPTSTART"
+    << "SCRIPT"
+    << "SCRIPTEND"
+    << "SETSCRIPTTAGS"
+    << "REMOVESCRIPTTAGS";
 
     /*
-** server commands:
-  done (in lobbytabs) BATTLECLOSED BATTLE_ID
-  done (in battles) JOINBATTLE BATTLE_ID [password]
-  done (in users) JOINEDBATTLE BATTLE_ID username
-  done (in users) LEFTBATTLE BATTLE_ID username
-  JOINBATTLEFAILED {reason}
-  OPENBATTLEFAILED {reason}
-  done (locked is shown here, speccount and hash in battles) UPDATEBATTLEINFO BATTLE_ID SpectatorCount locked maphash {mapname}
-  done SAIDBATTLE username {message}
-  done SAIDBATTLEEX username {message}
-  done (in users) CLIENTSTATUS username status
-  done (in users, battles) CLIENTBATTLESTATUS username battlestatus teamcolor
-  done (in lobbytabs) FORCEQUITBATTLE
-  DISABLEUNITS unitname1 unitname2 ...
-  ENABLEUNITS unitname1 unitname2 ...
-  ENABLEALLUNITS
-  RING username
-  REDIRECT ipaddress
-  BROADCAST {message}
-  ADDBOT BATTLE_ID name owner battlestatus teamcolor {AIDLL}
-  REMOVEBOT BATTLE_ID name
-  UPDATEBOT BATTLE_ID name battlestatus teamcolor
-  ADDSTARTRECT allyno left top right bottom
-  REMOVESTARTRECT allyno
-  MAPGRADES hashlist
-  SCRIPTSTART
-  SCRIPT {line}
-  SCRIPTEND
-  SETSCRIPTTAGS {pair1} [{pair2}] [{pair3}] [{...}]
-  REMOVESCRIPTTAGS key1 [key2] [key3] [...]
-  TESTLOGINACCEPT
-  TESTLOGINDENY
-  ACQUIREUSERID
-  USERID userID
+    ** server commands:
+    done (in lobbytabs) BATTLECLOSED BATTLE_ID
+    done (in battles) JOINBATTLE BATTLE_ID [password]
+    done (in users) JOINEDBATTLE BATTLE_ID username
+    done (in users) LEFTBATTLE BATTLE_ID username
+    JOINBATTLEFAILED {reason}
+    OPENBATTLEFAILED {reason}
+    done (locked is shown here, speccount and hash in battles) UPDATEBATTLEINFO BATTLE_ID SpectatorCount locked maphash {mapname}
+    done SAIDBATTLE username {message}
+    done SAIDBATTLEEX username {message}
+    done (in users) CLIENTSTATUS username status
+    done (in users, battles) CLIENTBATTLESTATUS username battlestatus teamcolor
+    done (in lobbytabs) FORCEQUITBATTLE
+    DISABLEUNITS unitname1 unitname2 ...
+    ENABLEUNITS unitname1 unitname2 ...
+    ENABLEALLUNITS
+    RING username
+    REDIRECT ipaddress
+    BROADCAST {message}
+    ADDBOT BATTLE_ID name owner battlestatus teamcolor {AIDLL}
+    REMOVEBOT BATTLE_ID name
+    UPDATEBOT BATTLE_ID name battlestatus teamcolor
+    ADDSTARTRECT allyno left top right bottom
+    REMOVESTARTRECT allyno
+    MAPGRADES hashlist
+    SCRIPTSTART
+    SCRIPT {line}
+    SCRIPTEND
+    SETSCRIPTTAGS {pair1} [{pair2}] [{pair3}] [{...}]
+    REMOVESCRIPTTAGS key1 [key2] [key3] [...]
+    TESTLOGINACCEPT
+    TESTLOGINDENY
+    ACQUIREUSERID
+    USERID userID
 
-**  client commands:
-  TESTLOGIN username password
-  REMOVESCRIPTTAGS key1 [key2] [key3] [...]
-  SETSCRIPTTAGS {pair1} [{pair2}] [{pair3}] [{...}]
-  SCRIPTEND
-  SCRIPT {line}
-  SCRIPTSTART
-  MAPGRADESFAILED {reason}
-  MAPGRADES hashlist
-  REMOVESTARTRECT allyno
-  ADDSTARTRECT allyno left top right bottom
-  UPDATEBOT name battlestatus teamcolor
-  REMOVEBOT name
-  ADDBOT name battlestatus teamcolor {AIDLL}
-  ENABLEALLUNITS
-  ENABLEUNITS unitname1 unitname2 ...
-  DISABLEUNITS unitname1 unitname2 ...
-  FORCESPECTATORMODE username
-  FORCETEAMCOLOR username color
-  FORCEALLYNO username teamno
-  FORCETEAMNO username teamno
-  HANDICAP username value
-  KICKFROMBATTLE username
-  done (in users) REQUESTBATTLESTATUS
-  done (in users) MYBATTLESTATUS battlestatus myteamcolor
-  done SAYBATTLEEX {message}
-  done SAYBATTLE {message}
-  UPDATEBATTLEINFO SpectatorCount locked maphash {mapname}
-  done LEAVEBATTLE
-  */
+    **  client commands:
+    TESTLOGIN username password
+    REMOVESCRIPTTAGS key1 [key2] [key3] [...]
+    SETSCRIPTTAGS {pair1} [{pair2}] [{pair3}] [{...}]
+    SCRIPTEND
+    SCRIPT {line}
+    SCRIPTSTART
+    MAPGRADESFAILED {reason}
+    MAPGRADES hashlist
+    REMOVESTARTRECT allyno
+    ADDSTARTRECT allyno left top right bottom
+    UPDATEBOT name battlestatus teamcolor
+    REMOVEBOT name
+    ADDBOT name battlestatus teamcolor {AIDLL}
+    ENABLEALLUNITS
+    ENABLEUNITS unitname1 unitname2 ...
+    DISABLEUNITS unitname1 unitname2 ...
+    FORCESPECTATORMODE username
+    FORCETEAMCOLOR username color
+    FORCEALLYNO username teamno
+    FORCETEAMNO username teamno
+    HANDICAP username value
+    KICKFROMBATTLE username
+    done (in users) REQUESTBATTLESTATUS
+    done (in users) MYBATTLESTATUS battlestatus myteamcolor
+    done SAYBATTLEEX {message}
+    done SAYBATTLE {message}
+    UPDATEBATTLEINFO SpectatorCount locked maphash {mapname}
+    done LEAVEBATTLE
+    */
     //   if ( !battleChannelCommands.contains( command.name ) )
     //     return;
     QString line = QString( "%1\n" );
@@ -192,19 +192,16 @@ void BattleChannel::receiveCommand( Command command ) {
         QString userName = command.attributes.takeFirst();
         emit playSample( RingSample );
         emit newTrayMessage( QString("RING!? Where are you!? Get up! %1!").arg(userName) );
-    }
-    else if ( command.name == "SAIDBATTLEEX" ) {
+    } else if ( command.name == "SAIDBATTLEEX" ) {
         QString userName = command.attributes.takeFirst();
         insertLine( flag( userName ) + line
                     .arg( "<span style=\"color:magenta;\">* %1 %2</span>" )
                     .arg( userName )
                     .arg( processInput(command.attributes.join( " " ))));
-    }
-    else if ( command.name == "FORCEQUITBATTLE" ) {
+    } else if ( command.name == "FORCEQUITBATTLE" ) {
         QMessageBox::critical(NULL, "Kicked from battle", "You have been kicked from the battle, poor you!");
         insertLine("You have been kicked from the battle!\n");
-    }
-    else if ( command.name == "JOINEDBATTLE" ) {
+    } else if ( command.name == "JOINEDBATTLE" ) {
         if ( command.attributes.takeFirst() == objectName() ) {
             QString userName = command.attributes.takeFirst();
             insertLine( flag( userName ) + line
@@ -212,8 +209,7 @@ void BattleChannel::receiveCommand( Command command ) {
                         .arg( tr( "%2 joined the battle." ) )
                         .arg( userName ) );
         }
-    }
-    else if ( command.name == "LEFTBATTLE" ) {
+    } else if ( command.name == "LEFTBATTLE" ) {
         if ( command.attributes.takeFirst() == objectName() ) {
             QString userName = command.attributes.takeFirst();
             insertLine( flag( userName ) + line
@@ -221,21 +217,17 @@ void BattleChannel::receiveCommand( Command command ) {
                         .arg( tr( "%1 left the battle." ) )
                         .arg( userName ) );
         }
-    }
-    else if ( command.name == "JOINBATTLE" ) {}
-    else if ( command.name == "CLIENTMSG" ) {
+    } else if ( command.name == "JOINBATTLE" ) {} else if ( command.name == "CLIENTMSG" ) {
         if ( command.attributes.takeFirst() == objectName() ) {
             insertLine( line
                         .arg( "<span style=\"color:blue;\">** CLIENTMSG ** %1</span>" )
                         .arg( command.attributes.join( " " ) ) );
         }
-    }
-    else if ( command.name == "BATTLECLOSED" ) {
+    } else if ( command.name == "BATTLECLOSED" ) {
         if ( command.attributes.takeFirst() == objectName() ) {
             //nothing to do yet
         }
-    }
-    else if ( command.name == "UPDATEBATTLEINFO" ) {
+    } else if ( command.name == "UPDATEBATTLEINFO" ) {
         if ( command.attributes.takeFirst() == objectName() ) {
             command.attributes.removeFirst(); // spectator count
             bool locked = command.attributes.takeFirst().toInt() > 0;
@@ -247,11 +239,10 @@ void BattleChannel::receiveCommand( Command command ) {
                             .arg( locked ? tr( "Battle locked." ) : tr( "Battle unlocked." ) ) );
                 this->locked = locked;
             }
-            if(currentMap != mapName) requestMapInfo( mapName );
+            if (currentMap != mapName) requestMapInfo( mapName );
             currentMap = mapName;
         }
-    }
-    else if ( command.name == "SETSCRIPTTAGS" ) {
+    } else if ( command.name == "SETSCRIPTTAGS" ) {
         command.attributes = command.attributes.join( " " ).split( "\t" );
         foreach( QString s, command.attributes ) {
             QString key = s.section( "=", 0, 0 ).section( "/", 1, 1 ).toLower();
@@ -275,7 +266,7 @@ void BattleChannel::receiveCommand( Command command ) {
                 battleWindowForm->diminishingMetalMakersCheckBox->setChecked( val > 0 );
             else if ( key == "ghostedbuildings" )
                 battleWindowForm->ghostedBuildingsCheckBox->setChecked( val > 0 );
-            if(key == "modoptions") {
+            if (key == "modoptions") {
                 key = s.section( "=", 0, 0 ).section( "/", 2, 2 ).toLower();
                 m_battle.options[key] = s.section( "=", 1, 1 );
             }
@@ -284,15 +275,13 @@ void BattleChannel::receiveCommand( Command command ) {
     }
 }
 
-void BattleChannel::fillSides()
-{
+void BattleChannel::fillSides() {
     UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
-    if(!unitSyncLib->setCurrentMod(m_battle.modName)) {
+    if (!unitSyncLib->setCurrentMod(m_battle.modName)) {
         return;
     }
     int sidec = unitSyncLib->getSideNameCount();
-    for(int i=0;i<sidec;i++)
-    {
+    for (int i=0;i<sidec;i++) {
         QString sidename = unitSyncLib->sideName(i);
         battleWindowForm->factionsComboBox->addItem(unitSyncLib->getSideIcon(sidename) ,sidename, QVariant(sidename.toUpper()));
     }
@@ -309,19 +298,16 @@ void BattleChannel::receiveInput( QString input ) {
     if ( "/me" == firstWord ) {
         ret.name = "SAYBATTLEEX";
         ret.attributes << inputList;
-    }
-    else if ( "/slap" == firstWord ) {
+    } else if ( "/slap" == firstWord ) {
         ret.name = "SAYBATTLEEX";
         ret.attributes << QString( "slaps %1 around a bit with a large trout" ).arg( inputList.join( " " ) );
-    }
-    else if ( QString( "/leave" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
+    } else if ( QString( "/leave" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
         ret.name = "LEAVEBATTLE";
         disconnect(battles, SIGNAL(addStartRect(int,QRect)), this, SLOT(onAddStartRect(int,QRect)));
         disconnect(battles, SIGNAL(removeStartRect(int)), this, SLOT(onRemoveStartRect(int)));
         Settings::Instance()->setValue("mainwindow/chatsplitter", splitterState);
         noMapUpdates = true;
-    }
-    else {
+    } else {
         ret.name = "SAYBATTLE";
         ret.attributes << input;
     }
@@ -335,56 +321,56 @@ void BattleChannel::onSpecCheckBoxChanged(int state) {
 
 void BattleChannel::fillModOptions() {
     UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
-    if(!unitSyncLib->setCurrentMod(m_battle.modName)) {
+    if (!unitSyncLib->setCurrentMod(m_battle.modName)) {
         battleWindowForm->modOptions->setHtml("<font size=\"16\" color=\"red\">Please, download " + m_battle.modName+"</font>");
         return;
     }
     QString buffer;
     int num_options = unitSyncLib->getModOptionCount();
     buffer.append("<table cellpadding=\"4\">");
-    for(int i = 0; i < num_options; i++) {
-        if(unitSyncLib->getOptionType(i) == SECTION && i != num_options - 1 && unitSyncLib->getOptionType(i+1) == SECTION) continue;
-        if(unitSyncLib->getOptionType(i) == SECTION) {
+    for (int i = 0; i < num_options; i++) {
+        if (unitSyncLib->getOptionType(i) == SECTION && i != num_options - 1 && unitSyncLib->getOptionType(i+1) == SECTION) continue;
+        if (unitSyncLib->getOptionType(i) == SECTION) {
             buffer.append("</table>");
             buffer.append("<h3>"+unitSyncLib->getOptionName(i)+"</h3>");
             buffer.append("<table cellpadding=\"4\">");
             continue;
         }
-        if(unitSyncLib->isGameOption(i)) continue;
+        if (unitSyncLib->isGameOption(i)) continue;
         buffer.append("<tr>");
         buffer.append("<td>");
         buffer.append(unitSyncLib->getOptionName(i));
         buffer.append("</td>");
         buffer.append("<td>");
         bool nondefault = m_battle.options.contains(unitSyncLib->getOptionKey(i));
-        switch(unitSyncLib->getOptionType(i)) {
+        switch (unitSyncLib->getOptionType(i)) {
         case UNDEFINED:
             buffer.append("Undefined");
             break;
         case BOOLEAN:
             nondefault = nondefault && m_battle.options[unitSyncLib->getOptionKey(i)].toFloat() != unitSyncLib->getOptionBoolDef(i);
-            if(nondefault)
+            if (nondefault)
                 buffer.append(m_battle.options[unitSyncLib->getOptionKey(i)].toFloat() ? "<b><font color=\"green\">Yes</font><b>" : "<b><font color=\"red\">No</font><b>" );
             else
                 buffer.append(unitSyncLib->getOptionBoolDef(i) ? "<font color=\"green\">Yes</font>" : "<font color=\"red\">No</font>" );
             break;
         case LIST:
             nondefault = nondefault && m_battle.options[unitSyncLib->getOptionKey(i)].toString() != unitSyncLib->getOptionListDef(i);
-            if(nondefault)
+            if (nondefault)
                 buffer.append("<b>"+m_battle.options[unitSyncLib->getOptionKey(i)].toString()+"</b>");
             else
                 buffer.append(unitSyncLib->getOptionListDef(i));
             break;
         case FLOAT:
             nondefault = nondefault && m_battle.options[unitSyncLib->getOptionKey(i)].toFloat() != unitSyncLib->getOptionNumberDef(i);
-            if(nondefault)
+            if (nondefault)
                 buffer.append("<b>"+m_battle.options[unitSyncLib->getOptionKey(i)].toString()+"</b>");
             else
                 buffer.append(QString::number(unitSyncLib->getOptionNumberDef(i)));
             break;
         case STRING:
             nondefault = nondefault && m_battle.options[unitSyncLib->getOptionKey(i)].toString() != unitSyncLib->getOptionStringDef(i);
-            if(nondefault)
+            if (nondefault)
                 buffer.append("<b>"+m_battle.options[unitSyncLib->getOptionKey(i)].toString()+"</b>");
             else
                 buffer.append(unitSyncLib->getOptionStringDef(i));
@@ -398,8 +384,8 @@ void BattleChannel::fillModOptions() {
 }
 
 void BattleChannel::requestMapInfo( QString mapName ) {
-    if(noMapUpdates) return;
-    if(loader->isRunning()) {
+    if (noMapUpdates) return;
+    if (loader->isRunning()) {
         loader->cleanup();
         loader = new MapInfoLoader(this);
         connect(loader, SIGNAL(loadCompleted(QString)), SLOT(updateMapInfo(QString)));
@@ -412,9 +398,9 @@ void BattleChannel::requestMapInfo( QString mapName ) {
 }
 
 void BattleChannel::updateMapInfo( QString mapName ) {
-    if(noMapUpdates) return;
+    if (noMapUpdates) return;
     battleWindowForm->nameLabel->setText(mapName);
-    if(!loader->mapPresent) {
+    if (!loader->mapPresent) {
         battleWindowForm->minimapWidget->setErrorMessage("Map " + mapName + " not found");
         battleWindowForm->heightmapWidget->setErrorMessage("Map " + mapName + " not found");
         battleWindowForm->metalmapWidget->setErrorMessage("Map " + mapName + " not found");
@@ -440,7 +426,7 @@ void BattleChannel::openMapOverview() {
 
 void BattleChannel::onChatSplitterMoved ( int /*pos*/, int /*index*/ ) {
     QSplitter* splitter = qobject_cast<QSplitter*>(sender());
-    if(!splitter) return;
+    if (!splitter) return;
     splitterState = splitter->saveState();
 
 }
@@ -451,7 +437,7 @@ void BattleChannel::onBattleSplitterMoved ( int /*pos*/, int /*index*/ ) {
 
 void BattleChannel::onColorClicked() {
     QColor newColor = QColorDialog::getColor (currentcolor, 0, "Select color for group");
-    if(!newColor.isValid()) return;
+    if (!newColor.isValid()) return;
     currentcolor = newColor;
     QPixmap color(16,16);
     color.fill(newColor);
@@ -460,7 +446,7 @@ void BattleChannel::onColorClicked() {
 }
 
 void BattleChannel::onMyStateChanged(User u) {
-    if(noMapUpdates) return;
+    if (noMapUpdates) return;
     battleWindowForm->readyCheckBox->blockSignals(true);
     battleWindowForm->specCheckBox->blockSignals(true);
     battleWindowForm->factionsComboBox->blockSignals(true);

@@ -15,169 +15,170 @@
 
 UserPreference::UserPreference( QDialog* parent ) : QDialog( parent ) {
 
-	setupUi( this );
-	settings = Settings::Instance();
+    setupUi( this );
+    settings = Settings::Instance();
 
-	connect( okPushButton, SIGNAL( clicked() ),
-		this, SLOT( okClicked() ) );
-	connect( applyPushButton, SIGNAL( clicked() ),
-		this, SLOT( applyClicked() ) );
-	connect( cancelPushButton, SIGNAL( clicked() ),
-		this, SLOT( cancelClicked() ) );
+    connect( okPushButton, SIGNAL( clicked() ),
+             this, SLOT( okClicked() ) );
+    connect( applyPushButton, SIGNAL( clicked() ),
+             this, SLOT( applyClicked() ) );
+    connect( cancelPushButton, SIGNAL( clicked() ),
+             this, SLOT( cancelClicked() ) );
 
 #ifdef Q_WS_WIN
-	QString pfiles = getenv("ProgramW6432");
-	if(pfiles == "")
-		pfiles = getenv("ProgramFiles");
-	if(pfiles == "")
-		pfiles = "C:\\Program Files";
+    QString pfiles = getenv("ProgramW6432");
+    if (pfiles == "")
+        pfiles = getenv("ProgramFiles");
+    if (pfiles == "")
+        pfiles = "C:\\Program Files";
 #endif
 
-	QVector<QStringList> elements;
-	QStringList el;
-	el << "spring_executable_with_abs_path_to_it"
-		<< "/usr/local/bin/spring"
-		<< "To execute spring we need the path to the spring binary."
+    QVector<QStringList> elements;
+    QStringList el;
+    el << "spring_executable_with_abs_path_to_it"
+            << "/usr/local/bin/spring"
+            << "To execute spring we need the path to the spring binary."
 #ifdef Q_WS_WIN
-		<<
-		pfiles+"/Spring/Spring.exe;"
-		"../spring.exe;"
-		"./spring.exe;";
+            <<
+            pfiles+"/Spring/Spring.exe;"
+            "../spring.exe;"
+            "./spring.exe;";
 #else
-		<<      "/usr/local/bin/spring;"
-		"/usr/games/bin/spring;"
-		"/usr/games/spring;"
-		"/usr/bin/spring";
+    <<      "/usr/local/bin/spring;"
+            "/usr/games/bin/spring;"
+            "/usr/games/spring;"
+            "/usr/bin/spring";
 #endif
-	elements.append( el );
+    elements.append( el );
 
-	el.clear();
-	el << "spring_system_dir" // important that "dir" is at the and of the name!
-		<< "/usr/local/share/games/spring/"
-		<< "This folder usually contains the most spring data as for example the directories: AI/, base/, fonts/ and startscripts/."
+    el.clear();
+    el << "spring_system_dir" // important that "dir" is at the and of the name!
+            << "/usr/local/share/games/spring/"
+            << "This folder usually contains the most spring data as for example the directories: AI/, base/, fonts/ and startscripts/."
 #ifdef Q_WS_WIN
-		<<
-		pfiles+"/Spring/;"
-		"../;"
-		"./;";
+            <<
+            pfiles+"/Spring/;"
+            "../;"
+            "./;";
 #else
-		<<      "/usr/local/share/games/spring/;"
-		"/usr/share/games/spring/;";
+    <<      "/usr/local/share/games/spring/;"
+            "/usr/share/games/spring/;";
 #endif
-	elements.append( el );
+    elements.append( el );
 
-	//   el.clear();
-	//   el <<  "/usr/share/games/spring/base"
-	//   << "spring_system_dir/base"
-	//   << "Description: "
-	//   << "/usr/share/games/spring/base";
-	//   elements.append( el );
+    //   el.clear();
+    //   el <<  "/usr/share/games/spring/base"
+    //   << "spring_system_dir/base"
+    //   << "Description: "
+    //   << "/usr/share/games/spring/base";
+    //   elements.append( el );
 
-	el.clear();
-	el <<  "unitsync"
-		<< "/usr/local/lib/libunitsync.so"
-		<< "This library will provide Qtlobby access to maps/mods which spring uses as well."
+    el.clear();
+    el <<  "unitsync"
+            << "/usr/local/lib/libunitsync.so"
+            << "This library will provide Qtlobby access to maps/mods which spring uses as well."
 #ifdef Q_WS_WIN
-		<<
-		pfiles+"/Spring/unitsync.dll;"
-		"../unitsync.dll;"
-		"./unitsync.dll;";
+            <<
+            pfiles+"/Spring/unitsync.dll;"
+            "../unitsync.dll;"
+            "./unitsync.dll;";
 #else
-		<< "/usr/local/lib/libunitsync.so;"
-		"/usr/lib/libunitsync.so;"
-                "/usr/lib64/libunitsync.so;"
-		"/usr/lib/spring/lib/libunitsync.so;"
-		"/usr/games/lib/spring/libunitsync.so;"
-		"/usr/local/lib/unitsync.so;"
-		"/usr/lib/unitsync.so;"
-		"/usr/lib/spring/lib/unitsync.so;"
-		"/usr/games/lib/spring/unitsync.so;"
-		"/usr/games/lib64/libunitsync.so";
+    << "/usr/local/lib/libunitsync.so;"
+            "/usr/lib/libunitsync.so;"
+            "/usr/lib64/libunitsync.so;"
+            "/usr/lib/spring/lib/libunitsync.so;"
+            "/usr/games/lib/spring/libunitsync.so;"
+            "/usr/local/lib/unitsync.so;"
+            "/usr/lib/unitsync.so;"
+            "/usr/lib/spring/lib/unitsync.so;"
+            "/usr/games/lib/spring/unitsync.so;"
+            "/usr/games/lib64/libunitsync.so";
+
 #endif
 
-	elements.append( el );
+    elements.append( el );
 
-	el.clear();
-	el << "spring_user_dir" // important that "dir" is at the and of the name!
-		<< QString( "%1/.spring/" ).arg( QDir::homePath() )
-		<< "On multiuser systems this path is used to store maps, mods and configurations which are user specific since most normal users won't have write-access to the global spring directory."
+    el.clear();
+    el << "spring_user_dir" // important that "dir" is at the and of the name!
+            << QString( "%1/.spring/" ).arg( QDir::homePath() )
+            << "On multiuser systems this path is used to store maps, mods and configurations which are user specific since most normal users won't have write-access to the global spring directory."
 #ifdef Q_WS_WIN
-		<<
-		pfiles+"/Spring/;"
-		"../;"
-		"./;";
+            <<
+            pfiles+"/Spring/;"
+            "../;"
+            "./;";
 #else
-		<< QString( "%1/.spring/" ).arg( QDir::homePath() );
+    << QString( "%1/.spring/" ).arg( QDir::homePath() );
 #endif
 
-	elements.append( el );
-	el.clear();
-	el <<  "springsettings+"
-		<< "/usr/bin/springsettings"
-		<< "Springsettings is a detailed and advanced configuration program. This binary is not in the qtlobby distribution yet so you might have to download it at springlobby.info"
+    elements.append( el );
+    el.clear();
+    el <<  "springsettings+"
+            << "/usr/bin/springsettings"
+            << "Springsettings is a detailed and advanced configuration program. This binary is not in the qtlobby distribution yet so you might have to download it at springlobby.info"
 #ifdef Q_WS_WIN
-		<<
-		pfiles+"/Spring/springsettings.exe;"
-		"../springsettings.exe;"
-		"./springsettings.exe;";
+            <<
+            pfiles+"/Spring/springsettings.exe;"
+            "../springsettings.exe;"
+            "./springsettings.exe;";
 #else
-		<< "/usr/local/bin/springsettings;"
-		"/usr/games/bin/springsettings;"
-		"/usr/games/springsettings;"
-		"/usr/bin/springsettings";
+    << "/usr/local/bin/springsettings;"
+            "/usr/games/bin/springsettings;"
+            "/usr/games/springsettings;"
+            "/usr/bin/springsettings";
 #endif
-	elements.append( el );
+    elements.append( el );
 
-	//   el.clear();
-	//   el <<  "replays_dir"
-	//   << "~/.spring/demos"
-	//   << "Description: "
+    //   el.clear();
+    //   el <<  "replays_dir"
+    //   << "~/.spring/demos"
+    //   << "Description: "
 
-	//   el.clear();
-	//   el << ""
-	//      << ""
-	//      << ""
-	//      << "";
-	//   elements.append( el );
+    //   el.clear();
+    //   el << ""
+    //      << ""
+    //      << ""
+    //      << "";
+    //   elements.append( el );
 
-	QGridLayout *mainLayout = new QGridLayout();
-	QWidget* container = new QWidget( this );
-	container->setLayout( mainLayout );
-	int h = 0;
-	for ( int i = 0; i < elements.size(); ++i ) {
-		ConfigElement* configElement = new ConfigElement( elements[i], container );
-		mainLayout->addWidget( configElement, i, 0, 1, 1 );
-		h += configElement->height();
-		this->elements << configElement;
-	}
-	container->setMinimumHeight( h );
-	QScrollArea* scrollArea = new QScrollArea( this );
-	scrollArea->setWidget( container );
-	scrollArea->setWidgetResizable( true );
-	QGridLayout* f = new QGridLayout( preferencesPlaceholder );
-	f->addWidget( scrollArea, 0, 0, 1, 1 );
+    QGridLayout *mainLayout = new QGridLayout();
+    QWidget* container = new QWidget( this );
+    container->setLayout( mainLayout );
+    int h = 0;
+    for ( int i = 0; i < elements.size(); ++i ) {
+        ConfigElement* configElement = new ConfigElement( elements[i], container );
+        mainLayout->addWidget( configElement, i, 0, 1, 1 );
+        h += configElement->height();
+        this->elements << configElement;
+    }
+    container->setMinimumHeight( h );
+    QScrollArea* scrollArea = new QScrollArea( this );
+    scrollArea->setWidget( container );
+    scrollArea->setWidgetResizable( true );
+    QGridLayout* f = new QGridLayout( preferencesPlaceholder );
+    f->addWidget( scrollArea, 0, 0, 1, 1 );
 }
 
 UserPreference::~UserPreference() { }
 
-void UserPreference::okClicked(){
-	for ( int i = 0; i < elements.size(); ++i ) {
-		elements[i]->SaveElement();
-	}
-	if(UnitSyncLib::getInstance()->loadLibrary())
-		hide();
+void UserPreference::okClicked() {
+    for ( int i = 0; i < elements.size(); ++i ) {
+        elements[i]->SaveElement();
+    }
+    if (UnitSyncLib::getInstance()->loadLibrary())
+        hide();
 }
 
-void UserPreference::applyClicked(){
-	for ( int i = 0; i < elements.size(); ++i ) {
-		elements[i]->SaveElement();
-	}
-	UnitSyncLib::getInstance()->loadLibrary();
+void UserPreference::applyClicked() {
+    for ( int i = 0; i < elements.size(); ++i ) {
+        elements[i]->SaveElement();
+    }
+    UnitSyncLib::getInstance()->loadLibrary();
 }
 
-void UserPreference::cancelClicked(){
-	for ( int i = 0; i < elements.size(); ++i ) {
-		elements[i]->ResetConfiguration();
-	}
-	hide();
+void UserPreference::cancelClicked() {
+    for ( int i = 0; i < elements.size(); ++i ) {
+        elements[i]->ResetConfiguration();
+    }
+    hide();
 }

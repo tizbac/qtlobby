@@ -24,33 +24,33 @@
 /**
  @author Mirko Windhoff <qtlobby.reg@ncnever.de>
 */
-class AbstractChannel : public AbstractLobbyTab/*, public Ui_abstractChannelWidget*/ {
-  Q_OBJECT
+class AbstractChannel : public AbstractLobbyTab { /*, public Ui_abstractChannelWidget*/
+    Q_OBJECT
 public:
-  AbstractChannel( QString name, QObject * parent = 0 );
-  virtual ~AbstractChannel();
-  static void setCurrentUsername(QString user);
+    AbstractChannel( QString name, QObject * parent = 0 );
+    virtual ~AbstractChannel();
+    static void setCurrentUsername(QString user);
 
 public slots:
-  virtual void receiveInput( QString input ) = 0;
-  virtual void receiveCommand( Command command ) = 0;
+    virtual void receiveInput( QString input ) = 0;
+    virtual void receiveCommand( Command command ) = 0;
 
 protected:
-  void setActive( bool isActive );
-  virtual void setupUi( QWidget * tab );
-  bool executeChannelInput( QString input );
-  void insertLine( QString line );
-  QString makeHtml( QString in );
-  QString processBBCodes(QString in);
-  QString processInput(QString input);
-  QString processIRCCodes(QString in);
-  ChannelTextBrowser * channelTextBrowser;
-  QGridLayout * gridLayout;
-  QIcon activeIcon;
-  QIcon inactiveIcon;
-  QColor activeTextColor;
-  QColor inactiveTextColor;
-  static QString currentUsername;
+    void setActive( bool isActive );
+    virtual void setupUi( QWidget * tab );
+    bool executeChannelInput( QString input );
+    void insertLine( QString line );
+    QString makeHtml( QString in );
+    QString processBBCodes(QString in);
+    QString processInput(QString input);
+    QString processIRCCodes(QString in);
+    ChannelTextBrowser * channelTextBrowser;
+    QGridLayout * gridLayout;
+    QIcon activeIcon;
+    QIcon inactiveIcon;
+    QColor activeTextColor;
+    QColor inactiveTextColor;
+    static QString currentUsername;
 };
 
 #endif

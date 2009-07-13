@@ -15,18 +15,18 @@
 ** generate interesting statistics about the server in general
 */
 StatusTracker::StatusTracker( QStatusBar *s ) {
-  statusbar = s;
+    statusbar = s;
 
 
 
-  // connection status: CONNECTED:LOGIN:ACCEPTED:...
-  // connectiontime
-  // users
-  // clanmembers
-  // games
-  // mods
+    // connection status: CONNECTED:LOGIN:ACCEPTED:...
+    // connectiontime
+    // users
+    // clanmembers
+    // games
+    // mods
 
-  statusbar->showMessage( "Status: Not connected (-h:-min) | - users | - games | - mods | - kb up / - kb down", 20000 );
+    statusbar->showMessage( "Status: Not connected (-h:-min) | - users | - games | - mods | - kb up / - kb down", 20000 );
 }
 
 StatusTracker::~StatusTracker() { }

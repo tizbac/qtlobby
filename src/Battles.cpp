@@ -62,23 +62,18 @@ void Battles::receiveCommand( Command command ) {
             if ( users->getUser( url.userName() ).joinedBattleId == b.id && b.isStarted )
                 startGame( b );
         }
-    }
-    else if ( command.name == "JOINBATTLE" ) {
-    }
-    else if ( command.name == "JOINBATTLEFAILED" ) {
+    } else if ( command.name == "JOINBATTLE" ) {
+    } else if ( command.name == "JOINBATTLEFAILED" ) {
         QMessageBox::critical(this, "Join battle failed", command.attributes.join(" "));
-    }
-    else if ( command.name == "JOINEDBATTLE" ) {
+    } else if ( command.name == "JOINEDBATTLE" ) {
         Battle b = battleManager->getBattle( command.attributes[0].toInt() );
         b.playerCount++;
         battleManager->modBattle( b );
-    }
-    else if ( command.name == "LEFTBATTLE" ) {
+    } else if ( command.name == "LEFTBATTLE" ) {
         Battle b = battleManager->getBattle( command.attributes[0].toInt() );
         b.playerCount--;
         battleManager->modBattle( b );
-    }
-    else if ( command.name == "BATTLEOPENED" ) {
+    } else if ( command.name == "BATTLEOPENED" ) {
         Q_ASSERT( command.attributes.size() >= 11 );
         Battle b;
         b.id                  = command.attributes.takeFirst().toInt();
@@ -99,11 +94,9 @@ void Battles::receiveCommand( Command command ) {
         b.playerCount         = 1;
         b.countryCode = users->getUser( b.founder ).countryCode;
         battleManager->addBattle( b );
-    }
-    else if ( command.name == "BATTLECLOSED" ) {
+    } else if ( command.name == "BATTLECLOSED" ) {
         battleManager->delBattle( command.attributes[0].toInt() );
-    }
-    else if ( command.name == "UPDATEBATTLEINFO" ) {
+    } else if ( command.name == "UPDATEBATTLEINFO" ) {
         Q_ASSERT( command.attributes.size() >= 5 );
         int battleId = command.attributes.takeFirst().toInt();
         Battle b = battleManager->getBattle( battleId );
@@ -117,8 +110,7 @@ void Battles::receiveCommand( Command command ) {
             u.battleState.setSyncState(resyncStatus());
             users->onMyBattleStateChanged( u );
         }
-    }
-    else if ( command.name == "SETSCRIPTTAGS" ) {
+    } else if ( command.name == "SETSCRIPTTAGS" ) {
         int bi = users->getUser( username ).joinedBattleId;
         Battle b = battleManager->getBattle( bi );
         command.attributes = command.attributes.join( " " ).split( "\t" );
@@ -127,8 +119,7 @@ void Battles::receiveCommand( Command command ) {
             b.options[key] = s.section( "=", 1, 1 ).toInt();
         }
         battleManager->modBattle( b );
-    }
-    else if ( command.name == "REMOVESCRIPTTAGS" ) {
+    } else if ( command.name == "REMOVESCRIPTTAGS" ) {
         int bi = users->getUser( username ).joinedBattleId;
         Battle b = battleManager->getBattle( bi );
         command.attributes = command.attributes.join( " " ).split( "\t" );
@@ -138,8 +129,7 @@ void Battles::receiveCommand( Command command ) {
                 b.options.remove( key );
         }
         battleManager->modBattle( b );
-    }
-    else if ( command.name == "ADDSTARTRECT" ) { // allyno left top right bottom
+    } else if ( command.name == "ADDSTARTRECT" ) { // allyno left top right bottom
         int bi = users->getUser( username ).joinedBattleId;
         Battle b = battleManager->getBattle( bi );
         b.allyNumberStartRectMap[command.attributes[0].toInt()] = StartRect(
@@ -155,20 +145,18 @@ void Battles::receiveCommand( Command command ) {
                     command.attributes[4].toInt());
         emit addStartRect(command.attributes[0].toInt(), r);
         battleManager->modBattle( b );
-    }
-    else if ( command.name == "REMOVESTARTRECT" ) { // allyno
+    } else if ( command.name == "REMOVESTARTRECT" ) { // allyno
         int bi = users->getUser( username ).joinedBattleId;
         Battle b = battleManager->getBattle( bi );
         b.allyNumberStartRectMap.remove( command.attributes[0].toInt() );
         battleManager->modBattle( b );
         emit removeStartRect(command.attributes[0].toInt());
-    }
-    else if ( command.name == "REQUESTBATTLESTATUS" ) {
+    } else if ( command.name == "REQUESTBATTLESTATUS" ) {
         User u = users->getUser( url.userName() );
         QList<User> list = users->getUserList(u.joinedBattleId);
         int playersNum;
-        for(int i = 0; i < list.size(); i++) {
-            if(list.at(i).battleState.isPlayer())
+        for (int i = 0; i < list.size(); i++) {
+            if (list.at(i).battleState.isPlayer())
                 playersNum++;
         }
         playersNum++;
@@ -308,7 +296,7 @@ QString Battles::generateScript( Battle b ) {
     gameOptions["GameType"] = UnitSyncLib::getInstance()->modArchive( UnitSyncLib::getInstance()->modIndex( b.modName ) );
     //append options from the battle
     foreach( QString k, b.options.keys() ) {
-        if(k.contains("/")) continue;
+        if (k.contains("/")) continue;
         gameOptions[k] = QString::number( b.options[k].toFloat() );
     }
     gameOptions["HostPort"]     = QString::number( b.port );

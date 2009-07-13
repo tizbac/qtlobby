@@ -15,6 +15,6 @@ Settings::Settings( QObject *parent ) : QObject( parent ) { }
 Settings::~Settings() { }
 
 QSettings *Settings::Instance() {
-  static QSettings inst(QSettings::IniFormat, QSettings::UserScope, "qtlobby", "qtlobby" );
-  return &inst;
+    static QSettings inst(QSettings::IniFormat, QSettings::UserScope, "qtlobby", "qtlobby" );
+    return &inst;
 }

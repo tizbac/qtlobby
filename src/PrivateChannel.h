@@ -17,16 +17,15 @@ a private chat channel
 
  @author Mirko Windhoff <qtlobby.reg@ncnever.de>
 */
-class PrivateChannel : public AbstractChannel
-{
-  Q_OBJECT
+class PrivateChannel : public AbstractChannel {
+    Q_OBJECT
 public:
-  PrivateChannel( QString name, QObject * parent = 0 );
-  virtual ~PrivateChannel();
+    PrivateChannel( QString name, QObject * parent = 0 );
+    virtual ~PrivateChannel();
 
 public slots:
-  void receiveInput( QString input );
-  void receiveCommand( Command command );
+    void receiveInput( QString input );
+    void receiveCommand( Command command );
 };
 
 

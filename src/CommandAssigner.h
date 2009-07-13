@@ -22,22 +22,21 @@
  This class delegates parsed commands to all potential receivers.
  @author Joachim Schiele <js@lastlog.de>
 */
-class CommandAssigner : public QObject
-{
-  Q_OBJECT
+class CommandAssigner : public QObject {
+    Q_OBJECT
 public:
-  CommandAssigner( QObject* parent = 0 );
-  ~CommandAssigner();
+    CommandAssigner( QObject* parent = 0 );
+    ~CommandAssigner();
 
 signals:
-  void serverContextStateCommand( Command );
-  void sendMessage( QString message );
-  void lobbyTabCommand( Command command );
-  void userCommand( Command command );
-  void battleCommand( Command command );
+    void serverContextStateCommand( Command );
+    void sendMessage( QString message );
+    void lobbyTabCommand( Command command );
+    void userCommand( Command command );
+    void battleCommand( Command command );
 public slots:
-  void receiveMessage( QString message );
-  void sendCommand( Command command );
+    void receiveMessage( QString message );
+    void sendCommand( Command command );
 };
 
 #endif

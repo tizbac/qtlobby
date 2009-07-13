@@ -37,70 +37,74 @@
 #include "UserGroupsDialog.h"
 
 class MainWindow : public QMainWindow, private Ui::MainWindow {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  MainWindow( QWidget* parent = 0 );
-  ~MainWindow();
-  QProcess qp;
+    MainWindow( QWidget* parent = 0 );
+    ~MainWindow();
+    QProcess qp;
 
 private:
-  //the connection dialog
-  ConnectionWidget* connectionWidget;
-  //handles the interaction with the server and the authentication
-  ServerContextState* serverContextState;
-  //receives all commands, parses and assigns it to its destination module
-  CommandAssigner* commandAssigner;
-  //the tabs at the right top, which contain the chat etc.
-  LobbyTabs* lobbyTabs;
+    //the connection dialog
+    ConnectionWidget* connectionWidget;
+    //handles the interaction with the server and the authentication
+    ServerContextState* serverContextState;
+    //receives all commands, parses and assigns it to its destination module
+    CommandAssigner* commandAssigner;
+    //the tabs at the right top, which contain the chat etc.
+    LobbyTabs* lobbyTabs;
 
-  AudioBackend audioBackend;
-  UnitSyncLib* unitSyncLib;
-  UserPreference* preference;
-  MapSelector* mapSelector;
-  StylesheetDialog* stylesheetDialog;
-  UserGroupsDialog* userGroupsDialog;
+    AudioBackend audioBackend;
+    UnitSyncLib* unitSyncLib;
+    UserPreference* preference;
+    MapSelector* mapSelector;
+    StylesheetDialog* stylesheetDialog;
+    UserGroupsDialog* userGroupsDialog;
 
-  QTabBar* tabBar;
+    QTabBar* tabBar;
+    QLabel* usersInCurrentChannel;
+    QLabel* battlesOnline;
+    QLabel* usersOnline;
+    QLabel* moderatorsOnline;
 
-  //the status bar text
-  StatusTracker* statusTracker;
+    //the status bar text
+    StatusTracker* statusTracker;
 
-  QSystemTrayIcon* trayIcon;
-  void createTrayIcon();
-  QMenu* trayIconMenu;
-  QAction* restoreAction;
-  QColor regexpColor;
-  QSettings* settings;
-  bool inBattle;
-  QByteArray lastState;
-  QByteArray lastBattleState;
-  QByteArray state;
+    QSystemTrayIcon* trayIcon;
+    void createTrayIcon();
+    QMenu* trayIconMenu;
+    QAction* restoreAction;
+    QColor regexpColor;
+    QSettings* settings;
+    bool inBattle;
+    QByteArray lastState;
+    QByteArray lastBattleState;
+    QByteArray state;
 signals:
-  void newTrayMessage(QString);
+    void newTrayMessage(QString);
 protected:
-  void closeEvent(QCloseEvent *event);
-  void hideEvent(QHideEvent * event);
-  void showEvent(QShowEvent * event);
+    void closeEvent(QCloseEvent *event);
+    void hideEvent(QHideEvent * event);
+    void showEvent(QShowEvent * event);
 private slots:
-  void about();
-  void newUserTextInput();
-  void toggleUserListVisible();
-  void toggleShowHideMainWindow( QSystemTrayIcon::ActivationReason );
-  void showConnectionWidget( bool );
-  void showGroupsDialog();
-  void setColorInducatorUsers( QString regExp );
-  void setColorInducatorBattles( QString regExp );
-  void startSpring();
-  void startSpringSettings();
-  void showStylesheetEditor();
-  void setCurrentUsername( QString username );
-  void onCurrentChanged(const QModelIndex & current, const QModelIndex & previous);
+    void about();
+    void newUserTextInput();
+    void toggleUserListVisible();
+    void toggleShowHideMainWindow( QSystemTrayIcon::ActivationReason );
+    void showConnectionWidget( bool );
+    void showGroupsDialog();
+    void setColorInducatorUsers( QString regExp );
+    void setColorInducatorBattles( QString regExp );
+    void startSpring();
+    void startSpringSettings();
+    void showStylesheetEditor();
+    void setCurrentUsername( QString username );
+    void onCurrentChanged(const QModelIndex & current, const QModelIndex & previous);
 
-  void onChangedToBattleTab();
-  void onChangedFromBattleTab();
+    void onChangedToBattleTab();
+    void onChangedFromBattleTab();
 public slots:
-  void playSample( SampleCollection sample );
-  void sendTrayMessage( QString message, int milliseconds = 2000);
+    void playSample( SampleCollection sample );
+    void sendTrayMessage( QString message, int milliseconds = 2000);
 };
 
 #endif

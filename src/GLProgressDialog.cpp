@@ -2,8 +2,8 @@
 #include "ui_GLProgressDialog.h"
 
 GLProgressDialog::GLProgressDialog(QWidget *parent) :
-    QDialog(parent),
-    m_ui(new Ui::GLProgressDialog) {
+        QDialog(parent),
+        m_ui(new Ui::GLProgressDialog) {
     m_ui->setupUi(this);
 }
 
