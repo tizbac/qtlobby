@@ -217,6 +217,7 @@ void LobbyTabs::currentTabChangedSlot( int index ) {
     lobbyStackedWidget->setCurrentWidget(lobbyTabList[index]->currentWidget);
     if(index < 0) return;
     setTabIcon( index );
+    tabBar->setTabTextColor( index, lobbyTabList[index]->color );
     //updateCloseTabState();
     emit currentTabChanged( lobbyTabList[index]->objectName(),
                             lobbyTabList[index]->metaObject()->className() );
