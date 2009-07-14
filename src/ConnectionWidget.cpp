@@ -11,10 +11,12 @@
 //
 #include "ConnectionWidget.h"
 
+
 ConnectionWidget::ConnectionWidget( ServerContextState* serverContextState,
                                     QWidget *parent ) : QDialog( parent ) {
     setupUi( this );
     this->serverContextState = serverContextState;
+    connected = false;
 
     // FIXME FIXME FIXME!!! (js)
     // - in the login tab -> while Authenticated we need to store the settings of the current
@@ -35,8 +37,11 @@ ConnectionWidget::ConnectionWidget( ServerContextState* serverContextState,
     connectionLogTextBrowser->setDocument( connectionLogTextDocument );
 
     /* backend connections for network connectivity */
-    connect( loginButton, SIGNAL( clicked() ),
-             this, SLOT( establishConnection() ) );
+    //connect( loginButton, SIGNAL( clicked() ),
+    //         this, SLOT( establishConnection() ) );
+     connect( loginButton, SIGNAL( clicked() ),
+             this, SLOT( onLogin() ) );
+
     connect( logoutButton, SIGNAL( clicked() ),
              serverContextState, SLOT( forceDisconnect() ) );
     connect( this, SIGNAL( establishConnection_() ),
@@ -116,7 +121,7 @@ void ConnectionWidget::establishConnection() {
     }
     QUrl url = profileComboBox->itemData(index, Qt::UserRole ).toUrl();
     if ( !rememberPassCheckBox->isChecked() ) {
-        qDebug("Connecting... Forget password");
+        ////qDebug("Connecting... Forget password");
         url.setPassword( "" );
         modifyServerProfile( index, url );
     }
@@ -134,9 +139,15 @@ void ConnectionWidget::establishConnection() {
     }
 
     if ( rememberPassCheckBox->isChecked() ){
+<<<<<<< .mine
+            modifyServerProfile( index, url );
+           // //qDebug("Connecting... Remember password");
+     }
+=======
         modifyServerProfile( index, url );
         qDebug("Connecting... Remember password");
     }
+>>>>>>> .r175
     emit emitConfiguration( url );
     emit establishConnection_();
     emit usernameChanged(url.userName());
@@ -153,12 +164,12 @@ void ConnectionWidget::modifyServerProfile( signed int index, QUrl url )
 {
 
     if ( index == -1 ) {
-        qDebug() << "not modifying server profile";
+        //qDebug() << "not modifying server profile";
         return ;
     }
     QList<QVariant> list = settings->value( "ServerProfiles" ).toList();
     list[index] = url;
-    qDebug() << "modifying server profile "<< index;
+    //qDebug() << "modifying server profile "<< index;
     settings->setValue( "ServerProfiles", list );
     updateComboBoxes();
 }
@@ -198,14 +209,14 @@ void ConnectionWidget::comboBoxCurrentIndexChanged( int index ) {
 // so that it can reflect the changes 'on change'
 void ConnectionWidget::saveModifiedProfile() {
     int index = profileComboBox->property( "currentIndex" ).toInt();
-    qDebug()<< "Index of saved profile: "<< index;
+    //qDebug()<< "Index of saved profile: "<< index;
     settings->setValue( "SelectedServerProfile", index );
 
     QUrl url;
     url.setUserName( profileUserNameLineEdit->text() );
     url.setHost( profileServerAddressLineEdit->text() );
     url.setPort( profilePortSpinBox->value() );
-    qDebug()<<"Modify profile.";
+    //qDebug()<<"Modify profile.";
 
     modifyServerProfile( index, url );
 }
@@ -215,7 +226,7 @@ void ConnectionWidget::saveModifiedProfile() {
 // previously selected 'server profile' in both 'login' and 'server' tab
 void ConnectionWidget::updateComboBoxes()
 {
-    qDebug() << "Update comboboxes";
+    //qDebug() << "Update comboboxes";
     QList<QVariant> list = settings->value( "ServerProfiles" ).toList();
 
     if ( list.size() == 0 ) {
@@ -240,9 +251,15 @@ void ConnectionWidget::updateComboBoxes()
                                  .arg( url.port() );
         if ( i == index )
             if( rememberPassCheckBox->isChecked()) {
+<<<<<<< .mine
+                //qDebug() << "Laeta paekallee";
+                passwordLineEdit->setText( url.password() );
+            }
+=======
             qDebug() << "Laeta paekallee";
             passwordLineEdit->setText( url.password() );
         }
+>>>>>>> .r175
 
         profileComboBox->insertItem( i, QString( urldescription ), url );
     }
@@ -251,7 +268,7 @@ void ConnectionWidget::updateComboBoxes()
 
 void ConnectionWidget::createNewProfile()
 {
-    qDebug()<<"New Server Profile";
+    //qDebug()<<"New Server Profile";
     QList<QVariant> list = settings->value( "ServerProfiles" ).toList();
 
     QUrl url;
@@ -279,26 +296,30 @@ void ConnectionWidget::delSelectedProfile() {
 void ConnectionWidget::connectionStatusChanged( ConnectionState state ) {
     switch ( state ) {
     case DISCONNECTED:
+        connected = false;
         logoutButton->setEnabled( false );
         loginButton->setEnabled( true );
         registerUserPushButton->setEnabled(false); // change to true when registering is working correctly
         statusLabel->setText( "unconnected" );
-        unlockInterface();
+        //unlockInterface();
         lockRenameAndChangePassword();
         break;
     case CONNECTING:
+        loginButton->setText("&Login");
         loginButton->setEnabled( false );
         logoutButton->setEnabled( true );
         statusLabel->setText( "connecting" );
-        lockInterface();
+        //lockInterface();
         break;
     case CONNECTED:
+        connected = true;
         statusLabel->setText( "connected" );
         break;
     case AUTHENTICATING:
         statusLabel->setText( "authenticating" );
         break;
     case AUTHENTICATED:
+        loginButton->setEnabled(true);
         unlockRenameAndChangePassword();
         statusLabel->setText( "authenticated (logged in)" );
         registerUserPushButton->setEnabled(false);
@@ -415,24 +436,59 @@ void ConnectionWidget::changePasswordFailure( QString pwString ) {
 
 void ConnectionWidget::toggleRememberPassword()
 {
-    qDebug() << "set rememberpasswd: "<< rememberPassCheckBox->isChecked();
+    //qDebug() << "set rememberpasswd: "<< rememberPassCheckBox->isChecked();
     settings->setValue( "rememberpasswd", rememberPassCheckBox->isChecked() );
 }
 
 void ConnectionWidget::toggleAutoLogin(){
-    qDebug() << "set autologin: "<<  autoLoginCheckBox->isChecked();
+    //qDebug() << "set autologin: "<<  autoLoginCheckBox->isChecked();
     settings->setValue( "autologin", autoLoginCheckBox->isChecked() );
 }
 
 void ConnectionWidget::registerNewAccount() {
     QString username = profileUserNameLineEdit->text();
-    qDebug() << "register new account "<< username;
+    //qDebug() << "register new account "<< username;
     serverContextState->registerNewAccount( username );
 }
 
 void ConnectionWidget::show_if_wanted() {
     if ( autoLoginCheckBox->isChecked() ) {
-        qDebug("Autologin");
+        //qDebug("Autologin");
         establishConnection();
     } else show();
+}
+
+void ConnectionWidget::updateCountdown()
+{
+    if(countdownDialog->wasCanceled()){
+        //qDebug()<<"CANGEL MAN CANGLE";
+        countdownDialog->cancel();
+        countdownTimer->stop();
+        return;
+    }
+    countdown--;
+    countdownDialog->setValue(countdown);
+    if(countdown <=0){
+        countdownDialog->done(0);
+        countdownTimer->stop();
+        return;
+    }
+}
+
+void ConnectionWidget::onLogin()
+{
+    if(connected){
+        countdown = 10;
+        serverContextState->forceDisconnect();
+        countdownTimer = new QTimer(this);
+        countdownDialog = new QProgressDialog("Reconnecting...","Nooo!",0,10,this);
+        countdownDialog->setValue(countdown);
+        countdownDialog->setWindowModality(Qt::WindowModal);
+        countdownDialog->show();
+        countdownTimer->start(1000);
+        connect(countdownTimer, SIGNAL(timeout()), this, SLOT(updateCountdown()));
+        connect(countdownDialog, SIGNAL(finished(int)), this, SLOT(establishConnection()));
+        return;
+    }
+    establishConnection();
 }

@@ -21,6 +21,9 @@
 #include <QWizard>
 #include <QSound>
 
+#include <QProgressDialog>
+#include <QTimer>
+
 #include "ui_connectionWidget.h"
 #include "ServerContextState.h"
 #include "Settings.h"
@@ -55,11 +58,17 @@ public slots:
   void renameLoginNameFeedbackFailure(QString);
   void changePasswordSuccess( QString );
   void changePasswordFailure( QString );
+  void onLogin();
+  void updateCountdown();
 private slots:
   void connectionStatusChanged(ConnectionState state);
   void renameLoginName();
   void changePassword();
 private:
+  QTimer *countdownTimer;
+  QProgressDialog *countdownDialog;
+  bool connected;
+  int countdown;
   QSettings* settings;
   ServerContextState* serverContextState;
   void lockInterface();
