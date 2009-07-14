@@ -139,15 +139,11 @@ void ConnectionWidget::establishConnection() {
     }
 
     if ( rememberPassCheckBox->isChecked() ){
-<<<<<<< .mine
             modifyServerProfile( index, url );
            // //qDebug("Connecting... Remember password");
      }
-=======
-        modifyServerProfile( index, url );
-        qDebug("Connecting... Remember password");
-    }
->>>>>>> .r175
+
+
     emit emitConfiguration( url );
     emit establishConnection_();
     emit usernameChanged(url.userName());
@@ -251,15 +247,11 @@ void ConnectionWidget::updateComboBoxes()
                                  .arg( url.port() );
         if ( i == index )
             if( rememberPassCheckBox->isChecked()) {
-<<<<<<< .mine
+
                 //qDebug() << "Laeta paekallee";
                 passwordLineEdit->setText( url.password() );
             }
-=======
-            qDebug() << "Laeta paekallee";
-            passwordLineEdit->setText( url.password() );
-        }
->>>>>>> .r175
+
 
         profileComboBox->insertItem( i, QString( urldescription ), url );
     }
