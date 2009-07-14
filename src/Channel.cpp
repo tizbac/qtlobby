@@ -36,7 +36,7 @@ void Channel::receiveCommand( Command command ) {
     command.name = command.name.toUpper();
     QString line = QString( "%1\n" );
     if ( command.name == "SAID" ) {
-        if ( command.attributes.takeFirst() == objectName() ) {
+        if ( command.attributes.takeFirst() == objectName() ) {//BROKEN
             QString userName = command.attributes.takeFirst();
             insertLine( flag( userName ) + line
                         .arg( "&lt;%1&gt; %2" )

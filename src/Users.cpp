@@ -43,6 +43,8 @@ Users::Users( QWidget* parent ) : QTreeView( parent ) {
              this, SLOT( doubleClickedSlot( const QModelIndex & ) ) );
     clanRegexp.setPattern(".*(\\[.*\\]).*");
     lastThis = this;
+    userCount = 0;
+    moderatorCount = 0;
 }
 
 Users::~Users() { }
@@ -78,9 +80,18 @@ void Users::receiveCommand( Command command ) {
         u.name = command.attributes[0];
         u.countryCode = command.attributes[1];
         u.cpu = command.attributes[2];
+        userCount++;
+        if(u.userState.isModerator())
+            moderatorCount++;
+        emit statsChange(userCount, moderatorCount);
         infoChannelUserManager->addUser( u );
     } else if ( command.name == "REMOVEUSER" ) {
-        infoChannelUserManager->delUser( command.attributes[0] );
+        User u = infoChannelUserManager->getUser( command.attributes[0] );
+        userCount--;
+        if(u.userState.isModerator())
+            moderatorCount++;
+        emit statsChange(userCount, moderatorCount);
+        infoChannelUserManager->delUser( u.name );
     } else if ( command.name == "CLIENTS" ) {
         QString channelName = command.attributes.takeFirst();
         foreach( QString userName, command.attributes )

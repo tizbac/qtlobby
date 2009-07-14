@@ -15,7 +15,14 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0" colspan="4">
-    <widget class="QTextEdit" name="styleSheetTextEdit"/>
+    <widget class="QsciScintilla" name="styleSheetTextEdit">
+     <property name="toolTip">
+      <string/>
+     </property>
+     <property name="whatsThis">
+      <string/>
+     </property>
+    </widget>
    </item>
    <item row="1" column="0">
     <widget class="QPushButton" name="loadPushButton">
@@ -47,6 +54,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QsciScintilla</class>
+   <extends>QFrame</extends>
+   <header>Qsci/qsciscintilla.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

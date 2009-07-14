@@ -47,7 +47,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     statusBar()->addPermanentWidget(moderatorsOnline);
     statusBar()->addPermanentWidget(usersOnline);
     statusBar()->addPermanentWidget(battlesOnline);
-    statusBar()->addPermanentWidget(usersInCurrentChannel);
+    //statusBar()->addPermanentWidget(usersInCurrentChannel);
     statusBar()->addPermanentWidget(new QLabel());
 
     tabBar->setTabsClosable(true);
@@ -136,9 +136,18 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     // lobbyTabs to open private channel, when requested in user list
     connect( users, SIGNAL( sendInput( QString ) ),
              lobbyTabs, SLOT( receiveInput( QString ) ) );
+
+
     //New group action in users
     connect( users, SIGNAL(openGroupsDialog()),
              userGroupsDialog, SLOT(show()));
+    //Stats updates for status bar
+    connect( users, SIGNAL(statsChange(int,int)),
+             this, SLOT(onStatsChange(int,int)));
+    connect( battles, SIGNAL(statsChange(int)),
+             this, SLOT(onStatsChange(int)));
+
+
     // users, for the userlist to show
     connect( lobbyTabs, SIGNAL( currentTabChanged( QString, QString ) ),
              users, SLOT( currentTabChanged( QString, QString ) ) );
@@ -407,3 +416,12 @@ void MainWindow::showEvent(QShowEvent * event) {
     restoreState(state);
 }
 
+
+void MainWindow::onStatsChange(int users, int moderators) {
+    usersOnline->setText("Users online: " + QString::number(users));
+    moderatorsOnline->setText("Moderators online: " + QString::number(moderators));
+}
+
+void MainWindow::onStatsChange(int battles) {
+    battlesOnline->setText("Battles: " + QString::number(battles));
+}

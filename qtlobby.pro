@@ -156,3 +156,5 @@ DISTFILES += doc/ProtocolDescription.xml \
     TODO \
     doc/xml2html.xsl \
     doc/z
+
+LIBS += -lqscintilla2

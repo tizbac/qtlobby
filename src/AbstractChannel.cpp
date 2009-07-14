@@ -230,22 +230,21 @@ QString AbstractChannel::processIRCCodes(QString in) {
 QString AbstractChannel::processBBCodes(QString in) {
     QString out;
 
-    //    //   QRegExp urlPattern( "(http|ftp)s?://[^/?# ]+[^?# ]*(\?[^# ]*)?(#[^#? ]*)?" );
-    //    QRegExp urlPattern( "(http|ftp)s?://[^\n<> ]*" );
-    //    QStringList ct;
-    //    int pos = 0;
-    //    while (( pos = urlPattern.indexIn( in, pos ) ) != -1 ) {
-    //        pos += urlPattern.matchedLength();
-    //        ct << urlPattern.cap( 0 );
-    //    }
-    //    int count = ct.count();
-    //    QString placeHolder = "__###PLACEHOLDER:%1###__";
-    //    QString linkTag = "[url]%1[/url]";
-    //    for ( int i = 0; i < count; ++i )
-    //        in.replace( ct[i], placeHolder.arg( i ) );
-    //    for ( int i = 0; i < count; ++i )
-    //        in.replace( placeHolder.arg( i ), linkTag.arg( ct[i] ) );
-    //    qDebug() << "I: " << in;
+    //   QRegExp urlPattern( "(http|ftp)s?://[^/?# ]+[^?# ]*(\?[^# ]*)?(#[^#? ]*)?" );
+    QRegExp urlPattern( "(http|ftp)s?://[^\n<> []]*" );
+    QStringList ct;
+    int pos = 0;
+    while (( pos = urlPattern.indexIn( in, pos ) ) != -1 ) {
+        pos += urlPattern.matchedLength();
+        ct << urlPattern.cap( 0 );
+    }
+    int count = ct.count();
+    QString placeHolder = "__###PLACEHOLDER:%1###__";
+    QString linkTag = "[url]%1[/url]";
+    for ( int i = 0; i < count; ++i )
+        in.replace( ct[i], placeHolder.arg( i ) );
+    for ( int i = 0; i < count; ++i )
+        in.replace( placeHolder.arg( i ), linkTag.arg( ct[i] ) );
 
     QRegExp bbbold("\\[b\\]");
     QRegExp bbitalic("\\[i\\]");
@@ -270,6 +269,11 @@ QString AbstractChannel::processBBCodes(QString in) {
     QRegExp bburl_end("\\[/url\\]");
     QRegExp bbquote_end("\\[/quote\\]");
     QRegExp bbcode_end("\\[/code\\]");
+
+    //Dirty hacks go here, beware (ko)
+    in.replace(QRegExp("(?:\\[url\\])+"), "[url]");
+    in.replace(QRegExp("(?:\\[url=)+\\[url\\]"), "[url=");
+    in.replace(QRegExp("(?:\\[/url\\])+"), "[/url]");
 
     in.replace(bbbold, "<b>");
     in.replace(bbitalic, "<i>");
@@ -301,7 +305,7 @@ QString AbstractChannel::processBBCodes(QString in) {
 
 
 QString AbstractChannel::processInput(QString input) {
-    //input.replace( "<", "&lt;" ).replace( ">", "&gt;" );
+    input.replace( "<", "&lt;" ).replace( ">", "&gt;" );
     return processBBCodes(processIRCCodes(input));
 }
 

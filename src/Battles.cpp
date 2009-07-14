@@ -42,6 +42,7 @@ Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
              this, SLOT( joinBattleCommand( unsigned int, QString ) ) );
     connect( gamePasswordWidget, SIGNAL( wantJoinBattle( unsigned int, QString ) ),
              this, SLOT( joinBattleCommand( unsigned int, QString ) ) );
+    battleCount = 0;
 }
 
 Battles::~Battles() {}
@@ -94,8 +95,12 @@ void Battles::receiveCommand( Command command ) {
         b.playerCount         = 1;
         b.countryCode = users->getUser( b.founder ).countryCode;
         battleManager->addBattle( b );
+        battleCount++;
+        emit statsChange(battleCount);
     } else if ( command.name == "BATTLECLOSED" ) {
         battleManager->delBattle( command.attributes[0].toInt() );
+        battleCount--;
+        emit statsChange(battleCount);
     } else if ( command.name == "UPDATEBATTLEINFO" ) {
         Q_ASSERT( command.attributes.size() >= 5 );
         int battleId = command.attributes.takeFirst().toInt();

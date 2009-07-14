@@ -46,6 +46,7 @@ signals:
     void sendInput( QString input );
     void myStateChanged(User u);
     void openGroupsDialog();
+    void statsChange(int userCount, int moderatorCount);
 public slots:
     void setRegExp( QString regExp );
     void receiveCommand( Command command );
@@ -88,7 +89,8 @@ protected:
     TreeSortFilterProxyModel* proxyModel;
     QRegExp clanRegexp;
     QUrl url;
-    int userCount;//continue here, write down statistics code and slots for it
+    int userCount;
+    int moderatorCount;
     static Users* lastThis;
 };
 
