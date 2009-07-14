@@ -24,13 +24,6 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     /* it's important to first init the preferences */
 
 
-
-    /*Initializing Python scripting engine*/
-    PythonQt::init();
-    mainModule = PythonQt::self()->getMainModule();
-
-
-
     battles->setUsers( users );
     preference          = new UserPreference();
     preference->setWindowFlags(Qt::Window);
@@ -48,13 +41,14 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     stylesheetDialog    = new StylesheetDialog();
     stylesheetDialog->setWindowFlags(Qt::Window);
     userGroupsDialog    = new UserGroupsDialog();
-    scriptingDialog     = new ScriptingDialog(mainModule, this);
+    scriptingDialog     = new ScriptingDialog(&scriptingEngine, this);
     scriptingDialog->setWindowFlags(Qt::Window);
 
-    mainModule.addObject("battles", battles);
-    mainModule.addObject("users", users);
-    mainModule.addObject("lobbyTabs", lobbyTabs);
-    mainModule.addObject("serverContextState", serverContextState);
+
+    scriptingEngine.globalObject().setProperty("battles", scriptingEngine.newQObject(battles));
+    scriptingEngine.globalObject().setProperty("users", scriptingEngine.newQObject(users));
+    scriptingEngine.globalObject().setProperty("lobbyTabs", scriptingEngine.newQObject(lobbyTabs));
+    scriptingEngine.globalObject().setProperty("serverContextState", scriptingEngine.newQObject(serverContextState));
 
     usersInCurrentChannel = new QLabel("Users in current channel: 0");
     battlesOnline = new QLabel("Battles online: 0");

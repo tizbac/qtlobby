@@ -16,9 +16,7 @@
 #include <QProcess>
 #include <QDialog>
 #include <QSystemTrayIcon>
-// #include <QTime>
-
-#include <PythonQt.h>
+#include <QScriptEngine>
 
 #include "ui_mainWidget.h"
 #include "ui_aboutWidget.h"
@@ -83,7 +81,7 @@ private:
     QByteArray lastState;
     QByteArray lastBattleState;
     QByteArray state;
-    PythonQtObjectPtr mainModule;
+    QScriptEngine scriptingEngine;
 signals:
     void newTrayMessage(QString);
 protected:

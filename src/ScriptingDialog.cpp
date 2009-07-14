@@ -1,18 +1,16 @@
 #include "src/ScriptingDialog.h"
 #include "ui_ScriptingDialog.h"
-#include <Qsci/qscilexerpython.h>
+#include <Qsci/qscilexerjavascript.h>
 #include "Settings.h"
 
-ScriptingDialog::ScriptingDialog(PythonQtObjectPtr main, QWidget *parent) :
+ScriptingDialog::ScriptingDialog(QScriptEngine* engine, QWidget *parent) :
     QDialog(parent),
     m_ui(new Ui::ScriptingDialog)
 {
     m_ui->setupUi(this);
-    QsciLexerPython* lexer = new QsciLexerPython(this);
+    QsciLexerJavaScript* lexer = new QsciLexerJavaScript(this);
     m_ui->scriptTextEdit->setLexer(lexer);
-    mainModule = main;
-    connect(PythonQt::self(), SIGNAL(pythonStdOut(QString)), this, SLOT(onPythonStdOut(QString)));
-    connect(PythonQt::self(), SIGNAL(pythonStdErr(QString)), this, SLOT(onPythonStdErr(QString)));
+    this->engine = engine;
     m_ui->splitter->restoreState(Settings::Instance()->value("scriptingSplitterState").toByteArray());
 }
 
@@ -34,16 +32,16 @@ void ScriptingDialog::changeEvent(QEvent *e)
 }
 
 void ScriptingDialog::on_executePushButton_clicked() {
-    mainModule.evalScript(m_ui->scriptTextEdit->text());
+    engine->evaluate(m_ui->scriptTextEdit->text());
 }
 
-void ScriptingDialog::onPythonStdOut(const QString &str) {
+/*void ScriptingDialog::onPythonStdOut(const QString &str) {
     m_ui->outputTextBrowser->insertPlainText(str);
 }
 
 void ScriptingDialog::onPythonStdErr(const QString &str) {
     m_ui->outputTextBrowser->insertPlainText(str);
-}
+}*/
 
 void ScriptingDialog::hideEvent(QHideEvent* event) {
     Settings::Instance()->setValue("scriptingSplitterState", m_ui->splitter->saveState());

@@ -11,9 +11,7 @@ DESTDIR_TARGET = qtlobby
 SRCMOC = debug
 QMAKE_CLEAN = debug/*
 DEPENDPATH += .
-INCLUDEPATH += . \
-    /usr/local/include \
-    /usr/include/python2.5
+INCLUDEPATH += .
 RESOURCES = resources.qrc
 UI_HEADERS_DIR = src
 DEFINES += 'SVN_REV=\\"$$system(svnversion -n .)\\"'
@@ -139,7 +137,8 @@ SOURCES += src/main.cpp \
 QT += gui \
     network \
     opengl \
-    xml
+    xml \
+    script
 FORMS += ui/mainWidget.ui \
     ui/connectionWidget.ui \
     ui/mapSelectorWidget.ui \
@@ -160,5 +159,5 @@ DISTFILES += doc/ProtocolDescription.xml \
     TODO \
     doc/xml2html.xsl \
     doc/z
-win32::LIBS += PythonQt.lib QScintilla.lib
-unix::LIBS += -lPythonQt -lqscintilla2
+win32::LIBS += QScintilla.lib
+unix::LIBS += -lqscintilla2
