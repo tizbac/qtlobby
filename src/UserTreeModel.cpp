@@ -37,13 +37,13 @@ QVariant UserTreeModel::data( const QModelIndex& index, int role ) const {
             User u = m_userList[index.row()];
             QString tip;
             QStringList fileNameParts;
-            if ( u.userState.isModerator() ) {
-                fileNameParts << "chan_op";
-                tip += tr( "Moderator" );
-            } else if ( u.userState.isBot() ) {
+            if ( u.userState.isBot() ) {
                 fileNameParts << "bot";
                 tip += tr( "Bot" );
-            } else {
+            } else if ( u.userState.isModerator() ) {
+                fileNameParts << "chanop";
+                tip += tr( "Moderator" );
+            }   else {
                 tip += tr( "Player" );
             }
             if ( u.userState.isAway() ) {

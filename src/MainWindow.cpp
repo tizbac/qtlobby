@@ -36,7 +36,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     tabBar = new QTabBar(this);
     lobbyTabs           = new LobbyTabs( this, battles, UnitSyncLib::getInstance(), tabBar, lobbyStackedWidget );
     commandAssigner     = new CommandAssigner( this );
-    statusTracker       = new StatusTracker( statusbar );
+    //statusTracker       = new StatusTracker( statusbar );
     mapSelector         = new MapSelector();
     stylesheetDialog    = new StylesheetDialog();
     stylesheetDialog->setWindowFlags(Qt::Window);
@@ -57,7 +57,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     statusBar()->addPermanentWidget(moderatorsOnline);
     statusBar()->addPermanentWidget(usersOnline);
     statusBar()->addPermanentWidget(battlesOnline);
-    //statusBar()->addPermanentWidget(usersInCurrentChannel);
+    statusBar()->addPermanentWidget(usersInCurrentChannel);
     statusBar()->addPermanentWidget(new QLabel());
 
     tabBar->setTabsClosable(true);
@@ -114,6 +114,9 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     connect( serverContextState, SIGNAL( connectionStateChanged( ConnectionState ) ),
              connectionWidget, SLOT( connectionStatusChanged( ConnectionState ) ) );
 
+    connect( serverContextState, SIGNAL( connectionStateChanged( ConnectionState ) ),
+             this, SLOT( connectionStatusChanged( ConnectionState ) ) );
+
     // setting the configuration
     connect( connectionWidget, SIGNAL( emitConfiguration( QUrl ) ),
              users, SLOT( setConfiguration( QUrl ) ) );
@@ -168,6 +171,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
              this, SLOT( onChangedFromBattleTab()) );
     connect (tabBar, SIGNAL(tabMoved(int,int)),
              lobbyTabs, SLOT(onTabMoved(int,int)));
+    connect (tabBar, SIGNAL(currentChanged(int)),
+             this, SLOT(onCurrentTabChanged()));
     //connect( lobbyTabs, SIGNAL( hideBattleList( bool ) ),
     //         this, SLOT( hideBattleList( bool ) ) );
     // aboutDialog
@@ -230,6 +235,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     for (int i = 0; i < 4; i++)
         users->resizeColumnToContents(i);
     inBattle = false;
+    onCurrentTabChanged();
 }
 
 MainWindow::~MainWindow() {
@@ -439,4 +445,30 @@ void MainWindow::onStatsChange(int battles) {
 
 void MainWindow::on_actionScripting_triggered() {
     scriptingDialog->show();
+}
+
+void MainWindow::connectionStatusChanged(ConnectionState state) {
+    switch ( state ) {
+    case DISCONNECTED:
+        statusBar()->showMessage("Disconnected", 20000);
+        break;
+    case CONNECTING:
+        statusBar()->showMessage("Connecting...", 20000);
+        break;
+    case CONNECTED:
+        statusBar()->showMessage("Connected", 20000);
+        break;
+    case AUTHENTICATING:
+        statusBar()->showMessage("Authenticating...", 20000);
+        break;
+    case AUTHENTICATED:
+        statusBar()->showMessage("Authenticated", 20000);
+        break;
+    }
+}
+
+void MainWindow::onCurrentTabChanged() {
+    usersInCurrentChannel->setText(
+            "Users in current channel: " + QString::number(users->usersCountInCurrentChannel())
+            );
 }

@@ -103,8 +103,10 @@ private slots:
     void showStylesheetEditor();
     void setCurrentUsername( QString username );
     void onCurrentChanged(const QModelIndex & current, const QModelIndex & previous);
+    void onCurrentTabChanged();
     void onStatsChange(int users, int moderators);
     void onStatsChange(int battles);
+    void connectionStatusChanged(ConnectionState);
 
     void onChangedToBattleTab();
     void onChangedFromBattleTab();

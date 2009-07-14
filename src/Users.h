@@ -41,6 +41,7 @@ public:
     QStringList getUsernamesList();
     static Users* getCurrentUsers();
     UserTreeModel* getUserModel(int battleId);
+    int usersCountInCurrentChannel();
 signals:
     void sendCommand( Command command );
     void sendInput( QString input );

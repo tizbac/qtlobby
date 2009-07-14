@@ -73,7 +73,14 @@ void Users::receiveCommand( Command command ) {
     command.name = command.name.toUpper();
     if ( command.name == "CLIENTSTATUS" ) {
         User u = infoChannelUserManager->getUser( command.attributes[0] );
-        u.userState.setState(command.attributes[1].toInt());
+        UserState ns;
+        ns.setState(command.attributes[1].toInt());
+        if(ns.isModerator() && !u.userState.isModerator())
+            moderatorCount++;
+        else if(!ns.isModerator() && u.userState.isModerator())
+            moderatorCount--;
+        emit statsChange(userCount, moderatorCount);
+        u.userState.setState(ns.getState());
         modUserInAllManagers( u );
     } else if ( command.name == "ADDUSER" ) {
         User u;
@@ -81,8 +88,6 @@ void Users::receiveCommand( Command command ) {
         u.countryCode = command.attributes[1];
         u.cpu = command.attributes[2];
         userCount++;
-        if(u.userState.isModerator())
-            moderatorCount++;
         emit statsChange(userCount, moderatorCount);
         infoChannelUserManager->addUser( u );
     } else if ( command.name == "REMOVEUSER" ) {
@@ -371,4 +376,8 @@ Users* Users::getCurrentUsers() {
 
 UserTreeModel* Users::getUserModel(int battleId) {
     return battleIdUserManagerMap[battleId]->model();
+}
+
+int Users::usersCountInCurrentChannel() {
+    return model()->rowCount(QModelIndex());
 }
