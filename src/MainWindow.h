@@ -63,7 +63,6 @@ private:
     ScriptingDialog* scriptingDialog;
 
     QTabBar* tabBar;
-    QLabel* usersInCurrentChannel;
     QLabel* battlesOnline;
     QLabel* usersOnline;
     QLabel* moderatorsOnline;

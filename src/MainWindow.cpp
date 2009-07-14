@@ -50,14 +50,12 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     scriptingEngine.globalObject().setProperty("lobbyTabs", scriptingEngine.newQObject(lobbyTabs));
     scriptingEngine.globalObject().setProperty("serverContextState", scriptingEngine.newQObject(serverContextState));
 
-    usersInCurrentChannel = new QLabel("Users in current channel: 0");
     battlesOnline = new QLabel("Battles online: 0");
     usersOnline = new QLabel("Users online: 0");
     moderatorsOnline = new QLabel("Moderators online: 0");
     statusBar()->addPermanentWidget(moderatorsOnline);
     statusBar()->addPermanentWidget(usersOnline);
     statusBar()->addPermanentWidget(battlesOnline);
-    statusBar()->addPermanentWidget(usersInCurrentChannel);
     statusBar()->addPermanentWidget(new QLabel());
 
     tabBar->setTabsClosable(true);
@@ -158,6 +156,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     //Stats updates for status bar
     connect( users, SIGNAL(statsChange(int,int)),
              this, SLOT(onStatsChange(int,int)));
+    connect( users, SIGNAL(statsChange(int,int)),
+             this, SLOT(onCurrentTabChanged()));
     connect( battles, SIGNAL(statsChange(int)),
              this, SLOT(onStatsChange(int)));
 
@@ -235,7 +235,6 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     for (int i = 0; i < 4; i++)
         users->resizeColumnToContents(i);
     inBattle = false;
-    onCurrentTabChanged();
 }
 
 MainWindow::~MainWindow() {
@@ -450,7 +449,7 @@ void MainWindow::on_actionScripting_triggered() {
 void MainWindow::connectionStatusChanged(ConnectionState state) {
     switch ( state ) {
     case DISCONNECTED:
-        statusBar()->showMessage("Disconnected", 20000);
+        statusBar()->showMessage("Disconnected");
         break;
     case CONNECTING:
         statusBar()->showMessage("Connecting...", 20000);
@@ -462,13 +461,13 @@ void MainWindow::connectionStatusChanged(ConnectionState state) {
         statusBar()->showMessage("Authenticating...", 20000);
         break;
     case AUTHENTICATED:
-        statusBar()->showMessage("Authenticated", 20000);
+        statusBar()->showMessage("Authenticated");
         break;
     }
 }
 
 void MainWindow::onCurrentTabChanged() {
     usersInCurrentChannel->setText(
-            "Users in current channel: " + QString::number(users->usersCountInCurrentChannel())
+            "Users: " + QString::number(users->usersCountInCurrentChannel())
             );
 }
