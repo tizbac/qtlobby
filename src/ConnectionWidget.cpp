@@ -23,7 +23,7 @@ ConnectionWidget::ConnectionWidget( ServerContextState* serverContextState,
     // - when set is called, the client is automatically disconnected, new config is set and
     //   the TASServer is called
 
-    setWindowTitle( "status: logged in; user : *** @ foohost.com : 4002" );
+    setWindowTitle( "Connection Settings" );
 
     settings = Settings::Instance();
     addDefaultServers();
@@ -48,21 +48,13 @@ ConnectionWidget::ConnectionWidget( ServerContextState* serverContextState,
     connect( serverContextState, SIGNAL( logWrite( QString ) ),
              this, SLOT( logWrite( QString ) ) );
 
-    /* for the radio button state tracking */
-    connect( singleSession, SIGNAL( toggled( bool ) ),
-             this, SLOT( radioButtonValueChanged( bool ) ) );
-    connect( manualMultiSession, SIGNAL( toggled( bool ) ),
-             this, SLOT( radioButtonValueChanged( bool ) ) );
-    connect( autoMultiSession, SIGNAL( toggled( bool ) ),
-             this, SLOT( radioButtonValueChanged( bool ) ) );
 
-    /* for the checkbox in the logintab */
-    connect( closeDialogCheckBox, SIGNAL( stateChanged( int ) ),
-             this, SLOT( closeDialogCheckBoxValueChanged( int ) ) );
-    connect( openDialogCheckBox, SIGNAL( stateChanged( int ) ),
-             this, SLOT( openDialogCheckBoxValueChanged( int ) ) );
+    connect(autoLoginCheckBox,SIGNAL(toggled(bool)),
+            this, SLOT(toggleAutoLogin() ) );
+    connect(rememberPassCheckBox,SIGNAL(toggled(bool)),
+            this, SLOT(toggleRememberPassword() ) );
 
-    connect( profilesServerProfileComboBox, SIGNAL( currentIndexChanged( int ) ),
+    connect( profileComboBox, SIGNAL( currentIndexChanged( int ) ),
              this, SLOT( comboBoxCurrentIndexChanged( int ) ) );
 
     connect( saveProfileButton, SIGNAL( clicked() ),
@@ -73,12 +65,13 @@ ConnectionWidget::ConnectionWidget( ServerContextState* serverContextState,
 
     /* buttons from the profiles dialog */
     connect( newProfileButton, SIGNAL( clicked() ),
-             this , SLOT( openProfileWizzard() ) );
+             this , SLOT( createNewProfile() ) );
+
     connect( delProfileButton, SIGNAL( clicked() ),
              this , SLOT( delSelectedProfile() ) );
 
-    connect( connectionWizzardButton, SIGNAL( clicked() ),
-             this , SLOT( openProfileEditor() ) );
+    //connect( connectionWizzardButton, SIGNAL( clicked() ),
+    //        this , SLOT( openProfileEditor() ) );
 
     /* rename & change password buttons */
     connect( renameButton, SIGNAL( clicked() ),
@@ -98,47 +91,22 @@ ConnectionWidget::ConnectionWidget( ServerContextState* serverContextState,
     connect( serverContextState, SIGNAL( changePasswordSuccess( QString ) ),
              this, SLOT( changePasswordSuccess( QString ) ) );
 
+    if ( settings->value( "autologin", false ).toBool() )
+        autoLoginCheckBox->setChecked( true );
+    if ( settings->value( "rememberpasswd", false).toBool() )
+        rememberPassCheckBox->setChecked( true );
+
+    logoutButton->setEnabled(false);
+    registerUserPushButton->setEnabled(false); // Remove when registering is working correctly
+
     updateComboBoxes();
-    if ( settings->value( "singleSession", true ).toBool() )
-        singleSession->setChecked( true );
-    if ( settings->value( "manualMultiSession", false ).toBool() )
-        manualMultiSession->setChecked( true );
-    if ( settings->value( "autoMultiSession", false ).toBool() )
-        autoMultiSession->setChecked( true );
 
-    if ( settings->value( "closeDialogCheckBox" ).toBool() )
-        closeDialogCheckBox->setChecked( Qt::Checked );
-    else
-        closeDialogCheckBox->setChecked( Qt::Unchecked );
-
-    if ( settings->value( "openDialogCheckBox" ).toBool() )
-        openDialogCheckBox->setChecked( Qt::Checked );
-    else
-        openDialogCheckBox->setChecked( Qt::Unchecked );
-
-
-    tabWidget->removeTab( 2 );
-    QWizard* w = new QWizard( this );
-
-    QWizardPage *page = new QWizardPage;
-    page->setTitle( "Introduction" );
-
-    QLabel *label = new QLabel( "This wizard will help you to register a new account for playing spring online or in a local network." );
-    label->setWordWrap( true );
-
-    QVBoxLayout *layout = new QVBoxLayout;
-    layout->addWidget( label );
-    page->setLayout( layout );
-    w->addPage( page );
-
-    tabWidget->insertTab( 2, w, "Profile wizard" );
-    //   tabWidget->setCurrentIndex( 2 );
 }
 
 ConnectionWidget::~ConnectionWidget() { }
 
 void ConnectionWidget::establishConnection() {
-    int index = loginServerProfileComboBox->property( "currentIndex" ).toInt();
+    int index = profileComboBox->property( "currentIndex" ).toInt();
     settings->setValue( "SelectedServerProfile", index );
 
     if ( index == -1 ) {
@@ -146,13 +114,13 @@ void ConnectionWidget::establishConnection() {
                                "You have to add a profile in the 'Profile' tab first before you can connect to a server." );
         return;
     }
-    QUrl url = loginServerProfileComboBox->itemData(
-            index,
-            Qt::UserRole ).toUrl();
-    if ( singleSession->isChecked() ) {
+    QUrl url = profileComboBox->itemData(index, Qt::UserRole ).toUrl();
+    if ( !rememberPassCheckBox->isChecked() ) {
+        qDebug("Connecting... Forget password");
         url.setPassword( "" );
         modifyServerProfile( index, url );
     }
+
     if ( passwordLineEdit->text() == "" ) {
         if ( url.password() == "" ) {
             QMessageBox::critical( this, "No password",
@@ -165,8 +133,10 @@ void ConnectionWidget::establishConnection() {
         url.setPassword( passwordLineEdit->text() );
     }
 
-    if ( autoMultiSession->isChecked() || manualMultiSession->isChecked() )
-        modifyServerProfile( index, url );
+    if ( rememberPassCheckBox->isChecked() ){
+            modifyServerProfile( index, url );
+            qDebug("Connecting... Remember password");
+     }
     emit emitConfiguration( url );
     emit establishConnection_();
     emit usernameChanged(url.userName());
@@ -179,35 +149,23 @@ void ConnectionWidget::logWrite( QString l ) {
     //}
 }
 
-void ConnectionWidget::closeDialogCheckBoxValueChanged( int ) {
-    settings->setValue( "closeDialogCheckBox", closeDialogCheckBox->isChecked() );
-}
+void ConnectionWidget::modifyServerProfile( signed int index, QUrl url )
+{
 
-void ConnectionWidget::openDialogCheckBoxValueChanged( int ) {
-    settings->setValue( "openDialogCheckBox", openDialogCheckBox->isChecked() );
-}
-
-// if any radiobutton status changes, we want to remember after program restart
-void ConnectionWidget::radioButtonValueChanged( bool ) {
-    settings->setValue( "singleSession", singleSession->isChecked() );
-    settings->setValue( "manualMultiSession", manualMultiSession->isChecked() );
-    settings->setValue( "autoMultiSession", autoMultiSession->isChecked() );
-}
-
-void ConnectionWidget::modifyServerProfile( signed int index, QUrl url ) {
     if ( index == -1 ) {
-        //     qDebug() << "not modifying server profile";
+        qDebug() << "not modifying server profile";
         return ;
     }
     QList<QVariant> list = settings->value( "ServerProfiles" ).toList();
     list[index] = url;
-    //   qDebug() << "modifying server profile";
+    qDebug() << "modifying server profile "<< index;
     settings->setValue( "ServerProfiles", list );
     updateComboBoxes();
 }
 
 // once the new profile wizzard is working, we can remove this code (js)
-void ConnectionWidget::addDefaultServers() {
+void ConnectionWidget::addDefaultServers()
+{
     QList<QVariant> list = settings->value( "ServerProfiles" ).toList();
     if ( list.size() > 0 )
         return;
@@ -216,19 +174,8 @@ void ConnectionWidget::addDefaultServers() {
     url.setHost( "taspring.clan-sy.com" );
     url.setPort( 8200 );
     url.setUserName( "qtlobby" );
-    QUrl url2;
-    url2.setHost( "127.0.0.1" );
-    url2.setPort( 8200 );
-    url2.setUserName( "qtlobby" );
-    QUrl url3;
-    url3.setHost( "127.0.0.1" );
-    url3.setPort( 1111 );
-    url3.setUserName( "qtlobby" );
 
     list.append( url );
-    list.append( url2 );
-    list.append( url3 );
-
     settings->setValue( "ServerProfiles", list );
 }
 
@@ -237,7 +184,7 @@ void ConnectionWidget::addDefaultServers() {
 // to update the selected profile's settings
 // we need to disconnect/connect the signals to avoid a infinite loop
 void ConnectionWidget::comboBoxCurrentIndexChanged( int index ) {
-    QUrl url = loginServerProfileComboBox->itemData(
+    QUrl url = profileComboBox->itemData(
             index,
             Qt::UserRole ).toUrl();
 
@@ -250,20 +197,25 @@ void ConnectionWidget::comboBoxCurrentIndexChanged( int index ) {
 // a) written into the 'modified' profile and b) the combobox needs a reset
 // so that it can reflect the changes 'on change'
 void ConnectionWidget::saveModifiedProfile() {
-    int index = profilesServerProfileComboBox->property( "currentIndex" ).toInt();
+    int index = profileComboBox->property( "currentIndex" ).toInt();
+    qDebug()<< "Index of saved profile: "<< index;
     settings->setValue( "SelectedServerProfile", index );
 
     QUrl url;
     url.setUserName( profileUserNameLineEdit->text() );
     url.setHost( profileServerAddressLineEdit->text() );
     url.setPort( profilePortSpinBox->value() );
+    qDebug()<<"Modify profile.";
+
     modifyServerProfile( index, url );
 }
 
 // this function handles the change of combobox entries which happen
 // when a profile gets modified or deleted. it will also select the
 // previously selected 'server profile' in both 'login' and 'server' tab
-void ConnectionWidget::updateComboBoxes() {
+void ConnectionWidget::updateComboBoxes()
+{
+    qDebug() << "Update comboboxes";
     QList<QVariant> list = settings->value( "ServerProfiles" ).toList();
 
     if ( list.size() == 0 ) {
@@ -275,12 +227,11 @@ void ConnectionWidget::updateComboBoxes() {
         profileServerAddressLineEdit->setEnabled( true );
         profilePortSpinBox->setEnabled( true );
     }
-
-    loginServerProfileComboBox->clear();
-    profilesServerProfileComboBox->clear();
+    profileComboBox->clear();
     int index = settings->value( "SelectedServerProfile" ).toInt();
 
-    for ( int i = 0 ; i < list.size(); ++i ) {
+    for ( int i = 0 ; i < list.size(); ++i )
+    {
         QUrl url = list[i].toUrl();
         QString urldescription = QString( "%1 : %2 @ %3 : %4 " )
                                  .arg( url.userName() )
@@ -288,26 +239,34 @@ void ConnectionWidget::updateComboBoxes() {
                                  .arg( url.host() )
                                  .arg( url.port() );
         if ( i == index )
-            if ( url.password() != "" )
+            if( rememberPassCheckBox->isChecked()) {
+                qDebug() << "Laeta paekallee";
                 passwordLineEdit->setText( url.password() );
-        loginServerProfileComboBox->insertItem( i, QString( urldescription ), url );
-        profilesServerProfileComboBox->insertItem( i, QString( urldescription ), url );
+            }
+
+        profileComboBox->insertItem( i, QString( urldescription ), url );
     }
-
-    loginServerProfileComboBox->setCurrentIndex( index );
-    profilesServerProfileComboBox->setCurrentIndex( index );
+    profileComboBox->setCurrentIndex( index );
 }
 
-void ConnectionWidget::openProfileWizzard() {
-    tabWidget->setCurrentIndex( 2 );
-}
+void ConnectionWidget::createNewProfile()
+{
+    qDebug()<<"New Server Profile";
+    QList<QVariant> list = settings->value( "ServerProfiles" ).toList();
 
-void ConnectionWidget::openProfileEditor() {
-    tabWidget->setCurrentIndex( 1 );
+    QUrl url;
+    url.setHost( "taspring.clan-sy.com" );
+    url.setPort( 8200 );
+    url.setUserName( "qtlobby" );
+
+    //list.append( url );
+    list.prepend( url);
+    settings->setValue( "ServerProfiles", list );
+    updateComboBoxes();
 }
 
 void ConnectionWidget::delSelectedProfile() {
-    int index = profilesServerProfileComboBox->property( "currentIndex" ).toInt();
+    int index = profileComboBox->property( "currentIndex" ).toInt();
     if ( index >= 0 ) {
         QList<QVariant> list = settings->value( "ServerProfiles" ).toList();
         list.removeAt( index );
@@ -322,6 +281,7 @@ void ConnectionWidget::connectionStatusChanged( ConnectionState state ) {
     case DISCONNECTED:
         logoutButton->setEnabled( false );
         loginButton->setEnabled( true );
+        registerUserPushButton->setEnabled(false); // change to true when registering is working correctly
         statusLabel->setText( "unconnected" );
         unlockInterface();
         lockRenameAndChangePassword();
@@ -341,21 +301,18 @@ void ConnectionWidget::connectionStatusChanged( ConnectionState state ) {
     case AUTHENTICATED:
         unlockRenameAndChangePassword();
         statusLabel->setText( "authenticated (logged in)" );
-        if ( closeDialogCheckBox->isChecked() )
-            hide();
+        registerUserPushButton->setEnabled(false);
+        hide();
         break;
     }
 }
 
-void ConnectionWidget::lockInterface() {
-    loginServerProfileComboBox->setEnabled( false );
+void ConnectionWidget::lockInterface()
+{
+    profileComboBox->setEnabled( false );
     passwordLineEdit->setEnabled( false );
-    singleSession->setEnabled( false );
-    manualMultiSession->setEnabled( false );
-    autoMultiSession->setEnabled( false );
-    closeDialogCheckBox->setEnabled( false );
-
-    profilesServerProfileComboBox->setEnabled( false );
+    //autoLoginCheckBox->setEnabled(false);
+    profileComboBox->setEnabled( false );
     profileUserNameLineEdit->setEnabled( false );
     profileServerAddressLineEdit->setEnabled( false );
     profilePortSpinBox->setEnabled( false );
@@ -364,15 +321,12 @@ void ConnectionWidget::lockInterface() {
     saveProfileButton->setEnabled( false );
 }
 
-void ConnectionWidget::unlockInterface() {
-    loginServerProfileComboBox->setEnabled( true );
+void ConnectionWidget::unlockInterface()
+{
+    profileComboBox->setEnabled( true );
     passwordLineEdit->setEnabled( true );
-    singleSession->setEnabled( true );
-    manualMultiSession->setEnabled( true );
-    autoMultiSession->setEnabled( true );
-    closeDialogCheckBox->setEnabled( true );
-
-    profilesServerProfileComboBox->setEnabled( true );
+    autoLoginCheckBox->setEnabled(true);
+    profileComboBox->setEnabled( true );
     profileUserNameLineEdit->setEnabled( true );
     profileServerAddressLineEdit->setEnabled( true );
     profilePortSpinBox->setEnabled( true );
@@ -381,7 +335,8 @@ void ConnectionWidget::unlockInterface() {
     saveProfileButton->setEnabled( true );
 }
 
-void ConnectionWidget::unlockRenameAndChangePassword() {
+void ConnectionWidget::unlockRenameAndChangePassword()
+{
     // new username
     newUsernameLabel->setEnabled( true );
     newUsernameLineEdit->setEnabled( true );
@@ -396,7 +351,8 @@ void ConnectionWidget::unlockRenameAndChangePassword() {
     changePasswordButton->setEnabled( true );
 }
 
-void ConnectionWidget::lockRenameAndChangePassword() {
+void ConnectionWidget::lockRenameAndChangePassword()
+{
     // new username
     newUsernameLabel->setEnabled( false );
     newUsernameLineEdit->setEnabled( false );
@@ -413,7 +369,7 @@ void ConnectionWidget::lockRenameAndChangePassword() {
     changePasswordButton->setEnabled( false );
 }
 
-void ConnectionWidget::renameLoginName() {
+void ConnectionWidget::renameLoginName(){
     QString newUsername = newUsernameLineEdit->text();
 
     if ( newUsername == "" )
@@ -422,17 +378,20 @@ void ConnectionWidget::renameLoginName() {
     emit usernameChanged(newUsername);
 }
 
-void ConnectionWidget::renameLoginNameFeedbackSuccess( QString newName ) {
+void ConnectionWidget::renameLoginNameFeedbackSuccess( QString newName )
+{
     QString renameString = QString( "Please change your new name to %1 and reconnect to the server." )
                            .arg( newName );
     QMessageBox::information( this, "Rename success", renameString );
 }
 
-void ConnectionWidget::renameLoginNameFeedbackFailure( QString failureMsg ) {
+void ConnectionWidget::renameLoginNameFeedbackFailure( QString failureMsg )
+{
     QMessageBox::critical( this, "Rename failure", failureMsg );
 }
 
-void ConnectionWidget::changePassword() {
+void ConnectionWidget::changePassword()
+{
 
     QString oldPassword = oldPasswordLineEdit->text();
     QString newPassword = newPasswordLineEdit->text();
@@ -454,16 +413,26 @@ void ConnectionWidget::changePasswordFailure( QString pwString ) {
     QMessageBox::critical( this, "Password change error", pwString );
 }
 
+void ConnectionWidget::toggleRememberPassword()
+{
+    qDebug() << "set rememberpasswd: "<< rememberPassCheckBox->isChecked();
+    settings->setValue( "rememberpasswd", rememberPassCheckBox->isChecked() );
+}
+
+void ConnectionWidget::toggleAutoLogin(){
+    qDebug() << "set autologin: "<<  autoLoginCheckBox->isChecked();
+    settings->setValue( "autologin", autoLoginCheckBox->isChecked() );
+}
+
 void ConnectionWidget::registerNewAccount() {
-    QString username = registerUsernameLineEdit->text();
+    QString username = profileUserNameLineEdit->text();
+    qDebug() << "register new account "<< username;
     serverContextState->registerNewAccount( username );
 }
 
 void ConnectionWidget::show_if_wanted() {
-    if ( autoMultiSession->isChecked() ) {
+    if ( autoLoginCheckBox->isChecked() ) {
+        qDebug("Autologin");
         establishConnection();
-    }
-
-    if (settings->value( "openDialogCheckBox", true ).toBool())
-        show();
+    } else show();
 }
