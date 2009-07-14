@@ -265,6 +265,7 @@ QList<Battle>& BattleTreeModel::battleList() {
 
 void BattleTreeModel::clear() {
     m_battleList.clear();
+    reset();
 }
 
 

@@ -387,4 +387,5 @@ void Users::wipeModels() {
         um->model()->clear();
     foreach( UserManager* um, battleIdUserManagerMap.values() )
         um->model()->clear();
+    infoChannelUserManager->model()->clear();
 }
