@@ -18,6 +18,8 @@
 #include <QSystemTrayIcon>
 // #include <QTime>
 
+#include <PythonQt.h>
+
 #include "ui_mainWidget.h"
 #include "ui_aboutWidget.h"
 #include "Settings.h"
@@ -35,6 +37,7 @@
 #include "MapSelector.h"
 #include "StylesheetDialog.h"
 #include "UserGroupsDialog.h"
+#include "ScriptingDialog.h"
 
 class MainWindow : public QMainWindow, private Ui::MainWindow {
     Q_OBJECT
@@ -59,6 +62,7 @@ private:
     MapSelector* mapSelector;
     StylesheetDialog* stylesheetDialog;
     UserGroupsDialog* userGroupsDialog;
+    ScriptingDialog* scriptingDialog;
 
     QTabBar* tabBar;
     QLabel* usersInCurrentChannel;
@@ -79,6 +83,7 @@ private:
     QByteArray lastState;
     QByteArray lastBattleState;
     QByteArray state;
+    PythonQtObjectPtr mainModule;
 signals:
     void newTrayMessage(QString);
 protected:
@@ -86,6 +91,7 @@ protected:
     void hideEvent(QHideEvent * event);
     void showEvent(QShowEvent * event);
 private slots:
+    void on_actionScripting_triggered();
     void about();
     void newUserTextInput();
     void toggleUserListVisible();

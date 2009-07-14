@@ -23,6 +23,14 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
 
     /* it's important to first init the preferences */
 
+
+
+    /*Initializing Python scripting engine*/
+    PythonQt::init();
+    mainModule = PythonQt::self()->getMainModule();
+
+
+
     battles->setUsers( users );
     preference          = new UserPreference();
     preference->setWindowFlags(Qt::Window);
@@ -38,7 +46,15 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     statusTracker       = new StatusTracker( statusbar );
     mapSelector         = new MapSelector();
     stylesheetDialog    = new StylesheetDialog();
+    stylesheetDialog->setWindowFlags(Qt::Window);
     userGroupsDialog    = new UserGroupsDialog();
+    scriptingDialog     = new ScriptingDialog(mainModule, this);
+    scriptingDialog->setWindowFlags(Qt::Window);
+
+    mainModule.addObject("battles", battles);
+    mainModule.addObject("users", users);
+    mainModule.addObject("lobbyTabs", lobbyTabs);
+    mainModule.addObject("serverContextState", serverContextState);
 
     usersInCurrentChannel = new QLabel("Users in current channel: 0");
     battlesOnline = new QLabel("Battles online: 0");
@@ -61,6 +77,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     trayIcon->show();
 
     regexpColor = QColor( 0xFFE4B5 );
+
 
     /** incoming data **/
     // serverContextState -> QString -> commandAssigner
@@ -424,4 +441,8 @@ void MainWindow::onStatsChange(int users, int moderators) {
 
 void MainWindow::onStatsChange(int battles) {
     battlesOnline->setText("Battles: " + QString::number(battles));
+}
+
+void MainWindow::on_actionScripting_triggered() {
+    scriptingDialog->show();
 }

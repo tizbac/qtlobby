@@ -11,17 +11,18 @@ DESTDIR_TARGET = qtlobby
 SRCMOC = debug
 QMAKE_CLEAN = debug/*
 DEPENDPATH += .
-INCLUDEPATH += .
+INCLUDEPATH += . \
+    /usr/local/include \
+    /usr/include/python2.5
 RESOURCES = resources.qrc
 UI_HEADERS_DIR = src
 DEFINES += 'SVN_REV=\\"$$system(svnversion -n .)\\"'
 DEFINES += RPM_OPT_FLAGS
 target.path += $$INSTALL_ROOT/bin
 INSTALLS += target
-
-desktop.files   = src/qtlobby.desktop
-desktop.path    = $$INSTALL_ROOT/share/applications
-INSTALLS        += desktop
+desktop.files = src/qtlobby.desktop
+desktop.path = $$INSTALL_ROOT/share/applications
+INSTALLS += desktop
 
 # SVNDEF := -DSVN_REV=444
 # DEFINES += SVN_REV=444
@@ -80,7 +81,8 @@ HEADERS += src/MainWindow.h \
     src/GLProgressDialog.h \
     src/UserGroup.h \
     src/UserGroupsDialog.h \
-    src/glextensions.h
+    src/glextensions.h \
+    src/ScriptingDialog.h
 SOURCES += src/main.cpp \
     src/MainWindow.cpp \
     src/ServerContextState.cpp \
@@ -132,7 +134,8 @@ SOURCES += src/main.cpp \
     src/GLProgressDialog.cpp \
     src/UserGroup.cpp \
     src/UserGroupsDialog.cpp \
-    src/glextensions.cpp
+    src/glextensions.cpp \
+    src/ScriptingDialog.cpp
 QT += gui \
     network \
     opengl \
@@ -151,10 +154,11 @@ FORMS += ui/mainWidget.ui \
     ui/MapOverviewDialog.ui \
     ui/GLProgressDialog.ui \
     ui/LoginDialog.ui \
-    ui/UserGroupsDialog.ui
+    ui/UserGroupsDialog.ui \
+    ui/ScriptingDialog.ui
 DISTFILES += doc/ProtocolDescription.xml \
     TODO \
     doc/xml2html.xsl \
     doc/z
-
-LIBS += -lqscintilla2
+win32::LIBS += PythonQt.lib QScintilla.lib
+unix::LIBS += -lPythonQt -lqscintilla2
