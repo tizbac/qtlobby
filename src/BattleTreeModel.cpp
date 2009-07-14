@@ -263,3 +263,8 @@ QList<Battle>& BattleTreeModel::battleList() {
     return m_battleList;
 }
 
+void BattleTreeModel::clear() {
+    m_battleList.clear();
+}
+
+

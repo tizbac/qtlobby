@@ -381,3 +381,10 @@ UserTreeModel* Users::getUserModel(int battleId) {
 int Users::usersCountInCurrentChannel() {
     return model()->rowCount(QModelIndex());
 }
+
+void Users::wipeModels() {
+    foreach( UserManager* um, channelUserManagerMap.values() )
+        um->model()->clear();
+    foreach( UserManager* um, battleIdUserManagerMap.values() )
+        um->model()->clear();
+}

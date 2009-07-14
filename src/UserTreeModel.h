@@ -40,6 +40,7 @@ public:
     bool insertRows( int position, int rows, const QModelIndex& parent = QModelIndex() );
     bool removeRows( int position, int rows, const QModelIndex& parent = QModelIndex() );
     int rowPositionForUser( QString username );
+    void clear();
     QList<User>& userList();
     void invalidateModel();
 public slots:

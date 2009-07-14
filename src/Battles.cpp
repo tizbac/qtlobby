@@ -444,3 +444,7 @@ void Battles::invalidateModel() {
     battleManager->model()->onGroupChanged();
 }
 
+
+void Battles::wipeModels() {
+    battleManager->model()->clear();
+}

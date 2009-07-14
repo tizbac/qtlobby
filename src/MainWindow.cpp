@@ -450,6 +450,8 @@ void MainWindow::connectionStatusChanged(ConnectionState state) {
     switch ( state ) {
     case DISCONNECTED:
         statusBar()->showMessage("Disconnected");
+        users->wipeModels();
+        battles->wipeModels();
         break;
     case CONNECTING:
         statusBar()->showMessage("Connecting...", 20000);

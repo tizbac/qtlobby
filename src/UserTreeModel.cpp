@@ -197,3 +197,9 @@ void UserTreeModel::onGroupChanged() {
     reset();
 }
 
+
+void UserTreeModel::clear() {
+    m_userList.clear();
+    reset();
+}
+

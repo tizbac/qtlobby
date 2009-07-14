@@ -159,5 +159,5 @@ DISTFILES += doc/ProtocolDescription.xml \
     TODO \
     doc/xml2html.xsl \
     doc/z
-win32::LIBS += QScintilla.lib
+win32::LIBS += QScintilla2.lib
 unix::LIBS += -lqscintilla2

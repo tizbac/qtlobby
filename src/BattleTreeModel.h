@@ -44,6 +44,7 @@ public:
     Battle battleForRowPosition( int row );
     QList<Battle>& battleList();
     void setUsers(Users* users);
+    void clear();
 public slots:
     void onGroupChanged();
 private:

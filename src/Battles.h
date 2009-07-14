@@ -40,6 +40,7 @@ public:
     Battles( QWidget* parent = 0 );
     ~Battles();
     void setUsers( Users* users );
+    void wipeModels();
 signals:
     void sendCommand( Command command );
     void wantJoinBattle(unsigned int,QString);
