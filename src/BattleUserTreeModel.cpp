@@ -115,8 +115,11 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
 
             User u = m_userList[index.row()];
             QString sideName = unitSyncLib->sideName(u.battleState.getSide());
-            if (role == Qt::DecorationRole)
+			if (role == Qt::DecorationRole) {
+				if( !u.battleState.isPlayer() )
+					return QIcon();
                 return QIcon( unitSyncLib->getSideIcon(sideName));
+			}
             else
                 return sideName;
         }
@@ -124,12 +127,16 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
     case 6: //team
         if ( role == Qt::DisplayRole) {
             User u = m_userList[index.row()];
+			if( !u.battleState.isPlayer() )
+				return QString("");
             return QString::number(u.battleState.getTeamNo()+1);
         }
         break;
     case 7: //ally
         if ( role == Qt::DisplayRole) {
             User u = m_userList[index.row()];
+			if( !u.battleState.isPlayer() )
+				return QString("");
             return QString::number(u.battleState.getAllyTeamNo()+1);
         }
         break;
@@ -137,7 +144,10 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
         if ( role == Qt::DecorationRole) {
             User u = m_userList[index.row()];
             QPixmap p(16,16);
-            p.fill(u.m_color);
+			QColor col = u.m_color;
+			if( !u.battleState.isPlayer() )
+				col.setAlpha(0);
+            p.fill(col);
             return p;
         }
         if ( role == Qt::ToolTipRole) {
@@ -148,6 +158,8 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
     case 9: //handicap
         if ( role == Qt::DisplayRole) {
             User u = m_userList[index.row()];
+			if( !u.battleState.isPlayer() )
+				return QString("");
             return QString::number(u.battleState.getHandicap())+"%";
         }
         break;
