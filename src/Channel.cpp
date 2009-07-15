@@ -63,7 +63,7 @@ void Channel::receiveCommand( Command command ) {
         if ( command.attributes.takeFirst() == objectName()) {
             QString userName = command.attributes.takeFirst();
             insertLine( flag( userName ) + line
-                        .arg( "<span style=\"color:darkgreen;\">** %1</span>" )
+                        .arg( "<span style=\"color:darkkhaki;\">** %1</span>" )
                         .arg( tr( "%1 left the channel." ) )
                         .arg( userName ) );
         }

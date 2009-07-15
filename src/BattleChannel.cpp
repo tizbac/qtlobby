@@ -186,7 +186,7 @@ void BattleChannel::receiveCommand( Command command ) {
         insertLine( flag( userName ) + line
                     .arg( "&lt;%1&gt; %2" )
                     .arg( userName )
-                    .arg( processInput(command.attributes.join( " " ), false)));
+                    .arg( processInput(command.attributes.join( " " ))));
     }
     if ( command.name == "RING" ) {
         QString userName = command.attributes.takeFirst();
@@ -197,7 +197,7 @@ void BattleChannel::receiveCommand( Command command ) {
         insertLine( flag( userName ) + line
                     .arg( "<span style=\"color:magenta;\">* %1 %2</span>" )
                     .arg( userName )
-                    .arg( processInput(command.attributes.join( " " ))));
+                    .arg( processInput(command.attributes.join( " " ), false)));
     } else if ( command.name == "FORCEQUITBATTLE" ) {
         QMessageBox::critical(NULL, "Kicked from battle", "You have been kicked from the battle, poor you!");
         insertLine("You have been kicked from the battle!\n");
@@ -213,7 +213,7 @@ void BattleChannel::receiveCommand( Command command ) {
         if ( command.attributes.takeFirst() == objectName() ) {
             QString userName = command.attributes.takeFirst();
             insertLine( flag( userName ) + line
-                        .arg( "<span style=\"color:darkgreen;\">** %1</span>" )
+                        .arg( "<span style=\"color:darkkhaki;\">** %1</span>" )
                         .arg( tr( "%1 left the battle." ) )
                         .arg( userName ) );
         }
