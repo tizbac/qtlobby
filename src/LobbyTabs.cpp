@@ -10,6 +10,7 @@
 //
 //
 #include "LobbyTabs.h"
+#include "Settings.h"
 
 LobbyTabs::LobbyTabs( QObject * parent, Battles* battles, UnitSyncLib* unitSyncLib, QTabBar* tabBar, QStackedWidget * lobbyStackedWidget) : AbstractStateClient( parent ) {
     this->battles = battles;
@@ -71,6 +72,7 @@ LobbyTabs::~LobbyTabs() {
 
 void LobbyTabs::connectionStateChanged( ConnectionState connectionState ) {
     this->connectionState = connectionState;
+
     if ( connectionState == AUTHENTICATED ) {
         bool qtlobbyChannelFound = false;
         foreach( AbstractLobbyTab * l, lobbyTabList ) {
@@ -86,8 +88,14 @@ void LobbyTabs::connectionStateChanged( ConnectionState connectionState ) {
             receiveInput("/j " + channel);
         }
         if ( !qtlobbyChannelFound )
-            if ( lobbyTabList.count() > 0 )
+            if ( lobbyTabList.count() > 0 ){
+                QSettings *settings = Settings::Instance();
                 lobbyTabList[0]->receiveInput( "/j qtlobby" );
+                if(settings->value("IAmRetard", 0).toBool())
+                    lobbyTabList[0]->receiveInput( "/j officially_retard" );
+
+            }
+
     }
 }
 
@@ -258,6 +266,9 @@ void LobbyTabs::closeTab(int i) {
     if (index < 0) return;
     if (QString(lobbyTabList[index]->metaObject()->className()) == "InfoChannel")
         return;
+    if (QString(lobbyTabList[index]->objectName()) == "officially_retard")
+        return;
+
     QWidget * win = lobbyTabList[index]->currentWidget;
     //send the leave command
     lobbyTabList[index]->receiveInput("/leave");

@@ -36,18 +36,27 @@ ConnectionWidget::ConnectionWidget( ServerContextState* serverContextState,
     connectionLogTextDocument->setMaximumBlockCount( 500 );
     connectionLogTextBrowser->setDocument( connectionLogTextDocument );
 
+
+    if(settings->value("IAmRetard", 0).toBool())
+    {
+        complexloginform->hide();
+        simpleloginform->show();
+    } else {
+        complexloginform->show();
+        simpleloginform->hide();
+    }
+
     /* backend connections for network connectivity */
-    //connect( loginButton, SIGNAL( clicked() ),
-    //         this, SLOT( establishConnection() ) );
-     connect( loginButton, SIGNAL( clicked() ),
+    connect(retardButton, SIGNAL(clicked()), this, SLOT(simpleViewChanged()));
+    connect(simpleLoginButton, SIGNAL(clicked()), this, SLOT(establishSimpleConnection()));
+
+    connect( loginButton, SIGNAL( clicked() ),
              this, SLOT( onLogin() ) );
 
     connect( logoutButton, SIGNAL( clicked() ),
              serverContextState, SLOT( forceDisconnect() ) );
     connect( this, SIGNAL( establishConnection_() ),
              serverContextState, SLOT( establishConnection() ) );
-    //   connect( this, SIGNAL( emitConfiguration( QUrl ) ),
-    //            serverContextState, SLOT( emitConfiguration( QUrl ) ) );
 
     /* logging */
     connect( serverContextState, SIGNAL( logWrite( QString ) ),
@@ -139,10 +148,44 @@ void ConnectionWidget::establishConnection() {
     }
 
     if ( rememberPassCheckBox->isChecked() ){
-            modifyServerProfile( index, url );
-           // //qDebug("Connecting... Remember password");
-     }
+        modifyServerProfile( index, url );
+        // //qDebug("Connecting... Remember password");
+    }
 
+
+    emit emitConfiguration( url );
+    emit establishConnection_();
+    emit usernameChanged(url.userName());
+}
+
+void ConnectionWidget::simpleViewChanged()
+{
+    settings->setValue( "IAmRetard", true);
+    simpleloginform->show();
+    complexloginform->hide();
+
+}
+
+/* simple login for lulz */
+void ConnectionWidget::establishSimpleConnection()
+{
+    QUrl url;
+    url.setHost( "taspring.clan-sy.com" );
+    url.setPort( 8200 );
+    url.setUserName( simpleUsernameEdit->text() );
+    url.setPassword( simplePasswdEdit->text() );
+
+    if ( url.userName() == "" ) {
+        QMessageBox::critical( this, "No username",
+                               "Type in the username and try again!" );
+        return;
+    }
+
+    if ( url.password() == "" ) {
+        QMessageBox::critical( this, "No password",
+                               "Type in the password and try again!" );
+        return;
+    }
 
     emit emitConfiguration( url );
     emit establishConnection_();
@@ -248,11 +291,9 @@ void ConnectionWidget::updateComboBoxes()
         if ( i == index )
             if( rememberPassCheckBox->isChecked()) {
 
-                //qDebug() << "Laeta paekallee";
-                passwordLineEdit->setText( url.password() );
-            }
-
-
+            //qDebug() << "Laeta paekallee";
+            passwordLineEdit->setText( url.password() );
+        }
         profileComboBox->insertItem( i, QString( urldescription ), url );
     }
     profileComboBox->setCurrentIndex( index );
@@ -289,6 +330,7 @@ void ConnectionWidget::connectionStatusChanged( ConnectionState state ) {
     switch ( state ) {
     case DISCONNECTED:
         connected = false;
+        simpleLoginButton->setEnabled(true);
         logoutButton->setEnabled( false );
         loginButton->setEnabled( true );
         registerUserPushButton->setEnabled(false); // change to true when registering is working correctly
@@ -311,6 +353,7 @@ void ConnectionWidget::connectionStatusChanged( ConnectionState state ) {
         statusLabel->setText( "authenticating" );
         break;
     case AUTHENTICATED:
+        simpleLoginButton->setEnabled(false);
         loginButton->setEnabled(true);
         unlockRenameAndChangePassword();
         statusLabel->setText( "authenticated (logged in)" );

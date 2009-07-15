@@ -60,6 +60,8 @@ public slots:
   void changePasswordFailure( QString );
   void onLogin();
   void updateCountdown();
+  void establishSimpleConnection();
+  void simpleViewChanged();
 private slots:
   void connectionStatusChanged(ConnectionState state);
   void renameLoginName();
