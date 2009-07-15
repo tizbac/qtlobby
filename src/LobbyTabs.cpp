@@ -91,11 +91,11 @@ void LobbyTabs::connectionStateChanged( ConnectionState connectionState ) {
         }
         if(Settings::Instance()->value("IAmRetard", 0).toBool())
             lobbyTabList[0]->receiveInput( "/j officially_retard" );
-        if ( !qtlobbyChannelFound )
-            if ( lobbyTabList.count() > 0 ){
+        if ( !qtlobbyChannelFound ) {
+            if ( lobbyTabList.count() > 0 ) {
             lobbyTabList[0]->receiveInput( "/j qtlobby" );
         }
-
+        }
     }
 }
 

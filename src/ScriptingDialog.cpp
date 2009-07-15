@@ -43,6 +43,6 @@ void ScriptingDialog::onPythonStdErr(const QString &str) {
     m_ui->outputTextBrowser->insertPlainText(str);
 }*/
 
-void ScriptingDialog::hideEvent(QHideEvent* event) {
+void ScriptingDialog::hideEvent(QHideEvent* /*event*/) {
     Settings::Instance()->setValue("scriptingSplitterState", m_ui->splitter->saveState());
 }

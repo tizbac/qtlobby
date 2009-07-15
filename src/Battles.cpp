@@ -159,7 +159,7 @@ void Battles::receiveCommand( Command command ) {
     } else if ( command.name == "REQUESTBATTLESTATUS" ) {
         User u = users->getUser( url.userName() );
         QList<User> list = users->getUserList(u.joinedBattleId);
-        int playersNum;
+        int playersNum = 0;
         for (int i = 0; i < list.size(); i++) {
             if (list.at(i).battleState.isPlayer())
                 playersNum++;
@@ -207,7 +207,7 @@ void Battles::joinBattleCommand( unsigned int id, QString password ) {
 void Battles::customContextMenuRequested( const QPoint & point ) {
     // here you can either use data() to get the User object which is easy and might be ok
     // the other way would be to query everything via the model. to keep it simple especially
-    // since we don't own the lobby server communiation protocol i would recommend to user
+    // since we don't own the lobby server communiation protocol i would recommend to use
     // the User object directly
 
     // maybe we need this?! ;-) (js)
@@ -216,8 +216,9 @@ void Battles::customContextMenuRequested( const QPoint & point ) {
     QModelIndex index = battleManager->selectionModel()->currentIndex();
 
     QMenu menu( "contextMenu", this );
-    menu.addAction( "being funny" );
-    menu.addAction( "start private chat", this, SLOT( unsetSlot() ) );
+    // starting private chat to the battle host in most cases makes no sense
+    // because most hosts are autohosts ...
+    //menu.addAction( "start private chat", this, SLOT( unsetSlot() ) );
     //menu.addSeparator();
     //menu.addAction( "being funny" );
 

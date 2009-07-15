@@ -32,8 +32,8 @@ void ChannelTextBrowser::onCustomContextMenuRequested(QPoint point) {
     m_contextMenu->clear();
     QAction* copy = m_contextMenu->addAction("Copy");
     QAction* select = m_contextMenu->addAction("Select all");
-    QAction* jl_this;
-    QAction* jl_all;
+    QAction* jl_this = NULL;
+    QAction* jl_all = NULL;
     if(m_menuEnabled) {
         m_contextMenu->addSeparator();
         jl_this = m_contextMenu->addAction("Enable join/leave messages for this channel");

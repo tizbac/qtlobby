@@ -40,7 +40,7 @@ void MapWidget::drawStartRecs() {
     p.end();
 }
 
-void MapWidget::paintEvent ( QPaintEvent * event ) {
+void MapWidget::paintEvent ( QPaintEvent * /*event*/ ) {
     QPainter p(this);
     if (!m_error.isNull()) {
         QFontMetrics fm(font());

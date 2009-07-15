@@ -420,13 +420,13 @@ void MainWindow::onCurrentChanged(const QModelIndex & current, const QModelIndex
         battleInfoTreeView->hideColumn(i);
 }
 
-void MainWindow::hideEvent(QHideEvent * event) {
+void MainWindow::hideEvent(QHideEvent * /*event*/) {
     userListDockWidget->blockSignals(true);
     battleListDockWidget->blockSignals(true);
     state = saveState();
 }
 
-void MainWindow::showEvent(QShowEvent * event) {
+void MainWindow::showEvent(QShowEvent * /*event*/) {
     userListDockWidget->blockSignals(false);
     battleListDockWidget->blockSignals(false);
     restoreState(state);
@@ -450,7 +450,6 @@ void MainWindow::connectionStatusChanged(ConnectionState state) {
     switch ( state ) {
     case DISCONNECTED:
         statusBar()->showMessage("Disconnected");
-        qDebug() << "here";
         users->wipeModels();
         battles->wipeModels();
         break;

@@ -145,7 +145,7 @@ void Users::receiveCommand( Command command ) {
     } else if ( command.name == "FORCELEAVECHANNEL" ) {
         channelUserManagerMap[command.attributes[0]]->delUser( command.attributes[1] );
     } else if ( command.name == "BATTLECLOSED" ) {
-        int id = command.attributes[0].toInt();
+        // int id = command.attributes[0].toInt();
         // FIXME right now the map isn't removed, this leads to (js)
         //       high memory usage since we do not free it!
         //       Q: why did i comment the next line?

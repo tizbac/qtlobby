@@ -100,6 +100,7 @@ void ServerContextState::displayError( QAbstractSocket::SocketError a ) {
     case QAbstractSocket::UnfinishedSocketOperationError:
         emit connectionStateChanged( ServerContextState::UnfinishedSocketOperationError );
         break;
+    default:;
     }
 }
 

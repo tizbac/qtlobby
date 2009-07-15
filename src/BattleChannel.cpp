@@ -376,6 +376,8 @@ void BattleChannel::fillModOptions() {
             else
                 buffer.append(unitSyncLib->getOptionStringDef(i));
             break;
+        case SECTION:
+            break;
         }
         buffer.append("</td>");
         buffer.append("</tr>");

@@ -29,9 +29,9 @@ MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
 }
 
 void MapRendererWidget::initializeGL() {
-    GLfloat mat_ambient[] = { 0.8, 0.2, 0.2, 1.0 };
-    GLfloat mat_specular[] = { 1.0, 0.8, 0.8, 0.0 };
-    GLfloat mat_shininess[] = { 100.0 };
+    //GLfloat mat_ambient[] = { 0.8, 0.2, 0.2, 1.0 };
+    //GLfloat mat_specular[] = { 1.0, 0.8, 0.8, 0.0 };
+    //GLfloat mat_shininess[] = { 100.0 };
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glShadeModel (GL_SMOOTH);
 
