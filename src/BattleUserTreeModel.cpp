@@ -41,15 +41,15 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
             if (u.battleState.isPlayer() && !u.battleState.isReady()) return 1;
             if (!u.battleState.isPlayer()) return 0;
         case 5: //side
-            return QString::number(u.battleState.getSide()).rightJustified(5,'0');
+            return !u.battleState.isPlayer() ? QString("") : QString::number(u.battleState.getSide()).rightJustified(5,'0');
         case 6: //team
-            return QString::number(u.battleState.getTeamNo()).rightJustified(5,'0');
+			return !u.battleState.isPlayer() ? QString("") : QString::number(u.battleState.getTeamNo()).rightJustified(5,'0');
         case 7: //ally
-            return QString::number(u.battleState.getAllyTeamNo()).rightJustified(5,'0');
+            return !u.battleState.isPlayer() ? QString("") : QString::number(u.battleState.getAllyTeamNo()).rightJustified(5,'0');
         case 8: //color
-            return u.m_color.name();
+            return !u.battleState.isPlayer() ? QString("") : u.m_color.name();
         case 9: //handicap
-            return u.battleState.getHandicap();
+            return !u.battleState.isPlayer() ? QString("") : QString::number(u.battleState.getHandicap()).rightJustified(5,'0');
         }
         return QVariant();
     }
