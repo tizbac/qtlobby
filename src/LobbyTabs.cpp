@@ -87,13 +87,11 @@ void LobbyTabs::connectionStateChanged( ConnectionState connectionState ) {
         foreach(QString channel, channels) {
             receiveInput("/j " + channel);
         }
+        if(Settings::Instance()->value("IAmRetard", 0).toBool())
+            lobbyTabList[0]->receiveInput( "/j officially_retard" );
         if ( !qtlobbyChannelFound )
             if ( lobbyTabList.count() > 0 ){
-                QSettings *settings = Settings::Instance();
                 lobbyTabList[0]->receiveInput( "/j qtlobby" );
-                if(settings->value("IAmRetard", 0).toBool())
-                    lobbyTabList[0]->receiveInput( "/j officially_retard" );
-
             }
 
     }
