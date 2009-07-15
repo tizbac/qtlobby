@@ -11,6 +11,7 @@
 //
 #include "LobbyTabs.h"
 #include "Settings.h"
+#include "UnitSyncLib.h"
 
 LobbyTabs::LobbyTabs( QObject * parent, Battles* battles, UnitSyncLib* unitSyncLib, QTabBar* tabBar, QStackedWidget * lobbyStackedWidget) : AbstractStateClient( parent ) {
     this->battles = battles;
@@ -58,6 +59,7 @@ LobbyTabs::LobbyTabs( QObject * parent, Battles* battles, UnitSyncLib* unitSyncL
     //change the icon for unfocused channels with changed contents / restore when focused
     connect( tabBar, SIGNAL( currentChanged(int)),
              this, SLOT( currentTabChangedSlot( int ) ) );
+    connect (UnitSyncLib::getInstance(), SIGNAL(rebooted()), SLOT(onMapsModsReload()));
     //first we need an InfoChannel to display different status messages, this will not close with the close tab
     createLobbyTab( new InfoChannel( "info", lobbyStackedWidget ) );
     currentTabChangedSlot(0);
@@ -91,8 +93,8 @@ void LobbyTabs::connectionStateChanged( ConnectionState connectionState ) {
             lobbyTabList[0]->receiveInput( "/j officially_retard" );
         if ( !qtlobbyChannelFound )
             if ( lobbyTabList.count() > 0 ){
-                lobbyTabList[0]->receiveInput( "/j qtlobby" );
-            }
+            lobbyTabList[0]->receiveInput( "/j qtlobby" );
+        }
 
     }
 }
@@ -338,3 +340,12 @@ void LobbyTabs::onEnableJoinLeaveDefault(bool b) {
         }
     }
 }
+
+void LobbyTabs::onMapsModsReload() {
+    foreach( AbstractLobbyTab * l, lobbyTabList ) {
+        if ( QString(l->metaObject()->className()) == "BattleChannel" ) {
+            ((BattleChannel*)l)->refreshMapAndModOptions();
+        }
+    }
+}
+

@@ -69,6 +69,7 @@ public slots:
     void closeTab();
     void onTabMoved( int from, int to );
     void onEnableJoinLeaveDefault(bool b);
+    void onMapsModsReload();
 
 private:
     //last tab index

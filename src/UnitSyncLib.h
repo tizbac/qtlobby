@@ -121,6 +121,9 @@ public:
 public slots:
     void reboot();
 
+signals:
+    void rebooted();
+
 private:
     QMap<QString, QIcon> m_sideIconsCache;
     QMap<int, QString> m_sideNamesCache;

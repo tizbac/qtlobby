@@ -20,6 +20,8 @@ QMutex unitsync_mutex;
 //#define NON_REENTRANT qDebug() << "Locking at" << __LINE__; QMutexLocker no_reentrance_mutex_locker(&unitsync_mutex); qDebug() << "Locked";
 //Normal
 #define NON_REENTRANT QMutexLocker no_reentrance_mutex_locker(&unitsync_mutex);
+#define MANUAL_LOCK unitsync_mutex.lock();
+#define MANUAL_UNLOCK unitsync_mutex.unlock();
 
 
 UnitSyncLib::UnitSyncLib( QObject *parent ) : QObject( parent ) {
@@ -478,10 +480,14 @@ QString UnitSyncLib::getOptionStringDef(int optIndex) {
 }
 
 void UnitSyncLib::reboot() {
-    NON_REENTRANT;
+    MANUAL_LOCK;
     if (library_loaded) {
         m_UnInit();
+        unitsynclib->unload();
+        unitsynclib->load();
         m_Init(0,0);
+        MANUAL_UNLOCK;
+        emit rebooted();
     }
 }
 

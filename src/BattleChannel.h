@@ -35,6 +35,7 @@ public:
     BattleChannel( QString id, Battles* battles, QObject * parent = 0 );
     void setupUi( QWidget * tab );
     QString getTabTitle();
+    void refreshMapAndModOptions();
 
 signals:
     void playSample( SampleCollection sample );

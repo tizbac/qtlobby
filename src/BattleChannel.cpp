@@ -490,3 +490,9 @@ void BattleChannel::onRemoveStartRect(int ally) {
 QString BattleChannel::getTabTitle() {
     return m_battle.founder;
 }
+
+void BattleChannel::refreshMapAndModOptions() {
+    fillModOptions();
+    fillSides();
+    requestMapInfo(m_battle.mapName);
+}
