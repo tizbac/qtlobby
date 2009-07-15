@@ -42,7 +42,7 @@ protected:
     void insertLine( QString line );
     QString makeHtml( QString in );
     QString processBBCodes(QString in);
-    QString processInput(QString input);
+    QString processInput(QString input, bool formatting = true);
     QString processIRCCodes(QString in);
     ChannelTextBrowser * channelTextBrowser;
     QGridLayout * gridLayout;

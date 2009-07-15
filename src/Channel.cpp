@@ -49,7 +49,7 @@ void Channel::receiveCommand( Command command ) {
             insertLine( flag( userName ) + line
                         .arg( "<span style=\"color:magenta;\">* %1 %2</span>" )
                         .arg( userName )
-                        .arg( processInput(command.attributes.join( " " ))));
+                        .arg( processInput(command.attributes.join( " " ), false)));
         }
     } else if ( command.name == "JOINED"  && showJoinLeave ) {
         if ( command.attributes.takeFirst() == objectName() ) {

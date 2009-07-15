@@ -226,12 +226,9 @@ QString AbstractChannel::processIRCCodes(QString in) {
     return in;
 }
 
-
 QString AbstractChannel::processBBCodes(QString in) {
-    QString out;
-
     //   QRegExp urlPattern( "(http|ftp)s?://[^/?# ]+[^?# ]*(\?[^# ]*)?(#[^#? ]*)?" );
-    QRegExp urlPattern( "(http|ftp)s?://[^\n<> []]*" );
+    QRegExp urlPattern( "(http|ftp)s?://[^\n<> ]*" );
     QStringList ct;
     int pos = 0;
     while (( pos = urlPattern.indexIn( in, pos ) ) != -1 ) {
@@ -240,72 +237,76 @@ QString AbstractChannel::processBBCodes(QString in) {
     }
     int count = ct.count();
     QString placeHolder = "__###PLACEHOLDER:%1###__";
-    QString linkTag = "[url]%1[/url]";
+    QString linkTag = "<a href=\"%1\">%1</a>";
     for ( int i = 0; i < count; ++i )
         in.replace( ct[i], placeHolder.arg( i ) );
     for ( int i = 0; i < count; ++i )
         in.replace( placeHolder.arg( i ), linkTag.arg( ct[i] ) );
 
-    QRegExp bbbold("\\[b\\]");
-    QRegExp bbitalic("\\[i\\]");
-    QRegExp bbunderline("\\[u\\]");
-    QRegExp bbstrikethru("\\[s\\]");
-    QRegExp bbimg("\\[img\\]([^]]*)\\[/img\\]");
-    QRegExp bbsize("\\[size=([^]]*)\\]");
-    QRegExp bbcolor("\\[color=([^]]*)\\]");
-    QRegExp bburl_long("\\[url=([^]]*)\\]([^]]*)\\[/url\\]");
-    QRegExp bburl("\\[url\\]([^]]*)\\[/url\\]");
-    QRegExp bbquote("\\[quote\\]");
-    QRegExp bbcode("\\[code\\]");
-    QRegExp bbbr("\\[br\\]");
+    QRegExp bbcode("\\[([^\\]\\[]+)\\]");
 
-    QRegExp bbbold_end("\\[/b\\]");
-    QRegExp bbitalic_end("\\[/i\\]");
-    QRegExp bbunderline_end("\\[/u\\]");
-    QRegExp bbstrikethru_end("\\[/s\\]");
-    QRegExp bbimg_end("\\[/img\\]");
-    QRegExp bbsize_end("\\[/size\\]");
-    QRegExp bbcolor_end("\\[/color\\]");
-    QRegExp bburl_end("\\[/url\\]");
-    QRegExp bbquote_end("\\[/quote\\]");
-    QRegExp bbcode_end("\\[/code\\]");
-
-    //Dirty hacks go here, beware (ko)
-    in.replace(QRegExp("(?:\\[url\\])+"), "[url]");
-    in.replace(QRegExp("(?:\\[url=)+\\[url\\]"), "[url=");
-    in.replace(QRegExp("(?:\\[/url\\])+"), "[/url]");
-
-    in.replace(bbbold, "<b>");
-    in.replace(bbitalic, "<i>");
-    in.replace(bbunderline, "<u>");
-    in.replace(bbstrikethru, "<s>");
-    in.replace(bbimg, "<a href=\"\\1\">\\1</a>");
-    in.replace(bbsize, "<span style=\"font-size:\\1px;\">");
-    in.replace(bbcolor, "<span style=\"color: \\1\">");
-    in.replace(bburl_long, "<a href=\"\\1\">\\2</a>");
-    in.replace(bburl, "<a href=\"\\1\">\\1</a>");
-    in.replace(bbquote, "<blockquote>");
-    in.replace(bbcode, "<pre>");
-    in.replace(bbbr, "<br/>");
-
-
-    in.replace(bbbold_end, "</b>");
-    in.replace(bbitalic_end, "</i>");
-    in.replace(bbunderline_end, "</u>");
-    in.replace(bbstrikethru_end, "</s>");
-    //in.replace(bbimg_end, "</img>");
-    in.replace(bbsize_end, "</span");
-    in.replace(bbcolor_end, "</span>");
-    //in.replace(bburl_end, "</a>");
-    in.replace(bbquote_end, "</blockquote>");
-    in.replace(bbcode_end, "</pre>");
-
+    int idx = 0;
+    while((idx = bbcode.indexIn(in, idx)) >= 0) {
+        QString code = bbcode.capturedTexts()[1].toLower();
+        qDebug() << code;
+        int length = bbcode.capturedTexts()[0].length();
+        QString rep;
+        if(code.contains("=")) {
+            QStringList tmp = code.split("=");
+            if(tmp.size() != 2) continue;
+            code = tmp.takeFirst();
+            QString value = tmp.takeLast();
+            if(code == "size") {
+                int size = value.toInt();
+                if(size < 5) size = 5;
+                if(size > 20) size = 20;
+                rep = QString("<span style=\"font-size:%1px;\">").arg(size);
+            } else if(code == "color") {
+                QColor c = QColor(value);
+                if(c.value() > 150) c.setHsv(c.hue(), c.saturation(), 150);
+                rep = QString("<span style=\"color: %1\">").arg(c.name());
+            }
+        } else {
+            if(code == "b") {
+                rep = "<b>";
+            } else if(code == "i") {
+                rep = "<i>";
+            } else if(code == "u") {
+                rep = "<u>";
+            } else if(code == "s") {
+                rep = "<s>";
+            } else if(code == "quote") {
+                rep = "<blockquote>";
+            } else if(code == "code") {
+                rep = "<pre>";
+            } else if(code == "/b") {
+                rep = "</b>";
+            } else if(code == "i") {
+                rep = "</i>";
+            } else if(code == "/u") {
+                rep = "</u>";
+            } else if(code == "/s") {
+                rep = "</s>";
+            } else if(code == "/quote") {
+                rep = "</blockquote>";
+            } else if(code == "/code") {
+                rep = "</code>";
+            } else if(code == "br") {
+                rep = "<br/>";
+            }
+        }
+        in.replace(idx, length, rep);
+    }
     return in;
 }
 
 
-QString AbstractChannel::processInput(QString input) {
+QString AbstractChannel::processInput(QString input, bool fomatting) {
     input.replace( "<", "&lt;" ).replace( ">", "&gt;" );
-    return processBBCodes(processIRCCodes(input));
+    if(fomatting) {
+        input.replace("\n","[br]");
+        return processBBCodes(processIRCCodes(input));
+    }
+    else return input;
 }
 

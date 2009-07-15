@@ -186,7 +186,7 @@ void BattleChannel::receiveCommand( Command command ) {
         insertLine( flag( userName ) + line
                     .arg( "&lt;%1&gt; %2" )
                     .arg( userName )
-                    .arg( processInput(command.attributes.join( " " ))));
+                    .arg( processInput(command.attributes.join( " " ), false)));
     }
     if ( command.name == "RING" ) {
         QString userName = command.attributes.takeFirst();

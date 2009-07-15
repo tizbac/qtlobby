@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>702</width>
-    <height>213</height>
+    <width>756</width>
+    <height>229</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -15,11 +15,6 @@
     <width>16777215</width>
     <height>16777215</height>
    </size>
-  </property>
-  <property name="font">
-   <font>
-    <pointsize>7</pointsize>
-   </font>
   </property>
   <property name="windowTitle">
    <string>Form</string>
