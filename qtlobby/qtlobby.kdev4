@@ -1,0 +1,4 @@
+[Project]
+Name=qtlobby
+Manager=KDevCMakeManager
+VersionControl=kdevsubversion
