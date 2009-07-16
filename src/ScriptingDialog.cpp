@@ -32,7 +32,12 @@ void ScriptingDialog::changeEvent(QEvent *e)
 }
 
 void ScriptingDialog::on_executePushButton_clicked() {
+    m_ui->outputTextBrowser->clear();
     engine->evaluate(m_ui->scriptTextEdit->text());
+    if(engine->hasUncaughtException()) {
+        m_ui->outputTextBrowser->insertHtml("<p>"+engine->uncaughtException().toString()+"</p>");
+        m_ui->outputTextBrowser->insertHtml(engine->uncaughtExceptionBacktrace().join("<br/>"));
+    }
 }
 
 /*void ScriptingDialog::onPythonStdOut(const QString &str) {

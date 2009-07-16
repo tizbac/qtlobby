@@ -482,9 +482,11 @@ QString UnitSyncLib::getOptionStringDef(int optIndex) {
 void UnitSyncLib::reboot() {
     MANUAL_LOCK;
     if (library_loaded) {
+        //qDebug() << "UNITSYNC_DUMP: " << "UnInit";
         m_UnInit();
         unitsynclib->unload();
         unitsynclib->load();
+        //qDebug() << "UNITSYNC_DUMP: " << "Init";
         m_Init(0,0);
         MANUAL_UNLOCK;
         emit rebooted();

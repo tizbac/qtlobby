@@ -49,6 +49,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     scriptingEngine.globalObject().setProperty("users", scriptingEngine.newQObject(users));
     scriptingEngine.globalObject().setProperty("lobbyTabs", scriptingEngine.newQObject(lobbyTabs));
     scriptingEngine.globalObject().setProperty("serverContextState", scriptingEngine.newQObject(serverContextState));
+    scriptingEngine.setProcessEventsInterval(500);
 
     battlesOnline = new QLabel("Battles online: 0");
     usersOnline = new QLabel("Users online: 0");
