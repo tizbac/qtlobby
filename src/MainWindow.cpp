@@ -240,7 +240,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
 
 MainWindow::~MainWindow() {
     serverContextState->forceDisconnect();
-    delete statusTracker;
+    //delete statusTracker;
     delete connectionWidget;
     delete lobbyTabs;
     delete commandAssigner;
