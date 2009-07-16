@@ -114,6 +114,7 @@ void Users::receiveCommand( Command command ) {
             battleIdUserManagerMap[id] = new UserManager( this, true );
         User u = infoChannelUserManager->getUser( url.userName() );
         u.joinedBattleId = id;
+        u.battleState.setPlayer(true);
         modUserInAllManagers( u );
         battleIdUserManagerMap[id]->addUser( u );
     } else if ( command.name == "JOINEDBATTLE" ) {

@@ -62,7 +62,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     tabBar->setTabsClosable(true);
     //tabBar->setDocumentMode(true);
     //tabBar->setDrawBase(false);
-    tabBar->setMovable(true);
+    tabBar->setMovable(false);
     QAction* a = tabsToolBar->addWidget(tabBar);
     a->setVisible(true);
 
