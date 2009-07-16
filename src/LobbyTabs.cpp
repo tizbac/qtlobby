@@ -274,12 +274,13 @@ void LobbyTabs::closeTab(int i) {
     lobbyTabList[index]->receiveInput("/leave");
     lobbyStackedWidget->removeWidget(win);
     tabBar->removeTab(i);
-    QTimer::singleShot( 0, win, SLOT( deleteLater() ) );
+    win->deleteLater();
     //updateCloseTabState();
     //delete the lobbyTab from the list
     for (; i < lobbyTabList.size(); i++) {
         lobbyTabList[mapToLobbyTabs(i)]->currentTabIndex--;
     }
+    lobbyTabList[index]->deleteLater();
     lobbyTabList.removeAt( index );
 }
 

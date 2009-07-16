@@ -36,6 +36,7 @@ public:
     void setupUi( QWidget * tab );
     QString getTabTitle();
     void refreshMapAndModOptions();
+    ~BattleChannel();
 
 signals:
     void playSample( SampleCollection sample );

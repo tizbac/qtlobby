@@ -26,6 +26,11 @@ BattleChannel::BattleChannel( QString id, Battles* battles, QObject * parent ) :
     locked = false;
 }
 
+BattleChannel::~BattleChannel() {
+    delete battleWindowForm;
+    delete mapOverviewDialog;
+}
+
 void BattleChannel::setupUi( QWidget * tab ) {
     AbstractChannel::setupUi( tab );
     QSplitter* s = new QSplitter(Qt::Vertical, tab);

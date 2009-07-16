@@ -28,6 +28,16 @@ MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
     getGLExtensionFunctions().resolve(context());
 }
 
+MapRendererWidget::~MapRendererWidget() {
+    if (getGLExtensionFunctions().openGL15Supported()) {
+        glDeleteBuffers(1, &m_VBOVertices);
+        glDeleteBuffers(1, &m_VBONormals);
+        glDeleteBuffers(1, &m_VBOTexCoords);
+    }
+    if (m_vertexes) delete m_vertexes;
+    if (m_texCoords) delete m_texCoords;
+}
+
 void MapRendererWidget::initializeGL() {
     //GLfloat mat_ambient[] = { 0.8, 0.2, 0.2, 1.0 };
     //GLfloat mat_specular[] = { 1.0, 0.8, 0.8, 0.0 };

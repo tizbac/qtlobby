@@ -31,6 +31,7 @@ struct TexCoord {
 class MapRendererWidget : public QGLWidget {
 public:
     MapRendererWidget(QWidget* parent = 0);
+    ~MapRendererWidget();
     void setSource(QString mapName, QImage minimap, RawHeightMap heightmap);
 
 public slots:
