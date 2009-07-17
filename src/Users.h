@@ -57,8 +57,8 @@ public slots:
     void inv();
     void onMyBattleStateChanged( User u );
     void onReadyStateChanged( int state );
-    void onSpecStateChanged( int state ); // NEW
-    void onSideComboBoxChanged( int index ); // NEW
+    void onSpecStateChanged( int state );
+    void onSideComboBoxChanged( int index );
     void onColorChanged(QColor c);
     void onTeamNumberChanged( int i );
     void onAllyTeamNumberChanged( int i );
@@ -74,7 +74,7 @@ protected:
     QString currentTabType;
     QString currentTabName;
     void delUserFromAllManagers( QString ); // delete user from all managers
-    void modUserInAllManagers( User );    // modify user in all manangers
+    void modUserInAllManagers( User );    // modify user in all managers
     QMap<QString, User> userMap;
     QMap<QString, UserManager*> channelUserManagerMap;
     QMap<int, UserManager*> battleIdUserManagerMap;

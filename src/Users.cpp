@@ -322,14 +322,12 @@ void Users::onMyBattleStateChanged( User u ) {
     emit sendCommand( command );
 }
 
-/* NEW */
 void Users::onSideComboBoxChanged( int index ) {
     User u = infoChannelUserManager->getUser( url.userName() );
     u.battleState.setSide(index);
     onMyBattleStateChanged( u );
 }
 
-/* NEW */
 void Users::onSpecStateChanged( int state ) {
     bool isSpec = state == Qt::Checked;
     User u = infoChannelUserManager->getUser( url.userName() );
@@ -366,7 +364,8 @@ void Users::invalidateModel() {
     QList<UserManager*> managers;
     managers << infoChannelUserManager;
     managers << channelUserManagerMap.values();
-    managers << channelUserManagerMap.values();
+    //FIXME was that intended to be battleIdUserManagerMap.values() ?
+    //managers << channelUserManagerMap.values();
     for (int i = 0; i < managers.size(); i++) {
         managers.at(i)->model()->onGroupChanged();
     }
