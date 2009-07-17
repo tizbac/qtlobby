@@ -202,9 +202,18 @@
        <property name="rootIsDecorated">
         <bool>false</bool>
        </property>
+       <property name="itemsExpandable">
+        <bool>false</bool>
+       </property>
        <property name="sortingEnabled">
         <bool>true</bool>
        </property>
+       <property name="expandsOnDoubleClick">
+        <bool>false</bool>
+       </property>
+       <attribute name="headerStretchLastSection">
+        <bool>true</bool>
+       </attribute>
       </widget>
      </item>
      <item row="2" column="0">
@@ -238,7 +247,7 @@
      <item row="0" column="0" colspan="4">
       <widget class="Battles" name="battles">
        <property name="contextMenuPolicy">
-        <enum>Qt::CustomContextMenu</enum>
+        <enum>Qt::NoContextMenu</enum>
        </property>
        <property name="alternatingRowColors">
         <bool>true</bool>
@@ -249,8 +258,14 @@
        <property name="rootIsDecorated">
         <bool>false</bool>
        </property>
+       <property name="itemsExpandable">
+        <bool>false</bool>
+       </property>
        <property name="sortingEnabled">
         <bool>true</bool>
+       </property>
+       <property name="expandsOnDoubleClick">
+        <bool>false</bool>
        </property>
       </widget>
      </item>

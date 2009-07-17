@@ -266,8 +266,6 @@ void LobbyTabs::closeTab(int i) {
     if (index < 0) return;
     if (QString(lobbyTabList[index]->metaObject()->className()) == "InfoChannel")
         return;
-    if (QString(lobbyTabList[index]->objectName()) == "officially_retard")
-        return;
 
     QWidget * win = lobbyTabList[index]->currentWidget;
     //send the leave command
@@ -346,6 +344,7 @@ void LobbyTabs::onMapsModsReload() {
     foreach( AbstractLobbyTab * l, lobbyTabList ) {
         if ( QString(l->metaObject()->className()) == "BattleChannel" ) {
             ((BattleChannel*)l)->refreshMapAndModOptions();
+            break;
         }
     }
 }
