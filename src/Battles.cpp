@@ -446,6 +446,13 @@ void Battles::invalidateModel() {
     battleManager->model()->onGroupChanged();
 }
 
+// This slot is contained in AbstractStateClient, but we inherit already from QTreeView
+void Battles::connectionStateChanged(ConnectionState state) {
+    if( state == CONNECTED) {
+        battleCount = 0;
+        emit statsChange(battleCount);
+    }
+}
 
 void Battles::wipeModels() {
     battleManager->model()->clear();

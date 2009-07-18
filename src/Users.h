@@ -27,6 +27,7 @@
 #include "User.h"
 #include "Command.h"
 #include "UserManager.h"
+#include "AbstractStateClient.h"
 
 /**
  @author Joachim Schiele <js@lastlog.de>
@@ -49,6 +50,7 @@ signals:
     void myStateChanged(User u);
     void openGroupsDialog();
     void statsChange(int userCount, int moderatorCount);
+
 public slots:
     void setRegExp( QString regExp );
     void receiveCommand( Command command );
@@ -63,6 +65,7 @@ public slots:
     void onTeamNumberChanged( int i );
     void onAllyTeamNumberChanged( int i );
     void invalidateModel();
+    void connectionStateChanged(ConnectionState state);
 protected slots:
     void customContextMenuRequestedSlot( const QPoint & point );
     void doubleClickedSlot( const QModelIndex & index );

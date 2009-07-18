@@ -30,6 +30,7 @@
 #include "TreeSortFilterProxyModel.h"
 #include "UnitSyncLib.h"
 #include "Settings.h"
+#include "AbstractStateClient.h"
 
 /**
  @author Joachim Schiele <js@lastlog.de>
@@ -57,6 +58,7 @@ public slots:
     void joinBattleCommand(unsigned int id, QString password);
     void setCurrentUsername(QString username);
     void invalidateModel();
+    void connectionStateChanged(ConnectionState state);
 
 protected slots:
     void customContextMenuRequested( const QPoint & point );

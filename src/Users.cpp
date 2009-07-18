@@ -383,6 +383,14 @@ int Users::usersCountInCurrentChannel() {
     return model()->rowCount(QModelIndex());
 }
 
+// This slot is contained in AbstractStateClient, but we inherit already from QTreeView
+void Users::connectionStateChanged(ConnectionState state) {
+    if( state == CONNECTED) {
+        userCount = moderatorCount = 0;
+        emit statsChange(userCount, moderatorCount);
+    }
+}
+
 void Users::wipeModels() {
     foreach( UserManager* um, channelUserManagerMap.values() )
         um->model()->clear();

@@ -146,7 +146,13 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     // lobbyTabs to open the default channel, when connected
     connect( serverContextState, SIGNAL( connectionStateChanged( ConnectionState ) ),
              lobbyTabs, SLOT( connectionStateChanged( ConnectionState ) ) );
-    // lobbyTabs to open private channel, when requested in user list
+    // users to reset stats
+    connect( serverContextState, SIGNAL( connectionStateChanged( ConnectionState ) ),
+             users, SLOT( connectionStateChanged( ConnectionState ) ) );
+    // battles to reset stats
+    connect( serverContextState, SIGNAL( connectionStateChanged( ConnectionState ) ),
+             battles, SLOT( connectionStateChanged( ConnectionState ) ) );
+    // lobbyTabs to open private channel, when requested in users or battles list
     connect( users, SIGNAL( sendInput( QString ) ),
              lobbyTabs, SLOT( receiveInput( QString ) ) );
     connect( battles, SIGNAL( sendInput( QString ) ),
@@ -163,7 +169,6 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
              this, SLOT(onCurrentTabChanged()));
     connect( battles, SIGNAL(statsChange(int)),
              this, SLOT(onStatsChange(int)));
-
 
     // users, for the userlist to show
     connect( lobbyTabs, SIGNAL( currentTabChanged( QString, QString ) ),
