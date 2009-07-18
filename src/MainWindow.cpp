@@ -20,9 +20,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     setWindowTitle(QString( "QTlobby 0.0.%1-svn" ).arg( SVN_REV ));
 
     settings = Settings::Instance();
-
     /* it's important to first init the preferences */
-
 
     battles->setUsers( users );
     preference          = new UserPreference();
@@ -70,7 +68,6 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     trayIcon->show();
 
     regexpColor = QColor( 0xFFE4B5 );
-
 
     /** incoming data **/
     // serverContextState -> QString -> commandAssigner
@@ -158,7 +155,6 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     connect( battles, SIGNAL( sendInput( QString ) ),
              lobbyTabs, SLOT( receiveInput( QString ) ) );
 
-
     //New group action in users
     connect( users, SIGNAL(openGroupsDialog()),
              userGroupsDialog, SLOT(show()));
@@ -211,6 +207,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     connect( battleListLineEdit, SIGNAL( textChanged( QString ) ),
              this, SLOT( setColorInducatorBattles( QString ) ) );
     battleListLineEdit->setText(settings->value("battleListFilterString").toString());
+    userListLineEdit->setText(settings->value("userListFilterString").toString());
     // tray icon stuff
     connect( trayIcon, SIGNAL( activated( QSystemTrayIcon::ActivationReason ) ),
              this, SLOT( toggleShowHideMainWindow( QSystemTrayIcon::ActivationReason ) ) );
@@ -247,6 +244,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
 
 MainWindow::~MainWindow() {
     settings->setValue("battleListFilterString", battleListLineEdit->text());
+    settings->setValue("userListFilterString", userListLineEdit->text());
     serverContextState->forceDisconnect();
     //delete statusTracker;
     delete connectionWidget;
