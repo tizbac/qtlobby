@@ -236,7 +236,7 @@
      <item row="0" column="0" colspan="4">
       <widget class="Battles" name="battles">
        <property name="contextMenuPolicy">
-        <enum>Qt::NoContextMenu</enum>
+        <enum>Qt::CustomContextMenu</enum>
        </property>
        <property name="alternatingRowColors">
         <bool>true</bool>

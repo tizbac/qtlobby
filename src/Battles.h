@@ -48,6 +48,7 @@ signals:
     void addStartRect(int ally, QRect r);
     void removeStartRect(int ally);
     void statsChange(int battles);
+    void sendInput(QString input);
 
 public slots:
     void setRegExp( QString regExp );
@@ -73,6 +74,9 @@ protected:
     GamePasswordWidget* gamePasswordWidget;
     QSettings* settings;
     int battleCount;
+    QMenu* m_menu;
+    QAction* openPrivateChannelAction;
+    QAction* joinBattleAction;
 public:
     BattleManager* battleManager;
 };

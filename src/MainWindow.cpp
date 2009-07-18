@@ -149,6 +149,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     // lobbyTabs to open private channel, when requested in user list
     connect( users, SIGNAL( sendInput( QString ) ),
              lobbyTabs, SLOT( receiveInput( QString ) ) );
+    connect( battles, SIGNAL( sendInput( QString ) ),
+             lobbyTabs, SLOT( receiveInput( QString ) ) );
 
 
     //New group action in users
@@ -250,7 +252,7 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::newUserTextInput() {
-    //allow at most one leading space and now trailing spaces
+    //allow at most one leading space and no trailing spaces
     QString input = inputLineEdit->text().trimmed();
     if ( input.size() == 0 ) {
         inputLineEdit->clear();

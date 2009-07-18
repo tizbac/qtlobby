@@ -34,6 +34,12 @@ Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
     setColumnWidth( 6, 100 );
     setColumnWidth( 7, 60 );
 
+    m_menu = new QMenu();
+    openPrivateChannelAction = new QAction("Private Chat to Host", this);
+    m_menu->addAction(openPrivateChannelAction);
+    joinBattleAction = new QAction("Join Battle", this);
+    m_menu->addAction(joinBattleAction);
+
     connect( this, SIGNAL( customContextMenuRequested( const QPoint & ) ),
              this, SLOT( customContextMenuRequested( const QPoint & ) ) );
     connect( this, SIGNAL( doubleClicked( const QModelIndex & ) ),
@@ -205,25 +211,20 @@ void Battles::joinBattleCommand( unsigned int id, QString password ) {
 }
 
 void Battles::customContextMenuRequested( const QPoint & point ) {
-    // here you can either use data() to get the User object which is easy and might be ok
-    // the other way would be to query everything via the model. to keep it simple especially
-    // since we don't own the lobby server communiation protocol i would recommend to use
-    // the User object directly
+    if ( selectedIndexes().size() == 0 ) return;
+    QModelIndex index = selectedIndexes().first();
+    if ( !index.isValid() ) return;
 
-    // maybe we need this?! ;-) (js)
-    //   if ( !selectionModel->hasSelection() )
-    //     return;
-    QModelIndex index = battleManager->selectionModel()->currentIndex();
-
-    QMenu menu( "contextMenu", this );
-    // starting private chat to the battle host in most cases makes no sense
-    // because most hosts are autohosts ...
-    //menu.addAction( "start private chat", this, SLOT( unsetSlot() ) );
-    //menu.addSeparator();
-    //menu.addAction( "being funny" );
-
-    menu.exec( QCursor::pos() );
-    mapToGlobal( point );
+    Battle b = battleManager->model()->data(
+        battleManager->proxyModel()->mapToSource( index ), Qt::UserRole ).value<Battle>();
+    QAction *action = m_menu->exec( this->viewport()->mapToGlobal( point ) );
+    if ( action ) {
+        if ( action == openPrivateChannelAction ) {
+            emit sendInput( b.founder.prepend( "/query " ) );
+        } else if ( action == joinBattleAction ) {
+            emit doubleClicked( index );
+        }
+    }
 }
 
 void Battles::setUsers( Users* users ) {
