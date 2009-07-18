@@ -11,7 +11,6 @@
 //
 #include "ConnectionWidget.h"
 
-
 ConnectionWidget::ConnectionWidget( ServerContextState* serverContextState,
                                     QWidget *parent ) : QDialog( parent ) {
     setupUi( this );
@@ -36,18 +35,13 @@ ConnectionWidget::ConnectionWidget( ServerContextState* serverContextState,
     connectionLogTextDocument->setMaximumBlockCount( 500 );
     connectionLogTextBrowser->setDocument( connectionLogTextDocument );
 
-
-    if(settings->value("IAmRetard", 0).toBool())
-    {
-        complexloginform->hide();
-        simpleloginform->show();
-    } else {
-        complexloginform->show();
-        simpleloginform->hide();
-    }
+    bool showSimple = settings->value("simpleloginform", 0).toBool();
+    complexloginform->setVisible(!showSimple);
+    simpleloginform->setVisible(showSimple);
+    simpleDetailedSwitch->setChecked(showSimple);
 
     /* backend connections for network connectivity */
-    connect(retardButton, SIGNAL(clicked()), this, SLOT(simpleViewChanged()));
+    connect(simpleDetailedSwitch, SIGNAL(clicked()), this, SLOT(simpleViewChanged()));
     connect(simpleLoginButton, SIGNAL(clicked()), this, SLOT(establishSimpleConnection()));
 
     connect( loginButton, SIGNAL( clicked() ),
@@ -152,23 +146,20 @@ void ConnectionWidget::establishConnection() {
         // //qDebug("Connecting... Remember password");
     }
 
-
     emit emitConfiguration( url );
     emit establishConnection_();
     emit usernameChanged(url.userName());
 }
 
-void ConnectionWidget::simpleViewChanged()
-{
-    settings->setValue( "IAmRetard", true);
-    simpleloginform->show();
-    complexloginform->hide();
-
+void ConnectionWidget::simpleViewChanged() {
+    bool showSimple = !settings->value("simpleloginform", 0).toBool();
+    settings->setValue( "simpleloginform", showSimple);
+    simpleloginform->setVisible(showSimple);
+    complexloginform->setVisible(!showSimple);
 }
 
 /* simple login for lulz */
-void ConnectionWidget::establishSimpleConnection()
-{
+void ConnectionWidget::establishSimpleConnection() {
     QUrl url;
     url.setHost( "taspring.clan-sy.com" );
     url.setPort( 8200 );
@@ -199,9 +190,7 @@ void ConnectionWidget::logWrite( QString l ) {
     //}
 }
 
-void ConnectionWidget::modifyServerProfile( signed int index, QUrl url )
-{
-
+void ConnectionWidget::modifyServerProfile( signed int index, QUrl url ) {
     if ( index == -1 ) {
         //qDebug() << "not modifying server profile";
         return ;
@@ -214,8 +203,7 @@ void ConnectionWidget::modifyServerProfile( signed int index, QUrl url )
 }
 
 // once the new profile wizzard is working, we can remove this code (js)
-void ConnectionWidget::addDefaultServers()
-{
+void ConnectionWidget::addDefaultServers() {
     QList<QVariant> list = settings->value( "ServerProfiles" ).toList();
     if ( list.size() > 0 )
         return;
@@ -263,8 +251,7 @@ void ConnectionWidget::saveModifiedProfile() {
 // this function handles the change of combobox entries which happen
 // when a profile gets modified or deleted. it will also select the
 // previously selected 'server profile' in both 'login' and 'server' tab
-void ConnectionWidget::updateComboBoxes()
-{
+void ConnectionWidget::updateComboBoxes() {
     //qDebug() << "Update comboboxes";
     QList<QVariant> list = settings->value( "ServerProfiles" ).toList();
 
@@ -299,8 +286,7 @@ void ConnectionWidget::updateComboBoxes()
     profileComboBox->setCurrentIndex( index );
 }
 
-void ConnectionWidget::createNewProfile()
-{
+void ConnectionWidget::createNewProfile() {
     //qDebug()<<"New Server Profile";
     QList<QVariant> list = settings->value( "ServerProfiles" ).toList();
 
@@ -363,8 +349,7 @@ void ConnectionWidget::connectionStatusChanged( ConnectionState state ) {
     }
 }
 
-void ConnectionWidget::lockInterface()
-{
+void ConnectionWidget::lockInterface() {
     profileComboBox->setEnabled( false );
     passwordLineEdit->setEnabled( false );
     //autoLoginCheckBox->setEnabled(false);
@@ -377,8 +362,7 @@ void ConnectionWidget::lockInterface()
     saveProfileButton->setEnabled( false );
 }
 
-void ConnectionWidget::unlockInterface()
-{
+void ConnectionWidget::unlockInterface() {
     profileComboBox->setEnabled( true );
     passwordLineEdit->setEnabled( true );
     autoLoginCheckBox->setEnabled(true);
@@ -391,8 +375,7 @@ void ConnectionWidget::unlockInterface()
     saveProfileButton->setEnabled( true );
 }
 
-void ConnectionWidget::unlockRenameAndChangePassword()
-{
+void ConnectionWidget::unlockRenameAndChangePassword() {
     // new username
     newUsernameLabel->setEnabled( true );
     newUsernameLineEdit->setEnabled( true );
@@ -407,8 +390,7 @@ void ConnectionWidget::unlockRenameAndChangePassword()
     changePasswordButton->setEnabled( true );
 }
 
-void ConnectionWidget::lockRenameAndChangePassword()
-{
+void ConnectionWidget::lockRenameAndChangePassword() {
     // new username
     newUsernameLabel->setEnabled( false );
     newUsernameLineEdit->setEnabled( false );
@@ -425,7 +407,7 @@ void ConnectionWidget::lockRenameAndChangePassword()
     changePasswordButton->setEnabled( false );
 }
 
-void ConnectionWidget::renameLoginName(){
+void ConnectionWidget::renameLoginName() {
     QString newUsername = newUsernameLineEdit->text();
 
     if ( newUsername == "" )
@@ -434,20 +416,17 @@ void ConnectionWidget::renameLoginName(){
     emit usernameChanged(newUsername);
 }
 
-void ConnectionWidget::renameLoginNameFeedbackSuccess( QString newName )
-{
+void ConnectionWidget::renameLoginNameFeedbackSuccess( QString newName ) {
     QString renameString = QString( "Please change your new name to %1 and reconnect to the server." )
                            .arg( newName );
     QMessageBox::information( this, "Rename success", renameString );
 }
 
-void ConnectionWidget::renameLoginNameFeedbackFailure( QString failureMsg )
-{
+void ConnectionWidget::renameLoginNameFeedbackFailure( QString failureMsg ) {
     QMessageBox::critical( this, "Rename failure", failureMsg );
 }
 
-void ConnectionWidget::changePassword()
-{
+void ConnectionWidget::changePassword() {
 
     QString oldPassword = oldPasswordLineEdit->text();
     QString newPassword = newPasswordLineEdit->text();
@@ -469,13 +448,12 @@ void ConnectionWidget::changePasswordFailure( QString pwString ) {
     QMessageBox::critical( this, "Password change error", pwString );
 }
 
-void ConnectionWidget::toggleRememberPassword()
-{
+void ConnectionWidget::toggleRememberPassword() {
     //qDebug() << "set rememberpasswd: "<< rememberPassCheckBox->isChecked();
     settings->setValue( "rememberpasswd", rememberPassCheckBox->isChecked() );
 }
 
-void ConnectionWidget::toggleAutoLogin(){
+void ConnectionWidget::toggleAutoLogin() {
     //qDebug() << "set autologin: "<<  autoLoginCheckBox->isChecked();
     settings->setValue( "autologin", autoLoginCheckBox->isChecked() );
 }
@@ -493,8 +471,7 @@ void ConnectionWidget::show_if_wanted() {
     } else show();
 }
 
-void ConnectionWidget::updateCountdown()
-{
+void ConnectionWidget::updateCountdown() {
     if(countdownDialog->wasCanceled()){
         //qDebug()<<"CANGEL MAN CANGLE";
         countdownDialog->cancel();
@@ -510,9 +487,8 @@ void ConnectionWidget::updateCountdown()
     }
 }
 
-void ConnectionWidget::onLogin()
-{
-    if(connected){
+void ConnectionWidget::onLogin() {
+    if(connected) {
         countdown = 10;
         serverContextState->forceDisconnect();
         countdownTimer = new QTimer(this);
