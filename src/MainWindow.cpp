@@ -210,7 +210,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
              this, SLOT( setColorInducatorUsers( QString ) ) );
     connect( battleListLineEdit, SIGNAL( textChanged( QString ) ),
              this, SLOT( setColorInducatorBattles( QString ) ) );
-
+    battleListLineEdit->setText(settings->value("battleListFilterString").toString());
     // tray icon stuff
     connect( trayIcon, SIGNAL( activated( QSystemTrayIcon::ActivationReason ) ),
              this, SLOT( toggleShowHideMainWindow( QSystemTrayIcon::ActivationReason ) ) );
@@ -246,6 +246,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
 }
 
 MainWindow::~MainWindow() {
+    settings->setValue("battleListFilterString", battleListLineEdit->text());
     serverContextState->forceDisconnect();
     //delete statusTracker;
     delete connectionWidget;
