@@ -39,7 +39,8 @@ void InputLine::keyPressEvent( QKeyEvent * event ) {
         }
         QLineEdit::keyPressEvent( event );
         return;
-    } else if ( event->key() == Qt::Key_Return ) {
+    } else if ( event->key() == Qt::Key_Return
+             || event->key() == Qt::Key_Enter ) {
         history[0] = text();
         returnPressed();
         historyIndex = 0;
