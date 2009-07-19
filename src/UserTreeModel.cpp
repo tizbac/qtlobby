@@ -119,9 +119,15 @@ bool UserTreeModel::setData( const QModelIndex index, QVariant v, int /*role*/ )
 }
 
 QVariant UserTreeModel::headerData( int col, Qt::Orientation, int role ) const {
-    if ( role == Qt::DisplayRole )
-        if ( col == 3 )
-            return "Player name";
+    if ( role == Qt::DisplayRole ) {
+        switch ( col ) {
+            case 0: return tr("S");
+            case 1: return tr("L");
+            case 2: return tr("R");
+            case 3: return tr("Player Name");
+            default: break;
+        }
+    }
     if ( role == Qt::ToolTipRole )
         switch ( col ) {
     case 0:
