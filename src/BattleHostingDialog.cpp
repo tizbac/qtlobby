@@ -29,7 +29,7 @@ void BattleHostingDialog::changeEvent(QEvent *e) {
 
 void BattleHostingDialog::on_buttonBox_accepted() {
     if(m_battleHost) {
-        QMessageBox::critical(this, "Error", "You have a battle running!<br/>Close it first!");
+        QMessageBox::critical(this, "Error", "You have a battle running!\nClose it first!");
         return;
     }
     m_battleHost = new BattleHost(m_currentUsername, this);
@@ -52,13 +52,14 @@ void BattleHostingDialog::on_buttonBox_accepted() {
              m_assigner, SLOT( receiveMessage(QString)));
     connect( m_battleHost, SIGNAL(hosted(int)),
              m_tabs, SLOT(onBattleHosted(int)));
+    connect( m_battleHost, SIGNAL(closed()),
+             this, SLOT(onClosed()));
     m_battleHost->start();
     accept();
 }
 
 void BattleHostingDialog::onClosed() {
-    m_battleHost->wait();
-    delete m_battleHost;
+    m_battleHost->deleteLater();
     m_battleHost = 0;
 }
 

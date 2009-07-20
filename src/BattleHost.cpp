@@ -55,7 +55,6 @@ void BattleHost::run() {
               .arg(m_map + "\t" + m_title + "\t" + m_mod)
               );
     emit sendCommand(c);
-    qDebug() << "BattleHost started";
     exec();
 }
 
@@ -114,6 +113,12 @@ void BattleHost::receiveCommand( Command command ) {
         QString cmd = command.attributes.join(" ");
         if(cmd.startsWith("!")) {
             emit chatCommand(cmd.right(cmd.length() - 1), user);
+        }
+    } else if ( command.name == "BATTLECLOSED" ) {
+        int id = command.attributes[0].toInt();
+        if(id == m_id) {
+            emit closed();
+            quit();
         }
     }
 }

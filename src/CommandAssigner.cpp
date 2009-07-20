@@ -54,7 +54,8 @@ void CommandAssigner::receiveMessage( QString message ) {
         emit userCommand( command );
     }
     /*Battle host*/
-    QString battleHostCommands = "OPENBATTLE,OPENBATTLEFAILED,SAIDBATTLE,SAIDPRIVATE,JOINEDBATTLE,LEFTBATTLE";
+    QString battleHostCommands = "OPENBATTLE,OPENBATTLEFAILED,SAIDBATTLE,SAIDPRIVATE,"
+                                 "JOINEDBATTLE,LEFTBATTLE,BATTLECLOSED";
     if ( battleHostCommands.split( "," ).contains( command.name, Qt::CaseInsensitive ) ) {
         emit battleHostCommand( command );
     }
