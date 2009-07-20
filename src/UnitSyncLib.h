@@ -103,6 +103,8 @@ public:
     QLibrary* unitsynclib;
     bool setCurrentMod(QString modname);
     QString getSpringVersion();
+    QStringList getModNames();
+    QStringList getMapNames();
     int getModOptionCount();
     OptionType getOptionType(int optIndex);
     QString getOptionName(int optIndex);

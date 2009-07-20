@@ -364,8 +364,8 @@ void Users::invalidateModel() {
     QList<UserManager*> managers;
     managers << infoChannelUserManager;
     managers << channelUserManagerMap.values();
-    //FIXME was that intended to be battleIdUserManagerMap.values() ?
-    //managers << channelUserManagerMap.values();
+    //fixed (ko)
+    managers << battleIdUserManagerMap.values();
     for (int i = 0; i < managers.size(); i++) {
         managers.at(i)->model()->onGroupChanged();
     }
@@ -397,4 +397,8 @@ void Users::wipeModels() {
     foreach( UserManager* um, battleIdUserManagerMap.values() )
         um->model()->clear();
     infoChannelUserManager->model()->clear();
+}
+
+QString Users::getCurrentUsername() {
+    return url.userName();
 }

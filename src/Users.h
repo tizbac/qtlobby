@@ -44,6 +44,7 @@ public:
     UserTreeModel* getUserModel(int battleId);
     int usersCountInCurrentChannel();
     void wipeModels();
+    QString getCurrentUsername();
 signals:
     void sendCommand( Command command );
     void sendInput( QString input );

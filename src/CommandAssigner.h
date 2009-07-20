@@ -34,6 +34,7 @@ signals:
     void lobbyTabCommand( Command command );
     void userCommand( Command command );
     void battleCommand( Command command );
+    void battleHostCommand( Command );
 public slots:
     void receiveMessage( QString message );
     void sendCommand( Command command );

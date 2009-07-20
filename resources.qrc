@@ -327,5 +327,6 @@
         <file>icons/upsel_down.xpm</file>
         <file>icons/userchat.xpm</file>
         <file>icons/userlist.png</file>
+        <file>src/sqads.js</file>
     </qresource>
 </RCC>

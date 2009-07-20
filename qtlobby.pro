@@ -11,7 +11,8 @@ DESTDIR_TARGET = qtlobby
 SRCMOC = debug
 QMAKE_CLEAN = debug/*
 DEPENDPATH += .
-INCLUDEPATH += .
+INCLUDEPATH += . \
+    src/sqads
 RESOURCES = resources.qrc
 UI_HEADERS_DIR = src
 DEFINES += 'SVN_REV=\\"$$system(svnversion -n .)\\"'
@@ -80,7 +81,10 @@ HEADERS += src/MainWindow.h \
     src/UserGroup.h \
     src/UserGroupsDialog.h \
     src/glextensions.h \
-    src/ScriptingDialog.h
+    src/ScriptingDialog.h \
+    src/BattleHost.h \
+    src/sqads/sqadsprototypes.h \
+    src/BattleHostingDialog.h
 SOURCES += src/main.cpp \
     src/MainWindow.cpp \
     src/ServerContextState.cpp \
@@ -133,12 +137,16 @@ SOURCES += src/main.cpp \
     src/UserGroup.cpp \
     src/UserGroupsDialog.cpp \
     src/glextensions.cpp \
-    src/ScriptingDialog.cpp
+    src/ScriptingDialog.cpp \
+    src/BattleHost.cpp \
+    src/sqads/sqadsprototypes.cpp \
+    src/BattleHostingDialog.cpp
 QT += gui \
     network \
     opengl \
     xml \
-    script
+    script \
+    scripttools
 FORMS += ui/mainWidget.ui \
     ui/connectionWidget.ui \
     ui/mapSelectorWidget.ui \
@@ -154,10 +162,12 @@ FORMS += ui/mainWidget.ui \
     ui/GLProgressDialog.ui \
     ui/LoginDialog.ui \
     ui/UserGroupsDialog.ui \
-    ui/ScriptingDialog.ui
+    ui/ScriptingDialog.ui \
+    ui/BattleHostingDialog.ui
 DISTFILES += doc/ProtocolDescription.xml \
     TODO \
     doc/xml2html.xsl \
     doc/z
 win32:LIBS += QScintilla2.lib
 unix:LIBS += -lqscintilla2
+OTHER_FILES += src/sqads.js

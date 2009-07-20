@@ -41,6 +41,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     userGroupsDialog    = new UserGroupsDialog();
     scriptingDialog     = new ScriptingDialog(&scriptingEngine, this);
     scriptingDialog->setWindowFlags(Qt::Window);
+    battleHostingDialog = new BattleHostingDialog(commandAssigner, lobbyTabs, this);
+    battleHostingDialog->setWindowFlags(Qt::Window);
 
 
     scriptingEngine.globalObject().setProperty("battles", scriptingEngine.newQObject(battles));
@@ -471,6 +473,9 @@ void MainWindow::connectionStatusChanged(ConnectionState state) {
         break;
     case AUTHENTICATED:
         statusBar()->showMessage("Authenticated");
+        BattleHost* h = new BattleHost(users->getCurrentUsername(), this);
+        h->setHostingParams(0, 0, "*", 1234, 5, 0, "DeltaSiegeDry.smf", "Balanced Annihilation V6.95", "Testing battleroom");
+        h->start();
         break;
     }
 }
@@ -479,4 +484,8 @@ void MainWindow::onCurrentTabChanged() {
     usersInCurrentChannel->setText(
             "Users: " + QString::number(users->usersCountInCurrentChannel())
             );
+}
+
+void MainWindow::on_hostPushButton_clicked() {
+    battleHostingDialog->show();
 }

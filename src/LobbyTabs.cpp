@@ -91,8 +91,8 @@ void LobbyTabs::connectionStateChanged( ConnectionState connectionState ) {
         }
         if ( !qtlobbyChannelFound ) {
             if ( lobbyTabList.count() > 0 ) {
-            lobbyTabList[0]->receiveInput( "/j qtlobby" );
-        }
+                lobbyTabList[0]->receiveInput( "/j qtlobby" );
+            }
         }
     }
 }
@@ -347,3 +347,9 @@ void LobbyTabs::onMapsModsReload() {
     }
 }
 
+void LobbyTabs::onBattleHosted(int id) {
+    battleChannel = new BattleChannel( QString::number(id), battles, lobbyStackedWidget );
+    createLobbyTab( battleChannel );
+    connect( battleChannel, SIGNAL( playSample( SampleCollection ) ),
+             parent(), SLOT( playSample( SampleCollection ) ) );
+}

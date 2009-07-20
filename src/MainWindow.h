@@ -36,6 +36,8 @@
 #include "StylesheetDialog.h"
 #include "UserGroupsDialog.h"
 #include "ScriptingDialog.h"
+#include "BattleHost.h"
+#include "BattleHostingDialog.h"
 
 class MainWindow : public QMainWindow, private Ui::MainWindow {
     Q_OBJECT
@@ -61,6 +63,7 @@ private:
     StylesheetDialog* stylesheetDialog;
     UserGroupsDialog* userGroupsDialog;
     ScriptingDialog* scriptingDialog;
+    BattleHostingDialog *battleHostingDialog;
 
     QTabBar* tabBar;
     QLabel* battlesOnline;
@@ -88,6 +91,7 @@ protected:
     void hideEvent(QHideEvent * event);
     void showEvent(QShowEvent * event);
 private slots:
+    void on_hostPushButton_clicked();
     void on_actionScripting_triggered();
     void about();
     void newUserTextInput();

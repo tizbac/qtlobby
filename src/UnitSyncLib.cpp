@@ -493,3 +493,22 @@ void UnitSyncLib::reboot() {
     }
 }
 
+QStringList UnitSyncLib::getModNames() {
+    QStringList ret;
+    int modcount = m_GetPrimaryModCount();
+    for ( int i = 0; i < modcount; ++i ) {
+        ret << m_GetPrimaryModName(i);
+    }
+    return ret;
+}
+
+QStringList UnitSyncLib::getMapNames() {
+    QStringList ret;
+    int mapcount = m_GetMapCount();
+    for ( int i = 0; i < mapcount; ++i )
+        ret << m_GetMapName( i );
+    return ret;
+}
+
+
+

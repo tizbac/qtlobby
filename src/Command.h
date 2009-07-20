@@ -13,11 +13,13 @@
 #define COMMAND_H
 #include <QString>
 #include <QStringList>
+#include <QMetaType>
+
 class Command {
 public:
     Command();
     Command( QString commandString );
-    ~Command() {};
+    ~Command() {}
     QString toQString();
 
     quint32 id;
@@ -25,5 +27,7 @@ public:
     QStringList attributes;
     bool executed;
 };
+
+Q_DECLARE_METATYPE(Command);
 
 #endif

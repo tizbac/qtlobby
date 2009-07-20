@@ -70,6 +70,7 @@ public slots:
     void onTabMoved( int from, int to );
     void onEnableJoinLeaveDefault(bool b);
     void onMapsModsReload();
+    void onBattleHosted(int id);
 
 private:
     //last tab index

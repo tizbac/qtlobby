@@ -48,12 +48,16 @@ void CommandAssigner::receiveMessage( QString message ) {
     /** channel and chat related */
     QString userCommands = "ADDUSER,REMOVEUSER,CLIENTS,CLIENTBATTLESTATUS,JOINBATTLE,"
         "JOINEDBATTLE,LEFTBATTLE,FORCELEAVECHANNEL,BATTLEOPENED,BATTLECLOSED,"
-        "FORCEQUITBATTLE,CLIENTSTATUS,SAID,JOINED,JOIN,LEFT";
+        "FORCEQUITBATTLE,CLIENTSTATUS,SAID,JOINED,JOIN,LEFT,OPENBATTLE";
     // not needed: CHANNELTOPIC,JOIN,SAIDEX,SAIDPRIVATE,
     if ( userCommands.split( "," ).contains( command.name, Qt::CaseInsensitive ) ) {
         emit userCommand( command );
     }
-
+    /*Battle host*/
+    QString battleHostCommands = "OPENBATTLE,OPENBATTLEFAILED,SAIDBATTLE,SAIDPRIVATE,JOINEDBATTLE,LEFTBATTLE";
+    if ( battleHostCommands.split( "," ).contains( command.name, Qt::CaseInsensitive ) ) {
+        emit battleHostCommand( command );
+    }
     /* server context */
     /*misc*/
     emit lobbyTabCommand( command );

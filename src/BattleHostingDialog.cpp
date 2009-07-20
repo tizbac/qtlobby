@@ -1,0 +1,75 @@
+#include "src/BattleHostingDialog.h"
+#include "ui_BattleHostingDialog.h"
+#include "UnitSyncLib.h"
+
+BattleHostingDialog::BattleHostingDialog(CommandAssigner* assigner, LobbyTabs* lobbyTabs, QWidget *parent) :
+        QDialog(parent),
+        m_ui(new Ui::BattleHostingDialog) {
+    m_ui->setupUi(this);
+    m_assigner = assigner;
+    m_tabs = lobbyTabs;
+    connect(UnitSyncLib::getInstance(), SIGNAL(rebooted()), SLOT(onReboot()));
+    onReboot();
+}
+
+BattleHostingDialog::~BattleHostingDialog() {
+    delete m_ui;
+}
+
+void BattleHostingDialog::changeEvent(QEvent *e) {
+    QDialog::changeEvent(e);
+    switch (e->type()) {
+    case QEvent::LanguageChange:
+        m_ui->retranslateUi(this);
+        break;
+    default:
+        break;
+    }
+}
+
+void BattleHostingDialog::on_buttonBox_accepted() {
+    if(m_battleHost) {
+        QMessageBox::critical(this, "Error", "You have a battle running!<br/>Close it first!");
+        return;
+    }
+    m_battleHost = new BattleHost(m_currentUsername, this);
+    QString passwd = m_ui->passwordLineEdit->text();
+    m_battleHost->setHostingParams(0,
+                                   0,
+                                   passwd.isEmpty() ? "*" : passwd,
+                                   m_ui->portSpinBox->value(),
+                                   m_ui->maxPlayersSpinBox->value(),
+                                   m_ui->rankComboBox->currentIndex(),
+                                   m_ui->mapComboBox->currentText(),
+                                   m_ui->modComboBox->currentText(),
+                                   m_ui->descriptionLineEdit->text()
+                                   );
+    connect( m_assigner, SIGNAL( battleHostCommand( Command ) ),
+             m_battleHost, SLOT( receiveCommand( Command ) ) );
+    connect( m_battleHost, SIGNAL( sendCommand( Command ) ),
+             m_assigner, SLOT( sendCommand( Command ) ) );
+    connect( m_battleHost, SIGNAL(sendFakeMessage(QString)),
+             m_assigner, SLOT( receiveMessage(QString)));
+    connect( m_battleHost, SIGNAL(hosted(int)),
+             m_tabs, SLOT(onBattleHosted(int)));
+    m_battleHost->start();
+    accept();
+}
+
+void BattleHostingDialog::onClosed() {
+    m_battleHost->wait();
+    delete m_battleHost;
+    m_battleHost = 0;
+}
+
+void BattleHostingDialog::setCurrentUsername(QString username) {
+    m_currentUsername = username;
+}
+
+void BattleHostingDialog::onReboot() {
+    UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
+    m_ui->modComboBox->clear();
+    m_ui->modComboBox->addItems(unitSyncLib->getModNames());
+    m_ui->mapComboBox->clear();
+    m_ui->mapComboBox->addItems(unitSyncLib->getMapNames());
+}
