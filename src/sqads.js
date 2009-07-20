@@ -53,6 +53,11 @@ Sqads.prototype.isAdmin = function(user) {
 
 Sqads.prototype.onChatCommand = function(command, user) {
         var u = this.users.at(user);
+        //Retarded check
+        if(!u.valid) {
+            this.bh.sayBattleEx("* Developers probably forgot to set current username on BattleHost.");
+            return;
+        }
         var parts = command.split(" ");
         var found = false;
         var cmd = parts.shift();

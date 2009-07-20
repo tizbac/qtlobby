@@ -392,6 +392,7 @@ void MainWindow::showGroupsDialog() {
 
 void MainWindow::setCurrentUsername( QString username ) {
     AbstractChannel::setCurrentUsername(username);
+    battleHostingDialog->setCurrentUsername(username);
 }
 
 void MainWindow::onChangedToBattleTab() {

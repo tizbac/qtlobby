@@ -69,7 +69,7 @@ void BattleHost::receiveCommand( Command command ) {
     command.name = command.name.toUpper();
     if ( command.name == "OPENBATTLE" ) {
         m_id = command.attributes[0].toInt();
-        //For BattleHost debugging uncomment this
+        //For SQADS debugging uncomment this
         //m_debugger.standardWindow()->show();
         QFile scriptFile(":/src/sqads.js");
         scriptFile.open(QIODevice::ReadOnly);
