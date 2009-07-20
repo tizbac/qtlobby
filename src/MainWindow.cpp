@@ -473,9 +473,6 @@ void MainWindow::connectionStatusChanged(ConnectionState state) {
         break;
     case AUTHENTICATED:
         statusBar()->showMessage("Authenticated");
-        BattleHost* h = new BattleHost(users->getCurrentUsername(), this);
-        h->setHostingParams(0, 0, "*", 1234, 5, 0, "DeltaSiegeDry.smf", "Balanced Annihilation V6.95", "Testing battleroom");
-        h->start();
         break;
     }
 }
