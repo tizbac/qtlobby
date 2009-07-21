@@ -2,12 +2,13 @@
 #include "ui_BattleHostingDialog.h"
 #include "UnitSyncLib.h"
 
-BattleHostingDialog::BattleHostingDialog(CommandAssigner* assigner, LobbyTabs* lobbyTabs, QWidget *parent) :
+BattleHostingDialog::BattleHostingDialog(QProcess* spring, CommandAssigner* assigner, LobbyTabs* lobbyTabs, QWidget *parent) :
         QDialog(parent),
         m_ui(new Ui::BattleHostingDialog) {
     m_ui->setupUi(this);
     m_assigner = assigner;
     m_tabs = lobbyTabs;
+    m_spring = spring;
     connect(UnitSyncLib::getInstance(), SIGNAL(rebooted()), SLOT(onReboot()));
     onReboot();
 }
@@ -54,6 +55,8 @@ void BattleHostingDialog::on_buttonBox_accepted() {
              m_tabs, SLOT(onBattleHosted(int)));
     connect( m_battleHost, SIGNAL(closed()),
              this, SLOT(onClosed()));
+    connect(m_spring, SIGNAL(finished (int, QProcess::ExitStatus)),
+            m_battleHost, SIGNAL(stopped()));
     m_battleHost->start();
     accept();
 }

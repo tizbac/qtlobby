@@ -66,6 +66,26 @@ QString SqadsUserPrototype::getName() const {
     return u->name;
 }
 
+bool SqadsUserPrototype::isIngame() const {
+    User* u = qscriptvalue_cast<SqadsUserPtr>(thisObject()).ptr;
+    if(!u) {
+        context()->throwError("Member function called on invalid object");
+        return false;
+    }
+    return u->userState.isAway();
+}
+
+void SqadsUserPrototype::setIngame(bool b) {
+    SqadsUserPtr uptr = qscriptvalue_cast<SqadsUserPtr>(thisObject());
+    User* u = uptr.ptr;
+    if(!u) {
+        context()->throwError("Member function called on invalid object");
+        return;
+    }
+    u->userState.setIngame(b);
+    uptr.bh->broadCastMyUserStatus(u);
+}
+
 bool SqadsUserPrototype::isAway() const {
     User* u = qscriptvalue_cast<SqadsUserPtr>(thisObject()).ptr;
     if(!u) {

@@ -74,8 +74,8 @@ protected slots:
 
 protected:
     int resyncStatus();
-    void startGame( Battle b );
-    QString generateScript( Battle b );
+    void startGame( Battle b, bool host );
+    QString generateScript( Battle b, bool host );
     QString currentTabType;
     QString currentTabName;
     QString username;

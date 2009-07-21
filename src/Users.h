@@ -59,6 +59,7 @@ public slots:
     void currentTabChanged( QString name, QString lobbyTabType );
     void inv();
     void onMyBattleStateChanged( User u );
+    void onMyStateChanged( User u );
     void onReadyStateChanged( int state );
     void onSpecStateChanged( int state );
     void onSideComboBoxChanged( int index );
@@ -67,6 +68,7 @@ public slots:
     void onAllyTeamNumberChanged( int i );
     void invalidateModel();
     void connectionStateChanged(ConnectionState state);
+    void onSpringStopped();
 protected slots:
     void customContextMenuRequestedSlot( const QPoint & point );
     void doubleClickedSlot( const QModelIndex & index );

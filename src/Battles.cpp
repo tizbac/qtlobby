@@ -19,9 +19,9 @@ using namespace std;
 Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
     battleManager = new BattleManager( this );
     gamePasswordWidget = new GamePasswordWidget();
-
+    
     settings = Settings::Instance();
-
+    
     setModel( battleManager->proxyModel() );
     setSortingEnabled( true );
     sortByColumn( 0, Qt::AscendingOrder );
@@ -33,7 +33,7 @@ Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
     setColumnWidth( 5, 80 );
     setColumnWidth( 6, 100 );
     setColumnWidth( 7, 60 );
-
+    
     m_menu = new QMenu();
     openPrivateChannelAction = new QAction("Private Chat to Host", this);
     m_menu->addAction(openPrivateChannelAction);
@@ -66,7 +66,7 @@ Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
     filterWithoutFriendsAction->setDisabled(true);
     m_filterMenu->addAction(filterWithoutFriendsAction);
     m_menu->addMenu(m_filterMenu);
-
+    
     connect( this, SIGNAL( customContextMenuRequested( const QPoint & ) ),
              this, SLOT( customContextMenuRequested( const QPoint & ) ) );
     connect( this, SIGNAL( doubleClicked( const QModelIndex & ) ),
@@ -107,8 +107,9 @@ void Battles::receiveCommand( Command command ) {
             u.userState.setState(command.attributes[1].toInt());
             b.isStarted = u.userState.isIngame();
             battleManager->modBattle( b );
-            if ( users->getUser( url.userName() ).joinedBattleId == b.id && b.isStarted )
-                startGame( b );
+            if ( users->getUser( url.userName() ).joinedBattleId == b.id && b.isStarted ) {
+                startGame( b, u.name == url.userName() );
+            }
         }
     } else if ( command.name == "JOINBATTLE" ) {
     } else if ( command.name == "JOINBATTLEFAILED" ) {
@@ -255,9 +256,9 @@ void Battles::customContextMenuRequested( const QPoint & point ) {
     if ( selectedIndexes().size() == 0 ) return;
     QModelIndex index = selectedIndexes().first();
     if ( !index.isValid() ) return;
-
+    
     Battle b = battleManager->model()->data(
-        battleManager->proxyModel()->mapToSource( index ), Qt::UserRole ).value<Battle>();
+            battleManager->proxyModel()->mapToSource( index ), Qt::UserRole ).value<Battle>();
     QAction *action = m_menu->exec( this->viewport()->mapToGlobal( point ) );
     if ( action ) {
         if ( action == openPrivateChannelAction ) {
@@ -277,7 +278,7 @@ void Battles::setCurrentUsername(QString a_username) {
     username = a_username;
 }
 
-void Battles::startGame( Battle b ) {
+void Battles::startGame( Battle b, bool host ) {
     QString springDir = settings->value("spring_user_dir").toString();
     QFile scriptFile( springDir + "/script_qtlobby.txt" );
     if ( !scriptFile.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate ) ) {
@@ -285,13 +286,13 @@ void Battles::startGame( Battle b ) {
         return;
     }
     QTextStream out( &scriptFile );
-    out << generateScript( b );
+    out << generateScript( b, host );
     scriptFile.close();
     qDebug() << "Script file " << springDir + "/script_qtlobby.txt" << " written";
     emit start();
 }
 
-QString Battles::generateScript( Battle b ) {
+QString Battles::generateScript( Battle b, bool host ) {
     /** begin with refactored code from springlobby */
     //get and sort the battle users
     QList<User> battleUsersUnsorted = users->getUserList( b.id );
@@ -300,7 +301,7 @@ QString Battles::generateScript( Battle b ) {
     QList<User> battleUsers;
     foreach( User u, battleUsersUnsorted )
         battleUsers.prepend( u );
-
+    
     /// process ordered users, convert teams and allies
     QMap<int, int> teamConv, allyConv, allyReverseConv;
     int  numTeams = 0, numAllies = 0, myPlayerNum = -1;
@@ -317,7 +318,7 @@ QString Battles::generateScript( Battle b ) {
             allyReverseConv[i] = u.battleState.getAllyTeamNo();
         }
     }
-
+    
     /// sort and process bots now
     //   for ( std::list<BattleBot*>::size_type i = 0; i < battle.GetNumBots(); i++ ) {
     //     UserOrder tmp;
@@ -337,7 +338,7 @@ QString Battles::generateScript( Battle b ) {
     //     }
     //   }
     int numBots = 0; //ordered_bots.size();
-
+    
     // first the general game options
     QMap<QString, QString> gameOptions;
     gameOptions["Mapname"]  = b.mapName;
@@ -349,13 +350,13 @@ QString Battles::generateScript( Battle b ) {
     }
     gameOptions["HostPort"]     = QString::number( b.port );
     gameOptions["HostIP"]       = b.founder == url.userName() ? QString( "localhost" ) : b.ip;
-    gameOptions["IsHost"]       = "0"; //need to change when hosting will be done!
+    gameOptions["IsHost"]       = host ? "1" : "0";
     gameOptions["MyPlayerNum"]  = QString::number( myPlayerNum );
     gameOptions["MyPlayerName"] = username;
     gameOptions["NumPlayers"]   = QString::number( b.playerCount );
     gameOptions["NumTeams"]     = QString::number( numTeams + numBots );
     gameOptions["NumAllyTeams"] = QString::number( numAllies );
-
+    
     //fill now all sections with options
     QMap<QString, QMap<QString, QString> > sectionsOptionMap;
     QMap<QString, QString> options;
@@ -367,14 +368,14 @@ QString Battles::generateScript( Battle b ) {
         options["Team"]        = QString::number( teamConv[battleUsers[i].battleState.getTeamNo()] );
         sectionsOptionMap[QString( "PLAYER%1" ).arg( i )] = options;
     }
-
+    
     // first user in team is the leader, though he's the last one who will overwrite the value for the team
     QMap<int, int> teamNumberLeaderUserNumberMap;
     for ( int j = battleUsers.size() - 1; j >= 0; --j ) {
         teamNumberLeaderUserNumberMap[battleUsers[j].battleState.getTeamNo()] = j;
         qDebug() << battleUsers[j].battleState.getTeamNo() << " " << j;
     }
-
+    
     for ( int i = 0; i < numTeams; i++ ) {
         options.clear();
         int teamLeader = teamNumberLeaderUserNumberMap.values()[i];
@@ -387,7 +388,7 @@ QString Battles::generateScript( Battle b ) {
         options["Handicap"] = QString::number( u.battleState.getHandicap() );
         sectionsOptionMap[QString( "TEAM%1" ).arg( i )] = options;
     }
-
+    
     //   for ( int i = 0; i < numBots; i++ ) {
     //     options.clear();
     //     int teamLeader = teamNumberLeaderUserNumberMap[i];
@@ -400,7 +401,7 @@ QString Battles::generateScript( Battle b ) {
     //     options["AIDLL"] = "bot.aidll";
     //     sectionsOptionMap[QString( "TEAM%1" ).arg( i + numTeams )] = options;
     //   }
-
+    
     int startpostype = b.options["StartPosType"].toFloat();
     for ( int i = 0; i < numAllies; i++ ) {
         int numInAlly = 0;
@@ -427,7 +428,7 @@ QString Battles::generateScript( Battle b ) {
     options.clear();
     sectionsOptionMap["MAPOPTIONS"] = options;
     sectionsOptionMap["MODOPTIONS"] = options;
-
+    
     // the scripttags like GAME/MODOPTIONS/...
     foreach( QString tag, b.options.keys() ) {
         options.clear();
@@ -440,7 +441,7 @@ QString Battles::generateScript( Battle b ) {
             }
         }
     }
-
+    
     // generate the script from the options
     QString ret; //!< the returned script file string
     QString sectionPattern = "%1[%2]\n%1{\n%3%1}\n"; // %1 "\t" or "", %2 name, %3 values
@@ -463,7 +464,7 @@ QString Battles::generateScript( Battle b ) {
  */
 int Battles::resyncStatus() {
     int battleId = users->getUser( url.userName() ).joinedBattleId;
-
+    
     if ( battleId < 0 ) {
         // set battle status to unsync
         // popup messagebox with error, that this should not happen
@@ -472,14 +473,14 @@ int Battles::resyncStatus() {
     }
     Battle b = battleManager->getBattle( battleId );
     QString modName = b.modName;
-
+    
     if ( UnitSyncLib::getInstance()->mapChecksum( b.mapName ) != ( unsigned int ) b.mapHash )
         return 2; // 2 = not sync
-
+    
     //qDebug() << "flux: modindex is: " << UnitSyncLib::getInstance()->modIndex(modName);
     if (UnitSyncLib::getInstance()->modIndex(modName) < 0)
         return 2; // 2 = not sync
-
+    
     return 1; // 1 = sync is 'in sync'
 }
 

@@ -34,6 +34,7 @@ public slots:
 class SqadsUserPrototype : public QObject, protected QScriptable {
     Q_OBJECT
     Q_PROPERTY(QString name READ getName)
+    Q_PROPERTY(bool ingame READ isIngame WRITE setIngame)
     Q_PROPERTY(bool away READ isAway)
     Q_PROPERTY(quint8 rank READ getRank)
     Q_PROPERTY(bool moderator READ isModerator)
@@ -50,6 +51,8 @@ class SqadsUserPrototype : public QObject, protected QScriptable {
 public:
     SqadsUserPrototype(QObject *parent = 0);
     QString getName() const;
+    bool isIngame() const;
+    void setIngame(bool b);
     bool isAway() const;
     quint8 getRank() const;
     bool isModerator();

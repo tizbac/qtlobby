@@ -120,6 +120,14 @@ void BattleHost::receiveCommand( Command command ) {
             emit closed();
             quit();
         }
+    } else if ( command.name == "CLIENTBATTLESTATUS" ) {
+        QString user = command.attributes.takeFirst();
+        for(int i = 0; i < m_users.size(); i++) {
+            if(m_users[i].name == user) {
+                m_users[i].battleState.setState(command.attributes.takeFirst().toInt());
+                emit clientStatusChanged(user);
+            }
+        }
     }
 }
 
@@ -197,3 +205,7 @@ void BattleHost::forceSpectator(User* u) {
     emit sendCommand(Command("FORCESPECTATORMODE " + u->name));
 }
 
+
+void BattleHost::broadCastMyUserStatus(User* u) {
+    emit sendCommand(Command(QString("MYSTATUS %1").arg(u->userState.getState())));
+}

@@ -24,6 +24,7 @@ class BattleHost : public QThread {
     void forceAllyTeamNo(User* u, quint8 no);
     void forceColor(User* u, QColor c);
     void forceSpectator(User* u);
+    void broadCastMyUserStatus(User* u);
 
 signals:
     void sendCommand(Command command);
@@ -36,6 +37,8 @@ signals:
     void userJoined(User u);
     void userLeft(User u);
     void chatCommand(QString command, QString user);
+    void clientStatusChanged(QString user);
+    void stopped();
 public slots:
     void receiveCommand(Command command);
 

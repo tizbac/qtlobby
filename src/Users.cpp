@@ -322,6 +322,12 @@ void Users::onMyBattleStateChanged( User u ) {
     emit sendCommand( command );
 }
 
+void Users::onMyStateChanged( User u ) {
+    Command command( "MYSTATUS" );
+    command.attributes << QString::number( u.userState.getState() );
+    emit sendCommand( command );
+}
+
 void Users::onSideComboBoxChanged( int index ) {
     User u = infoChannelUserManager->getUser( url.userName() );
     u.battleState.setSide(index);
@@ -401,4 +407,10 @@ void Users::wipeModels() {
 
 QString Users::getCurrentUsername() {
     return url.userName();
+}
+
+void Users::onSpringStopped() {
+    User u = infoChannelUserManager->getUser( url.userName() );
+    u.userState.setIngame(false);
+    onMyStateChanged( u );
 }

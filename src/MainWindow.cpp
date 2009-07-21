@@ -41,7 +41,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     userGroupsDialog    = new UserGroupsDialog();
     scriptingDialog     = new ScriptingDialog(&scriptingEngine, this);
     scriptingDialog->setWindowFlags(Qt::Window);
-    battleHostingDialog = new BattleHostingDialog(commandAssigner, lobbyTabs, this);
+    battleHostingDialog = new BattleHostingDialog(&qpSpring, commandAssigner, lobbyTabs, this);
     battleHostingDialog->setWindowFlags(Qt::Window);
 
 
@@ -229,6 +229,9 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     connect(battles->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
             this, SLOT(onCurrentChanged(QModelIndex,QModelIndex)));
 
+    //Spring stopped signal
+    connect(&qpSpring, SIGNAL(finished (int, QProcess::ExitStatus)),
+            users, SLOT(onSpringStopped()));
     // this is the trigger for the login dialog popup
     QTimer::singleShot( 0, connectionWidget, SLOT( show_if_wanted() ) );
     //   qDebug() << timer->msec() << "ms elapsed";
@@ -348,7 +351,7 @@ void MainWindow::setColorInducatorBattles( QString regExp ) {
 
 void MainWindow::startSpring() {
     emit newTrayMessage( "spring instance started" );
-    qp.start( settings->value( "spring_executable_with_abs_path_to_it" ).toString(),
+    qpSpring.start( settings->value( "spring_executable_with_abs_path_to_it" ).toString(),
               QStringList( QString( "%1/%2" )
                            .arg( settings->value( "spring_user_dir" ).toString() )
                            .arg( "script_qtlobby.txt" ) ) );
@@ -361,7 +364,7 @@ void MainWindow::sendTrayMessage( QString message, int milliseconds ) {
 void MainWindow::startSpringSettings() {
     if (settings->value( "springsettings+" ).toString().isEmpty()) return;
     emit newTrayMessage( "spring settings dialog started" );
-    qp.start( settings->value( "springsettings+" ).toString() );
+    qpSpringSetting.start( settings->value( "springsettings+" ).toString() );
 }
 
 void MainWindow::playSample( SampleCollection sample ) {

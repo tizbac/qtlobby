@@ -44,7 +44,8 @@ class MainWindow : public QMainWindow, private Ui::MainWindow {
 public:
     MainWindow( QWidget* parent = 0 );
     ~MainWindow();
-    QProcess qp;
+    QProcess qpSpring;
+    QProcess qpSpringSetting;
 
 private:
     //the connection dialog
