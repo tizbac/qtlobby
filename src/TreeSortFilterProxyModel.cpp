@@ -16,6 +16,7 @@
 TreeSortFilterProxyModel::TreeSortFilterProxyModel( QObject* parent )
     : QSortFilterProxyModel( parent ) {
     setDynamicSortFilter(true);
+    m_filterState = 0;
 }
 
 TreeSortFilterProxyModel::~TreeSortFilterProxyModel() {}
@@ -35,7 +36,15 @@ void TreeSortFilterProxyModel::setFilterString(QString str) {
     invalidateFilter();
 }
 
+void TreeSortFilterProxyModel::setBitState( unsigned int bit, bool state ) {
+    SETBIT( m_filterState, bit, state );
+    invalidateFilter();
+}
+
 bool TreeSortFilterProxyModel::filterAcceptsRow (int source_row, const QModelIndex & source_parent) const {
+    unsigned int state = sourceModel()->data(sourceModel()->index(source_row, 0, source_parent), Qt::UserRole+2).value<unsigned int>();
+    if ( state & m_filterState ) // some filter hits a filter state in bitmask
+        return false;
     if (m_filterString.isEmpty()) return true;
     if (m_filterString == "!") return true;
     QStringList terms = m_filterString.simplified().split(" ");

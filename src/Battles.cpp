@@ -39,6 +39,33 @@ Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
     m_menu->addAction(openPrivateChannelAction);
     joinBattleAction = new QAction("Join Battle", this);
     m_menu->addAction(joinBattleAction);
+    m_filterMenu = new QMenu("Filter Battles");
+    filterPasswordedAction = new QAction("Hide battles with password", this);
+    filterPasswordedAction->setCheckable(true);
+    m_filterMenu->addAction(filterPasswordedAction);
+    filterInGameAction = new QAction("Hide running battles", this);
+    filterInGameAction->setCheckable(true);
+    m_filterMenu->addAction(filterInGameAction);
+    filterLockedAction = new QAction("Hide locked battles", this);
+    filterLockedAction->setCheckable(true);
+    m_filterMenu->addAction(filterLockedAction);
+    filterUnavailableModsAction = new QAction("Hide not installed mods", this);
+    filterUnavailableModsAction->setCheckable(true);
+    filterUnavailableModsAction->setDisabled(true);
+    m_filterMenu->addAction(filterUnavailableModsAction);
+    filterUnavailableMapsAction = new QAction("Hide not installed maps", this);
+    filterUnavailableMapsAction->setCheckable(true);
+    filterUnavailableMapsAction->setDisabled(true);
+    m_filterMenu->addAction(filterUnavailableMapsAction);
+    filterWithoutPlayersAction = new QAction("Hide battles without players", this);
+    filterWithoutPlayersAction->setCheckable(true);
+    filterWithoutPlayersAction->setDisabled(true);
+    m_filterMenu->addAction(filterWithoutPlayersAction);
+    filterWithoutFriendsAction = new QAction("Hide battles without friends", this);
+    filterWithoutFriendsAction->setCheckable(true);
+    filterWithoutFriendsAction->setDisabled(true);
+    m_filterMenu->addAction(filterWithoutFriendsAction);
+    m_menu->addMenu(m_filterMenu);
 
     connect( this, SIGNAL( customContextMenuRequested( const QPoint & ) ),
              this, SLOT( customContextMenuRequested( const QPoint & ) ) );
@@ -48,6 +75,20 @@ Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
              this, SLOT( joinBattleCommand( unsigned int, QString ) ) );
     connect( gamePasswordWidget, SIGNAL( wantJoinBattle( unsigned int, QString ) ),
              this, SLOT( joinBattleCommand( unsigned int, QString ) ) );
+    connect( filterPasswordedAction, SIGNAL( toggled( bool ) ),
+             this, SLOT( setFilterPasswordedSlot( bool ) ) );
+    connect( filterInGameAction, SIGNAL( toggled( bool ) ),
+             this, SLOT( setFilterInGameSlot( bool ) ) );
+    connect( filterLockedAction, SIGNAL( toggled( bool ) ),
+             this, SLOT( setFilterLockedSlot( bool ) ) );
+    connect( filterUnavailableModsAction, SIGNAL( toggled( bool ) ),
+             this, SLOT( setFilterUnavailableModsSlot( bool ) ) );
+    connect( filterUnavailableMapsAction, SIGNAL( toggled( bool ) ),
+             this, SLOT( setFilterUnavailableMapsSlot( bool ) ) );
+    connect( filterWithoutPlayersAction, SIGNAL( toggled( bool ) ),
+             this, SLOT( setFilterWithoutPlayersSlot( bool ) ) );
+    connect( filterWithoutFriendsAction, SIGNAL( toggled( bool ) ),
+             this, SLOT( setFilterWithoutFriendsSlot( bool ) ) );
     battleCount = 0;
 }
 
@@ -456,4 +497,33 @@ void Battles::connectionStateChanged(ConnectionState state) {
 
 void Battles::wipeModels() {
     battleManager->model()->clear();
+}
+
+/* Battle filter slots */
+void Battles::setFilterPasswordedSlot( bool state ) {
+    battleManager->proxyModel()->setBitState( 0, state );
+}
+
+void Battles::setFilterInGameSlot( bool state ) {
+    battleManager->proxyModel()->setBitState( 1, state );
+}
+
+void Battles::setFilterLockedSlot( bool state ) {
+    battleManager->proxyModel()->setBitState( 2, state );
+}
+
+void Battles::setFilterUnavailableModsSlot( bool state ) {
+    battleManager->proxyModel()->setBitState( 3, state );
+}
+
+void Battles::setFilterUnavailableMapsSlot( bool state ) {
+    battleManager->proxyModel()->setBitState( 4, state );
+}
+
+void Battles::setFilterWithoutPlayersSlot( bool state ) {
+    battleManager->proxyModel()->setBitState( 5, state );
+}
+
+void Battles::setFilterWithoutFriendsSlot( bool state ) {
+    battleManager->proxyModel()->setBitState( 6, state );
 }

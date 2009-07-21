@@ -16,9 +16,9 @@
 #include <QColor>
 #include <QDebug>
 
-#define TB(a, n) (a & (1 << (n)))
-#define SB(a, n) a |= (1 << (n))
-#define CB(a, n) a &= ~(1 << (n))
+#define TB(a, n) (a & (1 << (n))) // test bit
+#define SB(a, n) a |= (1 << (n))  // set bit
+#define CB(a, n) a &= ~(1 << (n)) // clear bit
 #define COPYBIT(s, si, d, di) if(TB(s, si)) SB(d, di); else CB(d, di);
 #define COPYBITS(s, si, d, di, n) for(int i = 0; i < n; i++) {COPYBIT(s, si+i, d, di+i);}
 #define EXTRACT(s, si, m) (s & (m << si)) >> si;

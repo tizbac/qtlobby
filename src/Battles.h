@@ -63,6 +63,14 @@ public slots:
 protected slots:
     void customContextMenuRequested( const QPoint & point );
     void doubleClicked( const QModelIndex & index );
+    /* Battle filter slots */
+    void setFilterPasswordedSlot( bool state );
+    void setFilterInGameSlot( bool state );
+    void setFilterLockedSlot( bool state );
+    void setFilterUnavailableModsSlot( bool state );
+    void setFilterUnavailableMapsSlot( bool state );
+    void setFilterWithoutPlayersSlot( bool state );
+    void setFilterWithoutFriendsSlot( bool state );
 
 protected:
     int resyncStatus();
@@ -79,6 +87,14 @@ protected:
     QMenu* m_menu;
     QAction* openPrivateChannelAction;
     QAction* joinBattleAction;
+    QMenu* m_filterMenu;
+    QAction* filterPasswordedAction;
+    QAction* filterInGameAction;
+    QAction* filterLockedAction;
+    QAction* filterUnavailableModsAction;
+    QAction* filterUnavailableMapsAction;
+    QAction* filterWithoutPlayersAction;
+    QAction* filterWithoutFriendsAction;
 public:
     BattleManager* battleManager;
 };

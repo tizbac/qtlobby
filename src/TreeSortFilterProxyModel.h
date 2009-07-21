@@ -12,6 +12,11 @@
 #ifndef TREESORTFILTERPROXYMODEL_H
 #define TREESORTFILTERPROXYMODEL_H
 
+#define TB(a, n) (a & (1 << (n))) // test bit
+#define SB(a, n) a |= (1 << (n))  // set bit to 1
+#define CB(a, n) a &= ~(1 << (n)) // clear bit
+#define SETBIT(a, n, state) if (state) SB(a, n); else CB(a, n);
+
 #include <QSortFilterProxyModel>
 #include <QMap>
 
@@ -28,12 +33,13 @@ public:
     void setColRole( int col, Qt::ItemDataRole role = Qt::DisplayRole );
     void setFilterString(QString str);
     QMap<int, Qt::ItemDataRole> colRoleMap;
+    void setBitState( unsigned int bit, bool state );
+
 protected:
     bool filterAcceptsRow (int source_row, const QModelIndex & source_parent) const;
 private:
     QString m_filterString;
-
-
+    unsigned int m_filterState;
 };
 
 #endif

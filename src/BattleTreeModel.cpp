@@ -68,6 +68,22 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
             return QString::number(b.playerCount - b.spectatorCount).rightJustified(5,'0');
         }
     }
+    if ( role == Qt::UserRole+2 ) {
+        Battle b = m_battleList[index.row()];
+        unsigned int ret = 0;
+        if( b.isPasswordProtected )
+            ret += 1;
+        if( b.isStarted )
+            ret += 2;
+        if( b.isLocked )
+            ret += 4;
+        // mod not available  +=8
+        // map not available +=16
+        if( b.playerCount == 0 )
+            ret += 32;
+        // no friends += 64
+        return ret;
+    }
     switch ( index.column() ) {
     case 0: //status
         if ( role == Qt::DecorationRole ) {
