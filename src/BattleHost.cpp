@@ -1,5 +1,6 @@
 #include "BattleHost.h"
 #include <QMainWindow>
+#include "UnitSyncLib.h"
 
 BattleHost::BattleHost(QString host, QObject* parent) : QThread(parent) {
     m_host = host;
@@ -78,7 +79,8 @@ void BattleHost::receiveCommand( Command command ) {
         QScriptValue scriptBattleHost = m_engine.newQObject(this);
         m_sqads = ctor.construct(QScriptValueList() << scriptBattleHost);
         emit hosted(command.attributes[0].toInt());
-        return;
+        fillScriptTags();
+        broadcastScriptTags();
     } else if ( command.name == "OPENBATTLEFAILED" ) {
         QString reason = command.attributes[0];
         emit errorMessage("Battle hosting failed: " + reason);
@@ -129,6 +131,10 @@ void BattleHost::receiveCommand( Command command ) {
             }
         }
     }
+}
+
+bool BattleHost::hasMap(QString mapname) {
+    return UnitSyncLib::getInstance()->mapChecksum(m_map);
 }
 
 void BattleHost::setMap(QString mapname) {
@@ -208,4 +214,100 @@ void BattleHost::forceSpectator(User* u) {
 
 void BattleHost::broadCastMyUserStatus(User* u) {
     emit sendCommand(Command(QString("MYSTATUS %1").arg(u->userState.getState())));
+}
+
+void BattleHost::fillScriptTags() {
+    UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
+    if (!unitSyncLib->setCurrentMod(m_mod)) {
+        qDebug() << "Failed to load " << m_mod;
+        return;
+    }
+    //Mod options
+    int num_options = unitSyncLib->getModOptionCount();
+    for (int i = 0; i < num_options; i++) {
+        if (unitSyncLib->getOptionType(i) == SECTION)
+            continue;
+        switch (unitSyncLib->getOptionType(i)) {
+        case BOOLEAN:
+            m_scriptTags[unitSyncLib->getOptionKey(i)] = unitSyncLib->getOptionBoolDef(i) ? "1" : "0";
+            break;
+        case LIST:
+            m_scriptTags[unitSyncLib->getOptionKey(i)] = unitSyncLib->getOptionListDef(i);
+            break;
+        case FLOAT:
+            m_scriptTags[unitSyncLib->getOptionKey(i)] = QString::number(unitSyncLib->getOptionNumberDef(i));
+            break;
+        case STRING:
+            m_scriptTags[unitSyncLib->getOptionKey(i)] = unitSyncLib->getOptionStringDef(i);
+            break;
+        case SECTION:
+        case UNDEFINED:
+            break;
+        }
+    }
+    //Game options
+    m_scriptTags["diminishingmms"] = "0";
+    m_scriptTags["disablemapdamage"] = "0";
+    m_scriptTags["fixedallies"] = "1";
+    m_scriptTags["ghostedbuildings"] = "1";
+    m_scriptTags["limitdgun"] = "0";
+    m_scriptTags["deathmode"] = "0";
+    m_scriptTags["gamemode"] = "0";
+}
+
+void BattleHost::broadcastScriptTags() {
+    //SETSCRIPTTAGS GAME/StartMetal=1000[TAB]GAME/StartEnergy=1000
+    UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
+    QString command = "SETSCRIPTTAGS ";
+    for(QMap<QString,QString>::const_iterator i = m_scriptTags.begin(); i != m_scriptTags.end(); i++) {
+        if(unitSyncLib->isGameOption(i.key())) {
+            command += "game/" + i.key() + "=" + i.value() + "\t";
+        } else {
+            command += "game/modoptions/" + i.key() + "=" + i.value() + "\t";
+        }
+    }
+    command.chop(1);
+    qDebug() << command;
+    emit sendCommand(Command(command));
+}
+
+QStringList BattleHost::getScriptTagKeys() {
+    return m_scriptTags.values();
+}
+
+bool BattleHost::isScriptTagValueValid(QString key, QString value) {
+    UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
+    int num_options = unitSyncLib->getModOptionCount();
+    for (int i = 0; i < num_options; i++) {
+        if (unitSyncLib->getOptionKey(i) == key) {
+            float min;
+            float max;
+            float step;
+            float val;
+            switch (unitSyncLib->getOptionType(i)) {
+            case BOOLEAN:
+                return value == "0" || value == "1";
+            case LIST:
+                return unitSyncLib->getOptionListItems(i).contains(value);
+            case FLOAT:
+                min = unitSyncLib->getOptionNumberMin(i);
+                max = unitSyncLib->getOptionNumberMax(i);
+                step = unitSyncLib->getOptionNumberStep(i);
+                val = value.toFloat();
+                return val == round(val/step)*step && (val <= min || val >= max);
+            case STRING:
+                return value.length() <= unitSyncLib->getOptionStringMaxLen(i);
+            case SECTION:
+            case UNDEFINED:
+                break;
+            }
+            break;
+        }
+    }
+    return false;
+}
+
+void BattleHost::setScriptTag(QString key, QString value) {
+    m_scriptTags[key] = value;
+    broadcastScriptTags();
 }

@@ -44,14 +44,20 @@ public slots:
 
     //For scripting
     void closeBattle();
+    bool hasMap(QString mapname);
     void setMap(QString mapname);
     void setLocked(bool b);
     void broadcastBattleInfo();
     void sayBattle(QString message);
     void sayBattleEx(QString message);
     void sayUser(QString user, QString message);
+    QStringList getScriptTagKeys();
+    bool isScriptTagValueValid(QString key, QString value);
+    void setScriptTag(QString key, QString value);
 protected:
     void run();
+    void fillScriptTags();
+    void broadcastScriptTags();
 private:
     quint8 m_type;
     quint8 m_natType;
@@ -70,6 +76,7 @@ private:
     QScriptValue m_sqads;
     QList<User> m_users;
     QString m_host;
+    QMap<QString,QString> m_scriptTags;
 
     SqadsUserListPrototype sqadsUserList;
     SqadsUserPrototype sqadsUser;

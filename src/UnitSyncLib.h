@@ -111,10 +111,16 @@ public:
     QString getOptionSection(int optIndex);
     QString getOptionKey(int optIndex);
     bool isGameOption(int optIndex);
+    bool isGameOption(QString key);
     bool getOptionBoolDef(int optIndex);
     QString getOptionListDef(int optIndex);
+    QStringList getOptionListItems(int optIndex);
     float getOptionNumberDef(int optIndex);
+    float getOptionNumberMin (int optIndex);
+    float getOptionNumberMax (int optIndex);
+    float getOptionNumberStep (int optIndex);
     QString getOptionStringDef(int optIndex);
+    int getOptionStringMaxLen(int optIndex);
 
     //New
     int getSideNameCount();

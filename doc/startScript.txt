@@ -130,3 +130,9 @@ MaxSpeed=3; // speed limits at game start
 MinSpeed=0.3;
 }
 }
+
+
+/////////
+
+SETSCRIPTTAGS game/startpostype=2.game/modoptions/startenergy=1000.game/modoptions/minspeed=1.game/modoptions/startmetal=1000.game/modoptions/maxunits=1000.game/modoptions/diminishingmms=0.game/modoptions/mo_noowner=0.game/modoptions/mo_coop=1.game/modoptions/mo_noshare=1.game/modoptions/disablemapdamage=0.game/modoptions/limitdgun=0.game/modoptions/mo_comgate=0.game/modoptions/ghostedbuildings=1.game/modoptions/mo_hilltime=15.game/modoptions/fixedallies=1.game/modoptions/maxspeed=1.game/modoptions/gamemode=0.game/modoptions/mo_nowrecks=0.game/modoptions/mo_greenfields=0
+UPDATEBATTLEINFO 10653 2 0 1112981212 Nuclear_Winter_v1.smf

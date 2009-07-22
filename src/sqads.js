@@ -4,7 +4,9 @@ function Sqads(battleHost) {
             {name: "help", admin: false, description: "Prints this help", argc: 0, opt: 0, callback: this.cmdHelp},
             {name: "kick", admin: true, description: "Kicks a user", argc: 1, opt: 0, callback: this.cmdKick},
             {name: "force", admin: true, description: "Forces user to specified team or ally or to spectate", argc: 3, opt: 1, callback: this.cmdForce},
-            {name: "start", admin: true, description: "Starts a game", argc: 0, opt: 0, callback: this.cmdStart}
+            {name: "start", admin: true, description: "Starts a game", argc: 0, opt: 0, callback: this.cmdStart},
+            {name: "bset", admin: true, description: "Sets some battle parameter", argc: 2, opt: 0, callback: this.cmdBSet},
+            {name: "map", admin: true, description: "Change current map", argc: 1, opt: 0, callback: this.cmdMap}
     ];
 
     this.bh = battleHost;
@@ -122,4 +124,20 @@ Sqads.prototype.cmdForce = function(caller, user, param, value) {
 Sqads.prototype.cmdStart = function(caller) {
     this.bh.sayBattleEx("* Starting game...");
     this.bh.users.at(caller).ingame = true;
+};
+
+Sqads.prototype.cmdBSet = function(caller, setting, value) {
+    if(this.bh.isScriptTagValueValid(setting, value)) {
+        this.bh.setScriptTag(setting, value);
+    } else {
+        this.bh.sayBattleEx("* Value '" + value + "'is invalid for this setting");
+    }
+};
+
+Sqads.prototype.cmdMap = function(caller, map) {
+    if(this.bh.hasMap(map)) {
+        this.bh.setMap(map);
+    } else {
+        this.bh.sayBattleEx("* No such map.");
+    }
 };

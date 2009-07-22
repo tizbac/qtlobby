@@ -237,7 +237,7 @@ void Battles::setRegExp( QString regExp ) {
 void Battles::doubleClicked( const QModelIndex & index ) {
     Battle b = battleManager->model()-> data(
             battleManager->proxyModel()->mapToSource( index ), Qt::UserRole ).value<Battle>();
-    if ( !b.isLocked && !b.isStarted && b.isPasswordProtected ) {
+    if ( !b.isLocked && b.isPasswordProtected ) {
         gamePasswordWidget->setBattleId( b.id );
         gamePasswordWidget->resetPassword();
         gamePasswordWidget->show();

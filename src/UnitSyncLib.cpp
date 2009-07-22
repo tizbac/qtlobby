@@ -455,6 +455,10 @@ bool UnitSyncLib::isGameOption(int optIndex) {
     return m_gameOptionKeys.contains(m_GetOptionKey(optIndex));
 }
 
+bool UnitSyncLib::isGameOption(QString key) {
+    return m_gameOptionKeys.contains(key);
+}
+
 bool UnitSyncLib::getOptionBoolDef(int optIndex) {
     NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetOptionBoolDef";
@@ -473,10 +477,34 @@ float UnitSyncLib::getOptionNumberDef(int optIndex) {
     return m_GetOptionNumberDef(optIndex);
 }
 
+float UnitSyncLib::getOptionNumberMin (int optIndex) {
+    NON_REENTRANT;
+    //qDebug() << "UNITSYNC_DUMP: " << "GetOptionNumberMin";
+    return m_GetOptionNumberMin(optIndex);
+}
+
+float UnitSyncLib::getOptionNumberMax (int optIndex) {
+    NON_REENTRANT;
+    //qDebug() << "UNITSYNC_DUMP: " << "GetOptionNumberMax";
+    return m_GetOptionNumberMax(optIndex);
+}
+
+float UnitSyncLib::getOptionNumberStep (int optIndex) {
+    NON_REENTRANT;
+    //qDebug() << "UNITSYNC_DUMP: " << "GetOptionNumberStep";
+    return m_GetOptionNumberStep(optIndex);
+}
+
 QString UnitSyncLib::getOptionStringDef(int optIndex) {
     NON_REENTRANT;
     //qDebug() << "UNITSYNC_DUMP: " << "GetOptionStringDef";
     return m_GetOptionStringDef(optIndex);
+}
+
+int UnitSyncLib::getOptionStringMaxLen(int optIndex) {
+    NON_REENTRANT;
+    //qDebug() << "UNITSYNC_DUMP: " << "GetOptionStringMaxLen";
+    return m_GetOptionStringMaxLen(optIndex);
 }
 
 void UnitSyncLib::reboot() {
@@ -510,5 +538,11 @@ QStringList UnitSyncLib::getMapNames() {
     return ret;
 }
 
-
-
+QStringList UnitSyncLib::getOptionListItems(int optIndex) {
+    QStringList ret;
+    int count = m_GetOptionListCount(optIndex);
+    for(int i = 0; i < count; i++) {
+        ret << m_GetOptionListItemKey(i, optIndex);
+    }
+    return ret;
+}
