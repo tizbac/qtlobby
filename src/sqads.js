@@ -41,7 +41,7 @@ Sqads.prototype.onChatCommand = function(command, user) {
     var u = this.users.at(user);
     //Retarded check
     if(!u.valid) {
-        this.bh.sayBattleEx("* Developers probably forgot to set current username on BattleHost.");
+        this.bh.sayBattleEx("* Developers probably forgot to set current username on BattleHost or SqadsUserListPrototype::at is bugged.");
         return;
     }
     var parts = command.split(" ");

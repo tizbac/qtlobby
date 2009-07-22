@@ -44,7 +44,7 @@ class SqadsUserPrototype : public QObject, protected QScriptable {
     Q_PROPERTY(quint8 ally READ getAllyTeamNo WRITE setAllyTeamNo)
     Q_PROPERTY(bool player READ isPlayer WRITE setPlayer)
     Q_PROPERTY(quint8 handicap READ getHandicap WRITE setHandicap)
-    Q_PROPERTY(QColor color READ getColor WRITE setColor)
+    Q_PROPERTY(QString color READ getColor WRITE setColor)
     Q_PROPERTY(quint8 sync READ syncState)
     Q_PROPERTY(quint8 side READ getSide)
     Q_PROPERTY(bool valid READ isValid)
@@ -66,8 +66,8 @@ public:
     void setPlayer(bool b);
     quint8 getHandicap() const;
     void setHandicap(quint8 b);
-    QColor getColor() const;
-    void setColor(QColor c);
+    QString getColor() const;
+    void setColor(QString c);
     quint8 syncState() const;
     quint8 getSide() const;
     bool isValid() const;

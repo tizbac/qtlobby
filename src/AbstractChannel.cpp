@@ -287,7 +287,7 @@ QString AbstractChannel::processBBCodes(QString in) {
                 rep = bbcode.capturedTexts()[0];
             }
         }
-        in.replace(idx, length, rep);
+        in.replace(idx++, length, rep);
     }
 
     //   QRegExp urlPattern( "(http|ftp)s?://[^/?# ]+[^?# ]*(\?[^# ]*)?(#[^#? ]*)?" );

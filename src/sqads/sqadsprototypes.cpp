@@ -46,9 +46,13 @@ SqadsUserPtr SqadsUserListPrototype::at(QString username) {
     SqadsUserPtr ptr;
     ptr.bh = listptr.bh;
     ptr.ptr = 0;
-    QRegExp re("*" + username + "*", Qt::CaseInsensitive, QRegExp::Wildcard);
+    username = username.replace("[", "\\[").replace("]", "\\]");
+    qDebug() << "Username: " << username;
+    QRegExp re("^.*" + username + ".*$", Qt::CaseInsensitive, QRegExp::RegExp2);
     for(int i = 0; i < list->size(); i++) {
+        qDebug() << "Matching: " << list->at(i).name;
         if(re.exactMatch(list->at(i).name)) {
+            qDebug() << "Succeded";
             ptr.ptr = &(list->operator[](i));
         }
     }
@@ -229,24 +233,24 @@ void SqadsUserPrototype::setHandicap(quint8 b) {
     uptr.bh->setHandicap(u, b);
 }
 
-QColor SqadsUserPrototype::getColor() const {
+QString SqadsUserPrototype::getColor() const {
     User* u = qscriptvalue_cast<SqadsUserPtr>(thisObject()).ptr;
     if(!u) {
         context()->throwError("Member function called on invalid object");
-        return QColor();
+        return "#000000";
     }
-    return u->m_color;
+    return u->m_color.name();
 }
 
-void SqadsUserPrototype::setColor(QColor c) {
+void SqadsUserPrototype::setColor(QString c) {
     SqadsUserPtr uptr = qscriptvalue_cast<SqadsUserPtr>(thisObject());
     User* u = uptr.ptr;
     if(!u) {
         context()->throwError("Member function called on invalid object");
         return;
     }
-    u->m_color = c;
-    uptr.bh->forceColor(u, c);
+    u->m_color.setNamedColor(c);
+    uptr.bh->forceColor(u, u->m_color);
 }
 
 quint8 SqadsUserPrototype::syncState() const {
