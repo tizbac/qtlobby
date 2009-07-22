@@ -523,26 +523,32 @@ void UnitSyncLib::reboot() {
 
 QStringList UnitSyncLib::getModNames() {
     QStringList ret;
-    int modcount = m_GetPrimaryModCount();
-    for ( int i = 0; i < modcount; ++i ) {
-        ret << m_GetPrimaryModName(i);
+    if (library_loaded) {
+        int modcount = m_GetPrimaryModCount();
+        for ( int i = 0; i < modcount; ++i ) {
+            ret << m_GetPrimaryModName(i);
+        }
     }
     return ret;
 }
 
 QStringList UnitSyncLib::getMapNames() {
     QStringList ret;
-    int mapcount = m_GetMapCount();
-    for ( int i = 0; i < mapcount; ++i )
-        ret << m_GetMapName( i );
+    if (library_loaded) {
+        int mapcount = m_GetMapCount();
+        for ( int i = 0; i < mapcount; ++i )
+            ret << m_GetMapName( i );
+    }
     return ret;
 }
 
 QStringList UnitSyncLib::getOptionListItems(int optIndex) {
     QStringList ret;
-    int count = m_GetOptionListCount(optIndex);
-    for(int i = 0; i < count; i++) {
-        ret << m_GetOptionListItemKey(i, optIndex);
+    if (library_loaded) {
+        int count = m_GetOptionListCount(optIndex);
+        for(int i = 0; i < count; i++) {
+            ret << m_GetOptionListItemKey(i, optIndex);
+        }
     }
     return ret;
 }
