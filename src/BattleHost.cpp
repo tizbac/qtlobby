@@ -294,7 +294,7 @@ bool BattleHost::isScriptTagValueValid(QString key, QString value) {
                 max = unitSyncLib->getOptionNumberMax(i);
                 step = unitSyncLib->getOptionNumberStep(i);
                 val = value.toFloat();
-                return val == round(val/step)*step && (val <= min || val >= max);
+                return val == qRound(val/step)*step && (val <= min || val >= max);
             case STRING:
                 return value.length() <= unitSyncLib->getOptionStringMaxLen(i);
             case SECTION:

@@ -9,6 +9,7 @@ BattleHostingDialog::BattleHostingDialog(QProcess* spring, CommandAssigner* assi
     m_assigner = assigner;
     m_tabs = lobbyTabs;
     m_spring = spring;
+	m_battleHost = 0;
     connect(UnitSyncLib::getInstance(), SIGNAL(rebooted()), SLOT(onReboot()));
     onReboot();
 }

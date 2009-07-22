@@ -36,6 +36,8 @@ section
     file C:\build\QtNetwork4.dll
     file C:\build\QtOpenGL4.dll
     file C:\build\QtXml4.dll
+	file C:\build\QtScript4.dll
+    file C:\build\qscintilla2.dll
 sectionEnd
  
 # uninstaller section start
