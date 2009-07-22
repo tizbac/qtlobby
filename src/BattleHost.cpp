@@ -134,7 +134,7 @@ void BattleHost::receiveCommand( Command command ) {
 }
 
 bool BattleHost::hasMap(QString mapname) {
-    return UnitSyncLib::getInstance()->mapChecksum(m_map);
+    return UnitSyncLib::getInstance()->mapChecksum(mapname);
 }
 
 void BattleHost::setMap(QString mapname) {

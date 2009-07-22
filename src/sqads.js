@@ -24,7 +24,6 @@ function Sqads(battleHost) {
 
 Sqads.prototype.onUserJoined = function(user) {
     this.bh.sayBattleEx("* Hi, " + user + "! You have joined SQADS integrated autohost. For help type !help.");
-    this.users.at(user).admin = false;
 };
 
 Sqads.prototype.onUserLeft = function(user) {
@@ -114,6 +113,9 @@ Sqads.prototype.cmdForce = function(caller, user, param, value) {
         break;
             case "ally":
         u.ally = value - 0;
+        break;
+    case "color":
+        u.color = value;
         break;
             case "spec":
         u.player = false;

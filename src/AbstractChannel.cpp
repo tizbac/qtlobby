@@ -228,7 +228,7 @@ QString AbstractChannel::processIRCCodes(QString in) {
 
 QString AbstractChannel::processBBCodes(QString in) {
     //   QRegExp urlPattern( "(http|ftp)s?://[^/?# ]+[^?# ]*(\?[^# ]*)?(#[^#? ]*)?" );
-    QRegExp urlPattern( "(http|ftp)s?://[^\n<> ]*" );
+    QRegExp urlPattern( "(http|ftp)s?://[^\n<>\\[\\] ]*" );
     QStringList ct;
     int pos = 0;
     while (( pos = urlPattern.indexIn( in, pos ) ) != -1 ) {
@@ -265,6 +265,8 @@ QString AbstractChannel::processBBCodes(QString in) {
                 QColor c = QColor(value);
                 if(c.value() > 150) c.setHsv(c.hue(), c.saturation(), 150);
                 rep = QString("<span style=\"color: %1\">").arg(c.name());
+            } else {
+                rep = bbcode.capturedTexts()[0];
             }
         } else {
             if(code == "b") {
@@ -293,9 +295,14 @@ QString AbstractChannel::processBBCodes(QString in) {
                 rep = "</code>";
             } else if(code == "br") {
                 rep = "<br/>";
+            } else if(code == "url" || code == "/url") {
+                rep = "";
+            } else {
+                rep = bbcode.capturedTexts()[0];
             }
         }
         in.replace(idx, length, rep);
+        idx += length;
     }
     return in;
 }

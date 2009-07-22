@@ -2,6 +2,7 @@
 
 #include <QScriptEngine>
 #include <QScriptValue>
+#include <QRegExp>
 #include "BattleHost.h"
 
 SqadsUserListPrototype::SqadsUserListPrototype(QObject *parent) : QObject(parent) {
@@ -45,8 +46,9 @@ SqadsUserPtr SqadsUserListPrototype::at(QString username) {
     SqadsUserPtr ptr;
     ptr.bh = listptr.bh;
     ptr.ptr = 0;
+    QRegExp re("*" + username + "*", Qt::CaseInsensitive, QRegExp::Wildcard);
     for(int i = 0; i < list->size(); i++) {
-        if(list->at(i).name == username) {
+        if(re.exactMatch(list->at(i).name)) {
             ptr.ptr = &(list->operator[](i));
         }
     }
