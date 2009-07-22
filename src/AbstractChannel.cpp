@@ -227,28 +227,12 @@ QString AbstractChannel::processIRCCodes(QString in) {
 }
 
 QString AbstractChannel::processBBCodes(QString in) {
-    //   QRegExp urlPattern( "(http|ftp)s?://[^/?# ]+[^?# ]*(\?[^# ]*)?(#[^#? ]*)?" );
-    QRegExp urlPattern( "(http|ftp)s?://[^\n<>\\[\\] ]*" );
-    QStringList ct;
-    int pos = 0;
-    while (( pos = urlPattern.indexIn( in, pos ) ) != -1 ) {
-        pos += urlPattern.matchedLength();
-        ct << urlPattern.cap( 0 );
-    }
-    int count = ct.count();
-    QString placeHolder = "__###PLACEHOLDER:%1###__";
-    QString linkTag = "<a href=\"%1\">%1</a>";
-    for ( int i = 0; i < count; ++i )
-        in.replace( ct[i], placeHolder.arg( i ) );
-    for ( int i = 0; i < count; ++i )
-        in.replace( placeHolder.arg( i ), linkTag.arg( ct[i] ) );
 
     QRegExp bbcode("\\[([^\\]\\[]+)\\]");
 
     int idx = 0;
     while((idx = bbcode.indexIn(in, idx)) >= 0) {
         QString code = bbcode.capturedTexts()[1].toLower();
-        qDebug() << code;
         int length = bbcode.capturedTexts()[0].length();
         QString rep;
         if(code.contains("=")) {
@@ -265,6 +249,8 @@ QString AbstractChannel::processBBCodes(QString in) {
                 QColor c = QColor(value);
                 if(c.value() > 150) c.setHsv(c.hue(), c.saturation(), 150);
                 rep = QString("<span style=\"color: %1\">").arg(c.name());
+            } else if(code == "url") {
+                rep = value + " ";
             } else {
                 rep = bbcode.capturedTexts()[0];
             }
@@ -302,8 +288,24 @@ QString AbstractChannel::processBBCodes(QString in) {
             }
         }
         in.replace(idx, length, rep);
-        idx += length;
     }
+
+    //   QRegExp urlPattern( "(http|ftp)s?://[^/?# ]+[^?# ]*(\?[^# ]*)?(#[^#? ]*)?" );
+    QRegExp urlPattern( "(http|ftp)s?://[^\n<>\\[\\] ]*" );
+    QStringList ct;
+    int pos = 0;
+    while (( pos = urlPattern.indexIn( in, pos ) ) != -1 ) {
+        pos += urlPattern.matchedLength();
+        ct << urlPattern.cap( 0 );
+    }
+    int count = ct.count();
+    QString placeHolder = "__###PLACEHOLDER:%1###__";
+    QString linkTag = "<a href=\"%1\">%1</a>";
+    for ( int i = 0; i < count; ++i )
+        in.replace( ct[i], placeHolder.arg( i ) );
+    for ( int i = 0; i < count; ++i )
+        in.replace( placeHolder.arg( i ), linkTag.arg( ct[i] ) );
+
     return in;
 }
 
