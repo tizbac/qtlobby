@@ -63,12 +63,12 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
             if ( b.isLocked ) return 2;
             if ( b.isPasswordProtected ) return 1;
             return 0;
-        case 7: // spectator count
+        case 7: // player count
             Battle b = m_battleList[index.row()];
             return QString::number(b.playerCount - b.spectatorCount).rightJustified(5,'0');
         }
     }
-    if ( role == Qt::UserRole+2 ) {
+    if ( role == Qt::UserRole+2 ) { // for battle list filter
         Battle b = m_battleList[index.row()];
         unsigned int ret = 0;
         if( b.isPasswordProtected )
@@ -77,11 +77,26 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
             ret += 2;
         if( b.isLocked )
             ret += 4;
-        // mod not available  +=8
-        // map not available +=16
-        if( b.playerCount == 0 )
+        UnitSyncLib* us = UnitSyncLib::getInstance();
+        if( !us->getModNames().contains( b.modName ) )
+            ret += 8;
+        if( !us->getMapNames().contains( b.mapName ) )
+            ret += 16;
+        if( b.playerCount - b.spectatorCount < 1 )
             ret += 32;
-        // no friends += 64
+        bool containsGroupUser = false;
+        if ( m_users ) {
+            QList<User> users = m_users->getUserList(m_battleList[index.row()].id);
+            UserGroupList* ul = UserGroupList::getInstance();
+            foreach( User u, users ) {
+                if( ul->containsUserName( u.name ) ) {
+                    containsGroupUser = true;
+                    break;
+                }
+            }
+        }
+        if( !containsGroupUser )
+            ret += 64;
         return ret;
     }
     switch ( index.column() ) {
@@ -167,7 +182,7 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
         if ( role == Qt::DisplayRole || role == Qt::ToolTipRole )
             return m_battleList[index.row()].founder;
         break;
-    case 7: // spectator count
+    case 7: // player/maxplayer/spectator count
         if ( role == Qt::DisplayRole )
             return QString( "%1/%2+%3" )
             .arg( m_battleList[index.row()].playerCount - m_battleList[index.row()].spectatorCount )
@@ -175,7 +190,7 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
             .arg( m_battleList[index.row()].spectatorCount );
         if ( role == Qt::ToolTipRole ) {
             Battle b = m_battleList[index.row()];
-            return QString( "%1 players in game\n%2 players maximum\n%3 spectators in game" )
+            return QString( "%1 players battle\n%2 players maximum\n%3 spectators in game" )
                     .arg( b.playerCount -b.spectatorCount )
                     .arg( b.maxPlayers )
                     .arg( b.spectatorCount );

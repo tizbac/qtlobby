@@ -16,6 +16,7 @@
 #include <QDebug>
 #include <QIcon>
 
+#include "UnitSyncLib.h"
 #include "Battle.h"
 #include "TLDList.h"
 #include "Users.h"

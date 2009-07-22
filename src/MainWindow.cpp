@@ -425,8 +425,12 @@ void MainWindow::onChangedFromBattleTab() {
 
 void MainWindow::onCurrentChanged(const QModelIndex & current, const QModelIndex & /*previous*/) {
     QModelIndex sourceIndex = battles->battleManager->proxyModel()->mapToSource(current);
-    Battle b = battles->battleManager->model()->battleList()[sourceIndex.row()];
-    battleInfoTreeView->setModel((UserTreeModel*)users->getUserModel(b.id));
+    QList<Battle> bl = battles->battleManager->model()->battleList();
+    return;
+    if( bl.size() ) {
+        Battle b = bl.at(sourceIndex.row());
+        battleInfoTreeView->setModel((UserTreeModel*)users->getUserModel(b.id));
+    }
     for (int i = 0; i < 9; i++)
         battleInfoTreeView->resizeColumnToContents(i);
     for (int i = 4; i <= 9; i++)

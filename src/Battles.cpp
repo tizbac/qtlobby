@@ -51,22 +51,18 @@ Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
     m_filterMenu->addAction(filterLockedAction);
     filterUnavailableModsAction = new QAction("Hide not installed mods", this);
     filterUnavailableModsAction->setCheckable(true);
-    filterUnavailableModsAction->setDisabled(true);
     m_filterMenu->addAction(filterUnavailableModsAction);
     filterUnavailableMapsAction = new QAction("Hide not installed maps", this);
     filterUnavailableMapsAction->setCheckable(true);
-    filterUnavailableMapsAction->setDisabled(true);
     m_filterMenu->addAction(filterUnavailableMapsAction);
     filterWithoutPlayersAction = new QAction("Hide battles without players", this);
     filterWithoutPlayersAction->setCheckable(true);
-    filterWithoutPlayersAction->setDisabled(true);
     m_filterMenu->addAction(filterWithoutPlayersAction);
     filterWithoutFriendsAction = new QAction("Hide battles without friends", this);
     filterWithoutFriendsAction->setCheckable(true);
-    filterWithoutFriendsAction->setDisabled(true);
     m_filterMenu->addAction(filterWithoutFriendsAction);
     m_menu->addMenu(m_filterMenu);
-    
+
     connect( this, SIGNAL( customContextMenuRequested( const QPoint & ) ),
              this, SLOT( customContextMenuRequested( const QPoint & ) ) );
     connect( this, SIGNAL( doubleClicked( const QModelIndex & ) ),
@@ -90,6 +86,21 @@ Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
     connect( filterWithoutFriendsAction, SIGNAL( toggled( bool ) ),
              this, SLOT( setFilterWithoutFriendsSlot( bool ) ) );
     battleCount = 0;
+    QSettings* s = Settings::Instance();
+    if( s->contains("Battles/filterPassworded" ) )
+        filterPasswordedAction->setChecked( s->value( "Battles/filterPassworded" ).toBool() );
+    if( s->contains("Battles/filterInGame" ) )
+        filterInGameAction->setChecked( s->value( "Battles/filterInGame" ).toBool() );
+    if( s->contains("Battles/filterLocked" ) )
+        filterLockedAction->setChecked( s->value( "Battles/filterLocked" ).toBool() );
+    if( s->contains("Battles/filterUnavailableMods" ) )
+        filterUnavailableModsAction->setChecked( s->value( "Battles/filterUnavailableMods" ).toBool() );
+    if( s->contains("Battles/filterUnavailableMaps" ) )
+        filterUnavailableMapsAction->setChecked( s->value( "Battles/filterUnavailableMaps" ).toBool() );
+    if( s->contains("Battles/filterWithoutPlayers" ) )
+        filterWithoutPlayersAction->setChecked( s->value( "Battles/filterWithoutPlayers" ).toBool() );
+    if( s->contains("Battles/filterWithoutFriends" ) )
+        filterWithoutFriendsAction->setChecked( s->value( "Battles/filterWithoutFriends" ).toBool() );
 }
 
 Battles::~Battles() {}
@@ -253,18 +264,24 @@ void Battles::joinBattleCommand( unsigned int id, QString password ) {
 }
 
 void Battles::customContextMenuRequested( const QPoint & point ) {
-    if ( selectedIndexes().size() == 0 ) return;
-    QModelIndex index = selectedIndexes().first();
-    if ( !index.isValid() ) return;
-    
-    Battle b = battleManager->model()->data(
-            battleManager->proxyModel()->mapToSource( index ), Qt::UserRole ).value<Battle>();
-    QAction *action = m_menu->exec( this->viewport()->mapToGlobal( point ) );
-    if ( action ) {
-        if ( action == openPrivateChannelAction ) {
-            emit sendInput( b.founder.prepend( "/query " ) );
-        } else if ( action == joinBattleAction ) {
-            emit doubleClicked( index );
+    if ( selectedIndexes().size() == 0 ) { // no battles in list
+        openPrivateChannelAction->setVisible(false);
+        joinBattleAction->setVisible(false);
+        m_menu->exec( this->viewport()->mapToGlobal( point ) );
+        openPrivateChannelAction->setVisible(true);
+        joinBattleAction->setVisible(true);
+    } else {
+        QModelIndex index = selectedIndexes().first();
+        if ( !index.isValid() ) return;
+        Battle b = battleManager->model()->data(
+                battleManager->proxyModel()->mapToSource( index ), Qt::UserRole ).value<Battle>();
+        QAction *action = m_menu->exec( this->viewport()->mapToGlobal( point ) );
+        if ( action ) {
+            if ( action == openPrivateChannelAction ) {
+                emit sendInput( b.founder.prepend( "/query " ) );
+            } else if ( action == joinBattleAction ) {
+                emit doubleClicked( index );
+            }
         }
     }
 }
@@ -503,28 +520,35 @@ void Battles::wipeModels() {
 /* Battle filter slots */
 void Battles::setFilterPasswordedSlot( bool state ) {
     battleManager->proxyModel()->setBitState( 0, state );
+    Settings::Instance()->setValue("Battles/filterPassworded", state);
 }
 
 void Battles::setFilterInGameSlot( bool state ) {
     battleManager->proxyModel()->setBitState( 1, state );
+    Settings::Instance()->setValue("Battles/filterInGame", state);
 }
 
 void Battles::setFilterLockedSlot( bool state ) {
     battleManager->proxyModel()->setBitState( 2, state );
+    Settings::Instance()->setValue("Battles/filterLocked", state);
 }
 
 void Battles::setFilterUnavailableModsSlot( bool state ) {
     battleManager->proxyModel()->setBitState( 3, state );
+    Settings::Instance()->setValue("Battles/filterUnavailableMods", state);
 }
 
 void Battles::setFilterUnavailableMapsSlot( bool state ) {
     battleManager->proxyModel()->setBitState( 4, state );
+    Settings::Instance()->setValue("Battles/filterUnavailableMaps", state);
 }
 
 void Battles::setFilterWithoutPlayersSlot( bool state ) {
     battleManager->proxyModel()->setBitState( 5, state );
+    Settings::Instance()->setValue("Battles/filterWithoutPlayers", state);
 }
 
 void Battles::setFilterWithoutFriendsSlot( bool state ) {
     battleManager->proxyModel()->setBitState( 6, state );
+    Settings::Instance()->setValue("Battles/filterWithoutFriends", state);
 }

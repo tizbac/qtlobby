@@ -35,6 +35,7 @@ public:
     void updateMappings();
     void save();
     void load();
+    bool containsUserName(QString name);
 private:
     QMap<QString, UserGroup*> groupsMap;
     QMap<QString, QColor> colorsMap;

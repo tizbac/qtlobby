@@ -32,7 +32,6 @@ UserGroup* UserGroupList::findGroup(QString name) {
     return (UserGroup*)0;
 }
 
-
 QString UserGroupList::toXml() {
     QDomDocument doc("groups");
     QDomElement groupsEl = doc.createElement("groups");
@@ -124,4 +123,12 @@ void UserGroupList::save() {
 void UserGroupList::load() {
     QSettings* s = Settings::Instance();
     fromXml(s->value("userGroups").toString());
+}
+
+bool UserGroupList::containsUserName( QString name ) {
+    foreach( UserGroup* g, groups ) {
+        if ( g->members.contains(name) )
+            return true;
+    }
+    return false;
 }
