@@ -1,6 +1,7 @@
 // $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "PrivateChannel.h"
+#include "UserGroup.h"
 
 PrivateChannel::PrivateChannel( QString name, QObject * parent ) : AbstractChannel( name, parent ) {
     activeIcon = QIcon( ":/icons/userchat.xpm" );
@@ -12,12 +13,14 @@ void PrivateChannel::receiveCommand( Command command ) {
     command.name = command.name.toUpper();
     QString line = QString( "%1\n" );
     if ( command.name == "SAIDPRIVATE" ) {
-        if ( command.attributes.takeFirst() == objectName() && command.attributes.join( " " ).trimmed() != "" ) {
-            insertLine( flag( objectName() ) + line
-                        .arg( "&lt;%1&gt; %2" )
-                        .arg( objectName() )
-                        .arg( processInput(command.attributes.join( " " ))));
-        }
+		if( !UserGroupList::getInstance()->getIgnore(command.attributes.first()) ) {
+			if ( command.attributes.takeFirst() == objectName() && command.attributes.join( " " ).trimmed() != "" ) {
+				insertLine( flag( objectName() ) + line
+					.arg( "&lt;%1&gt; %2" )
+					.arg( objectName() )
+					.arg( processInput(command.attributes.join( " " ))));
+			}
+		}
     } else if ( command.name == "SAYPRIVATE" ) {
         if ( command.attributes.takeFirst() == objectName() && command.attributes.join( " " ).trimmed() != "" ) {
             insertLine( line.arg( "&lt;%1&gt; %2" )

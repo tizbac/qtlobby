@@ -64,6 +64,7 @@ protected slots:
     void customContextMenuRequestedSlot( const QPoint & point );
     void doubleClickedSlot( const QModelIndex & index );
     void joinSameBattle( User u );
+	void toggleIgnoreUser( User u );
     void addUserToGroup(QString user, QString group);
     void removeUserFromGroup(QString user);
 
@@ -84,6 +85,7 @@ protected:
     QAction* openPrivateChannelAction;
     QAction* slapAction;
     QAction* joinSameBattleAction;
+    QAction* ignoreAction;
     QMenu* forceMenu;
     QAction* forceTeam;
     QAction* forceAlly;

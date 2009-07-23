@@ -120,11 +120,23 @@ UserGroup* UserGroupList::at(int i) {
 void UserGroupList::save() {
     QSettings* s = Settings::Instance();
     s->setValue("userGroups", toXml());
+
+	QString ignorestr;
+    foreach (QString ignorename, ignoreSet) {
+        ignorestr += ignorename + ";";
+    }
+    s->setValue("Ignore", ignorestr);
 }
 
 void UserGroupList::load() {
     QSettings* s = Settings::Instance();
     fromXml(s->value("userGroups").toString());
+
+	QStringList ignorestr = s->value("Ignore").toString().split( ";" );
+	foreach(QString ignorename, ignorestr) {
+		if(ignorename != "")
+			ignoreSet.insert(ignorename);
+	}
 }
 
 bool UserGroupList::containsUserName( QString name ) {
@@ -133,4 +145,15 @@ bool UserGroupList::containsUserName( QString name ) {
             return true;
     }
     return false;
+}
+
+void UserGroupList::toggleIgnore(QString name) {
+	if(!getIgnore(name))
+		ignoreSet.insert(name);
+	else
+		ignoreSet.remove(name);
+}
+
+bool UserGroupList::getIgnore(QString name) {
+	return ignoreSet.contains(name);
 }

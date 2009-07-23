@@ -11,6 +11,7 @@
 #include <QMetaType>
 #include <QDataStream>
 #include <QMap>
+#include <QSet>
 #include "Settings.h"
 
 
@@ -38,9 +39,12 @@ public:
     void save();
     void load();
     bool containsUserName(QString name);
+	void toggleIgnore(QString name);
+	bool getIgnore(QString name);
 private:
     QMap<QString, UserGroup*> groupsMap;
     QMap<QString, QColor> colorsMap;
+	QSet<QString> ignoreSet;
     QList<UserGroup*> groups;
     QRegExp clanRegexp;
     UserGroupList();

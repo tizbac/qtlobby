@@ -2,6 +2,7 @@
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "UserTreeModel.h"
 #include "UserGroup.h"
+#include <QFont>
 
 UserTreeModel::UserTreeModel( QObject* parent ) : QAbstractItemModel( parent ) {
     qRegisterMetaType<User>( "User" );
@@ -10,6 +11,14 @@ UserTreeModel::UserTreeModel( QObject* parent ) : QAbstractItemModel( parent ) {
 UserTreeModel::~UserTreeModel() {}
 
 QVariant UserTreeModel::data( const QModelIndex& index, int role ) const {
+	if (role == Qt::FontRole) {
+		if(UserGroupList::getInstance()->getIgnore(m_userList[index.row()].name)) {
+			QFont font;
+			font.setStrikeOut(true);
+			return font;
+		}
+        return QVariant();
+	}
     if (role == Qt::BackgroundRole) {
         QColor c = UserGroupList::getInstance()->getUserColor(m_userList[index.row()].name);
         if (c.isValid()) {

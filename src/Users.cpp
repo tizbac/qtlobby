@@ -19,11 +19,13 @@ Users::Users( QWidget* parent ) : QTreeView( parent ) {
     openPrivateChannelAction = new QAction( "Start private chat", this );
     slapAction = new QAction( "Slap around", this );
     joinSameBattleAction = new QAction( "Join same battle", this );
+    ignoreAction = new QAction( "Toggle ignore", this );
 
     userMenu = new QMenu( "userListContextMenu", this );
     userMenu->addAction( openPrivateChannelAction );
     userMenu->addAction( slapAction );
     userMenu->addAction( joinSameBattleAction );
+    userMenu->addAction( ignoreAction );
     userMenu->addSeparator();
     groupsMenu = new QMenu("Add to group", this);
     removeFromGroupAction = new QAction("Remove from group", userMenu);
@@ -278,6 +280,8 @@ void Users::customContextMenuRequestedSlot( const QPoint & point ) {
             emit sendInput( u.name.prepend( "/slap " ) );
         } else if ( action == joinSameBattleAction ) {
             joinSameBattle( u );
+        } else if ( action == ignoreAction ) {
+            toggleIgnoreUser( u );
         } else if ( action == removeFromGroupAction ) {
             removeUserFromGroup(u.name);
         } else if ( action == removeClanFromGroupAction ) {
@@ -331,6 +335,14 @@ void Users::removeUserFromGroup(QString user) {
             g->members.removeAt(index);
     }
     list->updateMappings();
+    invalidateModel();
+    list->save();
+}
+
+void Users::toggleIgnoreUser( User u ) {
+    UserGroupList* list = UserGroupList::getInstance();
+	list->toggleIgnore( u.name );
+
     invalidateModel();
     list->save();
 }

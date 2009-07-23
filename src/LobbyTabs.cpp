@@ -3,6 +3,7 @@
 #include "LobbyTabs.h"
 #include "Settings.h"
 #include "UnitSyncLib.h"
+#include "UserGroup.h"
 
 LobbyTabs::LobbyTabs( QObject * parent, Battles* battles, UnitSyncLib* unitSyncLib, QTabBar* tabBar, QStackedWidget * lobbyStackedWidget) : AbstractStateClient( parent ) {
     this->battles = battles;
@@ -134,7 +135,10 @@ void LobbyTabs::receiveCommand( Command command ) {
             QTimer::singleShot( 0, win, SLOT( deleteLater() ) );
             lobbyTabList.removeAt(index);
         }
-    } else if ( command.name == "SAIDPRIVATE" || command.name == "SAYPRIVATE" ) {
+    } else if ( command.name == "SAIDPRIVATE" ) {
+		if( !UserGroupList::getInstance()->getIgnore(command.attributes.first()) )
+	        privateChannelOpen( command.attributes.first(), false );
+    } else if ( command.name == "SAYPRIVATE" ) {
         privateChannelOpen( command.attributes.first(), false );
     } else if ( command.name == "ADDUSER" ) {
         userNameCountryCodeMap[command.attributes[0]] = command.attributes[1];
