@@ -35,6 +35,7 @@ protected:
     QString processBBCodes(QString in);
     QString processInput(QString input, bool formatting = true);
     QString processIRCCodes(QString in);
+    QString urlify(QString in);
     ChannelTextBrowser * channelTextBrowser;
     QGridLayout * gridLayout;
     QIcon activeIcon;

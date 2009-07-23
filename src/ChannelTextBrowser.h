@@ -25,7 +25,6 @@ private slots:
     void onCustomContextMenuRequested(QPoint p);
 protected:
     QMimeData *createMimeDataFromSelection () const;
-    QMenu* m_contextMenu;
     bool m_enableJoinLeave;
     bool m_enableJoinLeaveDefault;
     bool m_menuEnabled;

@@ -217,6 +217,25 @@ QString AbstractChannel::processIRCCodes(QString in) {
     return in;
 }
 
+QString AbstractChannel::urlify(QString in) {
+    //   QRegExp urlPattern( "(http|ftp)s?://[^/?# ]+[^?# ]*(\?[^# ]*)?(#[^#? ]*)?" );
+    QRegExp urlPattern( "(http|ftp)s?://[^\n<>\\[\\] ]*" );
+    QStringList ct;
+    int pos = 0;
+    while (( pos = urlPattern.indexIn( in, pos ) ) != -1 ) {
+        pos += urlPattern.matchedLength();
+        ct << urlPattern.cap( 0 );
+    }
+    int count = ct.count();
+    QString placeHolder = "__###PLACEHOLDER:%1###__";
+    QString linkTag = "<a href=\"%1\">%1</a>";
+    for ( int i = 0; i < count; ++i )
+        in.replace( ct[i], placeHolder.arg( i ) );
+    for ( int i = 0; i < count; ++i )
+        in.replace( placeHolder.arg( i ), linkTag.arg( ct[i] ) );
+    return in;
+}
+
 QString AbstractChannel::processBBCodes(QString in) {
 
     QRegExp bbcode("\\[([^\\]\\[]+)\\]");
@@ -280,24 +299,7 @@ QString AbstractChannel::processBBCodes(QString in) {
         }
         in.replace(idx++, length, rep);
     }
-
-    //   QRegExp urlPattern( "(http|ftp)s?://[^/?# ]+[^?# ]*(\?[^# ]*)?(#[^#? ]*)?" );
-    QRegExp urlPattern( "(http|ftp)s?://[^\n<>\\[\\] ]*" );
-    QStringList ct;
-    int pos = 0;
-    while (( pos = urlPattern.indexIn( in, pos ) ) != -1 ) {
-        pos += urlPattern.matchedLength();
-        ct << urlPattern.cap( 0 );
-    }
-    int count = ct.count();
-    QString placeHolder = "__###PLACEHOLDER:%1###__";
-    QString linkTag = "<a href=\"%1\">%1</a>";
-    for ( int i = 0; i < count; ++i )
-        in.replace( ct[i], placeHolder.arg( i ) );
-    for ( int i = 0; i < count; ++i )
-        in.replace( placeHolder.arg( i ), linkTag.arg( ct[i] ) );
-
-    return in;
+    return urlify(in);
 }
 
 
@@ -307,6 +309,6 @@ QString AbstractChannel::processInput(QString input, bool fomatting) {
         input.replace("\n","[br]");
         return processBBCodes(processIRCCodes(input));
     }
-    else return input;
+    else return urlify(input);
 }
 

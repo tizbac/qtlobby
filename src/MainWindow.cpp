@@ -463,12 +463,14 @@ void MainWindow::connectionStatusChanged(ConnectionState state) {
         statusBar()->showMessage("Disconnected");
         users->wipeModels();
         battles->wipeModels();
+        hostPushButton->setEnabled(false);
         break;
     case CONNECTING:
         statusBar()->showMessage("Connecting...", 20000);
         break;
     case CONNECTED:
         statusBar()->showMessage("Connected", 20000);
+        hostPushButton->setEnabled(true);
         break;
     case AUTHENTICATING:
         statusBar()->showMessage("Authenticating...", 20000);

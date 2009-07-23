@@ -88,7 +88,7 @@ void Channel::receiveCommand( Command command ) {
 
             insertLine(line
                        .arg("<span style=\"color: darkred;\">** Topic is ' %1 ' set by %2 %3</span>")
-                       .arg( msg )
+                       .arg( urlify(msg) )
                        .arg( name )
                        .arg( date.toString("dd.MM.yyyy hh:mm") ));
         }
