@@ -1,14 +1,5 @@
-//
-// C++ Implementation: BattleTreeModel
-//
-// Description:
-//
-//
-// Author: Joachim Schiele <js@lastlog.de>, (C) 2008
-//
-// Copyright: See COPYING file that comes with this distribution
-//
-//
+// $Id$
+// QtLobby released under the GPLv3, see COPYING for details.
 #include "BattleTreeModel.h"
 #include "UserGroup.h"
 #include <QLinearGradient>

@@ -1,3 +1,5 @@
+// $Id$
+// QtLobby released under the GPLv3, see COPYING for details.
 #include "MapWidget.h"
 #include <QPainter>
 #include <QDebug>

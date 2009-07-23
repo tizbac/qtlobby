@@ -1,3 +1,5 @@
+// $Id$
+// QtLobby released under the GPLv3, see COPYING for details.
 #include "src/UserGroupsDialog.h"
 #include "ui_UserGroupsDialog.h"
 #include <QDebug>

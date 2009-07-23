@@ -1,3 +1,5 @@
+// $Id$
+// QtLobby released under the GPLv3, see COPYING for details.
 #ifndef SINGLETON_H
 #define SINGLETON_H
 

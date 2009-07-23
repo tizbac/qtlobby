@@ -1,14 +1,5 @@
-//
-// C++ Interface: PrivateChannel
-//
-// Description:
-//
-//
-// Author: Mirko Windhoff <qtlobby.reg@ncnever.de>, (C) 2008
-//
-// Copyright: See COPYING file that comes with this distribution
-//
-//
+// $Id$
+// QtLobby released under the GPLv3, see COPYING for details.
 #ifndef PRIVATECHANNEL_H
 #define PRIVATECHANNEL_H
 #include "AbstractChannel.h"

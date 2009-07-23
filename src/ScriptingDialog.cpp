@@ -1,3 +1,5 @@
+// $Id$
+// QtLobby released under the GPLv3, see COPYING for details.
 #include "src/ScriptingDialog.h"
 #include "ui_ScriptingDialog.h"
 #include <Qsci/qscilexerjavascript.h>

@@ -1,3 +1,5 @@
+// $Id$
+// QtLobby released under the GPLv3, see COPYING for details.
 #include "NetworkInterface.h"
 
 NetworkInterface::NetworkInterface( QObject * parent ) : QObject( parent ) {

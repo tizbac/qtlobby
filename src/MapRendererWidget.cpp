@@ -1,3 +1,5 @@
+// $Id$
+// QtLobby released under the GPLv3, see COPYING for details.
 #include "MapRendererWidget.h"
 #include "GLProgressDialog.h"
 #include <cmath>

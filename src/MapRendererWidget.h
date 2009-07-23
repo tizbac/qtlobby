@@ -1,3 +1,5 @@
+// $Id$
+// QtLobby released under the GPLv3, see COPYING for details.
 #ifndef MAPRENDERERWIDGET_H
 #define MAPRENDERERWIDGET_H
 

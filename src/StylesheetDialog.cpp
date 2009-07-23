@@ -1,3 +1,5 @@
+// $Id$
+// QtLobby released under the GPLv3, see COPYING for details.
 #include "StylesheetDialog.h"
 #include "ui_StylesheetDialog.h"
 #include <Qsci/qscilexercss.h>

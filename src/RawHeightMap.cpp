@@ -1,3 +1,5 @@
+// $Id$
+// QtLobby released under the GPLv3, see COPYING for details.
 #include "RawHeightMap.h"
 
 RawHeightMap::RawHeightMap(int width, int height, unsigned short* ptr) {

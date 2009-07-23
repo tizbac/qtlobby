@@ -1,3 +1,5 @@
+// $Id$
+// QtLobby released under the GPLv3, see COPYING for details.
 #ifndef NETWORKINTERFACE_H
 #define NETWORKINTERFACE_H
 
