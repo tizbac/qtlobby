@@ -11,6 +11,8 @@
 //
 #include "Users.h"
 #include "UserGroup.h"
+#include <QInputDialog>
+#include <QColorDialog>
 
 Users* Users::lastThis = 0;
 
@@ -36,6 +38,12 @@ Users::Users( QWidget* parent ) : QTreeView( parent ) {
     removeFromGroupAction = new QAction("Remove from group", userMenu);
     clanGroupsMenu = new QMenu("Add clan to group", this);
     removeClanFromGroupAction = new QAction("Remove clan from group", userMenu);
+    forceMenu   = new QMenu("Force", this);
+    forceTeam   = forceMenu->addAction("Team");
+    forceAlly   = forceMenu->addAction("Ally");
+    forceColor  = forceMenu->addAction("Color");
+    forceSpec   = forceMenu->addAction("Spec");
+    kick        = new QAction("Kick", userMenu);
 
     connect( this, SIGNAL( customContextMenuRequested( const QPoint & ) ),
              this, SLOT( customContextMenuRequestedSlot( const QPoint & ) ) );
@@ -265,6 +273,11 @@ void Users::customContextMenuRequestedSlot( const QPoint & point ) {
         if (!clan.isEmpty())
             userMenu->addMenu(clanGroupsMenu);
     }
+    if(currentTabType == "BattleChannel") {
+        userMenu->addSeparator();
+        userMenu->addMenu(forceMenu);
+        userMenu->addAction(kick);
+    }
 
     QAction *action = userMenu->exec( this->viewport()->mapToGlobal( point ) );
     if ( action ) {
@@ -284,6 +297,25 @@ void Users::customContextMenuRequestedSlot( const QPoint & point ) {
             addUserToGroup(clan, action->text());
         } else if (action->objectName() == "create_new_group") {
             emit openGroupsDialog();
+        } else if ( action == forceTeam ) {
+            int newTeam = QInputDialog::getInt(this,
+                                               "Select team",
+                                               "Select a team to force player to",
+                                               u.battleState.getTeamNo()+1, 1, 16, 1);
+            sendCommand(Command("SAYBATTLE !force " + u.name + " team " + QString::number(newTeam)));
+        } else if ( action == forceAlly ) {
+            int newAlly = QInputDialog::getInt(this,
+                                               "Select ally team",
+                                               "Select an ally team to force player to",
+                                               u.battleState.getAllyTeamNo()+1, 1, 16, 1);
+            sendCommand(Command("SAYBATTLE !force " + u.name + " ally " + QString::number(newAlly)));
+        } else if ( action == forceColor ) {
+            QColor newColor = QColorDialog::getColor(u.m_color, this, "Select user color");
+            sendCommand(Command("SAYBATTLE !force " + u.name + " color " + newColor.name()));
+        } else if ( action == forceSpec ) {
+            sendCommand(Command("SAYBATTLE !force " + u.name + " spec"));
+        } else if ( action == kick ) {
+            sendCommand(Command("SAYBATTLE !kick " + u.name));
         }
     }
 }

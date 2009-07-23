@@ -89,6 +89,8 @@ Sqads.prototype.cmdHelp = function(caller) {
         var command = this.commands[i];
         this.bh.sayUser(caller, " !" + command.name + " - " + command.description);
     }
+    var u = this.bh.users.at(caller);
+    this.bh.sayBattleEx("test=" + u.data.test);
 };
 
 Sqads.prototype.cmdKick = function(caller, user) {
@@ -97,7 +99,6 @@ Sqads.prototype.cmdKick = function(caller, user) {
         if(u.name == this.host) {
             this.bh.sayBattleEx("* " + user + " is hosting current battle. Nice try (:");
         } else {
-            this.bh.sayBattleEx("* " + user + " has been kicked by " + caller);
             u.kick();
         }
     } else {
@@ -132,7 +133,7 @@ Sqads.prototype.cmdBSet = function(caller, setting, value) {
     if(this.bh.isScriptTagValueValid(setting, value)) {
         this.bh.setScriptTag(setting, value);
     } else {
-        this.bh.sayBattleEx("* Value '" + value + "'is invalid for this setting");
+        this.bh.sayBattleEx("* Value '" + value + "' is invalid for this setting");
     }
 };
 

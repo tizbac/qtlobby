@@ -253,6 +253,7 @@ void BattleHost::fillScriptTags() {
     m_scriptTags["limitdgun"] = "0";
     m_scriptTags["deathmode"] = "0";
     m_scriptTags["gamemode"] = "0";
+    m_scriptTags["startpostype"] = "0";
 }
 
 void BattleHost::broadcastScriptTags() {
@@ -276,6 +277,17 @@ QStringList BattleHost::getScriptTagKeys() {
 }
 
 bool BattleHost::isScriptTagValueValid(QString key, QString value) {
+    if(key == "diminishingmms" ||
+       key == "fixedallies" ||
+       key == "disablemapdamage" ||
+       key == "ghostedbuildings" ||
+       key == "limitdgun"
+       )
+        return value == "0" || value == "1";
+    else if(key ==  "startpostype")
+        return value == "0" || value == "1" || value == "2" || value == "3";
+    else if(key ==  "startpostype" || key == "gamemode")
+        return value == "0" || value == "1" || value == "2";
     UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
     int num_options = unitSyncLib->getModOptionCount();
     for (int i = 0; i < num_options; i++) {
@@ -288,13 +300,17 @@ bool BattleHost::isScriptTagValueValid(QString key, QString value) {
             case BOOLEAN:
                 return value == "0" || value == "1";
             case LIST:
+                qDebug() << unitSyncLib->getOptionListItems(i);
+                qDebug() << value;
                 return unitSyncLib->getOptionListItems(i).contains(value);
             case FLOAT:
                 min = unitSyncLib->getOptionNumberMin(i);
                 max = unitSyncLib->getOptionNumberMax(i);
                 step = unitSyncLib->getOptionNumberStep(i);
                 val = value.toFloat();
-                return val == qRound(val/step)*step && (val <= min || val >= max);
+                //FIXME needs some improvements concerning step checking
+                //this check phails
+                return abs(val - qRound(val/step)*step) < 1e-9 && (val >= min && val <= max);
             case STRING:
                 return value.length() <= unitSyncLib->getOptionStringMaxLen(i);
             case SECTION:

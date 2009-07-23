@@ -48,10 +48,17 @@ public slots:
     void requestMapInfo( QString mapName );
     void updateMapInfo( QString mapName );
     void fillModOptions();
-    void fillSides(); // NEW
-    void onSpecCheckBoxChanged( int state ); // NEW
+    void fillSides();
+    void onSpecCheckBoxChanged( int state );
     void onMyStateChanged(User u);
 private slots:
+    void onModOptionsAnchorClicked(QUrl url);
+    void onStartPositionComboBoxChanged(int index);
+    void onGameEndComboBoxChanged(int index);
+    void onLimitDGunCheckBoxToggled(bool checked);
+    void onGhostedBuildingsCheckBoxToggled(bool checked);
+    void onDiminishingMetalMakersCheckBoxToggled(bool checked);
+    void onUndeformableMapSpeedCheckBoxToggled(bool checked);
     void openMapOverview();
     void onChatSplitterMoved ( int pos, int index );
     void onBattleSplitterMoved ( int pos, int index );

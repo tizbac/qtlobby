@@ -11,6 +11,33 @@
 //
 #include "BattleChannel.h"
 #include <QSplitter>
+#include <QInputDialog>
+
+#define BLOCK_UI_SIGNALS battleWindowForm->startPositionComboBox->blockSignals(true); \
+battleWindowForm->gameEndComboBox->blockSignals(true); \
+        battleWindowForm->limitDGunCheckBox->blockSignals(true); \
+        battleWindowForm->diminishingMetalMakersCheckBox->blockSignals(true); \
+        battleWindowForm->ghostedBuildingsCheckBox->blockSignals(true); \
+        battleWindowForm->undeformableMapSpeedCheckBox->blockSignals(true); \
+        battleWindowForm->readyCheckBox->blockSignals(true); \
+        battleWindowForm->specCheckBox->blockSignals(true); \
+        battleWindowForm->factionsComboBox->blockSignals(true); \
+        battleWindowForm->teamNoSpinBox->blockSignals(true); \
+        battleWindowForm->teamAllyNoSpinBox->blockSignals(true); \
+        battleWindowForm->colorToolButton->blockSignals(true);
+
+#define UNBLOCK_UI_SIGNALS battleWindowForm->startPositionComboBox->blockSignals(false); \
+battleWindowForm->gameEndComboBox->blockSignals(false); \
+        battleWindowForm->limitDGunCheckBox->blockSignals(false); \
+        battleWindowForm->diminishingMetalMakersCheckBox->blockSignals(false); \
+        battleWindowForm->ghostedBuildingsCheckBox->blockSignals(false); \
+        battleWindowForm->undeformableMapSpeedCheckBox->blockSignals(false); \
+        battleWindowForm->readyCheckBox->blockSignals(false); \
+        battleWindowForm->specCheckBox->blockSignals(false); \
+        battleWindowForm->factionsComboBox->blockSignals(false); \
+        battleWindowForm->teamNoSpinBox->blockSignals(false); \
+        battleWindowForm->teamAllyNoSpinBox->blockSignals(false); \
+        battleWindowForm->colorToolButton->blockSignals(false);
 
 BattleChannel::BattleChannel( QString id, Battles* battles, QObject * parent ) : AbstractChannel( id, parent ) {
     this->battles = battles;
@@ -72,6 +99,20 @@ void BattleChannel::setupUi( QWidget * tab ) {
             battleWindowForm->heightmapWidget, SLOT(setMyAllyTeam(int)));
     connect(battleWindowForm->teamAllyNoSpinBox, SIGNAL(valueChanged(int)),
             battleWindowForm->metalmapWidget, SLOT(setMyAllyTeam(int)));
+    connect(battleWindowForm->undeformableMapSpeedCheckBox, SIGNAL(toggled(bool)),
+            this, SLOT(onUndeformableMapSpeedCheckBoxToggled(bool)));
+    connect(battleWindowForm->diminishingMetalMakersCheckBox, SIGNAL(toggled(bool)),
+            this, SLOT(onDiminishingMetalMakersCheckBoxToggled(bool)));
+    connect(battleWindowForm->ghostedBuildingsCheckBox, SIGNAL(toggled(bool)),
+            this, SLOT(onGhostedBuildingsCheckBoxToggled(bool)));
+    connect(battleWindowForm->limitDGunCheckBox, SIGNAL(toggled(bool)),
+            this, SLOT(onLimitDGunCheckBoxToggled(bool)));
+    connect(battleWindowForm->gameEndComboBox, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onGameEndComboBoxChanged(int)));
+    connect(battleWindowForm->startPositionComboBox, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onStartPositionComboBoxChanged(int)));
+    connect(battleWindowForm->modOptions, SIGNAL(anchorClicked(QUrl)),
+            this, SLOT(onModOptionsAnchorClicked(QUrl)));
     connect(battles, SIGNAL(addStartRect(int,QRect)), SLOT(onAddStartRect(int,QRect)));
     connect(battles, SIGNAL(removeStartRect(int)), SLOT(onRemoveStartRect(int)));
     currentMap = m_battle.mapName;
@@ -259,8 +300,9 @@ void BattleChannel::receiveCommand( Command command ) {
             else if ( key == "maxunits" )
                 battleWindowForm->unitsSpinBox->setValue( val );
             else */
+            BLOCK_UI_SIGNALS;
             if ( key == "startpostype" ) {
-                val = qMax( qMin( val, 2 ), 0 );
+                val = qMax( qMin( val, 3 ), 0 );
                 battleWindowForm->startPositionComboBox->setCurrentIndex( val );
             } else if ( key == "gamemode" ) {
                 val = qMax( qMin( val, 2 ), 0 );
@@ -271,10 +313,13 @@ void BattleChannel::receiveCommand( Command command ) {
                 battleWindowForm->diminishingMetalMakersCheckBox->setChecked( val > 0 );
             else if ( key == "ghostedbuildings" )
                 battleWindowForm->ghostedBuildingsCheckBox->setChecked( val > 0 );
+            else if ( key == "disablemapdamage" )
+                battleWindowForm->undeformableMapSpeedCheckBox->setChecked( val > 0 );
             if (key == "modoptions") {
                 key = s.section( "=", 0, 0 ).section( "/", 2, 2 ).toLower();
                 m_battle.options[key] = s.section( "=", 1, 1 );
             }
+            UNBLOCK_UI_SIGNALS;
         }
         fillModOptions();
     }
@@ -345,7 +390,11 @@ void BattleChannel::fillModOptions() {
         if (unitSyncLib->isGameOption(i)) continue;
         buffer.append("<tr>");
         buffer.append("<td>");
+        buffer.append("<a href=\"");
+        buffer.append(QString::number(i));
+        buffer.append("\">");
         buffer.append(unitSyncLib->getOptionName(i));
+        buffer.append("</a>");
         buffer.append("</td>");
         buffer.append("<td>");
         bool nondefault = m_battle.options.contains(unitSyncLib->getOptionKey(i));
@@ -388,7 +437,9 @@ void BattleChannel::fillModOptions() {
         buffer.append("</tr>");
     }
     buffer.append("</table>");
+    int scroll = battleWindowForm->modOptions->verticalScrollBar()->value();
     battleWindowForm->modOptions->setHtml(buffer);
+    battleWindowForm->modOptions->verticalScrollBar()->setValue(scroll);
 }
 
 void BattleChannel::requestMapInfo( QString mapName ) {
@@ -455,12 +506,7 @@ void BattleChannel::onColorClicked() {
 
 void BattleChannel::onMyStateChanged(User u) {
     if (noMapUpdates) return;
-    battleWindowForm->readyCheckBox->blockSignals(true);
-    battleWindowForm->specCheckBox->blockSignals(true);
-    battleWindowForm->factionsComboBox->blockSignals(true);
-    battleWindowForm->teamNoSpinBox->blockSignals(true);
-    battleWindowForm->teamAllyNoSpinBox->blockSignals(true);
-    battleWindowForm->colorToolButton->blockSignals(true);
+    BLOCK_UI_SIGNALS;
 
     battleWindowForm->readyCheckBox->setChecked(u.battleState.isReady());
     battleWindowForm->specCheckBox->setChecked(!u.battleState.isPlayer());
@@ -472,12 +518,7 @@ void BattleChannel::onMyStateChanged(User u) {
     battleWindowForm->colorToolButton->setIcon(color);
     currentcolor = u.m_color;
 
-    battleWindowForm->readyCheckBox->blockSignals(false);
-    battleWindowForm->specCheckBox->blockSignals(false);
-    battleWindowForm->factionsComboBox->blockSignals(false);
-    battleWindowForm->teamNoSpinBox->blockSignals(false);
-    battleWindowForm->teamAllyNoSpinBox->blockSignals(false);
-    battleWindowForm->colorToolButton->blockSignals(false);
+    UNBLOCK_UI_SIGNALS;
 }
 
 void BattleChannel::onAddStartRect(int ally, QRect r) {
@@ -502,4 +543,120 @@ void BattleChannel::refreshMapAndModOptions() {
     fillModOptions();
     fillSides();
     requestMapInfo(m_battle.mapName);
+}
+
+void BattleChannel::onUndeformableMapSpeedCheckBoxToggled(bool checked) {
+    battleWindowForm->undeformableMapSpeedCheckBox->blockSignals(true);
+    battleWindowForm->undeformableMapSpeedCheckBox->setChecked(!checked);
+    battleWindowForm->undeformableMapSpeedCheckBox->blockSignals(false);
+    receiveInput(QString("!bset disablemapdamage %1").arg( checked ? "1" : "0" ));
+}
+
+void BattleChannel::onDiminishingMetalMakersCheckBoxToggled(bool checked) {
+    battleWindowForm->diminishingMetalMakersCheckBox->blockSignals(true);
+    battleWindowForm->diminishingMetalMakersCheckBox->setChecked(!checked);
+    battleWindowForm->diminishingMetalMakersCheckBox->blockSignals(false);
+    receiveInput(QString("!bset diminishingmms %1").arg( checked ? "1" : "0" ));
+}
+
+void BattleChannel::onGhostedBuildingsCheckBoxToggled(bool checked) {
+    battleWindowForm->ghostedBuildingsCheckBox->blockSignals(true);
+    battleWindowForm->ghostedBuildingsCheckBox->setChecked(!checked);
+    battleWindowForm->ghostedBuildingsCheckBox->blockSignals(false);
+    receiveInput(QString("!bset ghostedbuildings %1").arg( checked ? "1" : "0" ));
+}
+
+void BattleChannel::onLimitDGunCheckBoxToggled(bool checked) {
+    battleWindowForm->limitDGunCheckBox->blockSignals(true);
+    battleWindowForm->limitDGunCheckBox->setChecked(!checked);
+    battleWindowForm->limitDGunCheckBox->blockSignals(false);
+    receiveInput(QString("!bset limitdgun %1").arg( checked ? "1" : "0" ));
+}
+
+void BattleChannel::onGameEndComboBoxChanged(int index) {
+    static int lastIndex = -1;
+    if(lastIndex == -1) lastIndex = index;
+    battleWindowForm->gameEndComboBox->blockSignals(true);
+    battleWindowForm->gameEndComboBox->setCurrentIndex(lastIndex);
+    battleWindowForm->gameEndComboBox->blockSignals(false);
+    receiveInput(QString("!bset gamemode %1").arg( index ));
+}
+
+void BattleChannel::onStartPositionComboBoxChanged(int index) {
+    static int lastIndex = -1;
+    if(lastIndex == -1) lastIndex = index;
+    battleWindowForm->startPositionComboBox->blockSignals(true);
+    battleWindowForm->startPositionComboBox->setCurrentIndex(lastIndex);
+    battleWindowForm->startPositionComboBox->blockSignals(false);
+    receiveInput(QString("!bset startpostype %1").arg( index ));
+}
+
+void BattleChannel::onModOptionsAnchorClicked(QUrl url) {
+    float min;
+    float max;
+    float step;
+    float val;
+    int i = url.toString().toInt();
+    int length;
+    UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
+    QString key = unitSyncLib->getOptionKey(i);
+    QString item;
+    switch (unitSyncLib->getOptionType(i)) {
+    case BOOLEAN:
+        if(m_battle.options[key].toString() == "0") {
+            receiveInput(QString("!bset %1 1").arg(key));
+        } else {
+            receiveInput(QString("!bset %1 0").arg(key));
+        }
+        break;
+    case LIST:
+        item = QInputDialog::getItem(NULL,
+                                     "Select value",
+                                     "Select value for " +
+                                     unitSyncLib->getOptionName(i),
+                                     unitSyncLib->getOptionListItems(i),
+                                     unitSyncLib->getOptionListItems(i).indexOf(m_battle.options[key].toString()));
+        receiveInput(QString("!bset %1 %2").arg(key).arg(item));
+        break;
+    case FLOAT:
+        min = unitSyncLib->getOptionNumberMin(i);
+        max = unitSyncLib->getOptionNumberMax(i);
+        step = unitSyncLib->getOptionNumberStep(i);
+        if(step == (int)step) {
+            val = QInputDialog::getInt(NULL,
+                                       "Select value",
+                                       "Select value for " +
+                                       unitSyncLib->getOptionName(i),
+                                       m_battle.options[key].toFloat(),
+                                       min,
+                                       max,
+                                       step);
+        } else {
+            val = QInputDialog::getDouble(NULL,
+                                          "Select value",
+                                          "Select value for " +
+                                          unitSyncLib->getOptionName(i),
+                                          m_battle.options[key].toFloat(),
+                                          min,
+                                          max,
+                                          5);//Possibly this hardcode could break some mod, but i'm too lazy to detect the number of decimals from float step ;)
+        }
+        receiveInput(QString("!bset %1 %2").arg(key).arg(val));
+        break;
+    case STRING:
+        length = unitSyncLib->getOptionStringMaxLen(i);
+        do {
+            item = QInputDialog::getText(NULL,
+                                         "Select value",
+                                         "Select value for " +
+                                         unitSyncLib->getOptionName(i),
+                                         QLineEdit::Normal,
+                                         m_battle.options[key].toString()
+                                         );
+        } while (item.length() < length);
+        receiveInput(QString("!bset %1 %2").arg(key).arg(item));
+    case SECTION:
+    case UNDEFINED:
+        break;
+    }
 }

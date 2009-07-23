@@ -11,7 +11,6 @@ SqadsUserListPrototype::SqadsUserListPrototype(QObject *parent) : QObject(parent
 
 int SqadsUserListPrototype::getLength() {
     QList<User>* list = qscriptvalue_cast<SqadsUserListPtr>(thisObject()).ptr;
-    qDebug() << "list == " << list;
     if(!list) {
         context()->throwError("Member function called on invalid object");
         return -1;
@@ -47,12 +46,9 @@ SqadsUserPtr SqadsUserListPrototype::at(QString username) {
     ptr.bh = listptr.bh;
     ptr.ptr = 0;
     username = username.replace("[", "\\[").replace("]", "\\]");
-    qDebug() << "Username: " << username;
     QRegExp re("^.*" + username + ".*$", Qt::CaseInsensitive, QRegExp::RegExp2);
     for(int i = 0; i < list->size(); i++) {
-        qDebug() << "Matching: " << list->at(i).name;
         if(re.exactMatch(list->at(i).name)) {
-            qDebug() << "Succeded";
             ptr.ptr = &(list->operator[](i));
         }
     }
@@ -197,14 +193,12 @@ bool SqadsUserPrototype::isPlayer() const {
 void SqadsUserPrototype::setPlayer(bool b) {
     SqadsUserPtr uptr = qscriptvalue_cast<SqadsUserPtr>(thisObject());
     User* u = uptr.ptr;
-    qDebug() << u;
     if(!u) {
         context()->throwError("Member function called on invalid object");
         return;
     }
     if(!b) {
         u->battleState.setPlayer(b);
-        qDebug() << uptr.bh;
         uptr.bh->forceSpectator(u);
     }
 }
@@ -286,4 +280,3 @@ bool SqadsUserPrototype::isValid() const {
     SqadsUserPtr uptr = qscriptvalue_cast<SqadsUserPtr>(thisObject());
     return uptr.ptr != 0;
 }
-

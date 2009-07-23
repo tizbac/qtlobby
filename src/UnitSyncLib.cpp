@@ -45,7 +45,8 @@ UnitSyncLib::UnitSyncLib( QObject *parent ) : QObject( parent ) {
             << "ghostedbuildings"
             << "limitdgun"
             << "deathmode"
-            << "gamemode";
+            << "gamemode"
+            << "startpostype";
 }
 
 bool UnitSyncLib::loadLibrary() {

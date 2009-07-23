@@ -93,6 +93,12 @@ protected:
     QAction* openPrivateChannelAction;
     QAction* slapAction;
     QAction* joinSameBattleAction;
+    QMenu* forceMenu;
+    QAction* forceTeam;
+    QAction* forceAlly;
+    QAction* forceColor;
+    QAction* forceSpec;
+    QAction* kick;
     void updateUserList();
     TreeSortFilterProxyModel* proxyModel;
     QRegExp clanRegexp;
