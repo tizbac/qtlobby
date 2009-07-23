@@ -69,13 +69,10 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
         if( b.isLocked )
             ret += 4;
         UnitSyncLib* us = UnitSyncLib::getInstance();
-        if(us->libraryLoaded())
-        {
-            if( !us->getModNames().contains( b.modName ) )
-                ret += 8;
-            if( !us->getMapNames().contains( b.mapName ) )
-                ret += 16;
-         }
+        if( !us->getModNames().contains( b.modName ) )
+            ret += 8;
+        if( !us->getMapNames().contains( b.mapName ) )
+            ret += 16;
         if( b.playerCount - b.spectatorCount < 1 )
             ret += 32;
         bool containsGroupUser = false;

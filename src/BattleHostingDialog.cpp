@@ -75,9 +75,6 @@ void BattleHostingDialog::setCurrentUsername(QString username) {
 
 void BattleHostingDialog::onReboot() {
     UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
-    if(!unitSyncLib->libraryLoaded())
-        return;
-
     m_ui->modComboBox->clear();
     m_ui->modComboBox->addItems(unitSyncLib->getModNames());
     m_ui->mapComboBox->clear();
