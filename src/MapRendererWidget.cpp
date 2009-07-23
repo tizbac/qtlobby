@@ -28,6 +28,7 @@ MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
     m_computedNormals = false;
     m_indexes = 0;
     getGLExtensionFunctions().resolve(context());
+    m_redrawStartRects = true;
 }
 
 MapRendererWidget::~MapRendererWidget() {
@@ -109,6 +110,7 @@ void MapRendererWidget::paintGL() {
         glTexCoordPointer( 2, GL_FLOAT, 0, m_texCoords );
     }
 
+    if(m_redrawStartRects) drawStartRecs();
     glBindTexture(GL_TEXTURE_2D, m_texture);
     glDrawElements(GL_TRIANGLE_STRIP, m_numIndexes, GL_UNSIGNED_INT, m_indexes);
 
@@ -188,10 +190,7 @@ void MapRendererWidget::makeObject() {
         glBindBuffer( GL_ARRAY_BUFFER, m_VBOTexCoords );
         glBufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(TexCoord), m_texCoords, GL_STATIC_DRAW );
     }
-    if (startRects.count())
-        drawStartRecs();
-    else
-        m_texture = bindTexture(QPixmap::fromImage(m_minimap), GL_TEXTURE_2D);
+    m_texture = bindTexture(QPixmap::fromImage(m_minimap), GL_TEXTURE_2D);
     generateIndexes();
     //QApplication::processEvents();
     //progress->hide();
@@ -317,7 +316,7 @@ void MapRendererWidget::mouseMoveEvent(QMouseEvent *event) {
 
 
 void MapRendererWidget::drawStartRecs() {
-    if (m_minimap.isNull()) return;
+    if (m_minimap.isNull() || startRects.isEmpty()) return;
     m_withRects = m_minimap;
     QPainter p(&m_withRects);
     for (QMap<int, QRect>::const_iterator i = startRects.begin(); i != startRects.end(); i++) {
@@ -346,26 +345,24 @@ void MapRendererWidget::drawStartRecs() {
     m_withRects.save("/home/lupus/tmp/texture.png");
     deleteTexture(m_texture);
     m_texture = bindTexture(QPixmap::fromImage(m_withRects), GL_TEXTURE_2D);
+    m_redrawStartRects = false;
 }
 
 void MapRendererWidget::addStartRect(int ally, QRect r) {
     startRects[ally] = r;
-    drawStartRecs();
-    updateGL();
+    m_redrawStartRects = true;
 }
 
 void MapRendererWidget::setMyAllyTeam(int n) {
     n--;
     if (myAlly == n) return;
     myAlly = n;
-    drawStartRecs();
-    updateGL();
+    m_redrawStartRects = true;
 }
 
 void MapRendererWidget::removeStartRect(int ally) {
     startRects.remove(ally);
-    drawStartRecs();
-    updateGL();
+    m_redrawStartRects = true;
 }
 
 

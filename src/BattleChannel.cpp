@@ -90,6 +90,8 @@ void BattleChannel::setupUi( QWidget * tab ) {
             battleWindowForm->heightmapWidget, SLOT(setMyAllyTeam(int)));
     connect(battleWindowForm->teamAllyNoSpinBox, SIGNAL(valueChanged(int)),
             battleWindowForm->metalmapWidget, SLOT(setMyAllyTeam(int)));
+    connect(battleWindowForm->teamAllyNoSpinBox, SIGNAL(valueChanged(int)),
+            mapOverviewDialog, SLOT(setMyAllyTeam(int)));
     connect(battleWindowForm->undeformableMapSpeedCheckBox, SIGNAL(toggled(bool)),
             this, SLOT(onUndeformableMapSpeedCheckBoxToggled(bool)));
     connect(battleWindowForm->diminishingMetalMakersCheckBox, SIGNAL(toggled(bool)),

@@ -86,6 +86,7 @@ private:
     float dy;
     QMap<int, QRect> startRects;
     int myAlly;
+    bool m_redrawStartRects;
 };
 
 #endif // MAPRENDERERWIDGET_H
