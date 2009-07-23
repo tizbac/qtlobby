@@ -42,6 +42,7 @@ BattleChannel::BattleChannel( QString id, Battles* battles, QObject * parent ) :
     connect(battles, SIGNAL(addStartRect(int,QRect)), SLOT(onAddStartRect(int,QRect)));
     noMapUpdates = false;
     locked = false;
+    wasKicked = false;
 }
 
 BattleChannel::~BattleChannel() {
@@ -118,6 +119,7 @@ void BattleChannel::setupUi( QWidget * tab ) {
 
 void BattleChannel::receiveCommand( Command command ) {
     //   qDebug() << command.toQString();
+    if(wasKicked) return;
     command.name = command.name.toUpper();
     QStringList battleChannelCommands;
     battleChannelCommands
@@ -240,6 +242,8 @@ void BattleChannel::receiveCommand( Command command ) {
     } else if ( command.name == "FORCEQUITBATTLE" ) {
         QMessageBox::critical(NULL, "Kicked from battle", "You have been kicked from the battle, poor you!");
         insertLine("You have been kicked from the battle!\n");
+        wasKicked = true;
+        battleWindowForm->battleSettingsGroupBox->setEnabled(false);
     } else if ( command.name == "JOINEDBATTLE" ) {
         if ( command.attributes.takeFirst() == objectName() ) {
             QString userName = command.attributes.takeFirst();
@@ -652,4 +656,8 @@ void BattleChannel::onModOptionsAnchorClicked(QUrl url) {
     case UNDEFINED:
         break;
     }
+}
+
+bool BattleChannel::isBlocked() const {
+    return wasKicked;
 }

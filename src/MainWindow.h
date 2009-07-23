@@ -102,6 +102,7 @@ private slots:
     void onStatsChange(int users, int moderators);
     void onStatsChange(int battles);
     void connectionStatusChanged(ConnectionState);
+    void onBlockInput(bool b);
 
     void onChangedToBattleTab();
     void onChangedFromBattleTab();

@@ -224,10 +224,20 @@ void LobbyTabs::currentTabChangedSlot( int index ) {
     if (index < 0) return;
     setTabIcon( index );
     tabBar->setTabTextColor( index, lobbyTabList[index]->color );
+    bool isBattleTab = QString( lobbyTabList[index]->metaObject()->className() ) == "BattleChannel";
+    if(isBattleTab) {
+        BattleChannel* bc = qobject_cast<BattleChannel*>(lobbyTabList[index]);
+        if(bc->isBlocked())
+            emit blockInput(true);
+        else
+            emit blockInput(false);
+    } else {
+        emit blockInput(false);
+    }
     //updateCloseTabState();
     emit currentTabChanged( lobbyTabList[index]->objectName(),
                             lobbyTabList[index]->metaObject()->className() );
-    //bool isBattleTab = QString( lobbyTabList[index]->metaObject()->className() ) == "BattleChannel";
+
     if (lastIndex >= 0) {
         if (QString( lobbyTabList[lastIndex]->metaObject()->className() ) == "BattleChannel" && QString( lobbyTabList[index]->metaObject()->className() ) != "BattleChannel")
             emit changedFromBattleTab();

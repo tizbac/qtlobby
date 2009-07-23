@@ -43,6 +43,7 @@ signals:
     void currentTabChanged( QString name, QString lobbyTabType );
     void changedToBattleTab();
     void changedFromBattleTab();
+    void blockInput(bool b);
 
 public slots:
     //sets the internal state occording the global connection state

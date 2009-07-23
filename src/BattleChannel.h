@@ -28,6 +28,7 @@ public:
     QString getTabTitle();
     void refreshMapAndModOptions();
     ~BattleChannel();
+    bool isBlocked() const;
 
 signals:
     void playSample( SampleCollection sample );
@@ -66,6 +67,7 @@ private:
     QColor currentcolor;
     bool locked;
     QByteArray splitterState;
+    bool wasKicked;
 protected:
     Battles* battles;
 };

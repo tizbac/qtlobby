@@ -220,6 +220,10 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     connect(battles->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
             this, SLOT(onCurrentChanged(QModelIndex,QModelIndex)));
 
+    //input blocking signal
+    connect(lobbyTabs, SIGNAL(blockInput(bool)),
+            this, SLOT(onBlockInput(bool)));
+
     //Spring stopped signal
     connect(&qpSpring, SIGNAL(finished (int, QProcess::ExitStatus)),
             users, SLOT(onSpringStopped()));
@@ -485,4 +489,8 @@ void MainWindow::onCurrentTabChanged() {
 
 void MainWindow::on_hostPushButton_clicked() {
     battleHostingDialog->show();
+}
+
+void MainWindow::onBlockInput(bool b) {
+    inputLineEdit->setDisabled(b);
 }
