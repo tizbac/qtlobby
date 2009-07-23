@@ -479,7 +479,8 @@ void MainWindow::onCurrentTabChanged() {
     usersInCurrentChannel->setText(
             "Users: " + QString::number(users->usersCountInCurrentChannel())
             );
-    usersTeamCount->setText("blablabla");
+    //FIXME: wtf? (ko)
+    //usersTeamCount->setText("blablabla");
 }
 
 void MainWindow::on_hostPushButton_clicked() {
