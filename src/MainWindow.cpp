@@ -341,7 +341,7 @@ void MainWindow::setColorInducatorBattles( QString regExp ) {
 }
 
 void MainWindow::startSpring() {
-    emit newTrayMessage( "spring instance started" );
+    //emit newTrayMessage( "spring instance started" );
     qpSpring.start( settings->value( "spring_executable_with_abs_path_to_it" ).toString(),
               QStringList( QString( "%1/%2" )
                            .arg( settings->value( "spring_user_dir" ).toString() )
@@ -479,6 +479,7 @@ void MainWindow::onCurrentTabChanged() {
     usersInCurrentChannel->setText(
             "Users: " + QString::number(users->usersCountInCurrentChannel())
             );
+    usersTeamCount->setText("blablabla");
 }
 
 void MainWindow::on_hostPushButton_clicked() {
