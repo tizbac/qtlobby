@@ -6,7 +6,10 @@ function Sqads(battleHost) {
             {name: "force", admin: true, description: "Forces user to specified team or ally or to spectate", argc: 3, opt: 1, callback: this.cmdForce},
             {name: "start", admin: true, description: "Starts a game", argc: 0, opt: 0, callback: this.cmdStart},
             {name: "bset", admin: true, description: "Sets some battle parameter", argc: 2, opt: 0, callback: this.cmdBSet},
-            {name: "map", admin: true, description: "Change current map", argc: 1, opt: 0, callback: this.cmdMap}
+            {name: "map", admin: true, description: "Change current map", argc: 1, opt: 0, callback: this.cmdMap},
+            {name: "addbox", admin: false, description: "Add start box for ally team", argc: 5, opt: 0, callback: this.cmdAddBox},
+            {name: "clearbox", admin: false, description: "Clears start box for ally team", argc: 1, opt: 1, callback: this.cmdClearBox},
+            {name: "split", admin: false, description: "Splits map with start boxes", argc: 2, opt: 0, callback: this.cmdSplit}
     ];
 
     this.bh = battleHost;
@@ -109,19 +112,23 @@ Sqads.prototype.cmdKick = function(caller, user) {
 Sqads.prototype.cmdForce = function(caller, user, param, value) {
     var u = this.bh.users.at(user);
     switch(param) {
-            case "team":
-        u.team = value - 0;
-        break;
-            case "ally":
-        u.ally = value - 0;
-        break;
-    case "color":
-        u.color = value;
-        break;
-            case "spec":
-        u.player = false;
-        break;
-    }
+            case "team": {
+                    u.team = value - 0;
+                    break;
+                }
+            case "ally": {
+                    u.ally = value - 0;
+                    break;
+                }
+            case "color": {
+                    u.color = value;
+                    break;
+                }
+            case "spec": {
+                    u.player = false;
+                    break;
+                }
+            }
 };
 
 Sqads.prototype.cmdStart = function(caller) {
@@ -142,5 +149,80 @@ Sqads.prototype.cmdMap = function(caller, map) {
         this.bh.setMap(map);
     } else {
         this.bh.sayBattleEx("* No such map.");
+    }
+};
+
+Sqads.prototype.cmdAddBox = function(caller, left, top, right, bottom, ally) {
+    if(left >= 0 && left <= 200 &&
+       top >= 0 && top <= 200 &&
+       right >= 0 && right <= 200 &&
+       bottom >= 0 && bottom <= 200) {
+        if(left < right && top < bottom) {
+            if(ally >= 1 && ally <= 16) {
+                this.bh.addStartRect(left, top, right, bottom, ally);
+            } else {
+                this.bh.sayBattleEx("* Wrong ally team number. Current protocol supports team number from 1 to 16");
+            }
+        } else {
+            this.bh.sayBattleEx("* Given coordinates form a singular start box");
+        }
+    } else {
+        this.bh.sayBattleEx("* Bad coordinates. Box coordinates must belong to [0;200]");
+    }
+};
+
+Sqads.prototype.cmdClearBox = function(caller, ally) {
+    if(ally) {
+        if(ally >= 1 && ally <= 16) {
+            this.bh.removeStartRect(ally);
+        } else {
+            this.bh.sayBattleEx("* Wrong ally team number. Current protocol supports team number from 1 to 16");
+        }
+    } else {
+        this.bh.clearStartRects();
+    }
+};
+
+Sqads.prototype.cmdSplit = function(caller, mode, percent) {
+    if(percent > 0 && percent <= 100) {
+        percent = percent / 100;
+        switch(mode) {
+        case "h": { //splits map horizontally
+                this.bh.addStartRect(0, 0, 200, 200*percent, 0);
+                this.bh.addStartRect(0, 200 - 200*percent, 200, 200, 1);
+                break;
+            }
+        case "v" : {//splits map vertically
+                this.bh.addStartRect(0, 0, 200*percent, 200, 0);
+                this.bh.addStartRect(200 - 200*percent, 0, 200, 200, 1);
+                break;
+            }
+        case "c1": { //splits map on top left and bottom right corners
+                this.bh.addStartRect(0, 0, 200*percent, 200*percent, 0);
+                this.bh.addStartRect(200 - 200*percent, 200 - 200*percent, 200, 200, 1);
+                break;
+            }
+        case "c2" : { //splits map on top right and bottom left corners
+                this.bh.addStartRect(200 - 200*percent, 0, 200, 200*percent, 0);
+                this.bh.addStartRect(0, 200 - 200*percent, 200*percent, 200, 1);
+                break;
+            }
+        case "c": { //splits map on 4 corners
+                this.bh.addStartRect(0, 0, 200*percent, 200*percent, 0);
+                this.bh.addStartRect(200 - 200*percent, 200 - 200*percent, 200, 200, 1);
+                this.bh.addStartRect(200 - 200*percent, 0, 200, 200*percent, 2);
+                this.bh.addStartRect(0, 200 - 200*percent, 200*percent, 200, 3);
+                break;
+            }
+        case "s": { //splits map on 4 sides
+                this.bh.addStartRect(100-200*percent/2,0,100+200*percent/2,200*percent, 0);
+                this.bh.addStartRect(100-200*percent/2,200-200*percent,100+200*percent/2,200, 1);
+                this.bh.addStartRect(0,100-200*percent/2,200*percent,100+200*percent/2, 2);
+                this.bh.addStartRect(200-200*percent,100-200*percent/2,200,100+200*percent/2, 3);
+                break;
+            }
+        }
+    } else {
+        this.bh.sayBattleEx("* Percent must belong to (0; 100]");
     }
 };

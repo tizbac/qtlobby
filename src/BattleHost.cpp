@@ -10,6 +10,9 @@ BattleHost::BattleHost(QString host, QObject* parent) : QThread(parent) {
     u.name = host;
     u.battleState.setState(0);
     m_users.append(u);
+    for(int i = 0; i < 15; i++) {
+        m_startRects[i] = false;
+    }
 }
 
 void BattleHost::setHostingParams(quint8 type, quint8 natType, QString password, quint16 port, quint8 maxplayers, quint8 rank, QString map, QString mod, QString title) {
@@ -71,8 +74,10 @@ void BattleHost::receiveCommand( Command command ) {
     command.name = command.name.toUpper();
     if ( command.name == "OPENBATTLE" ) {
         m_id = command.attributes[0].toInt();
-        //For SQADS debugging uncomment this
-        //m_debugger.standardWindow()->show();
+        //For SQADS debugging
+#ifdef SQADS_DEBUG
+        m_debugger.standardWindow()->show();
+#endif
         QFile scriptFile(":/src/sqads.js");
         scriptFile.open(QIODevice::ReadOnly);
         m_engine.evaluate(scriptFile.readAll(), "sqads.js");
@@ -328,4 +333,29 @@ bool BattleHost::isScriptTagValueValid(QString key, QString value) {
 void BattleHost::setScriptTag(QString key, QString value) {
     m_scriptTags[key] = value;
     broadcastScriptTags();
+}
+
+void BattleHost::addStartRect(quint8 left, quint8 top, quint8 right, quint8 bottom, quint8 ally) {
+    //ADDSTARTRECT allyno left top right bottom
+    if(m_startRects[ally]) removeStartRect(ally);
+    QString cmd("ADDSTARTRECT %1 %2 %3 %4 %5");
+    emit sendCommand(Command(cmd.arg(ally).arg(left).arg(top).arg(right).arg(bottom)));
+    emit sendFakeMessage(cmd.arg(ally).arg(left).arg(top).arg(right).arg(bottom));
+    m_startRects[ally] = true;
+}
+
+void BattleHost::removeStartRect(quint8 ally) {
+    if(!m_startRects[ally]) return;
+    emit sendCommand(Command("REMOVESTARTRECT " + QString::number(ally)));
+    emit sendFakeMessage("REMOVESTARTRECT " + QString::number(ally));
+    m_startRects[ally] = false;
+}
+
+void BattleHost::clearStartRects() {
+    for(int i = 0; i < 15; i++) {
+        if(!m_startRects[i]) continue;
+        emit sendCommand(Command("REMOVESTARTRECT " + QString::number(i)));
+        emit sendFakeMessage("REMOVESTARTRECT " + QString::number(i));
+        m_startRects[i] = false;
+    }
 }

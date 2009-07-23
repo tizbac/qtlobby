@@ -12,6 +12,8 @@
 
 #include "sqadsprototypes.h"
 
+//#define SQADS_DEBUG
+
 class BattleHost : public QThread {
     Q_OBJECT
     Q_PROPERTY(SqadsUserListPtr users READ getUsers)
@@ -56,6 +58,9 @@ public slots:
     QStringList getScriptTagKeys();
     bool isScriptTagValueValid(QString key, QString value);
     void setScriptTag(QString key, QString value);
+    void addStartRect(quint8 left, quint8 top, quint8 right, quint8 bottom, quint8 ally);
+    void removeStartRect(quint8 ally);
+    void clearStartRects();
 protected:
     void run();
     void fillScriptTags();
@@ -79,6 +84,7 @@ private:
     QList<User> m_users;
     QString m_host;
     QMap<QString,QString> m_scriptTags;
+    QMap<int,bool> m_startRects;
 
     SqadsUserListPrototype sqadsUserList;
     SqadsUserPrototype sqadsUser;
