@@ -503,6 +503,8 @@ int UnitSyncLib::getOptionStringMaxLen(int optIndex) {
     return m_GetOptionStringMaxLen(optIndex);
 }
 
+
+//forgot to add fixed issue to log, remove this on next commit :)
 void UnitSyncLib::reboot() {
     MANUAL_LOCK;
     if (library_loaded) {
