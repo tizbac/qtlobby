@@ -76,6 +76,8 @@ Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
              this, SLOT( setFilterWithoutPlayersSlot( bool ) ) );
     connect( filterWithoutFriendsAction, SIGNAL( toggled( bool ) ),
              this, SLOT( setFilterWithoutFriendsSlot( bool ) ) );
+    connect (UnitSyncLib::getInstance(), SIGNAL(rebooted()),
+             this, SLOT(onReboot()));
     battleCount = 0;
     QSettings* s = Settings::Instance();
     if( s->contains("Battles/filterPassworded" ) )
@@ -543,3 +545,11 @@ void Battles::setFilterWithoutFriendsSlot( bool state ) {
     battleManager->proxyModel()->setBitState( 6, state );
     Settings::Instance()->setValue("Battles/filterWithoutFriends", state);
 }
+
+void Battles::onReboot() {
+    qDebug() << "Resyncing";
+    User u = users->getUser( url.userName() );
+    u.battleState.setSyncState(resyncStatus());
+    users->onMyBattleStateChanged( u );
+}
+

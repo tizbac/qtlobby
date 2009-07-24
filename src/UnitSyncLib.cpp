@@ -95,6 +95,7 @@ bool UnitSyncLib::loadLibrary() {
     m_IsUnitDisabledByClient  = ( IsUnitDisabledByClient ) unitsynclib->resolve( "IsUnitDisabledByClient" );
     m_AddArchive  = ( AddArchive ) unitsynclib->resolve( "AddArchive" );
     m_AddAllArchives  = ( AddAllArchives ) unitsynclib->resolve( "AddAllArchives" );
+    m_RemoveAllArchives  = ( RemoveAllArchives ) unitsynclib->resolve( "RemoveAllArchives" );
     m_GetArchiveChecksum  = ( GetArchiveChecksum ) unitsynclib->resolve( "GetArchiveChecksum" );
     m_GetArchivePath  = ( GetArchivePath ) unitsynclib->resolve( "GetArchivePath" );
     m_GetMapCount  = ( GetMapCount ) unitsynclib->resolve( "GetMapCount" );
@@ -252,7 +253,6 @@ RawHeightMap UnitSyncLib::getHeightMapRaw( const QString mapFileName ) {
     int height;
     int width;
     m_GetInfoMapSize(mapFileName.toAscii(), "height", &width, &height);
-    qDebug() << width << "x" << height;
     unsigned short *ptr = new unsigned short[width*height];
     m_GetInfoMap(mapFileName.toAscii(), "height", ptr, 2);
     return RawHeightMap(width,height,ptr);
@@ -318,12 +318,15 @@ QString UnitSyncLib::modArchive( int modIndex ) {
 bool UnitSyncLib::setCurrentMod(QString modname) {
     NON_REENTRANT;
     if (!libraryLoaded()) return false;
-    if (m_currentModName == modname) return true;
+    //if (m_currentModName == modname) return true;
     //qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModIndex";
     int index = m_GetPrimaryModIndex(modname.toAscii());
     if (index < 0) return false;
+    //qDebug() << "UNITSYNC_DUMP: " << "RemoveAllArchives";
     //qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModArchive";
     //qDebug() << "UNITSYNC_DUMP: " << "AddAllArchives";
+
+    m_RemoveAllArchives();
     m_AddAllArchives(m_GetPrimaryModArchive(index));
     m_currentModName = modname;
     m_sideIconsCache.clear();
@@ -505,10 +508,19 @@ void UnitSyncLib::reboot() {
     if (library_loaded) {
         //qDebug() << "UNITSYNC_DUMP: " << "UnInit";
         m_UnInit();
-        unitsynclib->unload();
+        !unitsynclib->unload();
         unitsynclib->load();
         //qDebug() << "UNITSYNC_DUMP: " << "Init";
         m_Init(0,0);
+        //qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModIndex";
+        m_RemoveAllArchives();
+        int index = m_GetPrimaryModIndex(m_currentModName.toAscii());
+        if (index >= 0) {
+            //qDebug() << "UNITSYNC_DUMP: " << "RemoveAllArchives";
+            //qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModArchive";
+            //qDebug() << "UNITSYNC_DUMP: " << "AddAllArchives";
+            m_AddAllArchives(m_GetPrimaryModArchive(index));
+        }
         MANUAL_UNLOCK;
         emit rebooted();
     }

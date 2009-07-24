@@ -449,3 +449,4 @@ void Users::onSpringStopped() {
     u.userState.setIngame(false);
     onMyStateChanged( u );
 }
+

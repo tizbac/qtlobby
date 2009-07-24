@@ -150,6 +150,7 @@ private:
     typedef int (CONV * IsUnitDisabledByClient )( int unit, int clientId );
     typedef void (CONV * AddArchive )( const char* name );
     typedef void (CONV * AddAllArchives )( const char* root );
+    typedef void (CONV * RemoveAllArchives)();
     typedef unsigned int (CONV * GetArchiveChecksum )( const char* arname );
     typedef const char*(CONV * GetArchivePath )( const char* arname );
     typedef int (CONV * GetMapCount )();
@@ -241,6 +242,7 @@ private:
     IsUnitDisabledByClient m_IsUnitDisabledByClient;
     AddArchive m_AddArchive;
     AddAllArchives m_AddAllArchives;
+    RemoveAllArchives m_RemoveAllArchives;
     GetArchiveChecksum m_GetArchiveChecksum;
     GetArchivePath m_GetArchivePath;
     GetMapCount m_GetMapCount;

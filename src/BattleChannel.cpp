@@ -442,6 +442,10 @@ void BattleChannel::fillModOptions() {
 
 void BattleChannel::requestMapInfo( QString mapName ) {
     if (noMapUpdates) return;
+    if(!loader) {
+        loader = new MapInfoLoader(this);
+        connect(loader, SIGNAL(loadCompleted(QString)), SLOT(updateMapInfo(QString)));
+    }
     if (loader->isRunning()) {
         loader->cleanup();
         loader = new MapInfoLoader(this);
@@ -474,7 +478,8 @@ void BattleChannel::updateMapInfo( QString mapName ) {
         battleWindowForm->heightmapWidget->setImage(loader->heightmap);
         battleWindowForm->metalmapWidget->setImage(loader->metalmap);
         mapOverviewDialog->setSource(mapName, loader->mapinfo.description, loader->minimap, loader->rawHeightmap);
-        delete loader;
+        loader->cleanup();
+        loader = 0;
     }
 }
 
@@ -539,6 +544,7 @@ QString BattleChannel::getTabTitle() {
 }
 
 void BattleChannel::refreshMapAndModOptions() {
+    qDebug() << "Refreshing...";
     fillModOptions();
     fillSides();
     requestMapInfo(m_battle.mapName);

@@ -65,7 +65,10 @@ void MapInfoLoader::run() {
 
 void MapInfoLoader::cleanup() {
     QMutexLocker lock(&clean);
-    m_autoclean = true;
+    if(isRunning())
+        m_autoclean = true;
+    else
+        clearData();
 }
 
 void MapInfoLoader::clearData() {

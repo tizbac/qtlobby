@@ -62,6 +62,7 @@ protected slots:
     void setFilterUnavailableMapsSlot( bool state );
     void setFilterWithoutPlayersSlot( bool state );
     void setFilterWithoutFriendsSlot( bool state );
+    void onReboot();
 
 protected:
     int resyncStatus();
