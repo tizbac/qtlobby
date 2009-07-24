@@ -281,6 +281,8 @@ void LobbyTabs::closeTab(int i) {
     for (; i < lobbyTabList.size(); i++) {
         lobbyTabList[mapToLobbyTabs(i)]->currentTabIndex--;
     }
+    emit currentTabChanged( lobbyTabList[mapToLobbyTabs(tabBar->currentIndex())]->objectName(),
+                            lobbyTabList[mapToLobbyTabs(tabBar->currentIndex())]->metaObject()->className() );
     lobbyTabList[index]->deleteLater();
     lobbyTabList.removeAt( index );
 }

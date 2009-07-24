@@ -355,6 +355,7 @@ void BattleChannel::receiveInput( QString input ) {
         disconnect(battles, SIGNAL(removeStartRect(int)), this, SLOT(onRemoveStartRect(int)));
         Settings::Instance()->setValue("mainwindow/chatsplitter", splitterState);
         noMapUpdates = true;
+        if(wasKicked) return;
     } else {
         ret.name = "SAYBATTLE";
         ret.attributes << input;
@@ -473,6 +474,7 @@ void BattleChannel::updateMapInfo( QString mapName ) {
         battleWindowForm->heightmapWidget->setImage(loader->heightmap);
         battleWindowForm->metalmapWidget->setImage(loader->metalmap);
         mapOverviewDialog->setSource(mapName, loader->mapinfo.description, loader->minimap, loader->rawHeightmap);
+        delete loader;
     }
 }
 

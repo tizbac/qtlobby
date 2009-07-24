@@ -252,6 +252,7 @@ RawHeightMap UnitSyncLib::getHeightMapRaw( const QString mapFileName ) {
     int height;
     int width;
     m_GetInfoMapSize(mapFileName.toAscii(), "height", &width, &height);
+    qDebug() << width << "x" << height;
     unsigned short *ptr = new unsigned short[width*height];
     m_GetInfoMap(mapFileName.toAscii(), "height", ptr, 2);
     return RawHeightMap(width,height,ptr);

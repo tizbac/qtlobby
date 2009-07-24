@@ -39,6 +39,7 @@ MapRendererWidget::~MapRendererWidget() {
     }
     if (m_vertexes) delete m_vertexes;
     if (m_texCoords) delete m_texCoords;
+    if (m_indexes) delete m_indexes;
 }
 
 void MapRendererWidget::initializeGL() {
@@ -196,6 +197,12 @@ void MapRendererWidget::makeObject() {
     //progress->hide();
     //delete progress;
     m_heightmap.free();
+    if (getGLExtensionFunctions().openGL15Supported()) {
+        delete m_vertexes;
+        m_vertexes = 0;
+        delete m_texCoords;
+        m_texCoords = 0;
+    }
     blockRerender = false;
 }
 
