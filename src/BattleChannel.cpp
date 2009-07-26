@@ -15,7 +15,10 @@ battleWindowForm->gameEndComboBox->blockSignals(true); \
         battleWindowForm->factionsComboBox->blockSignals(true); \
         battleWindowForm->teamNoSpinBox->blockSignals(true); \
         battleWindowForm->teamAllyNoSpinBox->blockSignals(true); \
-        battleWindowForm->colorToolButton->blockSignals(true);
+        battleWindowForm->colorToolButton->blockSignals(true); \
+        battleWindowForm->gameEndComboBox->blockSignals(true); \
+        battleWindowForm->startPositionComboBox->blockSignals(true);
+
 
 #define UNBLOCK_UI_SIGNALS battleWindowForm->startPositionComboBox->blockSignals(false); \
 battleWindowForm->gameEndComboBox->blockSignals(false); \
@@ -28,7 +31,9 @@ battleWindowForm->gameEndComboBox->blockSignals(false); \
         battleWindowForm->factionsComboBox->blockSignals(false); \
         battleWindowForm->teamNoSpinBox->blockSignals(false); \
         battleWindowForm->teamAllyNoSpinBox->blockSignals(false); \
-        battleWindowForm->colorToolButton->blockSignals(false);
+        battleWindowForm->colorToolButton->blockSignals(false); \
+        battleWindowForm->gameEndComboBox->blockSignals(false); \
+        battleWindowForm->startPositionComboBox->blockSignals(false);
 
 BattleChannel::BattleChannel( QString id, Battles* battles, QObject * parent ) : AbstractChannel( id, parent ) {
     this->battles = battles;
@@ -287,36 +292,37 @@ void BattleChannel::receiveCommand( Command command ) {
         }
     } else if ( command.name == "SETSCRIPTTAGS" ) {
         command.attributes = command.attributes.join( " " ).split( "\t" );
+        QRegExp re_modoption("game/modoptions/(.*)=(.*)");
+        QRegExp re_game("game/(.*)=(.*)");
         foreach( QString s, command.attributes ) {
-            QString key = s.section( "=", 0, 0 ).section( "/", 1, 1 ).toLower();
-            int val = s.section( "=", 1, 1 ).toInt();
-            /*if ( key == "startmetal" )
-                battleWindowForm->metalSpinBox->setValue( val );
-            else if ( key == "startenergy" )
-                battleWindowForm->energySpinBox->setValue( val );
-            else if ( key == "maxunits" )
-                battleWindowForm->unitsSpinBox->setValue( val );
-            else */
-            BLOCK_UI_SIGNALS;
-            if ( key == "startpostype" ) {
-                val = qMax( qMin( val, 3 ), 0 );
-                battleWindowForm->startPositionComboBox->setCurrentIndex( val );
-            } else if ( key == "gamemode" ) {
-                val = qMax( qMin( val, 2 ), 0 );
-                battleWindowForm->gameEndComboBox->setCurrentIndex( val );
-            } else if ( key == "limitdgun" )
-                battleWindowForm->limitDGunCheckBox->setChecked( val > 0 );
-            else if ( key == "diminishingmms" )
-                battleWindowForm->diminishingMetalMakersCheckBox->setChecked( val > 0 );
-            else if ( key == "ghostedbuildings" )
-                battleWindowForm->ghostedBuildingsCheckBox->setChecked( val > 0 );
-            else if ( key == "disablemapdamage" )
-                battleWindowForm->undeformableMapSpeedCheckBox->setChecked( val > 0 );
-            if (key == "modoptions") {
-                key = s.section( "=", 0, 0 ).section( "/", 2, 2 ).toLower();
-                m_battle.options[key] = s.section( "=", 1, 1 );
+            if(re_modoption.exactMatch(s)) {
+                QString key = re_modoption.cap(1);
+                int val  = re_modoption.cap(2).toInt();
+                BLOCK_UI_SIGNALS;
+                if ( key == "gamemode" ) {
+                    val = qMax( qMin( val, 2 ), 0 );
+                    battleWindowForm->gameEndComboBox->setCurrentIndex( val );
+                } else if ( key == "limitdgun" )
+                    battleWindowForm->limitDGunCheckBox->setChecked( val > 0 );
+                else if ( key == "diminishingmms" )
+                    battleWindowForm->diminishingMetalMakersCheckBox->setChecked( val > 0 );
+                else if ( key == "ghostedbuildings" )
+                    battleWindowForm->ghostedBuildingsCheckBox->setChecked( val > 0 );
+                else if ( key == "disablemapdamage" )
+                    battleWindowForm->undeformableMapSpeedCheckBox->setChecked( val > 0 );
+                if (key == "modoptions") {
+                    key = s.section( "=", 0, 0 ).section( "/", 2, 2 ).toLower();
+                    m_battle.options[key] = s.section( "=", 1, 1 );
+                }
+                UNBLOCK_UI_SIGNALS;
+            } else if ( re_game.exactMatch(s) ) {
+                QString key = re_game.cap(1);
+                int val  = re_game.cap(2).toInt();
+                if(key == "startpostype") {
+                    val = qMax( qMin( val, 3 ), 0 );
+                    battleWindowForm->startPositionComboBox->setCurrentIndex( val );
+                }
             }
-            UNBLOCK_UI_SIGNALS;
         }
         fillModOptions();
     }
