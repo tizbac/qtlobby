@@ -544,7 +544,6 @@ QString BattleChannel::getTabTitle() {
 }
 
 void BattleChannel::refreshMapAndModOptions() {
-    qDebug() << "Refreshing...";
     fillModOptions();
     fillSides();
     requestMapInfo(m_battle.mapName);

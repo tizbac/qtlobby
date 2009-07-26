@@ -318,7 +318,7 @@ QString UnitSyncLib::modArchive( int modIndex ) {
 bool UnitSyncLib::setCurrentMod(QString modname) {
     NON_REENTRANT;
     if (!libraryLoaded()) return false;
-    //if (m_currentModName == modname) return true;
+    if (m_currentModName == modname) return true;
     //qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModIndex";
     int index = m_GetPrimaryModIndex(modname.toAscii());
     if (index < 0) return false;
@@ -504,21 +504,18 @@ int UnitSyncLib::getOptionStringMaxLen(int optIndex) {
 }
 
 
-//forgot to add fixed issue to log, remove this on next commit :)
 void UnitSyncLib::reboot() {
     MANUAL_LOCK;
     if (library_loaded) {
         //qDebug() << "UNITSYNC_DUMP: " << "UnInit";
+        m_RemoveAllArchives();
+        //qDebug() << "UNITSYNC_DUMP: " << "RemoveAllArchives";
         m_UnInit();
-        !unitsynclib->unload();
-        unitsynclib->load();
         //qDebug() << "UNITSYNC_DUMP: " << "Init";
         m_Init(0,0);
         //qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModIndex";
-        m_RemoveAllArchives();
         int index = m_GetPrimaryModIndex(m_currentModName.toAscii());
         if (index >= 0) {
-            //qDebug() << "UNITSYNC_DUMP: " << "RemoveAllArchives";
             //qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModArchive";
             //qDebug() << "UNITSYNC_DUMP: " << "AddAllArchives";
             m_AddAllArchives(m_GetPrimaryModArchive(index));
