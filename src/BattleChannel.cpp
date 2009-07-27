@@ -310,10 +310,7 @@ void BattleChannel::receiveCommand( Command command ) {
                     battleWindowForm->ghostedBuildingsCheckBox->setChecked( val > 0 );
                 else if ( key == "disablemapdamage" )
                     battleWindowForm->undeformableMapSpeedCheckBox->setChecked( val > 0 );
-                if (key == "modoptions") {
-                    key = s.section( "=", 0, 0 ).section( "/", 2, 2 ).toLower();
-                    m_battle.options[key] = s.section( "=", 1, 1 );
-                }
+                m_battle.options[key] = val;
                 UNBLOCK_UI_SIGNALS;
             } else if ( re_game.exactMatch(s) ) {
                 QString key = re_game.cap(1);
