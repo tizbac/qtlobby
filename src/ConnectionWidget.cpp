@@ -99,6 +99,12 @@ ConnectionWidget::ConnectionWidget( ServerContextState* serverContextState,
     registerUserPushButton->setEnabled(false); // Remove when registering is working correctly
 
     updateComboBoxes();
+    profileModified = false;
+
+    msgBox.setText("Profile has been modified.");
+    msgBox.setInformativeText("Do you want to save your changes?");
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Save);
 
 }
 
@@ -237,6 +243,7 @@ void ConnectionWidget::saveModifiedProfile() {
     //qDebug()<<"Modify profile.";
 
     modifyServerProfile( index, url );
+    profileModified = false;
 }
 
 // this function handles the change of combobox entries which happen
@@ -278,7 +285,14 @@ void ConnectionWidget::updateComboBoxes() {
 }
 
 void ConnectionWidget::createNewProfile() {
-    //qDebug()<<"New Server Profile";
+    if(profileModified) {
+        int ret = msgBox.exec();
+        if(ret == QMessageBox::Save) {
+            saveModifiedProfile();
+        } else if (ret == QMessageBox::Cancel) {
+            return;
+        }
+    }
     QList<QVariant> list = settings->value( "ServerProfiles" ).toList();
 
     QUrl url;
@@ -290,6 +304,7 @@ void ConnectionWidget::createNewProfile() {
     list.prepend( url);
     settings->setValue( "ServerProfiles", list );
     updateComboBoxes();
+    profileModified = false;
 }
 
 void ConnectionWidget::delSelectedProfile() {
@@ -301,6 +316,7 @@ void ConnectionWidget::delSelectedProfile() {
         settings->setValue( "SelectedServerProfile", 0 );
         updateComboBoxes();
     }
+    profileModified = false;
 }
 
 void ConnectionWidget::connectionStatusChanged( ConnectionState state ) {
@@ -479,6 +495,14 @@ void ConnectionWidget::updateCountdown() {
 }
 
 void ConnectionWidget::onLogin() {
+    if(profileModified) {
+        int ret = msgBox.exec();
+        if(ret == QMessageBox::Save) {
+            saveModifiedProfile();
+        } else if (ret == QMessageBox::Cancel) {
+            return;
+        }
+    }
     if(connected) {
         countdown = 10;
         serverContextState->forceDisconnect();
@@ -493,4 +517,17 @@ void ConnectionWidget::onLogin() {
         return;
     }
     establishConnection();
+    profileModified = false;
+}
+
+void ConnectionWidget::on_profileUserNameLineEdit_textChanged(QString ) {
+    profileModified = true;
+}
+
+void ConnectionWidget::on_profileServerAddressLineEdit_textChanged(QString ) {
+    profileModified = true;
+}
+
+void ConnectionWidget::on_profilePortSpinBox_valueChanged(int ) {
+    profileModified = true;
 }

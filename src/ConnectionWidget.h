@@ -54,6 +54,9 @@ public slots:
   void establishSimpleConnection();
   void simpleViewChanged();
 private slots:
+  void on_profilePortSpinBox_valueChanged(int );
+  void on_profileServerAddressLineEdit_textChanged(QString );
+  void on_profileUserNameLineEdit_textChanged(QString );
   void connectionStatusChanged(ConnectionState state);
   void renameLoginName();
   void changePassword();
@@ -68,6 +71,8 @@ private:
   void unlockInterface();
   void unlockRenameAndChangePassword();
   void lockRenameAndChangePassword();
+  bool profileModified;
+  QMessageBox msgBox;
 };
 
 #endif
