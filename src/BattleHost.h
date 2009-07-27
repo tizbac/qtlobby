@@ -29,6 +29,7 @@ class BattleHost : public QThread {
     void forceColor(User* u, QColor c);
     void forceSpectator(User* u);
     void broadCastMyUserStatus(User* u);
+    void ring(User* u);
 
 signals:
     void sendCommand(Command command);

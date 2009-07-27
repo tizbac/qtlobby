@@ -4,12 +4,14 @@ function Sqads(battleHost) {
             {name: "help", admin: false, description: "Prints this help", argc: 0, opt: 0, callback: this.cmdHelp},
             {name: "kick", admin: true, description: "Kicks a user", argc: 1, opt: 0, callback: this.cmdKick},
             {name: "force", admin: true, description: "Forces user to specified team or ally or to spectate", argc: 3, opt: 1, callback: this.cmdForce},
+            {name: "spec", admin: true, description: "Forces user to spectate", argc: 1, opt: 0, callback: this.cmdSpec},
             {name: "start", admin: true, description: "Starts a game", argc: 0, opt: 0, callback: this.cmdStart},
             {name: "bset", admin: true, description: "Sets some battle parameter", argc: 2, opt: 0, callback: this.cmdBSet},
             {name: "map", admin: true, description: "Change current map", argc: 1, opt: 0, callback: this.cmdMap},
             {name: "addbox", admin: false, description: "Add start box for ally team", argc: 5, opt: 0, callback: this.cmdAddBox},
             {name: "clearbox", admin: false, description: "Clears start box for ally team", argc: 1, opt: 1, callback: this.cmdClearBox},
-            {name: "split", admin: false, description: "Splits map with start boxes", argc: 2, opt: 0, callback: this.cmdSplit}
+            {name: "split", admin: false, description: "Splits map with start boxes", argc: 2, opt: 0, callback: this.cmdSplit},
+            {name: "ring", admin: false, description: "Rings some player", argc: 1, opt: 1, callback: this.cmdRing}
     ];
 
     this.bh = battleHost;
@@ -105,35 +107,59 @@ Sqads.prototype.cmdKick = function(caller, user) {
             u.kick();
         }
     } else {
-        this.bh.sayBattleEx("* No such user.");
+        this.bh.sayBattleEx("* No such player.");
     }
 };
 
 Sqads.prototype.cmdForce = function(caller, user, param, value) {
     var u = this.bh.users.at(user);
-    switch(param) {
-            case "team": {
-                    u.team = value - 0;
-                    break;
-                }
-            case "ally": {
-                    u.ally = value - 0;
-                    break;
-                }
-            case "color": {
-                    u.color = value;
-                    break;
-                }
-            case "spec": {
-                    u.player = false;
-                    break;
-                }
+    if(u.valid) {
+        switch(param) {
+        case "team": {
+                u.team = value - 0;
+                break;
             }
+        case "ally": {
+                u.ally = value - 0;
+                break;
+            }
+        case "color": {
+                u.color = value;
+                break;
+            }
+        case "spec": {
+                u.player = false;
+                break;
+            }
+        }
+    } else {
+        this.bh.sayBattleEx("* No such player.");
+    }
+};
+
+Sqads.prototype.cmdSpec = function(caller, user) {
+    var u = this.bh.users.at(user);
+    if(u.valid) {
+        u.player = false;
+    } else {
+        this.bh.sayBattleEx("* No such player.");
+    }
 };
 
 Sqads.prototype.cmdStart = function(caller) {
-    this.bh.sayBattleEx("* Starting game...");
-    this.bh.users.at(caller).ingame = true;
+    var unready = new Array();
+    for(var x = 0; x < this.users.length; x++) {
+        var u = this.users.at(x);
+        if(!u.ready) {
+            unready.push(u.name);
+        }
+    }
+    if(unready.length > 0) {
+        this.bh.sayBattleEx("* Unable to start game. These players are not ready: " + unready.join(", "));
+    } else {
+        this.bh.sayBattleEx("* Starting game...");
+        this.bh.users.at(caller).ingame = true;
+    }
 };
 
 Sqads.prototype.cmdBSet = function(caller, setting, value) {
@@ -226,3 +252,25 @@ Sqads.prototype.cmdSplit = function(caller, mode, percent) {
         this.bh.sayBattleEx("* Percent must belong to (0; 100]");
     }
 };
+
+Sqads.prototype.cmdRing = function(caller, user) {
+    if(user) {
+        var u = this.bh.users.at(user);
+        if(u.valid) {
+            u.ring();
+        } else {
+            this.bh.sayBattleEx("* No such user.");
+        }
+    } else {
+        var unready = new Array();
+        for(var x = 0; x < this.users.length; x++) {
+            var u = this.users.at(x);
+            if(!u.ready) {
+                u.ring();
+                unready.push(u.name);
+            }
+        }
+        this.bh.sayBattleEx("* Ringing unready players("+unready.join(", ")+") by " + caller);
+    }
+};
+

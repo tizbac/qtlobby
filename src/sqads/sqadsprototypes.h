@@ -73,6 +73,7 @@ public:
     bool isValid() const;
 public slots:
     void kick();
+    void ring();
 };
 
 Q_DECLARE_METATYPE(SqadsUserListPtr)

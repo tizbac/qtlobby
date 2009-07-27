@@ -275,8 +275,19 @@ void SqadsUserPrototype::kick() {
     uptr.bh->kick(u);
 }
 
+void SqadsUserPrototype::ring() {
+    SqadsUserPtr uptr = qscriptvalue_cast<SqadsUserPtr>(thisObject());
+    User* u = uptr.ptr;
+    if(!u) {
+        context()->throwError("Member function called on invalid object");
+        return;
+    }
+    uptr.bh->ring(u);
+}
 
 bool SqadsUserPrototype::isValid() const {
     SqadsUserPtr uptr = qscriptvalue_cast<SqadsUserPtr>(thisObject());
     return uptr.ptr != 0;
 }
+
+

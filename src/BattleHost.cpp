@@ -355,3 +355,7 @@ void BattleHost::clearStartRects() {
         m_startRects[i] = false;
     }
 }
+
+void BattleHost::ring(User* u) {
+    emit sendCommand(Command("RING " + u->name));
+}
