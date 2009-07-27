@@ -299,10 +299,7 @@ bool BattleHost::isScriptTagValueValid(QString key, QString value) {
     int num_options = unitSyncLib->getModOptionCount();
     for (int i = 0; i < num_options; i++) {
         if (unitSyncLib->getOptionKey(i) == key) {
-            float min;
-            float max;
-            float step;
-            float val;
+            float min, max, step, val;
             switch (unitSyncLib->getOptionType(i)) {
             case BOOLEAN:
                 return value == "0" || value == "1";
@@ -314,10 +311,9 @@ bool BattleHost::isScriptTagValueValid(QString key, QString value) {
                 min = unitSyncLib->getOptionNumberMin(i);
                 max = unitSyncLib->getOptionNumberMax(i);
                 step = unitSyncLib->getOptionNumberStep(i);
+                step = step > 0 ? step : 0.1;
                 val = value.toFloat();
-                //FIXME needs some improvements concerning step checking
-                //this check phails
-                return abs(val - qRound(val/step)*step) < 1e-9 && (val >= min && val <= max);
+                return fabs(val - qRound(val/step)*step)<1e-5 && (val >= min && val <= max);
             case STRING:
                 return value.length() <= unitSyncLib->getOptionStringMaxLen(i);
             case SECTION:

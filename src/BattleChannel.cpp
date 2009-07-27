@@ -602,10 +602,8 @@ void BattleChannel::onStartPositionComboBoxChanged(int index) {
 }
 
 void BattleChannel::onModOptionsAnchorClicked(QUrl url) {
-    float min;
-    float max;
-    float step;
-    float val;
+    float min, max, step, val;
+    bool ok = false;
     int i = url.toString().toInt();
     int length;
     UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
@@ -640,8 +638,10 @@ void BattleChannel::onModOptionsAnchorClicked(QUrl url) {
                                        m_battle.options[key].toFloat(),
                                        min,
                                        max,
-                                       step);
+                                       step,
+                                       &ok);
         } else {
+            int decimals = qMax( 1, (int) ceil(-log10(fabs(step)))); // log(0.01)=-2
             val = QInputDialog::getDouble(NULL,
                                           "Select value",
                                           "Select value for " +
@@ -649,9 +649,11 @@ void BattleChannel::onModOptionsAnchorClicked(QUrl url) {
                                           m_battle.options[key].toFloat(),
                                           min,
                                           max,
-                                          5);//Possibly this hardcode could break some mod, but i'm too lazy to detect the number of decimals from float step ;)
+                                          decimals, &ok);
+            val = qRound( val/step )*step;
         }
-        receiveInput(QString("!bset %1 %2").arg(key).arg(val));
+        if (ok)
+            receiveInput(QString("!bset %1 %2").arg(key).arg(val));
         break;
     case STRING:
         length = unitSyncLib->getOptionStringMaxLen(i);
