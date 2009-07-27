@@ -620,8 +620,10 @@ void BattleChannel::onModOptionsAnchorClicked(QUrl url) {
                                      "Select value for " +
                                      unitSyncLib->getOptionName(i),
                                      unitSyncLib->getOptionListItems(i),
-                                     unitSyncLib->getOptionListItems(i).indexOf(m_battle.options[key].toString()));
-        receiveInput(QString("!bset %1 %2").arg(key).arg(item));
+                                     unitSyncLib->getOptionListItems(i).indexOf(m_battle.options[key].toString()),
+                                     &ok);
+        if(ok)
+            receiveInput(QString("!bset %1 %2").arg(key).arg(item));
         break;
     case FLOAT:
         min = unitSyncLib->getOptionNumberMin(i);
@@ -638,7 +640,7 @@ void BattleChannel::onModOptionsAnchorClicked(QUrl url) {
                                        step,
                                        &ok);
         } else {
-            int decimals = qMax( 1, (int) ceil(-log10(fabs(step)))); // log(0.01)=-2
+            int decimals = qMax( 1, (int) ceil(-log10(fabs(step)))); // log10(0.01)=-2
             val = QInputDialog::getDouble(NULL,
                                           "Select value",
                                           "Select value for " +

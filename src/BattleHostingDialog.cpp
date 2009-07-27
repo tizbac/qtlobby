@@ -8,6 +8,9 @@ BattleHostingDialog::BattleHostingDialog(QProcess* spring, CommandAssigner* assi
         QDialog(parent),
         m_ui(new Ui::BattleHostingDialog) {
     m_ui->setupUi(this);
+    QSettings *settings = Settings::Instance();
+    if( settings->contains("BattleHost/Description") )
+        m_ui->descriptionLineEdit->setText(settings->value("BattleHost/Description").toString());
     m_assigner = assigner;
     m_tabs = lobbyTabs;
     m_spring = spring;
@@ -48,6 +51,8 @@ void BattleHostingDialog::on_buttonBox_accepted() {
                                    m_ui->modComboBox->currentText(),
                                    m_ui->descriptionLineEdit->text()
                                    );
+    QSettings * settings = Settings::Instance();
+    settings->setValue("BattleHost/Description", m_ui->descriptionLineEdit->text());
     connect( m_assigner, SIGNAL( battleHostCommand( Command ) ),
              m_battleHost, SLOT( receiveCommand( Command ) ) );
     connect( m_battleHost, SIGNAL( sendCommand( Command ) ),
