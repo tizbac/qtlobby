@@ -60,6 +60,13 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     createTrayIcon();
     trayIcon->show();
 
+    Notification* notify = Notification::getInstance();
+#ifdef Q_WS_X11
+    notify->NotificationBackend = new DBusVisualNotificationBackend();
+#else
+    notify->NotificationBackend = new TrayIconNotificationBackend();
+#endif
+
     regexpColor = QColor( 0xFFE4B5 );
 
     /** incoming data **/
