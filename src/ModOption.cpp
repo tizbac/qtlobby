@@ -25,6 +25,11 @@ ModOption& ModOption::operator=(int val) {
     return *this;
 }
 
+ModOption& ModOption::operator=(float val) {
+    m_value = QString::number(val);
+    return *this;
+}
+
 bool ModOption::isGameOption() const {
     return m_game;
 }

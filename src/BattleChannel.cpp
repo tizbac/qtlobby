@@ -297,11 +297,11 @@ void BattleChannel::receiveCommand( Command command ) {
         foreach( QString s, command.attributes ) {
             if(re_modoption.exactMatch(s)) {
                 QString key = re_modoption.cap(1);
-                int val  = re_modoption.cap(2).toInt();
+                float val  = re_modoption.cap(2).toFloat();
                 BLOCK_UI_SIGNALS;
                 if ( key == "gamemode" ) {
-                    val = qMax( qMin( val, 2 ), 0 );
-                    battleWindowForm->gameEndComboBox->setCurrentIndex( val );
+                    int ival = qMax( qMin( (int)val, 2 ), 0 );
+                    battleWindowForm->gameEndComboBox->setCurrentIndex( ival );
                 } else if ( key == "limitdgun" )
                     battleWindowForm->limitDGunCheckBox->setChecked( val > 0 );
                 else if ( key == "diminishingmms" )
@@ -310,6 +310,7 @@ void BattleChannel::receiveCommand( Command command ) {
                     battleWindowForm->ghostedBuildingsCheckBox->setChecked( val > 0 );
                 else if ( key == "disablemapdamage" )
                     battleWindowForm->undeformableMapSpeedCheckBox->setChecked( val > 0 );
+                qDebug() << key << " = " << val;
                 m_battle.options[key] = val;
                 UNBLOCK_UI_SIGNALS;
             } else if ( re_game.exactMatch(s) ) {
@@ -621,6 +622,7 @@ void BattleChannel::onModOptionsAnchorClicked(QUrl url) {
                                      unitSyncLib->getOptionName(i),
                                      unitSyncLib->getOptionListItems(i),
                                      unitSyncLib->getOptionListItems(i).indexOf(m_battle.options[key].toString()),
+                                     true,
                                      &ok);
         if(ok)
             receiveInput(QString("!bset %1 %2").arg(key).arg(item));

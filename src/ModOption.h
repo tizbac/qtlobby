@@ -15,6 +15,7 @@ public:
     virtual void fromFloat(float number);
     virtual ModOption& operator=(const QString& str);
     virtual ModOption& operator=(int val);
+    virtual ModOption& operator=(float val);
     bool isGameOption() const;
     void setGameOption(bool b);
     bool isModified() const;
