@@ -12,11 +12,12 @@ public:
 
     // Uses the application name for the title
     virtual void showMessage(QString& message);
-    virtual void showMessage(QString& title, QString& message, int timeout_ms = -2);
+    virtual void showMessage(QString& title, QString& message, int timeout_ms = -2) = 0;
     // timeout in milliseconds, 0 displays the message endless, -1 is system based, -2 is message length based
-    virtual void showMessage(QString& title, QString& message, QString& icon_path, int timeout_ms = -2);
+    virtual void showMessage(QString& title, QString& message, QString& icon_path, int timeout_ms = -2) = 0;
     // TODO: display and hide window with actions
 };
+
 inline void AbstractNotificationBackend::showMessage(QString& message)
 {
     if(applicationName == NULL)
@@ -29,6 +30,5 @@ inline void AbstractNotificationBackend::showMessage(QString& message)
         showMessage(applicationName, message, -2);
     }
 }
-inline void AbstractNotificationBackend::showMessage(QString& title, QString& message, int timeout_ms){}
-inline void AbstractNotificationBackend::showMessage(QString& title, QString& message, QString& icon_path, int timeout_ms) {}
+
 #endif // ABSTRACTNOTIFICATIONBACKEND_H
