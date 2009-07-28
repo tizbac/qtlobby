@@ -1,6 +1,22 @@
 #include "DBusVisualNotificationBackend.h"
 #include <QVariantList>
 
+DBusVisualNotificationBackend::DBusVisualNotificationBackend()
+{
+    // Use session bus
+    m_notify = new QDBusInterface("org.kde.VisualNotifications", "/VisualNotifications", "org.kde.VisualNotifications");
+}
+
+bool DBusVisualNotificationBackend::isUsable() const
+{
+    QDBusMessage replay = m_notify->call(QDBus::AutoDetect, "GetCapabilities");
+
+    if(replay.errorMessage() == "")
+        return true; // empty error message
+    else
+        return false;
+}
+
 void DBusVisualNotificationBackend::showMessage(QString& title, QString& message, int timeout_ms)
 {
     QString icon_path = QString();
@@ -13,10 +29,7 @@ void DBusVisualNotificationBackend::showMessage(QString& title, QString& message
     {
         timeout_ms = (title.length() + message.length()) * 100 + 500; //500 extra for icon
     }
-    // TODO: Check if DBus is available
-
-    // Use session bus
-    m_notify = new QDBusInterface("org.kde.VisualNotifications", "/VisualNotifications", "org.kde.VisualNotifications");
+    // TODO: Check if DBus is available    
 
     unsigned int replaces_id = 0;
 

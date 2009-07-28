@@ -9,6 +9,8 @@
 class DBusVisualNotificationBackend : public AbstractNotificationBackend
 {
 public:
+    DBusVisualNotificationBackend();
+    bool isUsable() const;
     void showMessage(QString& title, QString& message, int timeout_ms = -2);
     void showMessage(QString& title, QString& message, QString& icon_path, int timeout_ms = -2);
 private:
