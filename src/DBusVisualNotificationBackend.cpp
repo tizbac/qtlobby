@@ -9,6 +9,10 @@ void DBusVisualNotificationBackend::showMessage(QString& title, QString& message
 
 void DBusVisualNotificationBackend::showMessage(QString& title, QString& message, QString& icon_path, int timeout_ms)
 {
+    if(timeout_ms == -2)
+    {
+        timeout_ms = (title.length() + message.length()) * 100 + 500; //500 extra for icon
+    }
     // TODO: Check if DBus is available
 
     // Use session bus

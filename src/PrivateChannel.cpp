@@ -2,10 +2,10 @@
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "PrivateChannel.h"
 #include "UserGroup.h"
-#include "Notification.h"
 
 PrivateChannel::PrivateChannel( QString name, QObject * parent ) : AbstractChannel( name, parent ) {
     activeIcon = QIcon( ":/icons/userchat.xpm" );
+    notify = Notification::getInstance();
 }
 
 PrivateChannel::~PrivateChannel() {}
@@ -20,10 +20,12 @@ void PrivateChannel::receiveCommand( Command command ) {
 					.arg( "&lt;%1&gt; %2" )
 					.arg( objectName() )
 					.arg( processInput(command.attributes.join( " " ))));
-                                Notification* notify = Notification::getInstance();
-                                QString title = QString("QtLobby: You received a PM from " + objectName());
-                                QString message = QString(processInput(command.attributes.join( " " )));
-                                notify->showMessage(title, message);
+                                if(isActive == false)
+                                {
+                                    QString title = QString("QtLobby: You received a PM from " + objectName());
+                                    QString message = QString(processInput(command.attributes.join( " " )));
+                                    notify->showMessage(title, message);
+                                }
 			}
 		}
     } else if ( command.name == "SAYPRIVATE" ) {

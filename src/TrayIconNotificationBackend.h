@@ -15,7 +15,7 @@ public:
 
     void showMessage(QString& title, QString& message, QString& icon_path, int timeout_ms = -2);
 
-    QSystemTrayIcon* systemTrayIcon;
+    QSystemTrayIcon* SystemTrayIcon;
 };
 
 #endif // TRAYICONNOTIFICATIONBACKEND_H

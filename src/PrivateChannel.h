@@ -3,6 +3,7 @@
 #ifndef PRIVATECHANNEL_H
 #define PRIVATECHANNEL_H
 #include "AbstractChannel.h"
+#include "Notification.h"
 /**
 a private chat channel
 
@@ -13,7 +14,8 @@ class PrivateChannel : public AbstractChannel {
 public:
     PrivateChannel( QString name, QObject * parent = 0 );
     virtual ~PrivateChannel();
-
+private:
+    Notification* notify;
 public slots:
     void receiveInput( QString input );
     void receiveCommand( Command command );
