@@ -48,6 +48,7 @@ BattleChannel::BattleChannel( QString id, Battles* battles, QObject * parent ) :
     noMapUpdates = false;
     locked = false;
     wasKicked = false;
+    notify = Notification::getInstance();
 }
 
 BattleChannel::~BattleChannel() {
@@ -237,7 +238,10 @@ void BattleChannel::receiveCommand( Command command ) {
     if ( command.name == "RING" ) {
         QString userName = command.attributes.takeFirst();
         emit playSample( RingSample );
-        emit newTrayMessage( QString("RING!? Where are you!? Get up! %1!").arg(userName) );
+        //emit newTrayMessage( QString("RING!? Where are you!? Get up! %1!").arg(userName) );
+        QString title = QString("Ring!");
+        QString message = QString("%1 wants attention!").arg(userName);
+        notify->showMessage(title, message);
     } else if ( command.name == "SAIDBATTLEEX" ) {
         QString userName = command.attributes.takeFirst();
         insertLine( flag( userName ) + line

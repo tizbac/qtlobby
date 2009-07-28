@@ -22,7 +22,7 @@ void PrivateChannel::receiveCommand( Command command ) {
 					.arg( processInput(command.attributes.join( " " ))));
                                 if(isActive == false)
                                 {
-                                    QString title = QString("QtLobby: You received a PM from " + objectName());
+                                    QString title = QString("PM from " + objectName());
                                     QString message = QString(processInput(command.attributes.join( " " )));
                                     notify->showMessage(title, message);
                                 }

@@ -13,6 +13,7 @@
 #include "MapOverviewDialog.h"
 #include "Users.h"
 #include <QColorDialog>
+#include "Notification.h"
 
 /**
 represents the battle tab with chat, map and options overview
@@ -68,6 +69,7 @@ private:
     bool locked;
     QByteArray splitterState;
     bool wasKicked;
+    Notification* notify;
 protected:
     Battles* battles;
 };

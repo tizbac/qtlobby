@@ -1,17 +1,5 @@
 #include "TrayIconNotificationBackend.h"
 
-TrayIconNotificationBackend::TrayIconNotificationBackend(QSystemTrayIcon* trayIcon)
-{
-    if(trayIcon->isSystemTrayAvailable())
-    {
-        SystemTrayIcon = trayIcon;
-    }
-    else
-    {
-        // TODO: report error to fall back
-    }
-}
-
 void TrayIconNotificationBackend::showMessage(QString& title, QString& message, int timeout_ms)
 {
     if(timeout_ms == -2)
