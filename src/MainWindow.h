@@ -29,6 +29,12 @@
 #include "ScriptingDialog.h"
 #include "BattleHost.h"
 #include "BattleHostingDialog.h"
+#include "Notification.h"
+#ifdef Q_WS_X11
+    #include "DBusVisualNotificationBackend.h"
+#else
+    #include "TrayIconNotificationBackend.h"
+#endif
 
 class MainWindow : public QMainWindow, private Ui::MainWindow {
     Q_OBJECT

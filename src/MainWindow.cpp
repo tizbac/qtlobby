@@ -60,6 +60,16 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     createTrayIcon();
     trayIcon->show();
 
+    Notification* notify = Notification::getInstance();
+#ifdef Q_WS_X11
+    notify->NotificationBackend = new DBusVisualNotificationBackend();
+#else // Use system tray icon on none x11 systems
+    TrayIconNotificationBackend* trayIconBackend = new TrayIconNotificationBackend();
+    trayIconBackend->SystemTrayIcon = trayIcon;
+    notify->NotificationBackend = trayIconBackend;
+#endif
+    notify->NotificationBackend->applicationName = "QtLobby";
+
     regexpColor = QColor( 0xFFE4B5 );
 
     /** incoming data **/

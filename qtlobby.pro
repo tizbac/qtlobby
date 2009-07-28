@@ -84,7 +84,10 @@ HEADERS += src/MainWindow.h \
     src/ScriptingDialog.h \
     src/BattleHost.h \
     src/sqads/sqadsprototypes.h \
-    src/BattleHostingDialog.h
+    src/BattleHostingDialog.h \
+    src/Notification.h \
+    src/AbstractNotificationBackend.h \
+    src/TrayIconNotificationBackend.h
 SOURCES += src/main.cpp \
     src/MainWindow.cpp \
     src/ServerContextState.cpp \
@@ -140,7 +143,9 @@ SOURCES += src/main.cpp \
     src/ScriptingDialog.cpp \
     src/BattleHost.cpp \
     src/sqads/sqadsprototypes.cpp \
-    src/BattleHostingDialog.cpp
+    src/BattleHostingDialog.cpp \
+    src/Notification.cpp \
+    src/TrayIconNotificationBackend.cpp
 QT += gui \
     network \
     opengl \
@@ -169,5 +174,10 @@ DISTFILES += doc/ProtocolDescription.xml \
     doc/xml2html.xsl \
     doc/z
 win32:LIBS += QScintilla2.lib
-unix:LIBS += -lqscintilla2
+unix { 
+    LIBS += -lqscintilla2
+    HEADERS += src/DBusVisualNotificationBackend.h
+    SOURCES += src/DBusVisualNotificationBackend.cpp
+    QT += dbus
+}
 OTHER_FILES += src/sqads.js
