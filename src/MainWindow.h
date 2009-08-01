@@ -45,6 +45,7 @@ public:
     QProcess qpSpringSetting;
 
 private:
+    void setupToolbar();
     //the connection dialog
     ConnectionWidget* connectionWidget;
     //handles the interaction with the server and the authentication
@@ -64,6 +65,7 @@ private:
     BattleHostingDialog *battleHostingDialog;
 
     QTabBar* tabBar;
+    QToolButton* newTabButton;
     QLabel* battlesOnline;
     QLabel* usersOnline;
     QLabel* moderatorsOnline;
@@ -109,6 +111,7 @@ private slots:
     void onStatsChange(int battles);
     void connectionStatusChanged(ConnectionState);
     void onBlockInput(bool b);
+    void onJoinRequested();
 
     void onChangedToBattleTab();
     void onChangedFromBattleTab();

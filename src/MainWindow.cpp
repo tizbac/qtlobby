@@ -1,6 +1,7 @@
 // $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "MainWindow.h"
+#include <QInputDialog>
 
 MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     //   QTime *timer = new QTime();
@@ -22,7 +23,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     serverContextState  = new ServerContextState( this );
     connectionWidget    = new ConnectionWidget( serverContextState );
     connectionWidget->setWindowFlags(Qt::Window);
-    tabBar = new QTabBar(this);
+    setupToolbar();
     lobbyTabs           = new LobbyTabs( this, battles, UnitSyncLib::getInstance(), tabBar, lobbyStackedWidget );
     commandAssigner     = new CommandAssigner( this );
     //statusTracker       = new StatusTracker( statusbar );
@@ -49,14 +50,6 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     statusBar()->addPermanentWidget(usersOnline);
     statusBar()->addPermanentWidget(battlesOnline);
     statusBar()->addPermanentWidget(new QLabel());
-
-    tabBar->setTabsClosable(true);
-    //tabBar->setDocumentMode(true);
-    //tabBar->setDrawBase(false);
-    tabBar->setMovable(false);
-    QAction* a = tabsToolBar->addWidget(tabBar);
-    a->setVisible(true);
-
     createTrayIcon();
     trayIcon->show();
 
@@ -252,6 +245,30 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     inBattle = false;
 }
 
+void MainWindow::setupToolbar() {
+    QWidget* toolBarWidget = new QWidget(this);
+    tabBar = new QTabBar(toolBarWidget);
+    newTabButton = new QToolButton(toolBarWidget);
+    newTabButton->setIcon(QIcon(":/icons/trolltech/plus.png"));
+    newTabButton->setAutoRaise(true);
+    newTabButton->setMaximumHeight(24);
+    newTabButton->setMaximumWidth(24);
+    connect(newTabButton, SIGNAL(clicked()), this, SLOT(onJoinRequested()));
+    QHBoxLayout* hbl = new QHBoxLayout(toolBarWidget);
+    toolBarWidget->setLayout(hbl);
+    toolBarWidget->setMinimumHeight(35);
+    hbl->addWidget(tabBar);
+    hbl->addWidget(newTabButton);
+    //QSpacerItem* horizontalSpacer = new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    //hbl->addSpacerItem(horizontalSpacer);
+    tabBar->setTabsClosable(true);
+    //tabBar->setDocumentMode(true);
+    //tabBar->setDrawBase(false);
+    tabBar->setMovable(false);
+    QAction* a = tabsToolBar->addWidget(toolBarWidget);
+    a->setVisible(true);
+}
+
 MainWindow::~MainWindow() {
     settings->setValue("battleListFilterString", battleListLineEdit->text());
     settings->setValue("userListFilterString", userListLineEdit->text());
@@ -357,9 +374,9 @@ void MainWindow::setColorInducatorBattles( QString regExp ) {
 void MainWindow::startSpring() {
     //emit newTrayMessage( "spring instance started" );
     qpSpring.start( settings->value( "spring_executable_with_abs_path_to_it" ).toString(),
-              QStringList( QString( "%1/%2" )
-                           .arg( settings->value( "spring_user_dir" ).toString() )
-                           .arg( "script_qtlobby.txt" ) ) );
+                    QStringList( QString( "%1/%2" )
+                                 .arg( settings->value( "spring_user_dir" ).toString() )
+                                 .arg( "script_qtlobby.txt" ) ) );
 }
 
 void MainWindow::sendTrayMessage( QString message, int milliseconds ) {
@@ -505,4 +522,18 @@ void MainWindow::on_hostPushButton_clicked() {
 
 void MainWindow::onBlockInput(bool b) {
     inputLineEdit->setDisabled(b);
+}
+
+void MainWindow::onJoinRequested() {
+    bool ok;
+    QString channel = QInputDialog::getText(this,
+                                            "Join channel",
+                                            "Specify a channel you want to join",
+                                            QLineEdit::Normal,
+                                            "",
+                                            &ok);
+    if(!ok) return;
+    QRegExp re("#?(\\w+)");
+    if(!re.exactMatch(channel)) return;
+    lobbyTabs->receiveInput("/j " + re.cap(1));
 }
