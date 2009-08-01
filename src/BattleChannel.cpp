@@ -322,7 +322,9 @@ void BattleChannel::receiveCommand( Command command ) {
                 int val  = re_game.cap(2).toInt();
                 if(key == "startpostype") {
                     val = qMax( qMin( val, 3 ), 0 );
+                    BLOCK_UI_SIGNALS
                     battleWindowForm->startPositionComboBox->setCurrentIndex( val );
+                    UNBLOCK_UI_SIGNALS
                 }
             }
         }
