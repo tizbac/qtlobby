@@ -294,6 +294,8 @@ void BattleChannel::receiveCommand( Command command ) {
             if (currentMap != mapName) requestMapInfo( mapName );
             currentMap = mapName;
         }
+    } else if ( command.name == "CLIENTBATTLESTATUS" ) {
+
     } else if ( command.name == "SETSCRIPTTAGS" ) {
         command.attributes = command.attributes.join( " " ).split( "\t" );
         QRegExp re_modoption("game/modoptions/(.*)=(.*)");
@@ -526,7 +528,12 @@ void BattleChannel::onMyStateChanged(User u) {
     battleWindowForm->specCheckBox->setChecked(!u.battleState.isPlayer());
     battleWindowForm->factionsComboBox->setCurrentIndex(u.battleState.getSide());
     battleWindowForm->teamNoSpinBox->setValue(u.battleState.getTeamNo()+1);
-    battleWindowForm->teamAllyNoSpinBox->setValue(u.battleState.getAllyTeamNo()+1);
+    quint8 ally = u.battleState.getAllyTeamNo()+1;
+    battleWindowForm->teamAllyNoSpinBox->setValue(ally);
+    battleWindowForm->minimapWidget->setMyAllyTeam(ally);
+    battleWindowForm->heightmapWidget->setMyAllyTeam(ally);
+    battleWindowForm->metalmapWidget->setMyAllyTeam(ally);
+    mapOverviewDialog->setMyAllyTeam(ally);
     QPixmap color(16,16);
     color.fill(u.m_color);
     battleWindowForm->colorToolButton->setIcon(color);

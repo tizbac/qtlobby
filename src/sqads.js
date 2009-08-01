@@ -116,10 +116,18 @@ Sqads.prototype.cmdForce = function(caller, user, param, value) {
     if(u.valid) {
         switch(param) {
         case "team": {
+                if(value < 1 || value > 16) {
+                    this.bh.sayBattleEx("* Team number must belong [1,16]");
+                    break;
+                }
                 u.team = value - 0;
                 break;
             }
         case "ally": {
+                if(value < 1 || value > 16) {
+                    this.bh.sayBattleEx("* Ally team number must belong [1,16]");
+                    break;
+                }
                 u.ally = value - 0;
                 break;
             }
