@@ -87,6 +87,7 @@ protected:
     QAction* filterUnavailableMapsAction;
     QAction* filterWithoutPlayersAction;
     QAction* filterWithoutFriendsAction;
+    int m_portOverride;
 public:
     BattleManager* battleManager;
 };

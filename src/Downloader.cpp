@@ -114,7 +114,7 @@ void Downloader::onFileSizeFinished() {
         connect(reply, SIGNAL(finished()), this, SLOT(onFetchFinished()));
         m_replies << reply;
     }
-    QTimer::singleShot(15000, this, SLOT(download())); //start download anyway in 10 seconds if one ore more of mirrors failed
+    QTimer::singleShot(15000, this, SLOT(download())); //start download anyway in 15 seconds if one ore more of mirrors failed
     emit stateChanged(m_resourceName, "Estimating mirrors speeds");
 }
 

@@ -94,6 +94,8 @@ Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
         filterWithoutPlayersAction->setChecked( s->value( "Battles/filterWithoutPlayers" ).toBool() );
     if( s->contains("Battles/filterWithoutFriends" ) )
         filterWithoutFriendsAction->setChecked( s->value( "Battles/filterWithoutFriends" ).toBool() );
+
+    m_portOverride = 0;
 }
 
 Battles::~Battles() {}
@@ -225,6 +227,8 @@ void Battles::receiveCommand( Command command ) {
         u.battleState.setPlayer(true);
         u.battleState.setSyncState(resyncStatus());
         users->onMyBattleStateChanged( u );
+    } else if ( command.name == "HOSTPORT" ) {
+        m_portOverride = command.attributes.at(0).toInt();
     }
 }
 
@@ -358,7 +362,7 @@ QString Battles::generateScript( Battle b, bool host ) {
         if (k.contains("/")) continue;
         gameOptions[k] = QString::number( b.options[k].toFloat() );
     }
-    gameOptions["HostPort"]     = QString::number( b.port );
+    gameOptions["HostPort"]     = QString::number(m_portOverride > 0 ? m_portOverride : b.port );
     gameOptions["HostIP"]       = b.founder == url.userName() ? QString( "localhost" ) : b.ip;
     gameOptions["IsHost"]       = host ? "1" : "0";
     gameOptions["MyPlayerNum"]  = QString::number( myPlayerNum );
