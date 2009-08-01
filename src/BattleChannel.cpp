@@ -1,6 +1,7 @@
 // $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "BattleChannel.h"
+#include "DownloadsModel.h"
 #include <QSplitter>
 #include <QInputDialog>
 
@@ -62,7 +63,6 @@ void BattleChannel::setupUi( QWidget * tab ) {
     gridLayout->removeWidget(channelTextBrowser);
     QWidget * t = new QWidget;
     battleWindowForm->setupUi( t );
-    //battleWindowForm->descriptionLabel->setWordWrap(true);
     s->addWidget(t);
     s->addWidget(channelTextBrowser);
     QSettings* settings = Settings::Instance();
@@ -70,9 +70,6 @@ void BattleChannel::setupUi( QWidget * tab ) {
         s->restoreState(settings->value("mainwindow/chatsplitter").toByteArray());
     connect(s, SIGNAL(splitterMoved(int,int)), SLOT(onChatSplitterMoved(int,int)));
     gridLayout->addWidget( s, 0, 0, 1, 1 );
-    /*void onReadyStateChanged( bool isReady );
-    void onSpecStateChanged( bool isSpec ); // NEW
-    void onSideComboBoxChanged( int index ); // NEW*/
     connect(battleWindowForm->specCheckBox, SIGNAL( stateChanged ( int ) ),
             this,SLOT(onSpecCheckBoxChanged(int))); // NEW
     connect( battleWindowForm->readyCheckBox, SIGNAL( stateChanged ( int ) ),
@@ -115,12 +112,11 @@ void BattleChannel::setupUi( QWidget * tab ) {
             this, SLOT(onModOptionsAnchorClicked(QUrl)));
     connect(battles, SIGNAL(addStartRect(int,QRect)), SLOT(onAddStartRect(int,QRect)));
     connect(battles, SIGNAL(removeStartRect(int)), SLOT(onRemoveStartRect(int)));
+    connect(battleWindowForm->overviewPushButton, SIGNAL(clicked()), SLOT(openMapOverview()));
+
     currentMap = m_battle.mapName;
     requestMapInfo( m_battle.mapName );
-    connect(battleWindowForm->overviewPushButton, SIGNAL(clicked()), SLOT(openMapOverview()));
-    //fillModOptions();
     fillSides();
-    //   gameHostingStartPushButton->setEnabled(false);
 }
 
 void BattleChannel::receiveCommand( Command command ) {
@@ -129,35 +125,35 @@ void BattleChannel::receiveCommand( Command command ) {
     command.name = command.name.toUpper();
     QStringList battleChannelCommands;
     battleChannelCommands
-    << "BATTLECLOSED"
-    << "JOINBATTLE"
-    << "JOINEDBATTLE"
-    << "LEFTBATTLE"
-    << "JOINBATTLEFAILED"
-    << "OPENBATTLEFAILED"
-    << "UPDATEBATTLEINFO"
-    << "SAIDBATTLE"
-    << "SAIDBATTLEEX"
-    << "CLIENTSTATUS"
-    << "CLIENTBATTLESTATUS"
-    << "FORCEQUITBATTLE"
-    << "DISABLEUNITS"
-    << "ENABLEUNITS"
-    << "ENABLEALLUNITS"
-    << "RING"
-    << "REDIRECT"
-    << "BROADCAST"
-    << "ADDBOT"
-    << "REMOVEBOT"
-    << "UPDATEBOT"
-    << "ADDSTARTRECT"
-    << "REMOVESTARTRECT"
-    << "MAPGRADES"
-    << "SCRIPTSTART"
-    << "SCRIPT"
-    << "SCRIPTEND"
-    << "SETSCRIPTTAGS"
-    << "REMOVESCRIPTTAGS";
+            << "BATTLECLOSED"
+            << "JOINBATTLE"
+            << "JOINEDBATTLE"
+            << "LEFTBATTLE"
+            << "JOINBATTLEFAILED"
+            << "OPENBATTLEFAILED"
+            << "UPDATEBATTLEINFO"
+            << "SAIDBATTLE"
+            << "SAIDBATTLEEX"
+            << "CLIENTSTATUS"
+            << "CLIENTBATTLESTATUS"
+            << "FORCEQUITBATTLE"
+            << "DISABLEUNITS"
+            << "ENABLEUNITS"
+            << "ENABLEALLUNITS"
+            << "RING"
+            << "REDIRECT"
+            << "BROADCAST"
+            << "ADDBOT"
+            << "REMOVEBOT"
+            << "UPDATEBOT"
+            << "ADDSTARTRECT"
+            << "REMOVESTARTRECT"
+            << "MAPGRADES"
+            << "SCRIPTSTART"
+            << "SCRIPT"
+            << "SCRIPTEND"
+            << "SETSCRIPTTAGS"
+            << "REMOVESCRIPTTAGS";
 
     /*
     ** server commands:
@@ -294,8 +290,6 @@ void BattleChannel::receiveCommand( Command command ) {
             if (currentMap != mapName) requestMapInfo( mapName );
             currentMap = mapName;
         }
-    } else if ( command.name == "CLIENTBATTLESTATUS" ) {
-
     } else if ( command.name == "SETSCRIPTTAGS" ) {
         command.attributes = command.attributes.join( " " ).split( "\t" );
         QRegExp re_modoption("game/modoptions/(.*)=(.*)");
@@ -384,6 +378,13 @@ void BattleChannel::fillModOptions() {
     UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
     if (!unitSyncLib->setCurrentMod(m_battle.modName)) {
         battleWindowForm->modOptions->setHtml("<font size=\"16\" color=\"red\">Please, download " + m_battle.modName+"</font>");
+        if(QMessageBox::information(0,
+                                    "Missing content",
+                                    "You don't have the mod or you have broken version.\nDo you want to download it?",
+                                    QMessageBox::Yes,
+                                    QMessageBox::No) == QMessageBox::Yes) {
+            DownloadsModel::getInstance()->startModDownload(m_battle.modName);
+        }
         return;
     }
     QString buffer;
@@ -477,6 +478,13 @@ void BattleChannel::updateMapInfo( QString mapName ) {
         battleWindowForm->minimapWidget->setErrorMessage("Map " + mapName + " not found");
         battleWindowForm->heightmapWidget->setErrorMessage("Map " + mapName + " not found");
         battleWindowForm->metalmapWidget->setErrorMessage("Map " + mapName + " not found");
+        if(QMessageBox::information(0,
+                                    "Missing content",
+                                    "You don't have the map or you have broken version.\nDo you want to download it?",
+                                    QMessageBox::Yes,
+                                    QMessageBox::No) == QMessageBox::Yes) {
+            DownloadsModel::getInstance()->startMapDownload(mapName);
+        }
     } else {
         battleWindowForm->minimapWidget->setErrorMessage(QString::null);
         battleWindowForm->heightmapWidget->setErrorMessage(QString::null);

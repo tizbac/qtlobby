@@ -87,7 +87,12 @@ HEADERS += src/MainWindow.h \
     src/BattleHostingDialog.h \
     src/Notification.h \
     src/AbstractNotificationBackend.h \
-    src/TrayIconNotificationBackend.h
+    src/TrayIconNotificationBackend.h \
+    src/ProgressBarItemDelegate.h \
+    src/Downloader.h \
+    src/DownloadsDialog.h \
+    src/DownloadsModel.h
+
 SOURCES += src/main.cpp \
     src/MainWindow.cpp \
     src/ServerContextState.cpp \
@@ -145,7 +150,11 @@ SOURCES += src/main.cpp \
     src/sqads/sqadsprototypes.cpp \
     src/BattleHostingDialog.cpp \
     src/Notification.cpp \
-    src/TrayIconNotificationBackend.cpp
+    src/TrayIconNotificationBackend.cpp \
+    src/ProgressBarItemDelegate.cpp \
+    src/Downloader.cpp \
+    src/DownloadsDialog.cpp \
+    src/DownloadsModel.cpp
 QT += gui \
     network \
     opengl \
@@ -168,7 +177,8 @@ FORMS += ui/mainWidget.ui \
     ui/LoginDialog.ui \
     ui/UserGroupsDialog.ui \
     ui/ScriptingDialog.ui \
-    ui/BattleHostingDialog.ui
+    ui/BattleHostingDialog.ui \
+    ui/DownloadsDialog.ui
 DISTFILES += doc/ProtocolDescription.xml \
     TODO \
     doc/xml2html.xsl \

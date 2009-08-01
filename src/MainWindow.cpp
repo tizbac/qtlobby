@@ -35,6 +35,9 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     scriptingDialog->setWindowFlags(Qt::Window);
     battleHostingDialog = new BattleHostingDialog(&qpSpring, commandAssigner, lobbyTabs, this);
     battleHostingDialog->setWindowFlags(Qt::Window);
+    downloadsDialog     = new DownloadsDialog(this);
+    downloadsDialog->setWindowFlags(Qt::Window);
+
 
 
     scriptingEngine.globalObject().setProperty("battles", scriptingEngine.newQObject(battles));
@@ -537,3 +540,8 @@ void MainWindow::onJoinRequested() {
     if(!re.exactMatch(channel)) return;
     lobbyTabs->receiveInput("/j " + re.cap(1));
 }
+
+void MainWindow::on_actionDownloads_triggered(bool b) {
+    downloadsDialog->setVisible(b);
+}
+

@@ -29,12 +29,14 @@
 #include "ScriptingDialog.h"
 #include "BattleHost.h"
 #include "BattleHostingDialog.h"
+#include "DownloadsDialog.h"
 #include "Notification.h"
 #ifdef Q_WS_X11
     #include "DBusVisualNotificationBackend.h"
 #else
     #include "TrayIconNotificationBackend.h"
 #endif
+
 
 class MainWindow : public QMainWindow, private Ui::MainWindow {
     Q_OBJECT
@@ -63,6 +65,7 @@ private:
     UserGroupsDialog* userGroupsDialog;
     ScriptingDialog* scriptingDialog;
     BattleHostingDialog *battleHostingDialog;
+    DownloadsDialog* downloadsDialog;
 
     QTabBar* tabBar;
     QToolButton* newTabButton;
@@ -91,6 +94,7 @@ protected:
     void hideEvent(QHideEvent * event);
     void showEvent(QShowEvent * event);
 private slots:
+    void on_actionDownloads_triggered(bool b);
     void on_hostPushButton_clicked();
     void on_actionScripting_triggered();
     void about();
