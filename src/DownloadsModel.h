@@ -35,7 +35,7 @@ public:
 private slots:
     void downloadProgressChanged(QString name,qint64 received,qint64 total);
     void stateChanged(QString name, QString state);
-    void finished(QString name);
+    void finished(QString name, bool success);
 private:
     DownloadsModel(QObject* parent = 0);
     ~DownloadsModel();

@@ -51,6 +51,8 @@ Slot for getting resource filename from resource name via Mirko's gateway
 void Downloader::onResolverFinished() {
     m_fileName = m_reply->readAll().trimmed();
     if(m_fileName.isEmpty()) {
+        emit stateChanged(m_resourceName, "File not found");
+        emit finished(m_resourceName, false);
         return;
     }
     //qDebug() << "onResolverFinished, filename=" + m_fileName;
@@ -71,6 +73,8 @@ Slot for getting mirror list from jobjol.nl
 void Downloader::onMirrorListFinished() {
     QString mirrors = m_reply->readAll();
     if(mirrors.isEmpty()) {
+        emit stateChanged(m_resourceName, "Faied to retrieve mirror list");
+        emit finished(m_resourceName, false);
         return;
     }
     QRegExp re("mirror=(http%3A%2F%2F.*)&");
@@ -171,7 +175,7 @@ void Downloader::onDownloadFinished() {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
     int idx = m_replies.indexOf(reply);
     QByteArray data = reply->readAll();
-    //qDebug() << "onDownloadFinished, offset=" << m_ranges[idx][0];
+    qDebug() << "onDownloadFinished, offset=" << m_ranges[idx][0];
     m_out.seek(m_ranges[idx][0]);
     m_out.write(data);
     n++;
@@ -179,7 +183,7 @@ void Downloader::onDownloadFinished() {
         n = 0;
         m_out.close();
         emit stateChanged(m_resourceName, "Finished");
-        emit finished();
+        emit finished(m_resourceName, true);
     }
 }
 

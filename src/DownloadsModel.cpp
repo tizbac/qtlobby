@@ -26,6 +26,8 @@ void DownloadsModel::startMapDownload(QString mapName) {
             this, SLOT(downloadProgressChanged(QString,qint64,qint64)));
     connect(d, SIGNAL(stateChanged(QString,QString)),
             this, SLOT(stateChanged(QString,QString)));
+    connect(d, SIGNAL(finished(QString,bool)),
+            this, SLOT(finished(QString,bool)));
     d->start();
     reset();
 }
@@ -40,6 +42,8 @@ void DownloadsModel::startModDownload(QString modName) {
             this, SLOT(downloadProgressChanged(QString,qint64,qint64)));
     connect(d, SIGNAL(stateChanged(QString,QString)),
             this, SLOT(stateChanged(QString,QString)));
+    connect(d, SIGNAL(finished(QString,bool)),
+            this, SLOT(finished(QString,bool)));
     d->start();
     reset();
 }
@@ -107,7 +111,8 @@ void DownloadsModel::stateChanged(QString name, QString state) {
     emit dataChanged(index(m_downloads.indexOf(d), 3), index(m_downloads.indexOf(d), 3));
 }
 
-void DownloadsModel::finished(QString /*name*/) {
+void DownloadsModel::finished(QString /*name*/, bool success) {
     //Download* d = findResource(name);
-    UnitSyncLib::getInstance()->reboot();
+    if(success)
+        UnitSyncLib::getInstance()->reboot();
 }

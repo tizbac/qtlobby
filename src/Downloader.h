@@ -21,7 +21,7 @@ public:
 signals:
     void downloadProgress(QString name, qint64 bytesReceived, qint64 bytesTotal);
     void stateChanged(QString name, QString state);
-    void finished();
+    void finished(QString name, bool success);
 private slots:
     void onResolverFinished();
     void onMirrorListFinished();
