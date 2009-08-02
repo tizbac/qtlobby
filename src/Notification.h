@@ -5,10 +5,7 @@
 
 #include "AbstractNotificationBackend.h"
 
-#include <QtCore>
-#include <QtDBus>
 #include <QString>
-#include <QSystemTrayIcon>
 
 class Notification : public Singleton<Notification>
 {
