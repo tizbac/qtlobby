@@ -4,6 +4,7 @@ ToolBarWidget::ToolBarWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ToolBarWidget) {
     ui->setupUi(this);
+    ui->tabBar->setTabsClosable(true);
 }
 
 ToolBarWidget::~ToolBarWidget() {
