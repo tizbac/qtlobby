@@ -52,11 +52,14 @@ void BattleManager::modBattle( Battle b ) {
     m_model->setData( m_model->index( i, 0, QModelIndex() ), a, Qt::UserRole );
 }
 
+bool BattleManager::isBattleId( int id ) {
+    return m_model->rowPositionForBattle( id ) != -1;
+}
+
 Battle BattleManager::getBattle( int id ) {
     int i = m_model->rowPositionForBattle( id );
-
     if ( i == -1 ) {
-        qDebug() << "Error: battle not found, returing Battle() for BattleID:" << id;
+        qDebug() << __FILE__ << "Error: Battle not found, returning Battle() for BattleID:" << id << "Please report that to the developers!";
         return Battle();
     }
     QModelIndex n = m_model->index( i, 0, QModelIndex() );

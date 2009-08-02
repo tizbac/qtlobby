@@ -21,6 +21,8 @@ class BattleManager : public QObject {
 public:
     BattleManager(QObject* parent = 0 );
     ~BattleManager();
+    /** test if there is a battle with this id */
+    bool isBattleId( int id );
     /** get a complete battle record by name */
     Battle getBattle( int id );
 

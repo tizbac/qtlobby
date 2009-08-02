@@ -108,6 +108,10 @@ void Battles::receiveCommand( Command command ) {
         int joinedBattleId = u.joinedBattleId;
         if ( joinedBattleId == -1 )
             return;
+        if ( !battleManager->isBattleId( joinedBattleId ) ) {
+            qDebug() << __FILE__ << __LINE__<< " CLIENTSTATUS with false ID called: " << joinedBattleId;
+            return;
+        }
         Battle b = battleManager->getBattle( joinedBattleId );
         if ( b.founder == u.name ) {
             u.userState.setState(command.attributes[1].toInt());
@@ -124,10 +128,18 @@ void Battles::receiveCommand( Command command ) {
     } else if ( command.name == "JOINBATTLEFAILED" ) {
         QMessageBox::critical(this, "Join battle failed", command.attributes.join(" "));
     } else if ( command.name == "JOINEDBATTLE" ) {
+        if ( !battleManager->isBattleId( command.attributes[0].toInt() ) ) {
+            qDebug() << __FILE__ << __LINE__<< " JOINEDBATTLE with false ID called: " << command.attributes[0].toInt();
+            return;
+        }
         Battle b = battleManager->getBattle( command.attributes[0].toInt() );
         b.playerCount++;
         battleManager->modBattle( b );
     } else if ( command.name == "LEFTBATTLE" ) {
+        if ( !battleManager->isBattleId( command.attributes[0].toInt() ) ) {
+            qDebug() << __FILE__ << __LINE__<< " LEFTBATTLE with false ID called: " << command.attributes[0].toInt();
+            return;
+        }
         Battle b = battleManager->getBattle( command.attributes[0].toInt() );
         b.playerCount--;
         battleManager->modBattle( b );
@@ -161,6 +173,10 @@ void Battles::receiveCommand( Command command ) {
     } else if ( command.name == "UPDATEBATTLEINFO" ) {
         Q_ASSERT( command.attributes.size() >= 5 );
         int battleId = command.attributes.takeFirst().toInt();
+        if ( !battleManager->isBattleId( battleId ) ) {
+            qDebug() << __FILE__ << __LINE__<< " UPDATEBATTLEINFO with false ID called: " << battleId;
+            return;
+        }
         Battle b = battleManager->getBattle( battleId );
         b.spectatorCount = command.attributes.takeFirst().toInt();
         b.isLocked = command.attributes.takeFirst().toInt() > 0;
@@ -174,6 +190,10 @@ void Battles::receiveCommand( Command command ) {
         }
     } else if ( command.name == "SETSCRIPTTAGS" ) {
         int bi = users->getUser( username ).joinedBattleId;
+        if( !battleManager->isBattleId( bi ) ) {
+            qDebug() << __FILE__ << __LINE__<< " SETSCRIPTTAGS with false ID called: " << bi;
+            return;
+        }
         Battle b = battleManager->getBattle( bi );
         command.attributes = command.attributes.join( " " ).split( "\t" );
         foreach( QString s, command.attributes ) {
@@ -183,6 +203,10 @@ void Battles::receiveCommand( Command command ) {
         battleManager->modBattle( b );
     } else if ( command.name == "REMOVESCRIPTTAGS" ) {
         int bi = users->getUser( username ).joinedBattleId;
+        if( !battleManager->isBattleId( bi ) ) {
+            qDebug() << __FILE__ << __LINE__<< " REMOVESCRIPTTAGS with false ID called: " << bi;
+            return;
+        }
         Battle b = battleManager->getBattle( bi );
         command.attributes = command.attributes.join( " " ).split( "\t" );
         foreach( QString s, command.attributes ) {
@@ -193,6 +217,10 @@ void Battles::receiveCommand( Command command ) {
         battleManager->modBattle( b );
     } else if ( command.name == "ADDSTARTRECT" ) { // allyno left top right bottom
         int bi = users->getUser( username ).joinedBattleId;
+        if( !battleManager->isBattleId( bi ) ) {
+            qDebug() << __FILE__ << __LINE__<< " ADDSTARTRECT with false ID called: " << bi;
+            return;
+        }
         Battle b = battleManager->getBattle( bi );
         b.allyNumberStartRectMap[command.attributes[0].toInt()] = StartRect(
                 command.attributes[1].toInt(),
@@ -209,6 +237,10 @@ void Battles::receiveCommand( Command command ) {
         battleManager->modBattle( b );
     } else if ( command.name == "REMOVESTARTRECT" ) { // allyno
         int bi = users->getUser( username ).joinedBattleId;
+        if( !battleManager->isBattleId( bi ) ) {
+            qDebug() << __FILE__ << __LINE__<< " REMOVESTARTRECT with false ID called: " << bi;
+            return;
+        }
         Battle b = battleManager->getBattle( bi );
         b.allyNumberStartRectMap.remove( command.attributes[0].toInt() );
         battleManager->modBattle( b );
@@ -482,10 +514,10 @@ QString Battles::generateScript( Battle b, bool host ) {
 int Battles::resyncStatus() {
     int battleId = users->getUser( url.userName() ).joinedBattleId;
     
-    if ( battleId < 0 ) {
+    if ( !battleManager->isBattleId( battleId ) ) {
         // set battle status to unsync
         // popup messagebox with error, that this should not happen
-        qDebug() << __FILE__ << " error: should I resync for a none existing battle?!";
+        qDebug() << __FILE__ << __LINE__<< " error: should I resync for a none existing battle?!";
         return 0;
     }
     Battle b = battleManager->getBattle( battleId );

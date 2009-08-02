@@ -63,7 +63,7 @@ HEADERS += src/MainWindow.h \
     src/MapSelector.h \
     src/BattleUserTreeModel.h \
     src/TreeSortFilterProxyModel.h \
-    src/mapElementWidget.h \
+    src/MapElementWidget.h \
     src/PreferencePathElement.h \
     src/Singleton.h \
     src/ModOption.h \
@@ -127,7 +127,7 @@ SOURCES += src/main.cpp \
     src/MapSelector.cpp \
     src/BattleUserTreeModel.cpp \
     src/TreeSortFilterProxyModel.cpp \
-    src/mapElementWidget.cpp \
+    src/MapElementWidget.cpp \
     src/PreferencePathElement.cpp \
     src/Singleton.cpp \
     src/ModOption.cpp \
@@ -160,15 +160,15 @@ QT += gui \
     xml \
     script \
     scripttools
-FORMS += ui/mainWidget.ui \
+FORMS += ui/MainWidget.ui \
     ui/connectionWidget.ui \
-    ui/mapSelectorWidget.ui \
-    ui/battleWidget.ui \
+    ui/MapSelectorWidget.ui \ # not used!
+    ui/BattleWidget.ui \      # not used!
     ui/gamePasswordWidget.ui \
     ui/aboutWidget.ui \
     ui/agreementWidget.ui \
     ui/abstractChannelWidget.ui \
-    ui/preferenceWidget.ui \
+    ui/PreferenceWidget.ui \
     ui/PreferencePathElement.ui \
     ui/StylesheetDialog.ui \
     ui/MapOverviewDialog.ui \

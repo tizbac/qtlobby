@@ -9,7 +9,7 @@
 #include <QSystemTrayIcon>
 #include <QScriptEngine>
 
-#include "ui_mainWidget.h"
+#include "ui_MainWidget.h"
 #include "ui_aboutWidget.h"
 #include "Settings.h"
 #include "ConnectionWidget.h"

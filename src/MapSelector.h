@@ -8,7 +8,7 @@
 #include <QGridLayout>
 #include <QScrollArea>
 
-#include "mapElementWidget.h"
+#include "MapElementWidget.h"
 
 class MapSelector : public QDialog {
     Q_OBJECT

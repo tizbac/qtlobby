@@ -10,11 +10,11 @@
 /**
 	@author Joachim Schiele <js@lastlog.de>
 */
-class mapElementWidget : public QWidget, private Ui::MapSelectorWidget {
+class MapElementWidget : public QWidget, private Ui::MapSelectorWidget {
     Q_OBJECT
 public:
-    mapElementWidget(QWidget *parent = 0);
-    ~mapElementWidget();
+    MapElementWidget(QWidget *parent = 0);
+    ~MapElementWidget();
 
 };
 

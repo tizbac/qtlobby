@@ -10,7 +10,7 @@ MapSelector::MapSelector(QDialog* parent) : QDialog( parent) {
     QVBoxLayout *mainLayout = new QVBoxLayout;
 
     for (int i = 0 ; i < 10; ++i ) {
-        mapElementWidget* a = new mapElementWidget;
+        MapElementWidget* a = new MapElementWidget;
         mainLayout->addWidget(a);
     }
 

@@ -10,7 +10,7 @@
 #include <QDir>
 #include <QList>
 
-#include "ui_preferenceWidget.h"
+#include "ui_PreferenceWidget.h"
 #include "Settings.h"
 #include "PreferencePathElement.h"
 
@@ -30,4 +30,3 @@ private slots:
 };
 
 #endif
-
