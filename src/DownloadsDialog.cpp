@@ -4,6 +4,7 @@
 #include "ui_DownloadsDialog.h"
 #include "DownloadsModel.h"
 #include "ProgressBarItemDelegate.h"
+#include <QDateTime>
 
 DownloadsDialog::DownloadsDialog(QWidget *parent) :
         QDialog(parent),
@@ -11,6 +12,7 @@ DownloadsDialog::DownloadsDialog(QWidget *parent) :
     m_ui->setupUi(this);
     m_ui->downloadsTableView->setItemDelegateForColumn(2, new ProgressBarItemDelegate());
     m_ui->downloadsTableView->setModel(DownloadsModel::getInstance());
+    qsrand(QDateTime::currentDateTime().toTime_t());
 }
 
 DownloadsDialog::~DownloadsDialog() {
@@ -28,3 +30,10 @@ void DownloadsDialog::changeEvent(QEvent *e)
         break;
     }
 }
+
+void DownloadsDialog::showEvent(QShowEvent* /*event*/) {
+    QString file(":/icons/logos/jobjol/logo%1.jpg");
+    int idx = qrand() % 16;
+    m_ui->jobjolLogoLabel->setPixmap(QPixmap(file.arg(idx)));
+}
+

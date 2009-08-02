@@ -16,6 +16,7 @@ public:
 
 protected:
     virtual void changeEvent(QEvent *e);
+    virtual void showEvent(QShowEvent* event);
 
 private:
     Ui::DownloadsDialog *m_ui;
