@@ -52,7 +52,7 @@
    </widget>
    <widget class="QMenu" name="menu_Help">
     <property name="title">
-     <string>&amp;Help</string>
+     <string>Help</string>
     </property>
     <addaction name="separator"/>
     <addaction name="action_About"/>
@@ -85,6 +85,7 @@
     </property>
     <addaction name="actionStart_Spring"/>
     <addaction name="action_Spring_Settings"/>
+    <addaction name="action_Host_a_Battle"/>
    </widget>
    <addaction name="menu_Program"/>
    <addaction name="menu_Tools"/>
@@ -113,7 +114,7 @@
     <set>Qt::AllDockWidgetAreas</set>
    </property>
    <property name="windowTitle">
-    <string>User list</string>
+    <string>&amp;User List</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -217,7 +218,7 @@
     <set>Qt::AllDockWidgetAreas</set>
    </property>
    <property name="windowTitle">
-    <string>Battle List</string>
+    <string>&amp;Battle List</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>8</number>
@@ -295,7 +296,7 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>Host</string>
+        <string>&amp;Host</string>
        </property>
       </widget>
      </item>
@@ -307,7 +308,7 @@
     <set>Qt::AllDockWidgetAreas</set>
    </property>
    <property name="windowTitle">
-    <string>Battle Info</string>
+    <string>Battle &amp;Info</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>8</number>
@@ -370,6 +371,9 @@
    <property name="text">
     <string>&amp;Exit</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
   </action>
   <action name="action_Connect">
    <property name="icon">
@@ -379,10 +383,16 @@
    <property name="text">
     <string>&amp;Login</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
   </action>
   <action name="action_About">
    <property name="text">
     <string>&amp;About</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
    </property>
    <property name="menuRole">
     <enum>QAction::AboutRole</enum>
@@ -391,6 +401,9 @@
   <action name="actionReload_maps_and_mods">
    <property name="text">
     <string>&amp;Reload maps and mods</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
   <action name="action_Disconnect">
@@ -414,7 +427,10 @@
      <normaloff>:/icons/battle_list.xpm</normaloff>:/icons/battle_list.xpm</iconset>
    </property>
    <property name="text">
-    <string>Ba&amp;ttle list</string>
+    <string>&amp;Battle list</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
    </property>
   </action>
   <action name="action_User_list">
@@ -430,6 +446,9 @@
    </property>
    <property name="text">
     <string>&amp;User list</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+U</string>
    </property>
   </action>
   <action name="actionHelp">
@@ -462,17 +481,23 @@
   </action>
   <action name="actionStart_Spring">
    <property name="text">
-    <string>Start &amp;Spring</string>
+    <string>&amp;Start Spring</string>
    </property>
   </action>
   <action name="actionPreferences">
    <property name="text">
     <string>&amp;Preferences</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
   </action>
   <action name="action_Spring_Settings">
    <property name="text">
     <string>Spring Settin&amp;gs</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
    </property>
   </action>
   <action name="actionMap_list">
@@ -488,17 +513,20 @@
   </action>
   <action name="actionStylesheet">
    <property name="text">
-    <string>Stylesheet</string>
+    <string>&amp;Stylesheet</string>
    </property>
   </action>
   <action name="actionGroups">
    <property name="text">
-    <string>Groups</string>
+    <string>&amp;Groups</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+G</string>
    </property>
   </action>
   <action name="actionScripting">
    <property name="text">
-    <string>Scripting</string>
+    <string>S&amp;cripting</string>
    </property>
   </action>
   <action name="actionBattle_Info">
@@ -513,10 +541,13 @@
      <normaloff>:/icons/rank6.xpm</normaloff>:/icons/rank6.xpm</iconset>
    </property>
    <property name="text">
-    <string>Battle Info</string>
+    <string>Battle &amp;Info</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
    </property>
   </action>
-   <action name="actionDownloads">
+  <action name="actionDownloads">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -525,7 +556,18 @@
      <normaloff>:/icons/download_map.xpm</normaloff>:/icons/download_map.xpm</iconset>
    </property>
    <property name="text">
-    <string>Downloads</string>
+    <string>&amp;Downloads</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="action_Host_a_Battle">
+   <property name="text">
+    <string>&amp;Host a Battle</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+H</string>
    </property>
   </action>
  </widget>

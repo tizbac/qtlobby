@@ -181,6 +181,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     // aboutDialog
     connect( action_About, SIGNAL( triggered() ),
              this, SLOT( about() ) );
+    connect( action_Host_a_Battle, SIGNAL( triggered() ),
+             this, SLOT( on_hostPushButton_clicked() ) );
     // preferences
     connect( actionPreferences, SIGNAL( triggered() ),
              preference, SLOT( show() ) );
