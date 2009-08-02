@@ -16,6 +16,50 @@ UserPreference::UserPreference( QDialog* parent ) : QDialog( parent ) {
     connect( cancelPushButton, SIGNAL( clicked() ),
              this, SLOT( cancelClicked() ) );
 
+    QVector<QStringList> elements = getPathElements();
+    QGridLayout *mainLayout = new QGridLayout();
+    QWidget* container = new QWidget( this );
+    container->setLayout( mainLayout );
+    int h = 0;
+    for ( int i = 0; i < elements.size(); ++i ) {
+        PreferencePathElement* pathElement = new PreferencePathElement( elements[i], container );
+        mainLayout->addWidget( pathElement, i, 0, 1, 1 );
+        h += pathElement->height();
+        this->pathElements << pathElement;
+    }
+    container->setMinimumHeight( h );
+    QScrollArea* scrollArea = new QScrollArea( this );
+    scrollArea->setWidget( container );
+    scrollArea->setWidgetResizable( true );
+    QGridLayout* f = new QGridLayout( preferencesPlaceholder );
+    f->addWidget( scrollArea, 0, 0, 1, 1 );
+}
+
+UserPreference::~UserPreference() { }
+
+void UserPreference::okClicked() {
+    for ( int i = 0; i < pathElements.size(); ++i ) {
+        pathElements[i]->SaveElement();
+    }
+    if (UnitSyncLib::getInstance()->loadLibrary())
+        hide();
+}
+
+void UserPreference::applyClicked() {
+    for ( int i = 0; i < pathElements.size(); ++i ) {
+        pathElements[i]->SaveElement();
+    }
+    UnitSyncLib::getInstance()->loadLibrary();
+}
+
+void UserPreference::cancelClicked() {
+    for ( int i = 0; i < pathElements.size(); ++i ) {
+        pathElements[i]->ResetConfiguration();
+    }
+    hide();
+}
+
+QVector<QStringList> UserPreference::getPathElements() {
 #ifdef Q_WS_WIN
     QString pfiles = getenv("ProgramW6432");
     if (pfiles == "")
@@ -131,45 +175,5 @@ UserPreference::UserPreference( QDialog* parent ) : QDialog( parent ) {
     //      << ""
     //      << "";
     //   elements.append( el );
-
-    QGridLayout *mainLayout = new QGridLayout();
-    QWidget* container = new QWidget( this );
-    container->setLayout( mainLayout );
-    int h = 0;
-    for ( int i = 0; i < elements.size(); ++i ) {
-        ConfigElement* configElement = new ConfigElement( elements[i], container );
-        mainLayout->addWidget( configElement, i, 0, 1, 1 );
-        h += configElement->height();
-        this->elements << configElement;
-    }
-    container->setMinimumHeight( h );
-    QScrollArea* scrollArea = new QScrollArea( this );
-    scrollArea->setWidget( container );
-    scrollArea->setWidgetResizable( true );
-    QGridLayout* f = new QGridLayout( preferencesPlaceholder );
-    f->addWidget( scrollArea, 0, 0, 1, 1 );
-}
-
-UserPreference::~UserPreference() { }
-
-void UserPreference::okClicked() {
-    for ( int i = 0; i < elements.size(); ++i ) {
-        elements[i]->SaveElement();
-    }
-    if (UnitSyncLib::getInstance()->loadLibrary())
-        hide();
-}
-
-void UserPreference::applyClicked() {
-    for ( int i = 0; i < elements.size(); ++i ) {
-        elements[i]->SaveElement();
-    }
-    UnitSyncLib::getInstance()->loadLibrary();
-}
-
-void UserPreference::cancelClicked() {
-    for ( int i = 0; i < elements.size(); ++i ) {
-        elements[i]->ResetConfiguration();
-    }
-    hide();
+    return elements;
 }

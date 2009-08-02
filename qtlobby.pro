@@ -27,7 +27,6 @@ INSTALLS += desktop
 # DEFINES += SVN_REV=444
 # QMAKE_CFLAGS += $(SVNDEF)
 # QMAKE_CXXFLAGS += $(SVNDEF)
-include(src/modeltest/modeltest.pri)
 
 # Input
 HEADERS += src/MainWindow.h \
@@ -66,7 +65,7 @@ HEADERS += src/MainWindow.h \
     src/BattleUserTreeModel.h \
     src/TreeSortFilterProxyModel.h \
     src/mapElementWidget.h \
-    src/ConfigElement.h \
+    src/PreferencePathElement.h \
     src/Singleton.h \
     src/ModOption.h \
     src/StylesheetDialog.h \
@@ -130,7 +129,7 @@ SOURCES += src/main.cpp \
     src/BattleUserTreeModel.cpp \
     src/TreeSortFilterProxyModel.cpp \
     src/mapElementWidget.cpp \
-    src/ConfigElement.cpp \
+    src/PreferencePathElement.cpp \
     src/Singleton.cpp \
     src/ModOption.cpp \
     src/StylesheetDialog.cpp \
@@ -170,7 +169,7 @@ FORMS += ui/mainWidget.ui \
     ui/agreementWidget.ui \
     ui/abstractChannelWidget.ui \
     ui/preferenceWidget.ui \
-    ui/configElement.ui \
+    ui/PreferencePathElement.ui \
     ui/StylesheetDialog.ui \
     ui/MapOverviewDialog.ui \
     ui/GLProgressDialog.ui \
@@ -191,3 +190,5 @@ unix {
     QT += dbus
 }
 OTHER_FILES += src/sqads.js
+
+TRANSLATIONS = qtlobby.ts

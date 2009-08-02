@@ -12,7 +12,7 @@
 
 #include "ui_preferenceWidget.h"
 #include "Settings.h"
-#include "ConfigElement.h"
+#include "PreferencePathElement.h"
 
 class UserPreference : public QDialog, private Ui::PreferenceWidget {
     Q_OBJECT
@@ -21,7 +21,8 @@ public:
     ~UserPreference();
 private:
     QSettings* settings;
-    QList<ConfigElement*> elements;
+    QList<PreferencePathElement*> pathElements;
+    QVector<QStringList> getPathElements();
 private slots:
     void okClicked();
     void applyClicked();

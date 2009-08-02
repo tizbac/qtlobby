@@ -11,13 +11,13 @@
 #include <QFileInfo>
 
 #include "Settings.h"
-#include "ui_configElement.h"
+#include "ui_PreferencePathElement.h"
 
-class ConfigElement : public QWidget, public Ui::configElement {
+class PreferencePathElement : public QWidget, public Ui::PreferencePathElement {
     Q_OBJECT
 public:
-    ConfigElement( QStringList config, QWidget* parent = 0 );
-    ~ConfigElement();
+    PreferencePathElement( QStringList config, QWidget* parent = 0 );
+    ~PreferencePathElement();
 
 protected:
     QStringList m_config;

@@ -1,54 +1,78 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>PreferenceWidget</class>
- <widget class="QWidget" name="PreferenceWidget" >
-  <property name="geometry" >
+ <widget class="QWidget" name="PreferenceWidget">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>723</width>
+    <width>549</width>
     <height>440</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>QT::Lobby preferences</string>
   </property>
-  <layout class="QGridLayout" >
-   <item row="0" column="0" colspan="4" >
-    <widget class="QWidget" native="1" name="preferencesPlaceholder" />
-   </item>
-   <item row="1" column="0" >
-    <spacer>
-     <property name="orientation" >
-      <enum>Qt::Horizontal</enum>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <widget class="QTabWidget" name="settingsTabWidget">
+     <property name="currentIndex">
+      <number>1</number>
      </property>
-     <property name="sizeHint" >
-      <size>
-       <width>261</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="1" column="1" >
-    <widget class="QPushButton" name="cancelPushButton" >
-     <property name="text" >
-      <string>&amp;Cancel</string>
-     </property>
+     <widget class="QWidget" name="generalTab" native="true">
+      <attribute name="title">
+       <string>General</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="pathTab">
+      <attribute name="title">
+       <string>Path</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QWidget" name="preferencesPlaceholder" native="true"/>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
-   <item row="1" column="2" >
-    <widget class="QPushButton" name="applyPushButton" >
-     <property name="text" >
-      <string>&amp;Apply</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="3" >
-    <widget class="QPushButton" name="okPushButton" >
-     <property name="text" >
-      <string>&amp;Ok</string>
-     </property>
-    </widget>
+   <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>261</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancelPushButton">
+       <property name="text">
+        <string>&amp;Cancel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="applyPushButton">
+       <property name="text">
+        <string>&amp;Apply</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="okPushButton">
+       <property name="text">
+        <string>&amp;Ok</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>
