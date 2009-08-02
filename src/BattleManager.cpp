@@ -44,6 +44,7 @@ void BattleManager::addBattle( Battle b ) {
 
 void BattleManager::modBattle( Battle b ) {
     int i = m_model->rowPositionForBattle( b.id );
+    //There is a check here and it stops from doing something bad(crashing?)
     if ( i == -1 )
         return;
     QVariant a;

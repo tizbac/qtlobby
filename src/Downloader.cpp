@@ -8,7 +8,7 @@
 #include "Settings.h"
 
 //constants
-const QString resolverUrl = "http://134.2.74.148:8080/qfc/map/%1";
+const QString resolverUrl = "http://134.2.74.148:8080/qfc/%1/%2";
 const QString mirrorListUrl = "http://spring.jobjol.nl/checkmirror.php?q=%1&c=%2";
 const QString userAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.1) Gecko/20090715 Firefox/3.5.1";
 const QString referrer = "http://spring.jobjol.nl";
@@ -39,7 +39,7 @@ void Downloader::start() {
     m_downloading = false;
     //qDebug() << "run, name=" + m_resourceName;
     m_manager = new QNetworkAccessManager(this);
-    m_resolve.setUrl(resolverUrl.arg(m_resourceName));
+    m_resolve.setUrl(resolverUrl.arg(m_map ? "map" : "mod").arg(m_resourceName));
     m_reply = m_manager->get(m_resolve);
     connect(m_reply, SIGNAL(finished()), this, SLOT(onResolverFinished()));
     emit stateChanged(m_resourceName, "Resolving filename");
@@ -145,7 +145,7 @@ void Downloader::download() {
     QString dir = Settings::Instance()->value("spring_user_dir").toString();
     m_out.setFileName(dir + "/" + (m_map ? "maps" : "mods") + "/" + m_fileName);
     if(!m_out.open(QIODevice::WriteOnly)) {
-        qDebug() << "Failed to create file";
+        //qDebug() << "Failed to create file";
         return;
     }
     //qDebug() << "download, fileName=" << m_out.fileName();
@@ -175,7 +175,7 @@ void Downloader::onDownloadFinished() {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
     int idx = m_replies.indexOf(reply);
     QByteArray data = reply->readAll();
-    qDebug() << "onDownloadFinished, offset=" << m_ranges[idx][0];
+    //qDebug() << "onDownloadFinished, offset=" << m_ranges[idx][0];
     m_out.seek(m_ranges[idx][0]);
     m_out.write(data);
     n++;
