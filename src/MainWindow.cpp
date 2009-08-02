@@ -1,6 +1,7 @@
 // $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "MainWindow.h"
+#include "ToolBarWidget.h"
 #include <QInputDialog>
 
 MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
@@ -251,26 +252,10 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
 }
 
 void MainWindow::setupToolbar() {
-    QWidget* toolBarWidget = new QWidget(this);
-    tabBar = new QTabBar(toolBarWidget);
-    newTabButton = new QToolButton(toolBarWidget);
-    newTabButton->setIcon(QIcon(":/icons/trolltech/plus.png"));
-    newTabButton->setAutoRaise(true);
-    newTabButton->setMaximumHeight(24);
-    newTabButton->setMaximumWidth(24);
-    newTabButton->setToolTip("Join a channel");
+    ToolBarWidget* toolBarWidget = new ToolBarWidget(this);
+    tabBar = toolBarWidget->ui->tabBar;
+    newTabButton = toolBarWidget->ui->joinToolButton;
     connect(newTabButton, SIGNAL(clicked()), this, SLOT(onJoinRequested()));
-    QHBoxLayout* hbl = new QHBoxLayout(toolBarWidget);
-    toolBarWidget->setLayout(hbl);
-    toolBarWidget->setMinimumHeight(35);
-    hbl->addWidget(tabBar);
-    hbl->addWidget(newTabButton);
-    //QSpacerItem* horizontalSpacer = new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Expanding);
-    //hbl->addSpacerItem(horizontalSpacer);
-    tabBar->setTabsClosable(true);
-    //tabBar->setDocumentMode(true);
-    //tabBar->setDrawBase(false);
-    tabBar->setMovable(false);
     QAction* a = tabsToolBar->addWidget(toolBarWidget);
     a->setVisible(true);
 }

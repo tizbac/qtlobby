@@ -14,7 +14,6 @@
 #include "Settings.h"
 #include "ConnectionWidget.h"
 #include "CommandAssigner.h"
-#include "StatusTracker.h"
 #include "Command.h"
 #include "LobbyTabs.h"
 #include "Users.h"
@@ -72,10 +71,6 @@ private:
     QLabel* battlesOnline;
     QLabel* usersOnline;
     QLabel* moderatorsOnline;
-
-    //the status bar text
-    StatusTracker* statusTracker;
-
     QSystemTrayIcon* trayIcon;
     void createTrayIcon();
     QMenu* trayIconMenu;

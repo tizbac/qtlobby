@@ -27,7 +27,6 @@ INSTALLS += desktop
 # DEFINES += SVN_REV=444
 # QMAKE_CFLAGS += $(SVNDEF)
 # QMAKE_CXXFLAGS += $(SVNDEF)
-
 # Input
 HEADERS += src/MainWindow.h \
     src/ServerContextState.h \
@@ -90,8 +89,8 @@ HEADERS += src/MainWindow.h \
     src/ProgressBarItemDelegate.h \
     src/Downloader.h \
     src/DownloadsDialog.h \
-    src/DownloadsModel.h
-
+    src/DownloadsModel.h \
+    src/ToolBarWidget.h
 SOURCES += src/main.cpp \
     src/MainWindow.cpp \
     src/ServerContextState.cpp \
@@ -153,7 +152,8 @@ SOURCES += src/main.cpp \
     src/ProgressBarItemDelegate.cpp \
     src/Downloader.cpp \
     src/DownloadsDialog.cpp \
-    src/DownloadsModel.cpp
+    src/DownloadsModel.cpp \
+    src/ToolBarWidget.cpp
 QT += gui \
     network \
     opengl \
@@ -177,7 +177,8 @@ FORMS += ui/mainWidget.ui \
     ui/UserGroupsDialog.ui \
     ui/ScriptingDialog.ui \
     ui/BattleHostingDialog.ui \
-    ui/DownloadsDialog.ui
+    ui/DownloadsDialog.ui \
+    ui/ToolBarWidget.ui
 DISTFILES += doc/ProtocolDescription.xml \
     TODO \
     doc/xml2html.xsl \
@@ -190,5 +191,4 @@ unix {
     QT += dbus
 }
 OTHER_FILES += src/sqads.js
-
 TRANSLATIONS = qtlobby.ts
