@@ -549,6 +549,9 @@
   </action>
   <action name="actionDownloads">
    <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="enabled">
     <bool>true</bool>
    </property>
    <property name="icon">

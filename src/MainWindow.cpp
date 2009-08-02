@@ -258,6 +258,7 @@ void MainWindow::setupToolbar() {
     newTabButton->setAutoRaise(true);
     newTabButton->setMaximumHeight(24);
     newTabButton->setMaximumWidth(24);
+    newTabButton->setToolTip("Join a channel");
     connect(newTabButton, SIGNAL(clicked()), this, SLOT(onJoinRequested()));
     QHBoxLayout* hbl = new QHBoxLayout(toolBarWidget);
     toolBarWidget->setLayout(hbl);
@@ -418,6 +419,8 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 
 void MainWindow::showGroupsDialog() {
     userGroupsDialog->show();
+    userGroupsDialog->activateWindow();
+    userGroupsDialog->raise();
 }
 
 void MainWindow::setCurrentUsername( QString username ) {
@@ -487,6 +490,8 @@ void MainWindow::onStatsChange(int battles) {
 
 void MainWindow::on_actionScripting_triggered() {
     scriptingDialog->show();
+    scriptingDialog->activateWindow();
+    scriptingDialog->raise();
 }
 
 void MainWindow::connectionStatusChanged(ConnectionState state) {
@@ -523,6 +528,8 @@ void MainWindow::onCurrentTabChanged() {
 
 void MainWindow::on_hostPushButton_clicked() {
     battleHostingDialog->show();
+    battleHostingDialog->activateWindow();
+    battleHostingDialog->raise();
 }
 
 void MainWindow::onBlockInput(bool b) {
@@ -543,7 +550,9 @@ void MainWindow::onJoinRequested() {
     lobbyTabs->receiveInput("/j " + re.cap(1));
 }
 
-void MainWindow::on_actionDownloads_triggered(bool b) {
-    downloadsDialog->setVisible(b);
+void MainWindow::on_actionDownloads_triggered() {
+    downloadsDialog->show();
+    downloadsDialog->activateWindow();
+    downloadsDialog->raise();
 }
 

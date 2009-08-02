@@ -94,7 +94,7 @@ protected:
     void hideEvent(QHideEvent * event);
     void showEvent(QShowEvent * event);
 private slots:
-    void on_actionDownloads_triggered(bool b);
+    void on_actionDownloads_triggered();
     void on_hostPushButton_clicked();
     void on_actionScripting_triggered();
     void about();

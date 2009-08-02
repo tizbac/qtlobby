@@ -12,10 +12,17 @@ void ProgressBarItemDelegate::paint(QPainter * painter, const QStyleOptionViewIt
 
     QStyleOptionProgressBar progressBarOption;
     progressBarOption.rect = option.rect;
-    progressBarOption.minimum = 0;
-    progressBarOption.maximum = 100;
-    progressBarOption.progress = progress;
-    progressBarOption.text = QString::number(progress) + "%";
+    if(progress == -1) {
+        progressBarOption.minimum = 0;
+        progressBarOption.maximum = 1;
+        progressBarOption.progress = 0;
+        progressBarOption.text = "File size unknown";
+    } else {
+        progressBarOption.minimum = 0;
+        progressBarOption.maximum = 100;
+        progressBarOption.progress = progress;
+        progressBarOption.text = QString::number(progress) + "%";
+    }
     progressBarOption.textVisible = true;
 
     QApplication::style()->drawControl(QStyle::CE_ProgressBar,

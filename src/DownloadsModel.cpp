@@ -4,6 +4,10 @@
 #include "Downloader.h"
 #include "UnitSyncLib.h"
 
+const int Gb = 1024*1024*1024;
+const int Mb = 1024*1024;
+const int Kb = 1024;
+
 DownloadsModel::DownloadsModel(QObject* parent) : QAbstractTableModel(parent) {
 
 }
@@ -28,6 +32,8 @@ void DownloadsModel::startMapDownload(QString mapName) {
             this, SLOT(stateChanged(QString,QString)));
     connect(d, SIGNAL(finished(QString,bool)),
             this, SLOT(finished(QString,bool)));
+    connect(d, SIGNAL(speedEtaChanged(QString,int,int)),
+            this, SLOT(speedEtaChanged(QString,int,int)));
     d->start();
     reset();
 }
@@ -44,6 +50,8 @@ void DownloadsModel::startModDownload(QString modName) {
             this, SLOT(stateChanged(QString,QString)));
     connect(d, SIGNAL(finished(QString,bool)),
             this, SLOT(finished(QString,bool)));
+    connect(d, SIGNAL(speedEtaChanged(QString,int,int)),
+            this, SLOT(speedEtaChanged(QString,int,int)));
     d->start();
     reset();
 }
@@ -53,7 +61,7 @@ int DownloadsModel::rowCount(const QModelIndex & /*parent*/) const {
 }
 
 int DownloadsModel::columnCount(const QModelIndex & /*parent*/) const {
-    return 4;
+    return 6;
 }
 
 QVariant DownloadsModel::data(const QModelIndex & index, int role) const {
@@ -65,7 +73,28 @@ QVariant DownloadsModel::data(const QModelIndex & index, int role) const {
         } else if(index.column() == 2) {
             return m_downloads[index.row()]->percent;
         } else if(index.column() == 3) {
-            return m_downloads[index.row()]->speed;
+            int downloaded = m_downloads[index.row()]->downloaded;
+            if(downloaded > Gb)
+                return QString::number((float)downloaded/Gb,'f',2) + " Gb";
+            if(downloaded > Mb)
+                return QString::number((float)downloaded/Mb,'f',2) + " Mb";
+            if(downloaded > Kb)
+                return QString::number((float)downloaded/Kb,'f',2) + " Kb";
+            return downloaded;
+        } else if(index.column() == 4) {
+            int speed = m_downloads[index.row()]->speed;
+            if(speed > Gb)
+                return QString::number((float)speed/Gb,'f',2) + " Gb/s";
+            if(speed > Mb)
+                return QString::number((float)speed/Mb,'f',2) + " Mb/s";
+            if(speed > Kb)
+                return QString::number((float)speed/Kb,'f',2) + " Kb/s";
+            return  QString::number(speed) + " B/s";
+        } else if(index.column() == 5) {
+            int eta = m_downloads[index.row()]->eta;
+            QTime t(0,0,0);
+            t = t.addSecs(eta);
+            return t.toString();
         }
     }
     return QVariant();
@@ -80,7 +109,11 @@ QVariant DownloadsModel::headerData ( int section, Qt::Orientation /*rientation*
         } else if(section == 2) {
             return "Progress";
         } else if(section == 3) {
+            return "Downloaded";
+        } else if(section == 4) {
             return "Speed";
+        } else if(section == 5) {
+            return "ETA";
         }
     }
     return QVariant();
@@ -96,13 +129,13 @@ Download* DownloadsModel::findResource(QString title) {
 
 void DownloadsModel::downloadProgressChanged(QString name,qint64 received,qint64 total) {
     Download* d = findResource(name);
-    if(received == total) {
-        sender()->deleteLater();
-        d->percent = 100;
+    d->downloaded = received;
+    if(total == -1) {
+        d->percent = -1;
     } else {
         d->percent = qRound(received/(double)total*100);
     }
-    emit dataChanged(index(m_downloads.indexOf(d), 2), index(m_downloads.indexOf(d), 2));
+    emit dataChanged(index(m_downloads.indexOf(d), 2), index(m_downloads.indexOf(d), 3));
 }
 
 void DownloadsModel::stateChanged(QString name, QString state) {
@@ -115,4 +148,12 @@ void DownloadsModel::finished(QString /*name*/, bool success) {
     //Download* d = findResource(name);
     if(success)
         UnitSyncLib::getInstance()->reboot();
+    sender()->deleteLater();
+}
+
+void DownloadsModel::speedEtaChanged(QString name, int speed, int eta) {
+    Download* d = findResource(name);
+    d->speed = speed;
+    d->eta = eta;
+    emit dataChanged(index(m_downloads.indexOf(d), 4), index(m_downloads.indexOf(d), 5));
 }

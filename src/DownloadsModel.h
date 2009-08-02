@@ -11,11 +11,15 @@ struct Download {
     Download() {
         percent = 0;
         speed = 0;
+        eta = 0;
+        downloaded = 0;
     }
     QString title;
     float percent;
     QString state;
+    int downloaded;
     float speed;
+    int eta;
 };
 
 /**
@@ -36,6 +40,7 @@ private slots:
     void downloadProgressChanged(QString name,qint64 received,qint64 total);
     void stateChanged(QString name, QString state);
     void finished(QString name, bool success);
+    void speedEtaChanged(QString name, int speed, int eta);
 private:
     DownloadsModel(QObject* parent = 0);
     ~DownloadsModel();

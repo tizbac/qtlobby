@@ -8,6 +8,7 @@
 #include <QTime>
 #include <QFile>
 #include <QVector>
+#include <QTimerEvent>
 
 /**
    that will do one download from user download list. It yet lacks signals for updating download state.
@@ -22,6 +23,7 @@ signals:
     void downloadProgress(QString name, qint64 bytesReceived, qint64 bytesTotal);
     void stateChanged(QString name, QString state);
     void finished(QString name, bool success);
+    void speedEtaChanged(QString name, int speed, int eta);
 private slots:
     void onResolverFinished();
     void onMirrorListFinished();
@@ -29,9 +31,14 @@ private slots:
     void onFetchFinished();
     void download();
     void onDownloadFinished();
+    void onJobjolSessionFinished();
+    void onJobjolFinished();
     void onDownloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+protected:
+    void timerEvent(QTimerEvent* e);
 private:
     QVector<QVector<int> > getChunkRanges( QVector<int> hostSpeed /* Bytes/s */, int fileSize /* Bytes */ );
+    void openFile();
 
     QStringList m_mirrors;
     QString m_resourceName;
@@ -51,7 +58,10 @@ private:
     QVector<qint64> m_recievedList;
     float m_received;
     int m_downloadSources;
+    int m_jobjolId;
     bool m_downloading;
+    bool m_getFromJobjol;
+    QString m_jobjolUrl;
     QFile m_out;
 };
 

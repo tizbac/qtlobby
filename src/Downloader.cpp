@@ -10,9 +10,12 @@
 //constants
 const QString resolverUrl = "http://134.2.74.148:8080/qfc/%1/%2";
 const QString mirrorListUrl = "http://spring.jobjol.nl/checkmirror.php?q=%1&c=%2";
+const QString mirrorListReferer = "http://spring.jobjol.nl/show_file.php?id=%1";
+const QString jobjol = "http://spring.jobjol.nl/download.php?maincategory=1&subcategory=%1&file=%2";
 const QString userAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.1) Gecko/20090715 Firefox/3.5.1";
 const QString referrer = "http://spring.jobjol.nl";
 const int testChunk = 102400; //100 Kb
+const int timerInterval = 500;
 
 /**
 Ctor. Gets resource name and resource type
@@ -23,6 +26,7 @@ Downloader::Downloader(QString name, bool map, QObject* parent) : QObject(parent
     m_manager = 0;
     m_received = 0;
     m_downloading = false;
+    m_getFromJobjol = false;
     m_mirrorList.setRawHeader("User-Agent", userAgent.toAscii());
     m_mirrorList.setRawHeader("Referer", referrer.toAscii());
     //qDebug() << "ctor, name=" + name;
@@ -45,23 +49,33 @@ void Downloader::start() {
     emit stateChanged(m_resourceName, "Resolving filename");
 }
 
+
+//http://spring.jobjol.nl/download.php?maincategory=1&subcategory=2&file=1944_BocageSkirmish.sd7
+//http://spring.jobjol.nl/download.php?maincategory=1&subcategory=5&file=Supreme+Annihilation+U21+V1.0.sd7
+
 /**
 Slot for getting resource filename from resource name via Mirko's gateway
 */
 void Downloader::onResolverFinished() {
-    m_fileName = m_reply->readAll().trimmed();
-    if(m_fileName.isEmpty()) {
+    QString result = m_reply->readAll().trimmed();
+    if(result.isEmpty()) {
         emit stateChanged(m_resourceName, "File not found");
         emit finished(m_resourceName, false);
         return;
     }
+    m_jobjolId = result.split(",").takeFirst().toInt();
+    m_fileName =result.split(",").takeLast();
     //qDebug() << "onResolverFinished, filename=" + m_fileName;
     QString url;
-    if(m_map)
+    if(m_map) {
         url = mirrorListUrl.arg(m_fileName, "maps");
-    else
+        m_jobjolUrl = jobjol.arg(2).arg(m_fileName);
+    } else {
         url = mirrorListUrl.arg(m_fileName, "mods");
+        m_jobjolUrl = jobjol.arg(5).arg(m_fileName);
+    }
     m_mirrorList.setUrl(url);
+    m_mirrorList.setRawHeader("Referer", mirrorListReferer.arg(m_jobjolId).toAscii());
     m_reply = m_manager->get(m_mirrorList);
     connect(m_reply, SIGNAL(finished()), this, SLOT(onMirrorListFinished()));
     emit stateChanged(m_resourceName, "Retrieving mirror list");
@@ -71,26 +85,30 @@ void Downloader::onResolverFinished() {
 Slot for getting mirror list from jobjol.nl
 */
 void Downloader::onMirrorListFinished() {
-    QString mirrors = m_reply->readAll();
+    QString mirrors = m_reply->readAll().trimmed();
     if(mirrors.isEmpty()) {
-        emit stateChanged(m_resourceName, "Faied to retrieve mirror list");
-        emit finished(m_resourceName, false);
-        return;
-    }
-    QRegExp re("mirror=(http%3A%2F%2F.*)&");
-    re.setMinimal(true);
-    int idx = 0;
-    while((idx = re.indexIn(mirrors, idx)) > 0) {
-        m_mirrors << QUrl::fromPercentEncoding(re.cap(1).toAscii());
-        idx += re.cap(0).length();
-    }
-    if(m_mirrors.size()) {
-        QNetworkRequest request = QNetworkRequest(m_mirrors.at(0));
+        m_getFromJobjol = true;
+        QNetworkRequest request = QNetworkRequest(mirrorListReferer.arg(m_jobjolId));
+        QNetworkReply* reply = m_manager->get(request);
+        connect(reply, SIGNAL(finished()), this, SLOT(onJobjolSessionFinished()));
+    } else {
+        m_getFromJobjol = false;
+        QNetworkRequest request;
+        QRegExp re("mirror=(http%3A%2F%2F.*)&");
+        re.setMinimal(true);
+        int idx = 0;
+        while((idx = re.indexIn(mirrors, idx)) > 0) {
+            m_mirrors << QUrl::fromPercentEncoding(re.cap(1).toAscii());
+            idx += re.cap(0).length();
+        }
+        if(m_mirrors.size()) {
+            request = QNetworkRequest(m_mirrors.at(0));
+        }
+        //qDebug() << "onMirrorListFinished, mirrors=" << m_mirrors;
         QNetworkReply* reply = m_manager->get(request);
         connect(reply, SIGNAL(metaDataChanged()), this, SLOT(onFileSizeFinished()));
+        emit stateChanged(m_resourceName, "Retrieving file size");
     }
-    //qDebug() << "onMirrorListFinished, mirrors=" << m_mirrors;
-    emit stateChanged(m_resourceName, "Retrieving file size");
 }
 
 /**
@@ -137,18 +155,26 @@ void Downloader::onFetchFinished() {
 }
 
 /**
+This method opens target file
+*/
+void Downloader::openFile() {
+    QString dir = Settings::Instance()->value("spring_user_dir").toString();
+    m_out.setFileName(dir + "/" + (m_map ? "maps" : "mods") + "/" + m_fileName);
+    if(!m_out.open(QIODevice::WriteOnly)) {
+        emit stateChanged(m_resourceName, "Failed to create file");
+        emit finished(m_resourceName, false);
+        return;
+    }
+    //qDebug() << "download, fileName=" << m_out.fileName();
+}
+
+/**
 This method starts multisegmented download
 */
 void Downloader::download() {
     if(m_downloading) return;
     m_downloading = true;
-    QString dir = Settings::Instance()->value("spring_user_dir").toString();
-    m_out.setFileName(dir + "/" + (m_map ? "maps" : "mods") + "/" + m_fileName);
-    if(!m_out.open(QIODevice::WriteOnly)) {
-        //qDebug() << "Failed to create file";
-        return;
-    }
-    //qDebug() << "download, fileName=" << m_out.fileName();
+    openFile();
     m_times.clear();
     m_ranges = getChunkRanges(m_hostSpeeds, m_fileSize);
     for(int i = 0; i < m_requests.size(); i++) {
@@ -165,6 +191,7 @@ void Downloader::download() {
         }
     }
     emit stateChanged(m_resourceName, QString("Downloading from %1 mirror(s)").arg(m_downloadSources));
+    startTimer(timerInterval);
 }
 
 /**
@@ -188,17 +215,50 @@ void Downloader::onDownloadFinished() {
 }
 
 /**
+Slot for getting jobjol cookies for download
+*/
+void Downloader::onJobjolSessionFinished() {
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+    QNetworkRequest request = QNetworkRequest(m_jobjolUrl);
+    openFile();
+    reply = m_manager->get(request);
+    connect(reply, SIGNAL(finished()), this, SLOT(onJobjolFinished()));
+    connect(reply, SIGNAL(downloadProgress(qint64,qint64)),
+            this, SLOT(onDownloadProgress(qint64,qint64)));
+    emit stateChanged(m_resourceName, "Downloading file");
+    startTimer(timerInterval);
+}
+
+/**
+Slot for processing completed request to jobjol.nl
+*/
+void Downloader::onJobjolFinished() {
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+    QByteArray data = reply->readAll();
+    m_out.seek(0);
+    m_out.write(data);
+    m_out.close();
+    emit stateChanged(m_resourceName, "Finished");
+    emit finished(m_resourceName, true);
+}
+
+/**
 Informing the world about how we are doing
 */
-void Downloader::onDownloadProgress(qint64 bytesReceived, qint64 /*bytesTotal*/) {
+void Downloader::onDownloadProgress(qint64 bytesReceived, qint64 bytesTotal) {
     //Probably it needs some optimizations concerning index lookup. (ko)
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-    int idx = m_replies.indexOf(reply);
-    m_recievedList[idx] = bytesReceived;
-    m_received = 0;
-    foreach(quint64 r, m_recievedList)
-        m_received += r;
-    emit downloadProgress(m_resourceName, m_received, m_fileSize);
+    if(m_getFromJobjol) {
+        //qDebug() << bytesReceived;
+        emit downloadProgress(m_resourceName, bytesReceived, bytesTotal);
+    } else {
+        QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+        int idx = m_replies.indexOf(reply);
+        m_recievedList[idx] = bytesReceived;
+        m_received = 0;
+        foreach(quint64 r, m_recievedList)
+            m_received += r;
+        emit downloadProgress(m_resourceName, m_received, m_fileSize);
+    }
 }
 
 /**
@@ -237,4 +297,18 @@ QVector<QVector<int> > Downloader::getChunkRanges( QVector<int> hostSpeed, int f
     }
     ret.last()[1] += fileSize - currentPos; // due to round some bytes might be left, assign to last one
     return ret;
+}
+
+/**
+Timer event for speed and ETA estimation
+*/
+void Downloader::timerEvent(QTimerEvent* /*e*/) {
+    static quint64 lastReceived = 0;
+    quint64 delta = m_received - lastReceived;
+    int speed = qRound(delta/((float)timerInterval/1000));
+    int eta = 0;
+    if(m_fileSize)
+        eta = qRound((m_fileSize - m_received)/speed);
+    emit speedEtaChanged(m_resourceName, speed,eta);
+    lastReceived = m_received;
 }
