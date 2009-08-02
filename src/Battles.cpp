@@ -106,12 +106,8 @@ void Battles::receiveCommand( Command command ) {
     if ( command.name == "CLIENTSTATUS" ) {
         User u = users->getUser( command.attributes[0] );
         int joinedBattleId = u.joinedBattleId;
-        if ( joinedBattleId == -1 )
+        if ( !battleManager->isBattleId( joinedBattleId ) )
             return;
-        if ( !battleManager->isBattleId( joinedBattleId ) ) {
-            qDebug() << __FILE__ << __LINE__<< " CLIENTSTATUS with false ID called: " << joinedBattleId;
-            return;
-        }
         Battle b = battleManager->getBattle( joinedBattleId );
         if ( b.founder == u.name ) {
             u.userState.setState(command.attributes[1].toInt());

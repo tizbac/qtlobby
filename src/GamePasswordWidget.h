@@ -6,12 +6,12 @@
 #include <QDialog>
 #include <QDebug>
 
-#include "ui_gamePasswordWidget.h"
+#include "ui_GamePasswordWidget.h"
 
 /**
         @author Joachim Schiele <js@lastlog.de>
 */
-class GamePasswordWidget : public QDialog, private Ui::gamePasswordWidget {
+class GamePasswordWidget : public QDialog, private Ui::GamePasswordWidget {
     Q_OBJECT
 public:
     GamePasswordWidget(QDialog *parent = 0);

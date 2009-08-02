@@ -6,7 +6,7 @@
 #include <QDebug>
 
 #include "Channel.h"
-#include "ui_battleWidget.h"
+#include "ui_BattleWindowForm.h"
 #include "UnitSyncLib.h"
 #include "AudioBackend.h"
 #include "MapInfoLoader.h"
@@ -60,7 +60,7 @@ private slots:
     void onRemoveStartRect(int ally);
 private:
     QString currentMap;
-    Ui::battleWindowForm * battleWindowForm;
+    Ui::BattleWindowForm * battleWindowForm;
     MapOverviewDialog* mapOverviewDialog;
     MapInfoLoader* loader;
     Battle m_battle;

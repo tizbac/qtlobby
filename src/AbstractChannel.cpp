@@ -15,7 +15,7 @@ AbstractChannel::AbstractChannel( QString name, QObject * parent ) : AbstractLob
 AbstractChannel::~AbstractChannel() {}
 
 void AbstractChannel::setupUi( QWidget * channelTabWidget ) {
-    //FIXME inherit from abstractChannelWidget
+    //FIXME inherit from AbstractChannelWidget
     channelTabWidget->setObjectName( QString::fromUtf8( "channelTabWidget" ) + objectName() );
     channelTextBrowser = new ChannelTextBrowser( channelTabWidget );
     channelTextBrowser->setObjectName( "channelTextBrowser" + objectName() );

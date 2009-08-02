@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>abstractChannelWidget</class>
- <widget class="QWidget" name="abstractChannelWidget" >
+ <class>AbstractChannelWidget</class>
+ <widget class="QWidget" name="AbstractChannelWidget" >
   <property name="geometry" >
    <rect>
     <x>0</x>

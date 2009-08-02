@@ -5,7 +5,7 @@
 
 #include <QWidget>
 
-#include "ui_mapSelectorWidget.h"
+#include "ui_MapSelectorWidget.h"
 
 /**
 	@author Joachim Schiele <js@lastlog.de>

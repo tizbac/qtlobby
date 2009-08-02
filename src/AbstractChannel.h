@@ -9,13 +9,10 @@
 #include <QGridLayout>
 #include "Command.h"
 #include "AbstractLobbyTab.h"
-#include "ui_abstractChannelWidget.h"
+//#include "ui_AbstractChannelWidget.h"
 #include "ChannelTextBrowser.h"
 
-/**
- @author Mirko Windhoff <qtlobby.reg@ncnever.de>
-*/
-class AbstractChannel : public AbstractLobbyTab { /*, public Ui_abstractChannelWidget*/
+class AbstractChannel : public AbstractLobbyTab { /*, public Ui_AbstractChannelWidget*/
     Q_OBJECT
 public:
     AbstractChannel( QString name, QObject * parent = 0 );

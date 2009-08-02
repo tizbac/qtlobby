@@ -10,7 +10,7 @@
 #include <QScriptEngine>
 
 #include "ui_MainWidget.h"
-#include "ui_aboutWidget.h"
+#include "ui_AboutWidget.h"
 #include "Settings.h"
 #include "ConnectionWidget.h"
 #include "CommandAssigner.h"
@@ -22,7 +22,7 @@
 #include "AudioBackend.h"
 #include "UnitSyncLib.h"
 #include "Preference.h"
-#include "MapSelector.h"
+//#include "MapSelector.h"
 #include "StylesheetDialog.h"
 #include "UserGroupsDialog.h"
 #include "ScriptingDialog.h"
@@ -59,7 +59,7 @@ private:
     AudioBackend audioBackend;
     UnitSyncLib* unitSyncLib;
     UserPreference* preference;
-    MapSelector* mapSelector;
+//    MapSelector* mapSelector;
     StylesheetDialog* stylesheetDialog;
     UserGroupsDialog* userGroupsDialog;
     ScriptingDialog* scriptingDialog;

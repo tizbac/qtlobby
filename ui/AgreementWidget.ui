@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>agreementWidget</class>
- <widget class="QWidget" name="agreementWidget" >
+ <class>AgreementWidget</class>
+ <widget class="QWidget" name="AgreementWidget" >
   <property name="geometry" >
    <rect>
     <x>0</x>
@@ -50,7 +50,7 @@
   <connection>
    <sender>denyPushButton</sender>
    <signal>clicked()</signal>
-   <receiver>agreementWidget</receiver>
+   <receiver>AgreementWidget</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel" >
@@ -66,7 +66,7 @@
   <connection>
    <sender>acceptPushButton</sender>
    <signal>clicked()</signal>
-   <receiver>agreementWidget</receiver>
+   <receiver>AgreementWidget</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel" >

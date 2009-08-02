@@ -28,7 +28,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     lobbyTabs           = new LobbyTabs( this, battles, UnitSyncLib::getInstance(), tabBar, lobbyStackedWidget );
     commandAssigner     = new CommandAssigner( this );
     //statusTracker       = new StatusTracker( statusbar );
-    mapSelector         = new MapSelector();
+//    mapSelector         = new MapSelector();
     stylesheetDialog    = new StylesheetDialog();
     stylesheetDialog->setWindowFlags(Qt::Window);
     userGroupsDialog    = new UserGroupsDialog();
@@ -188,8 +188,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     connect( actionPreferences, SIGNAL( triggered() ),
              preference, SLOT( show() ) );
     // maplist
-    connect( actionMap_list, SIGNAL( triggered() ),
-             mapSelector, SLOT( show() ) );
+//    connect( actionMap_list, SIGNAL( triggered() ),
+//             mapSelector, SLOT( show() ) );
 
     // inputLine
     inputLineEdit->setUsers(users);
@@ -270,7 +270,7 @@ MainWindow::~MainWindow() {
     delete commandAssigner;
     delete serverContextState;
     delete preference;
-    delete mapSelector;
+//    delete mapSelector;
 }
 
 void MainWindow::newUserTextInput() {
@@ -308,7 +308,7 @@ void MainWindow::about() {
     // HINT in general prefere the "multiple inheritance approach" instead of this
     //      but since this widget doesn't have any input it doesn't matter anyway
     QDialog* a = new QDialog;
-    Ui::aboutWidget* about = new Ui::aboutWidget;
+    Ui::AboutWidget* about = new Ui::AboutWidget;
     about->setupUi( a );
     a->show();
 }

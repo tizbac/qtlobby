@@ -15,14 +15,14 @@
 #include <QProgressDialog>
 #include <QTimer>
 
-#include "ui_connectionWidget.h"
+#include "ui_ConnectionWidget.h"
 #include "ServerContextState.h"
 #include "Settings.h"
 
 /**
  @author Joachim Schiele <js@lastlog.de>
 */
-class ConnectionWidget : public QDialog, public Ui::connectionWidget {
+class ConnectionWidget : public QDialog, public Ui::ConnectionWidget {
   Q_OBJECT
 public:
   ConnectionWidget( ServerContextState*, QWidget *parent = 0 );

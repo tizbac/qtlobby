@@ -4,12 +4,12 @@
 #define AGREEMENTWIDGET_H
 
 #include <QDialog>
-#include "ui_agreementWidget.h"
+#include "ui_AgreementWidget.h"
 
 /**
         @author Joachim Schiele <js@lastlog.de>
 */
-class AgreementWidget : public QDialog, public Ui::agreementWidget {
+class AgreementWidget : public QDialog, public Ui::AgreementWidget {
     Q_OBJECT
 public:
     AgreementWidget(QWidget *parent = 0);
