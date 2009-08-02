@@ -328,31 +328,31 @@
         <file>icons/userchat.xpm</file>
         <file>icons/userlist.png</file>
         <file>src/sqads.js</file>
-        <file>icons/logos/jobjol/logo0.jpg</file>
-        <file>icons/logos/jobjol/logo1.jpg</file>
-        <file>icons/logos/jobjol/logo2.jpg</file>
-        <file>icons/logos/jobjol/logo3.jpg</file>
-        <file>icons/logos/jobjol/logo4.jpg</file>
-        <file>icons/logos/jobjol/logo5.jpg</file>
-        <file>icons/logos/jobjol/logo6.jpg</file>
-        <file>icons/logos/jobjol/logo7.jpg</file>
-        <file>icons/logos/jobjol/logo8.jpg</file>
-        <file>icons/logos/jobjol/logo9.jpg</file>
-        <file>icons/logos/jobjol/logo10.jpg</file>
-        <file>icons/logos/jobjol/logo11.jpg</file>
-        <file>icons/logos/jobjol/logo12.jpg</file>
-        <file>icons/logos/jobjol/logo13.jpg</file>
-        <file>icons/logos/jobjol/logo14.jpg</file>
-        <file>icons/logos/jobjol/logo15.jpg</file>
-        <file>icons/logos/jobjol/logo16.jpg</file>
-        <file>icons/logos/jobjol/logo17.jpg</file>
-        <file>icons/logos/jobjol/logo18.jpg</file>
-        <file>icons/logos/jobjol/logo19.jpg</file>
-        <file>icons/logos/jobjol/logo20.jpg</file>
-        <file>icons/logos/jobjol/logo21.jpg</file>
-        <file>icons/logos/jobjol/logo22.jpg</file>
-        <file>icons/logos/jobjol/logo23.jpg</file>
-        <file>icons/logos/jobjol/logo24.jpg</file>
-        <file>icons/logos/jobjol/logo25.jpg</file>
+        <file>icons/logos/jobjol/logo0.xpm</file>
+        <file>icons/logos/jobjol/logo1.xpm</file>
+        <file>icons/logos/jobjol/logo2.xpm</file>
+        <file>icons/logos/jobjol/logo3.xpm</file>
+        <file>icons/logos/jobjol/logo4.xpm</file>
+        <file>icons/logos/jobjol/logo5.xpm</file>
+        <file>icons/logos/jobjol/logo6.xpm</file>
+        <file>icons/logos/jobjol/logo7.xpm</file>
+        <file>icons/logos/jobjol/logo8.xpm</file>
+        <file>icons/logos/jobjol/logo9.xpm</file>
+        <file>icons/logos/jobjol/logo10.xpm</file>
+        <file>icons/logos/jobjol/logo11.xpm</file>
+        <file>icons/logos/jobjol/logo12.xpm</file>
+        <file>icons/logos/jobjol/logo13.xpm</file>
+        <file>icons/logos/jobjol/logo14.xpm</file>
+        <file>icons/logos/jobjol/logo15.xpm</file>
+        <file>icons/logos/jobjol/logo16.xpm</file>
+        <file>icons/logos/jobjol/logo17.xpm</file>
+        <file>icons/logos/jobjol/logo18.xpm</file>
+        <file>icons/logos/jobjol/logo19.xpm</file>
+        <file>icons/logos/jobjol/logo20.xpm</file>
+        <file>icons/logos/jobjol/logo21.xpm</file>
+        <file>icons/logos/jobjol/logo22.xpm</file>
+        <file>icons/logos/jobjol/logo23.xpm</file>
+        <file>icons/logos/jobjol/logo24.xpm</file>
+        <file>icons/logos/jobjol/logo25.xpm</file>
     </qresource>
 </RCC>
