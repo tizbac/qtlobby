@@ -226,6 +226,7 @@ void ConnectionWidget::comboBoxCurrentIndexChanged( int index ) {
     profileUserNameLineEdit->setText( url.userName() );
     profileServerAddressLineEdit->setText( url.host() );
     profilePortSpinBox->setValue( url.port() );
+    profileModified = false;
 }
 
 // profile edit tab: when a profile was altered the values need to be
