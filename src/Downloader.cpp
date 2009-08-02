@@ -46,6 +46,8 @@ void Downloader::start() {
     m_resolve.setUrl(resolverUrl.arg(m_map ? "map" : "mod").arg(m_resourceName));
     m_reply = m_manager->get(m_resolve);
     connect(m_reply, SIGNAL(finished()), this, SLOT(onResolverFinished()));
+	connect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
+		this, SLOT(onError(QNetworkReply::NetworkError)));
     emit stateChanged(m_resourceName, "Resolving filename");
 }
 
@@ -78,6 +80,8 @@ void Downloader::onResolverFinished() {
     m_mirrorList.setRawHeader("Referer", mirrorListReferer.arg(m_jobjolId).toAscii());
     m_reply = m_manager->get(m_mirrorList);
     connect(m_reply, SIGNAL(finished()), this, SLOT(onMirrorListFinished()));
+	connect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
+		this, SLOT(onError(QNetworkReply::NetworkError)));
     emit stateChanged(m_resourceName, "Retrieving mirror list");
 }
 
@@ -91,6 +95,8 @@ void Downloader::onMirrorListFinished() {
         QNetworkRequest request = QNetworkRequest(mirrorListReferer.arg(m_jobjolId));
         QNetworkReply* reply = m_manager->get(request);
         connect(reply, SIGNAL(finished()), this, SLOT(onJobjolSessionFinished()));
+		connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
+			this, SLOT(onError(QNetworkReply::NetworkError)));
     } else {
         m_getFromJobjol = false;
         QNetworkRequest request;
@@ -107,6 +113,8 @@ void Downloader::onMirrorListFinished() {
         //qDebug() << "onMirrorListFinished, mirrors=" << m_mirrors;
         QNetworkReply* reply = m_manager->get(request);
         connect(reply, SIGNAL(metaDataChanged()), this, SLOT(onFileSizeFinished()));
+		connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
+			this, SLOT(onError(QNetworkReply::NetworkError)));
         emit stateChanged(m_resourceName, "Retrieving file size");
     }
 }
@@ -130,6 +138,8 @@ void Downloader::onFileSizeFinished() {
         t.start();
         m_times << t;
         connect(reply, SIGNAL(finished()), this, SLOT(onFetchFinished()));
+		connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
+			this, SLOT(onError(QNetworkReply::NetworkError)));
         m_replies << reply;
     }
     QTimer::singleShot(15000, this, SLOT(download())); //start download anyway in 15 seconds if one ore more of mirrors failed
@@ -184,6 +194,8 @@ void Downloader::download() {
             request.setRawHeader("Range", range.arg(m_ranges[i][0]).arg(m_ranges[i][0]+m_ranges[i][1]).toAscii());
             QNetworkReply* reply = m_manager->get(request);
             connect(reply, SIGNAL(finished()), this, SLOT(onDownloadFinished()));
+			connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
+				this, SLOT(onError(QNetworkReply::NetworkError)));
             connect(reply, SIGNAL(downloadProgress(qint64,qint64)),
                     this, SLOT(onDownloadProgress(qint64,qint64)));
             m_replies[i] = reply;
@@ -223,6 +235,8 @@ void Downloader::onJobjolSessionFinished() {
     openFile();
     reply = m_manager->get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(onJobjolFinished()));
+	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
+		this, SLOT(onError(QNetworkReply::NetworkError)));
     connect(reply, SIGNAL(downloadProgress(qint64,qint64)),
             this, SLOT(onDownloadProgress(qint64,qint64)));
     emit stateChanged(m_resourceName, "Downloading file");
@@ -311,4 +325,9 @@ void Downloader::timerEvent(QTimerEvent* /*e*/) {
         eta = qRound((m_fileSize - m_received)/speed);
     emit speedEtaChanged(m_resourceName, speed,eta);
     lastReceived = m_received;
+}
+
+void Downloader::onError(QNetworkReply::NetworkError /*code*/) {
+	QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+	qCritical() << "Failed to fetch " << reply->url().toString() << ". Error: " << reply->errorString();
 }
