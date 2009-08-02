@@ -75,20 +75,20 @@ QVariant DownloadsModel::data(const QModelIndex & index, int role) const {
         } else if(index.column() == 3) {
             int downloaded = m_downloads[index.row()]->downloaded;
             if(downloaded > Gb)
-                return QString::number((float)downloaded/Gb,'f',2) + " Gb";
+                return QString::number((float)downloaded/Gb,'f',2) + " GiB";
             if(downloaded > Mb)
-                return QString::number((float)downloaded/Mb,'f',2) + " Mb";
+                return QString::number((float)downloaded/Mb,'f',2) + " MiB";
             if(downloaded > Kb)
-                return QString::number((float)downloaded/Kb,'f',2) + " Kb";
-            return downloaded;
+                return QString::number((float)downloaded/Kb,'f',2) + " KiB";
+            return QString::number(downloaded) + " B";
         } else if(index.column() == 4) {
             int speed = m_downloads[index.row()]->speed;
             if(speed > Gb)
-                return QString::number((float)speed/Gb,'f',2) + " Gb/s";
+                return QString::number((float)speed/Gb,'f',2) + " GiB/s";
             if(speed > Mb)
-                return QString::number((float)speed/Mb,'f',2) + " Mb/s";
+                return QString::number((float)speed/Mb,'f',2) + " MiB/s";
             if(speed > Kb)
-                return QString::number((float)speed/Kb,'f',2) + " Kb/s";
+                return QString::number((float)speed/Kb,'f',2) + " KiB/s";
             return  QString::number(speed) + " B/s";
         } else if(index.column() == 5) {
             int eta = m_downloads[index.row()]->eta;
