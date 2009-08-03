@@ -354,5 +354,6 @@
         <file>icons/logos/jobjol/logo23.xpm</file>
         <file>icons/logos/jobjol/logo24.xpm</file>
         <file>icons/logos/jobjol/logo25.xpm</file>
+        <file>icons/logo.ico</file>
     </qresource>
 </RCC>

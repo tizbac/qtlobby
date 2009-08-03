@@ -321,7 +321,7 @@ void MainWindow::showConnectionWidget( bool ) {
 
 void MainWindow::createTrayIcon() {
     trayIcon = new QSystemTrayIcon( this );
-    QIcon icon = QIcon( ":/icons/heart.svg" );
+    QIcon icon = QIcon( ":/icons/logo.ico" );
 
     trayIconMenu = new QMenu( this );
 

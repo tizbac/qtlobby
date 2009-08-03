@@ -57,11 +57,9 @@ HEADERS += src/MainWindow.h \
     src/UnitSyncLib.h \
     src/AudioBackend.h \
     src/Preference.h \
-    src/GamePasswordWidget.h \
-#    src/MapSelector.h \               # not used
+    src/GamePasswordWidget.h \ # src/MapSelector.h \ # not used
     src/BattleUserTreeModel.h \
-    src/TreeSortFilterProxyModel.h \
-#    src/MapElementWidget.h \          # not used
+    src/TreeSortFilterProxyModel.h \ # src/MapElementWidget.h \ # not used
     src/PreferencePathElement.h \
     src/Singleton.h \
     src/ModOption.h \
@@ -121,11 +119,9 @@ SOURCES += src/main.cpp \
     src/UnitSyncLib.cpp \
     src/AudioBackend.cpp \
     src/Preference.cpp \
-    src/GamePasswordWidget.cpp \
-#    src/MapSelector.cpp \             # not used
+    src/GamePasswordWidget.cpp \ # src/MapSelector.cpp \ # not used
     src/BattleUserTreeModel.cpp \
-    src/TreeSortFilterProxyModel.cpp \
-#    src/MapElementWidget.cpp \        # not used
+    src/TreeSortFilterProxyModel.cpp \ # src/MapElementWidget.cpp \ # not used
     src/PreferencePathElement.cpp \
     src/Singleton.cpp \
     src/ModOption.cpp \
@@ -159,13 +155,11 @@ QT += gui \
     script \
     scripttools
 FORMS += ui/MainWidget.ui \
-    ui/ConnectionWidget.ui \
-#    ui/MapSelectorWidget.ui \         # not used
+    ui/ConnectionWidget.ui \ # ui/MapSelectorWidget.ui \ # not used
     ui/BattleWindowForm.ui \
     ui/GamePasswordWidget.ui \
     ui/AboutWidget.ui \
-    ui/AgreementWidget.ui \
-#    ui/AbstractChannelWidget.ui \     # not used
+    ui/AgreementWidget.ui \ # ui/AbstractChannelWidget.ui \ # not used
     ui/PreferenceWidget.ui \
     ui/PreferencePathElement.ui \
     ui/StylesheetDialog.ui \
@@ -188,5 +182,6 @@ unix {
     SOURCES += src/DBusVisualNotificationBackend.cpp
     QT += dbus
 }
+RC_FILE += src/qtlobby.rc
 OTHER_FILES += src/sqads.js
 TRANSLATIONS = qtlobby.ts

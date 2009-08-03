@@ -19,8 +19,7 @@ DownloadsDialog::~DownloadsDialog() {
     delete m_ui;
 }
 
-void DownloadsDialog::changeEvent(QEvent *e)
-{
+void DownloadsDialog::changeEvent(QEvent *e) {
     QDialog::changeEvent(e);
     switch (e->type()) {
     case QEvent::LanguageChange:
@@ -36,4 +35,3 @@ void DownloadsDialog::showEvent(QShowEvent* /*event*/) {
     int idx = qrand() % 16;
     m_ui->jobjolLogoLabel->setPixmap(QPixmap(file.arg(idx)));
 }
-
