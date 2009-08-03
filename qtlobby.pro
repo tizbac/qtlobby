@@ -86,8 +86,7 @@ HEADERS += src/MainWindow.h \
     src/Downloader.h \
     src/DownloadsDialog.h \
     src/DownloadsModel.h \
-    src/ToolBarWidget.h \
-	src/MiniDumper.h
+    src/ToolBarWidget.h
 SOURCES += src/main.cpp \
     src/MainWindow.cpp \
     src/ServerContextState.cpp \
@@ -148,8 +147,7 @@ SOURCES += src/main.cpp \
     src/Downloader.cpp \
     src/DownloadsDialog.cpp \
     src/DownloadsModel.cpp \
-    src/ToolBarWidget.cpp \
-	src/MiniDumper.cpp
+    src/ToolBarWidget.cpp
 QT += gui \
     network \
     opengl \
@@ -177,7 +175,11 @@ DISTFILES += doc/ProtocolDescription.xml \
     TODO \
     doc/xml2html.xsl \
     doc/z
-win32:LIBS += QScintilla2.lib
+win32 {
+    LIBS += QScintilla2.lib
+    HEADERS += src/MiniDumper.h
+    SOURCES += src/MiniDumper.cpp
+}
 unix { 
     LIBS += -lqscintilla2
     HEADERS += src/DBusVisualNotificationBackend.h
