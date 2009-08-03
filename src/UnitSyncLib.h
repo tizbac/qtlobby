@@ -40,12 +40,12 @@
 */
 
 enum OptionType {
-    UNDEFINED  = 0,
-    BOOLEAN    = 1,
-    LIST       = 2,
-    FLOAT      = 3,
-    STRING     = 4,
-    SECTION    = 5
+    OT_UNDEFINED  = 0,
+    OT_BOOLEAN    = 1,
+    OT_LIST       = 2,
+    OT_FLOAT      = 3,
+    OT_STRING     = 4,
+    OT_SECTION    = 5
              };
 
 

@@ -391,8 +391,8 @@ void BattleChannel::fillModOptions() {
     int num_options = unitSyncLib->getModOptionCount();
     buffer.append("<table cellpadding=\"4\">");
     for (int i = 0; i < num_options; i++) {
-        if (unitSyncLib->getOptionType(i) == SECTION && i != num_options - 1 && unitSyncLib->getOptionType(i+1) == SECTION) continue;
-        if (unitSyncLib->getOptionType(i) == SECTION) {
+        if (unitSyncLib->getOptionType(i) == OT_SECTION && i != num_options - 1 && unitSyncLib->getOptionType(i+1) == OT_SECTION) continue;
+        if (unitSyncLib->getOptionType(i) == OT_SECTION) {
             buffer.append("</table>");
             buffer.append("<h3>"+unitSyncLib->getOptionName(i)+"</h3>");
             buffer.append("<table cellpadding=\"4\">");
@@ -410,38 +410,38 @@ void BattleChannel::fillModOptions() {
         buffer.append("<td>");
         bool nondefault = m_battle.options.contains(unitSyncLib->getOptionKey(i));
         switch (unitSyncLib->getOptionType(i)) {
-        case UNDEFINED:
+        case OT_UNDEFINED:
             buffer.append("Undefined");
             break;
-        case BOOLEAN:
+        case OT_BOOLEAN:
             nondefault = nondefault && m_battle.options[unitSyncLib->getOptionKey(i)].toFloat() != unitSyncLib->getOptionBoolDef(i);
             if (nondefault)
                 buffer.append(m_battle.options[unitSyncLib->getOptionKey(i)].toFloat() ? "<b><font color=\"green\">Yes</font><b>" : "<b><font color=\"red\">No</font><b>" );
             else
                 buffer.append(unitSyncLib->getOptionBoolDef(i) ? "<font color=\"green\">Yes</font>" : "<font color=\"red\">No</font>" );
             break;
-        case LIST:
+        case OT_LIST:
             nondefault = nondefault && m_battle.options[unitSyncLib->getOptionKey(i)].toString() != unitSyncLib->getOptionListDef(i);
             if (nondefault)
                 buffer.append("<b>"+m_battle.options[unitSyncLib->getOptionKey(i)].toString()+"</b>");
             else
                 buffer.append(unitSyncLib->getOptionListDef(i));
             break;
-        case FLOAT:
+        case OT_FLOAT:
             nondefault = nondefault && m_battle.options[unitSyncLib->getOptionKey(i)].toFloat() != unitSyncLib->getOptionNumberDef(i);
             if (nondefault)
                 buffer.append("<b>"+m_battle.options[unitSyncLib->getOptionKey(i)].toString()+"</b>");
             else
                 buffer.append(QString::number(unitSyncLib->getOptionNumberDef(i)));
             break;
-        case STRING:
+        case OT_STRING:
             nondefault = nondefault && m_battle.options[unitSyncLib->getOptionKey(i)].toString() != unitSyncLib->getOptionStringDef(i);
             if (nondefault)
                 buffer.append("<b>"+m_battle.options[unitSyncLib->getOptionKey(i)].toString()+"</b>");
             else
                 buffer.append(unitSyncLib->getOptionStringDef(i));
             break;
-        case SECTION:
+        case OT_SECTION:
             break;
         }
         buffer.append("</td>");
@@ -629,14 +629,14 @@ void BattleChannel::onModOptionsAnchorClicked(QUrl url) {
     QString key = unitSyncLib->getOptionKey(i);
     QString item;
     switch (unitSyncLib->getOptionType(i)) {
-    case BOOLEAN:
+    case OT_BOOLEAN:
         if(m_battle.options[key].toString() == "0") {
             receiveInput(QString("!bset %1 1").arg(key));
         } else {
             receiveInput(QString("!bset %1 0").arg(key));
         }
         break;
-    case LIST:
+    case OT_LIST:
         item = QInputDialog::getItem(NULL,
                                      "Select value",
                                      "Select value for " +
@@ -648,7 +648,7 @@ void BattleChannel::onModOptionsAnchorClicked(QUrl url) {
         if(ok)
             receiveInput(QString("!bset %1 %2").arg(key).arg(item));
         break;
-    case FLOAT:
+    case OT_FLOAT:
         min = unitSyncLib->getOptionNumberMin(i);
         max = unitSyncLib->getOptionNumberMax(i);
         step = unitSyncLib->getOptionNumberStep(i);
@@ -677,7 +677,7 @@ void BattleChannel::onModOptionsAnchorClicked(QUrl url) {
         if (ok)
             receiveInput(QString("!bset %1 %2").arg(key).arg(val));
         break;
-    case STRING:
+    case OT_STRING:
         length = unitSyncLib->getOptionStringMaxLen(i);
         do {
             item = QInputDialog::getText(NULL,
@@ -689,8 +689,8 @@ void BattleChannel::onModOptionsAnchorClicked(QUrl url) {
                                          );
         } while (item.length() < length);
         receiveInput(QString("!bset %1 %2").arg(key).arg(item));
-    case SECTION:
-    case UNDEFINED:
+    case OT_SECTION:
+    case OT_UNDEFINED:
         break;
     }
 }

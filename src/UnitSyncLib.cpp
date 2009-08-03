@@ -413,17 +413,17 @@ OptionType UnitSyncLib::getOptionType(int optIndex) {
     int type = m_GetOptionType(optIndex);
     switch (type) {
     case 1:
-        return BOOLEAN;
+        return OT_BOOLEAN;
     case 2:
-        return LIST;
+        return OT_LIST;
     case 3:
-        return FLOAT;
+        return OT_FLOAT;
     case 4:
-        return STRING;
+        return OT_STRING;
     case 5:
-        return SECTION;
+        return OT_SECTION;
     default:
-        return UNDEFINED;
+        return OT_UNDEFINED;
     }
 }
 

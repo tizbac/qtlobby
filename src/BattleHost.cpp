@@ -232,23 +232,23 @@ void BattleHost::fillScriptTags() {
     //Mod options
     int num_options = unitSyncLib->getModOptionCount();
     for (int i = 0; i < num_options; i++) {
-        if (unitSyncLib->getOptionType(i) == SECTION)
+        if (unitSyncLib->getOptionType(i) == OT_SECTION)
             continue;
         switch (unitSyncLib->getOptionType(i)) {
-        case BOOLEAN:
+        case OT_BOOLEAN:
             m_scriptTags[unitSyncLib->getOptionKey(i)] = unitSyncLib->getOptionBoolDef(i) ? "1" : "0";
             break;
-        case LIST:
+        case OT_LIST:
             m_scriptTags[unitSyncLib->getOptionKey(i)] = unitSyncLib->getOptionListDef(i);
             break;
-        case FLOAT:
+        case OT_FLOAT:
             m_scriptTags[unitSyncLib->getOptionKey(i)] = QString::number(unitSyncLib->getOptionNumberDef(i));
             break;
-        case STRING:
+        case OT_STRING:
             m_scriptTags[unitSyncLib->getOptionKey(i)] = unitSyncLib->getOptionStringDef(i);
             break;
-        case SECTION:
-        case UNDEFINED:
+        case OT_SECTION:
+        case OT_UNDEFINED:
             break;
         }
     }
@@ -301,23 +301,23 @@ bool BattleHost::isScriptTagValueValid(QString key, QString value) {
         if (unitSyncLib->getOptionKey(i) == key) {
             float min, max, step, val;
             switch (unitSyncLib->getOptionType(i)) {
-            case BOOLEAN:
+            case OT_BOOLEAN:
                 return value == "0" || value == "1";
-            case LIST:
+            case OT_LIST:
                 qDebug() << unitSyncLib->getOptionListItems(i);
                 qDebug() << value;
                 return unitSyncLib->getOptionListItems(i).contains(value);
-            case FLOAT:
+            case OT_FLOAT:
                 min = unitSyncLib->getOptionNumberMin(i);
                 max = unitSyncLib->getOptionNumberMax(i);
                 step = unitSyncLib->getOptionNumberStep(i);
                 step = step > 0 ? step : 0.1;
                 val = value.toFloat();
                 return fabs(val - qRound(val/step)*step)<1e-5 && (val >= min && val <= max);
-            case STRING:
+            case OT_STRING:
                 return value.length() <= unitSyncLib->getOptionStringMaxLen(i);
-            case SECTION:
-            case UNDEFINED:
+            case OT_SECTION:
+            case OT_UNDEFINED:
                 break;
             }
             break;

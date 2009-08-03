@@ -86,7 +86,8 @@ HEADERS += src/MainWindow.h \
     src/Downloader.h \
     src/DownloadsDialog.h \
     src/DownloadsModel.h \
-    src/ToolBarWidget.h
+    src/ToolBarWidget.h \
+	src/MiniDumper.h
 SOURCES += src/main.cpp \
     src/MainWindow.cpp \
     src/ServerContextState.cpp \
@@ -147,7 +148,8 @@ SOURCES += src/main.cpp \
     src/Downloader.cpp \
     src/DownloadsDialog.cpp \
     src/DownloadsModel.cpp \
-    src/ToolBarWidget.cpp
+    src/ToolBarWidget.cpp \
+	src/MiniDumper.cpp
 QT += gui \
     network \
     opengl \
