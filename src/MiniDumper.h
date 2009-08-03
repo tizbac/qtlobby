@@ -1,4 +1,8 @@
 
+#include <windows.h>
+#include <string.h>
+#include <cstdio>
+
 #if _MSC_VER < 1300
 #define DECLSPEC_DEPRECATED
 // VC6: change this path to your Platform SDK headers
@@ -18,10 +22,10 @@ typedef BOOL (WINAPI *MINIDUMPWRITEDUMP)(HANDLE hProcess, DWORD dwPid, HANDLE hF
 class MiniDumper
 {
 private:
-	static LPCSTR m_szAppName;
+	static TCHAR* m_szAppName;
 
 	static LONG WINAPI TopLevelFilter( struct _EXCEPTION_POINTERS *pExceptionInfo );
 
 public:
-	MiniDumper( LPCSTR szAppName );
+	MiniDumper( TCHAR* szAppName );
 };
