@@ -7,6 +7,12 @@
 UserPreference::UserPreference( QDialog* parent ) : QDialog( parent ) {
 
     setupUi( this );
+
+/*    QStringList categories;
+    categories << "Paths";
+    m_model = new QStringListModel();
+    m_model->setStringList(categories);
+*/
     settings = Settings::Instance();
 
     connect( okPushButton, SIGNAL( clicked() ),
@@ -15,7 +21,6 @@ UserPreference::UserPreference( QDialog* parent ) : QDialog( parent ) {
              this, SLOT( applyClicked() ) );
     connect( cancelPushButton, SIGNAL( clicked() ),
              this, SLOT( cancelClicked() ) );
-
     QVector<QStringList> elements = getPathElements();
     QGridLayout *mainLayout = new QGridLayout();
     QWidget* container = new QWidget( this );
@@ -62,8 +67,7 @@ void UserPreference::cancelClicked() {
 QVector<QStringList> UserPreference::getPathElements() {
 #ifdef Q_WS_WIN
     QString pfiles = getenv("ProgramW6432");
-    if (pfiles == "")
-        pfiles = getenv("ProgramFiles");
+    QString pfiles2= getenv("ProgramFiles");
     if (pfiles == "")
         pfiles = "C:\\Program Files";
 #endif
@@ -76,6 +80,7 @@ QVector<QStringList> UserPreference::getPathElements() {
 #ifdef Q_WS_WIN
             <<
             pfiles+"/Spring/Spring.exe;"
+            pfiles2+"/Spring/Spring.exe;"
             "../spring.exe;"
             "./spring.exe;";
 #else
@@ -93,6 +98,7 @@ QVector<QStringList> UserPreference::getPathElements() {
 #ifdef Q_WS_WIN
             <<
             pfiles+"/Spring/;"
+            pfiles2+"/Spring/;"
             "../;"
             "./;";
 #else
@@ -115,6 +121,7 @@ QVector<QStringList> UserPreference::getPathElements() {
 #ifdef Q_WS_WIN
             <<
             pfiles+"/Spring/unitsync.dll;"
+            pfiles2+"/Spring/unitsync.dll;"
             "../unitsync.dll;"
             "./unitsync.dll;";
 #else
@@ -140,6 +147,7 @@ QVector<QStringList> UserPreference::getPathElements() {
 #ifdef Q_WS_WIN
             <<
             pfiles+"/Spring/;"
+            pfiles2+"/Spring/;"
             "../;"
             "./;";
 #else
@@ -154,6 +162,7 @@ QVector<QStringList> UserPreference::getPathElements() {
 #ifdef Q_WS_WIN
             <<
             pfiles+"/Spring/springsettings.exe;"
+            pfiles2+"/Spring/springsettings.exe;"
             "../springsettings.exe;"
             "./springsettings.exe;";
 #else

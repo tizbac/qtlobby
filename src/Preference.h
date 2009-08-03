@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QList>
+#include <QStringListModel>
 
 #include "ui_PreferenceWidget.h"
 #include "Settings.h"
@@ -21,7 +22,9 @@ public:
     ~UserPreference();
 private:
     QSettings* settings;
+    QStringListModel* m_model;
     QList<PreferencePathElement*> pathElements;
+
     QVector<QStringList> getPathElements();
 private slots:
     void okClicked();

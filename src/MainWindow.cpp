@@ -10,7 +10,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     //   setAttribute(Qt::WA_DeleteOnClose);
     setUnifiedTitleAndToolBarOnMac( true );
     setupUi( this );
-    setWindowTitle(QString( "QTlobby 0.0.%1-svn" ).arg( SVN_REV ));
+    setWindowTitle(QString( "QtLobby 0.0.%1-svn" ).arg( SVN_REV ));
 
     settings = Settings::Instance();
     /* it's important to first init the preferences */
