@@ -62,6 +62,9 @@ Section "MainSection" SEC01
   File "..\..\..\build\QtScript4.dll"
   File "..\..\..\build\QtScriptTools4.dll"
   File "..\..\..\build\QtXml4.dll"
+  File "..\..\..\build\Microsoft_VC90_CRT_x86.msi"
+  File "..\..\..\build\policy_9_0_Microsoft_VC90_CRT_x86.msi"
+  
   SetOverwrite ifnewer
   File "release\qtlobby.exe"
   CreateDirectory "$SMPROGRAMS\QtLobby"
@@ -84,6 +87,12 @@ Section -Post
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
+  
+  DetailPrint "Installing CRT assembly..."
+  ExecWait 'msiexec /i "$INSTDIR\Microsoft_VC90_CRT_x86.msi" /qn'
+  ExecWait 'msiexec /i "$INSTDIR\policy_9_0_Microsoft_VC90_CRT_x86.msi" /qn'
+  Delete "$INSTDIR\Microsoft_VC90_CRT_x86.msi"
+  Delete "$INSTDIR\policy_9_0_Microsoft_VC90_CRT_x86.msi"
 SectionEnd
 
 
