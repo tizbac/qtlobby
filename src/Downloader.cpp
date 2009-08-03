@@ -330,4 +330,6 @@ void Downloader::timerEvent(QTimerEvent* /*e*/) {
 void Downloader::onError(QNetworkReply::NetworkError /*code*/) {
 	QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
 	qCritical() << "Failed to fetch " << reply->url().toString() << ". Error: " << reply->errorString();
+        emit stateChanged(m_resourceName, "Error: " + reply->errorString());
+        emit finished(m_resourceName, false);
 }
