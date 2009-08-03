@@ -124,18 +124,14 @@ void Battles::receiveCommand( Command command ) {
     } else if ( command.name == "JOINBATTLEFAILED" ) {
         QMessageBox::critical(this, "Join battle failed", command.attributes.join(" "));
     } else if ( command.name == "JOINEDBATTLE" ) {
-        if ( !battleManager->isBattleId( command.attributes[0].toInt() ) ) {
-            qDebug() << __FILE__ << __LINE__<< " JOINEDBATTLE with false ID called: " << command.attributes[0].toInt();
+        if ( !battleManager->isBattleId( command.attributes[0].toInt() ) )
             return;
-        }
         Battle b = battleManager->getBattle( command.attributes[0].toInt() );
         b.playerCount++;
         battleManager->modBattle( b );
     } else if ( command.name == "LEFTBATTLE" ) {
-        if ( !battleManager->isBattleId( command.attributes[0].toInt() ) ) {
-            qDebug() << __FILE__ << __LINE__<< " LEFTBATTLE with false ID called: " << command.attributes[0].toInt();
+        if ( !battleManager->isBattleId( command.attributes[0].toInt() ) )
             return;
-        }
         Battle b = battleManager->getBattle( command.attributes[0].toInt() );
         b.playerCount--;
         battleManager->modBattle( b );
@@ -169,10 +165,8 @@ void Battles::receiveCommand( Command command ) {
     } else if ( command.name == "UPDATEBATTLEINFO" ) {
         Q_ASSERT( command.attributes.size() >= 5 );
         int battleId = command.attributes.takeFirst().toInt();
-        if ( !battleManager->isBattleId( battleId ) ) {
-            qDebug() << __FILE__ << __LINE__<< " UPDATEBATTLEINFO with false ID called: " << battleId;
+        if ( !battleManager->isBattleId( battleId ) )
             return;
-        }
         Battle b = battleManager->getBattle( battleId );
         b.spectatorCount = command.attributes.takeFirst().toInt();
         b.isLocked = command.attributes.takeFirst().toInt() > 0;
@@ -186,10 +180,8 @@ void Battles::receiveCommand( Command command ) {
         }
     } else if ( command.name == "SETSCRIPTTAGS" ) {
         int bi = users->getUser( username ).joinedBattleId;
-        if( !battleManager->isBattleId( bi ) ) {
-            qDebug() << __FILE__ << __LINE__<< " SETSCRIPTTAGS with false ID called: " << bi;
+        if( !battleManager->isBattleId( bi ) )
             return;
-        }
         Battle b = battleManager->getBattle( bi );
         command.attributes = command.attributes.join( " " ).split( "\t" );
         foreach( QString s, command.attributes ) {
@@ -199,10 +191,8 @@ void Battles::receiveCommand( Command command ) {
         battleManager->modBattle( b );
     } else if ( command.name == "REMOVESCRIPTTAGS" ) {
         int bi = users->getUser( username ).joinedBattleId;
-        if( !battleManager->isBattleId( bi ) ) {
-            qDebug() << __FILE__ << __LINE__<< " REMOVESCRIPTTAGS with false ID called: " << bi;
+        if( !battleManager->isBattleId( bi ) )
             return;
-        }
         Battle b = battleManager->getBattle( bi );
         command.attributes = command.attributes.join( " " ).split( "\t" );
         foreach( QString s, command.attributes ) {
@@ -213,10 +203,8 @@ void Battles::receiveCommand( Command command ) {
         battleManager->modBattle( b );
     } else if ( command.name == "ADDSTARTRECT" ) { // allyno left top right bottom
         int bi = users->getUser( username ).joinedBattleId;
-        if( !battleManager->isBattleId( bi ) ) {
-            qDebug() << __FILE__ << __LINE__<< " ADDSTARTRECT with false ID called: " << bi;
+        if( !battleManager->isBattleId( bi ) )
             return;
-        }
         Battle b = battleManager->getBattle( bi );
         b.allyNumberStartRectMap[command.attributes[0].toInt()] = StartRect(
                 command.attributes[1].toInt(),
@@ -233,10 +221,8 @@ void Battles::receiveCommand( Command command ) {
         battleManager->modBattle( b );
     } else if ( command.name == "REMOVESTARTRECT" ) { // allyno
         int bi = users->getUser( username ).joinedBattleId;
-        if( !battleManager->isBattleId( bi ) ) {
-            qDebug() << __FILE__ << __LINE__<< " REMOVESTARTRECT with false ID called: " << bi;
+        if( !battleManager->isBattleId( bi ) )
             return;
-        }
         Battle b = battleManager->getBattle( bi );
         b.allyNumberStartRectMap.remove( command.attributes[0].toInt() );
         battleManager->modBattle( b );
@@ -346,7 +332,6 @@ QString Battles::generateScript( Battle b, bool host ) {
     QList<User> battleUsers;
     foreach( User u, battleUsersUnsorted )
         battleUsers.prepend( u );
-    
     /// process ordered users, convert teams and allies
     QMap<int, int> teamConv, allyConv, allyReverseConv;
     int  numTeams = 0, numAllies = 0, myPlayerNum = -1;
@@ -363,7 +348,6 @@ QString Battles::generateScript( Battle b, bool host ) {
             allyReverseConv[i] = u.battleState.getAllyTeamNo();
         }
     }
-    
     /// sort and process bots now
     //   for ( std::list<BattleBot*>::size_type i = 0; i < battle.GetNumBots(); i++ ) {
     //     UserOrder tmp;
@@ -383,7 +367,6 @@ QString Battles::generateScript( Battle b, bool host ) {
     //     }
     //   }
     int numBots = 0; //ordered_bots.size();
-    
     // first the general game options
     QMap<QString, QString> gameOptions;
     gameOptions["Mapname"]  = b.mapName;
@@ -401,7 +384,7 @@ QString Battles::generateScript( Battle b, bool host ) {
     gameOptions["NumPlayers"]   = QString::number( b.playerCount );
     gameOptions["NumTeams"]     = QString::number( numTeams + numBots );
     gameOptions["NumAllyTeams"] = QString::number( numAllies );
-    
+
     //fill now all sections with options
     QMap<QString, QMap<QString, QString> > sectionsOptionMap;
     QMap<QString, QString> options;
@@ -413,14 +396,14 @@ QString Battles::generateScript( Battle b, bool host ) {
         options["Team"]        = QString::number( teamConv[battleUsers[i].battleState.getTeamNo()] );
         sectionsOptionMap[QString( "PLAYER%1" ).arg( i )] = options;
     }
-    
+
     // first user in team is the leader, though he's the last one who will overwrite the value for the team
     QMap<int, int> teamNumberLeaderUserNumberMap;
     for ( int j = battleUsers.size() - 1; j >= 0; --j ) {
         teamNumberLeaderUserNumberMap[battleUsers[j].battleState.getTeamNo()] = j;
         qDebug() << battleUsers[j].battleState.getTeamNo() << " " << j;
     }
-    
+
     for ( int i = 0; i < numTeams; i++ ) {
         options.clear();
         int teamLeader = teamNumberLeaderUserNumberMap.values()[i];
@@ -433,7 +416,7 @@ QString Battles::generateScript( Battle b, bool host ) {
         options["Handicap"] = QString::number( u.battleState.getHandicap() );
         sectionsOptionMap[QString( "TEAM%1" ).arg( i )] = options;
     }
-    
+
     //   for ( int i = 0; i < numBots; i++ ) {
     //     options.clear();
     //     int teamLeader = teamNumberLeaderUserNumberMap[i];
@@ -446,7 +429,7 @@ QString Battles::generateScript( Battle b, bool host ) {
     //     options["AIDLL"] = "bot.aidll";
     //     sectionsOptionMap[QString( "TEAM%1" ).arg( i + numTeams )] = options;
     //   }
-    
+
     int startpostype = b.options["StartPosType"].toFloat();
     for ( int i = 0; i < numAllies; i++ ) {
         int numInAlly = 0;
@@ -473,7 +456,7 @@ QString Battles::generateScript( Battle b, bool host ) {
     options.clear();
     sectionsOptionMap["MAPOPTIONS"] = options;
     sectionsOptionMap["MODOPTIONS"] = options;
-    
+
     // the scripttags like GAME/MODOPTIONS/...
     foreach( QString tag, b.options.keys() ) {
         options.clear();
@@ -486,7 +469,7 @@ QString Battles::generateScript( Battle b, bool host ) {
             }
         }
     }
-    
+
     // generate the script from the options
     QString ret; //!< the returned script file string
     QString sectionPattern = "%1[%2]\n%1{\n%3%1}\n"; // %1 "\t" or "", %2 name, %3 values
@@ -509,7 +492,7 @@ QString Battles::generateScript( Battle b, bool host ) {
  */
 int Battles::resyncStatus() {
     int battleId = users->getUser( url.userName() ).joinedBattleId;
-    
+
     if ( !battleManager->isBattleId( battleId ) ) {
         // set battle status to unsync
         // popup messagebox with error, that this should not happen
@@ -518,14 +501,14 @@ int Battles::resyncStatus() {
     }
     Battle b = battleManager->getBattle( battleId );
     QString modName = b.modName;
-    
+
     if ( UnitSyncLib::getInstance()->mapChecksum( b.mapName ) != ( unsigned int ) b.mapHash )
         return 2; // 2 = not sync
-    
+
     //qDebug() << "flux: modindex is: " << UnitSyncLib::getInstance()->modIndex(modName);
     if (UnitSyncLib::getInstance()->modIndex(modName) < 0)
         return 2; // 2 = not sync
-    
+
     return 1; // 1 = sync is 'in sync'
 }
 
@@ -587,4 +570,3 @@ void Battles::onReboot() {
     u.battleState.setSyncState(resyncStatus());
     users->onMyBattleStateChanged( u );
 }
-
