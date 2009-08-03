@@ -79,7 +79,7 @@ QVector<QStringList> UserPreference::getPathElements() {
             << "To execute spring we need the path to the spring binary."
 #ifdef Q_WS_WIN
             <<
-            pfiles+"/Spring/Spring.exe;"
+            pfiles+"/Spring/Spring.exe;" +
             pfiles2+"/Spring/Spring.exe;"
             "../spring.exe;"
             "./spring.exe;";
@@ -97,7 +97,7 @@ QVector<QStringList> UserPreference::getPathElements() {
             << "This folder usually contains the most spring data as for example the directories: AI/, base/, fonts/ and startscripts/."
 #ifdef Q_WS_WIN
             <<
-            pfiles+"/Spring/;"
+            pfiles+"/Spring/;" +
             pfiles2+"/Spring/;"
             "../;"
             "./;";
@@ -120,7 +120,7 @@ QVector<QStringList> UserPreference::getPathElements() {
             << "This library will provide Qtlobby access to maps/mods which spring uses as well."
 #ifdef Q_WS_WIN
             <<
-            pfiles+"/Spring/unitsync.dll;"
+            pfiles+"/Spring/unitsync.dll;" +
             pfiles2+"/Spring/unitsync.dll;"
             "../unitsync.dll;"
             "./unitsync.dll;";
@@ -146,7 +146,7 @@ QVector<QStringList> UserPreference::getPathElements() {
             << "On multiuser systems this path is used to store maps, mods and configurations which are user specific since most normal users won't have write-access to the global spring directory."
 #ifdef Q_WS_WIN
             <<
-            pfiles+"/Spring/;"
+            pfiles+"/Spring/;" +
             pfiles2+"/Spring/;"
             "../;"
             "./;";
@@ -161,7 +161,7 @@ QVector<QStringList> UserPreference::getPathElements() {
             << "Springsettings is a detailed and advanced configuration program. This binary is not in the qtlobby distribution yet so you might have to download it at springlobby.info"
 #ifdef Q_WS_WIN
             <<
-            pfiles+"/Spring/springsettings.exe;"
+            pfiles+"/Spring/springsettings.exe;" +
             pfiles2+"/Spring/springsettings.exe;"
             "../springsettings.exe;"
             "./springsettings.exe;";

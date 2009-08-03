@@ -327,6 +327,8 @@
         <file>icons/upsel_down.xpm</file>
         <file>icons/userchat.xpm</file>
         <file>icons/userlist.png</file>
+		<file>icons/logo.ico</file>
+		<file>icons/logo.xpm</file>
         <file>src/sqads.js</file>
         <file>icons/logos/jobjol/logo0.xpm</file>
         <file>icons/logos/jobjol/logo1.xpm</file>
@@ -354,6 +356,5 @@
         <file>icons/logos/jobjol/logo23.xpm</file>
         <file>icons/logos/jobjol/logo24.xpm</file>
         <file>icons/logos/jobjol/logo25.xpm</file>
-        <file>icons/logo.ico</file>
     </qresource>
 </RCC>
