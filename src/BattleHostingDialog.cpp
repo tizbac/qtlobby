@@ -1,6 +1,6 @@
 // $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
-#include "src/BattleHostingDialog.h"
+#include "BattleHostingDialog.h"
 #include "ui_BattleHostingDialog.h"
 #include "UnitSyncLib.h"
 

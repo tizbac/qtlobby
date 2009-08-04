@@ -1,6 +1,6 @@
 // $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
-#include "src/MapOverviewDialog.h"
+#include "MapOverviewDialog.h"
 #include "ui_MapOverviewDialog.h"
 
 MapOverviewDialog::MapOverviewDialog(QWidget *parent) :

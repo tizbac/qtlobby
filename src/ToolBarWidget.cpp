@@ -1,4 +1,4 @@
-#include "src/ToolBarWidget.h"
+#include "ToolBarWidget.h"
 
 ToolBarWidget::ToolBarWidget(QWidget *parent) :
     QWidget(parent),

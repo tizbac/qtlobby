@@ -2,7 +2,7 @@
 #define DOWNLOADSMODEL_H
 
 #include <QAbstractTableModel>
-#include <Singleton.h>
+#include "Singleton.h"
 
 /**
   Struct representing one row of a model

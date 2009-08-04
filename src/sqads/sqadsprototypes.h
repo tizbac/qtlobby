@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QScriptable>
-#include "User.h"
+#include "../User.h"
 
 class BattleHost;
 

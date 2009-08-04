@@ -1,6 +1,6 @@
 // $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
-#include "src/GLProgressDialog.h"
+#include "GLProgressDialog.h"
 #include "ui_GLProgressDialog.h"
 
 GLProgressDialog::GLProgressDialog(QWidget *parent) :

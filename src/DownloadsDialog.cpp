@@ -1,6 +1,6 @@
 // $Id: InfoChannel.cpp 229 2009-07-23 02:18:19Z mirko.windhoff $
 // QtLobby released under the GPLv3, see COPYING for details.
-#include "src/DownloadsDialog.h"
+#include "DownloadsDialog.h"
 #include "ui_DownloadsDialog.h"
 #include "DownloadsModel.h"
 #include "ProgressBarItemDelegate.h"

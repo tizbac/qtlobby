@@ -10,7 +10,7 @@
 #include <QScriptEngine>
 #include <QScriptEngineDebugger>
 
-#include "sqadsprototypes.h"
+#include "sqads/sqadsprototypes.h"
 
 //#define SQADS_DEBUG
 

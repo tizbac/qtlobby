@@ -16,7 +16,7 @@
 #include <QDir>
 #include <QIcon>
 
-#include <Settings.h>
+#include "Settings.h"
 
 // ONLY FOR TESTING PLEASE REMOVE WHEN NOT USED ANYMORE
 #include <QWidget>
