@@ -8,19 +8,6 @@ UserPreference::UserPreference( QDialog* parent ) : QDialog( parent ) {
 
     setupUi( this );
 
-/*    QStringList categories;
-    categories << "Paths";
-    m_model = new QStringListModel();
-    m_model->setStringList(categories);
-*/
-    settings = Settings::Instance();
-
-    connect( okPushButton, SIGNAL( clicked() ),
-             this, SLOT( okClicked() ) );
-    connect( applyPushButton, SIGNAL( clicked() ),
-             this, SLOT( applyClicked() ) );
-    connect( cancelPushButton, SIGNAL( clicked() ),
-             this, SLOT( cancelClicked() ) );
     QVector<QStringList> elements = getPathElements();
     QGridLayout *mainLayout = new QGridLayout();
     QWidget* container = new QWidget( this );
@@ -36,8 +23,19 @@ UserPreference::UserPreference( QDialog* parent ) : QDialog( parent ) {
     QScrollArea* scrollArea = new QScrollArea( this );
     scrollArea->setWidget( container );
     scrollArea->setWidgetResizable( true );
-    QGridLayout* f = new QGridLayout( preferencesPlaceholder );
+    QGridLayout* f = new QGridLayout( pathWidget );
     f->addWidget( scrollArea, 0, 0, 1, 1 );
+
+    settings = Settings::Instance();
+
+    connect( okPushButton, SIGNAL( clicked() ),
+             this, SLOT( okClicked() ) );
+    connect( applyPushButton, SIGNAL( clicked() ),
+             this, SLOT( applyClicked() ) );
+    connect( cancelPushButton, SIGNAL( clicked() ),
+             this, SLOT( cancelClicked() ) );
+    connect(languageComboBox, SIGNAL(activated(QString)),
+            this, SLOT(languageChanged(QString)));
 }
 
 UserPreference::~UserPreference() { }
@@ -62,6 +60,14 @@ void UserPreference::cancelClicked() {
         pathElements[i]->ResetConfiguration();
     }
     hide();
+}
+
+void UserPreference::languageChanged(QString /*language*/) {
+    //TODO convert language from languageComboBox to locale string
+    // and make this work, don't know why german translation is not loaded
+    QTranslator translator;
+    translator.load(QString("qtlobby_de_DE"));
+    qApp->installTranslator(&translator);
 }
 
 QVector<QStringList> UserPreference::getPathElements() {

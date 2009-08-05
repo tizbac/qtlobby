@@ -15,29 +15,133 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QTreeView" name="preferencesTreeView">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+    <widget class="QListWidget" name="preferencesListWidget">
      <property name="maximumSize">
       <size>
        <width>200</width>
        <height>16777215</height>
       </size>
      </property>
+     <property name="currentRow">
+      <number>0</number>
+     </property>
+     <item>
+      <property name="text">
+       <string>Language</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Paths</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Chat</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="QWidget" name="preferencesPlaceholder" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
      </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="languageWidget">
+      <widget class="QWidget" name="">
+       <property name="geometry">
+        <rect>
+         <x>5</x>
+         <y>5</y>
+         <width>250</width>
+         <height>29</height>
+        </rect>
+       </property>
+       <layout class="QFormLayout" name="formLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Application Language</string>
+          </property>
+          <property name="buddy">
+           <cstring>languageComboBox</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="languageComboBox">
+          <item>
+           <property name="text">
+            <string>English</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/flags/GB.xpm</normalon>
+            </iconset>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Русский</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/flags/RU.xpm</normalon>
+            </iconset>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Suomi</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/flags/FI.xpm</normalon>
+            </iconset>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Deutsch</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/flags/DE.xpm</normalon>
+            </iconset>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="pathWidget"/>
+     <widget class="QWidget" name="chatWidget">
+      <layout class="QFormLayout" name="formLayout_2">
+       <item row="0" column="0">
+        <widget class="QCheckBox" name="checkBox">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Show flags in Chat</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="tristate">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item row="1" column="0" colspan="2">
@@ -81,5 +185,25 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>preferencesListWidget</sender>
+   <signal>currentRowChanged(int)</signal>
+   <receiver>stackedWidget</receiver>
+   <slot>setCurrentIndex(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>164</x>
+     <y>145</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>281</x>
+     <y>143</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>setApplicationLanguage(QString)</slot>
+ </slots>
 </ui>

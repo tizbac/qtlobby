@@ -7,12 +7,16 @@
 #include "MiniDumper.h"
 #endif
 
-
 int main( int argc, char *argv[] ) {
-	#ifdef Q_WS_WIN
-	MiniDumper(TEXT("QtLobby"));
-	#endif
+    #ifdef Q_WS_WIN
+    MiniDumper(TEXT("QtLobby"));
+    #endif
     QApplication app( argc, argv );
+    QString locale = QLocale::system().name();
+    QTranslator translator;
+    translator.load(QString("i18n/qtlobby_") + locale );
+    app.installTranslator(&translator);
+
     if ( !QSystemTrayIcon::isSystemTrayAvailable() ) {
         QMessageBox::critical( 0, QObject::tr( "Systray" ),
                                QObject::tr( "I couldn't detect any system tray "
