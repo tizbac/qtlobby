@@ -1,5 +1,5 @@
 include(${QT_USE_FILE})
-
+include_directories(${QTSCRIPTTOOLS_INCLUDE_DIR})
 # source files
 set(qtlobby_SRCS
     #sources
@@ -166,7 +166,7 @@ QT4_ADD_TRANSLATION(qtlobby_TRANS ../qtlobby.ts)
 add_executable(qtlobby ${qtlobby_SRCS} ${qtlobby_SRCS_HH} ${qtlobby_UIS_H} ${qtlobby_SRCS_MOC} ${qtlobby_RES} ${qtlobby_TRANS} main.cpp)
 
 # TODO: remove hard coded qt script tools path
-target_link_libraries(qtlobby ${QT_LIBRARIES} ${QSCINTILLA_LIBRARIES} /usr/lib64/libQtScriptTools.so)
+target_link_libraries(qtlobby ${QT_LIBRARIES} ${QSCINTILLA_LIBRARIES} ${QTSCRIPTTOOLS_LIBRARIES})
 
 #install
 install(TARGETS qtlobby DESTINATION bin)
