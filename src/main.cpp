@@ -14,7 +14,7 @@ int main( int argc, char *argv[] ) {
     QApplication app( argc, argv );
     QString locale = QLocale::system().name();
     QTranslator translator;
-    translator.load(QString("i18n/qtlobby_") + locale );
+    translator.load(QString(":/i18n/qtlobby_") + locale );
     app.installTranslator(&translator);
 
     if ( !QSystemTrayIcon::isSystemTrayAvailable() ) {

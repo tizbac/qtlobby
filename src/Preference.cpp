@@ -62,11 +62,18 @@ void UserPreference::cancelClicked() {
     hide();
 }
 
-void UserPreference::languageChanged(QString /*language*/) {
-    //TODO convert language from languageComboBox to locale string
-    // and make this work, don't know why german translation is not loaded
+void UserPreference::languageChanged(QString language) {
+    //language switch does not work yet
+    //need to update the languageComboBox state for current locale in constructor
+    QString locale;
+    if( language == "Deutsch" )
+        locale = "de";
+    else if( language == "English" )
+        locale = "en";
+    else
+        return;
     QTranslator translator;
-    translator.load(QString("qtlobby_de_DE"));
+    translator.load(QString(":/i18n/qtlobby_") + locale);
     qApp->installTranslator(&translator);
 }
 
