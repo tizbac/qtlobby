@@ -160,7 +160,7 @@ include_directories(../ui)
 
 QT4_ADD_RESOURCES(qtlobby_RES ../resources.qrc)
 
-QT4_ADD_TRANSLATION(qtlobby_TRANS ../qtlobby.ts)
+QT4_ADD_TRANSLATION(qtlobby_TRANS ../i18n/qtlobby_de.ts)
 
 # linking compiling
 add_executable(qtlobby ${qtlobby_SRCS} ${qtlobby_SRCS_HH} ${qtlobby_UIS_H} ${qtlobby_SRCS_MOC} ${qtlobby_RES} ${qtlobby_TRANS} main.cpp)
