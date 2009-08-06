@@ -16,7 +16,7 @@ int main( int argc, char *argv[] ) {
     #ifdef _MSC_VER
     MiniDumper(TEXT("QtLobby"));
     #else
-    LoadLibrary("exchndl.dll");
+    LoadLibrary(TEXT("exchndl.dll"));
     #endif
     #endif
     QApplication app( argc, argv );
