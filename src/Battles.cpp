@@ -115,9 +115,13 @@ void Battles::receiveCommand( Command command ) {
             battleManager->modBattle( b );
             if ( users->getUser( url.userName() ).joinedBattleId == b.id && b.isStarted ) {
                 User me = users->getUser( url.userName() );
-                me.userState.setIngame(true);
-                emit sendCommand(Command(QString("MYSTATUS %1").arg(me.userState.getState())));
-                startGame( b, u.name == url.userName() );
+                if(u.name == me.name) {
+                    startGame( b, true );
+                }else {
+                    me.userState.setIngame(true);
+                    emit sendCommand(Command(QString("MYSTATUS %1").arg(me.userState.getState())));
+                    startGame( b, false );
+                }
             }
         }
     } else if ( command.name == "JOINBATTLE" ) {
