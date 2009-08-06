@@ -36,29 +36,35 @@ UserPreference::UserPreference( QDialog* parent ) : QDialog( parent ) {
              this, SLOT( cancelClicked() ) );
     connect(languageComboBox, SIGNAL(activated(QString)),
             this, SLOT(languageChanged(QString)));
+    if(!settings->contains("Chat/joinMain"))
+        settings->setValue("Chat/joinMain", true);
+    joinMainCheckBox->setChecked(settings->value("Chat/joinMain").toBool());
+    if(!settings->contains("Chat/joinQtlobby"))
+        settings->setValue("Chat/joinQtlobby", true);
+    joinQtlobbyCheckBox->setChecked(settings->value("Chat/joinQtlobby").toBool());
 }
 
 UserPreference::~UserPreference() { }
 
 void UserPreference::okClicked() {
-    for ( int i = 0; i < pathElements.size(); ++i ) {
-        pathElements[i]->SaveElement();
-    }
-    if (UnitSyncLib::getInstance()->loadLibrary())
+    applyClicked();
+    if (UnitSyncLib::getInstance()->libraryLoaded())
         hide();
 }
 
 void UserPreference::applyClicked() {
-    for ( int i = 0; i < pathElements.size(); ++i ) {
+    for ( int i = 0; i < pathElements.size(); ++i )
         pathElements[i]->SaveElement();
-    }
     UnitSyncLib::getInstance()->loadLibrary();
+    settings->setValue("Chat/joinMain", joinMainCheckBox->isChecked());
+    settings->setValue("Chat/joinQtlobby", joinQtlobbyCheckBox->isChecked());
 }
 
 void UserPreference::cancelClicked() {
-    for ( int i = 0; i < pathElements.size(); ++i ) {
+    for ( int i = 0; i < pathElements.size(); ++i )
         pathElements[i]->ResetConfiguration();
-    }
+    joinMainCheckBox->setChecked(settings->value("Chat/joinMain").toBool());
+    joinQtlobbyCheckBox->setChecked(settings->value("Chat/joinQtlobby").toBool());
     hide();
 }
 
@@ -66,15 +72,16 @@ void UserPreference::languageChanged(QString language) {
     //language switch does not work yet
     //need to update the languageComboBox state for current locale in constructor
     QString locale;
+    QTranslator translator;
+    translator.load(QString(":/i18n/qtlobby_de"));
     if( language == "Deutsch" )
         locale = "de";
-    else if( language == "English" )
-        locale = "en";
-    else
+    else if( language == "English" ) {
+        QCoreApplication::instance()->removeTranslator(&translator);
+        qDebug() << "removing translator";
         return;
-    QTranslator translator;
-    translator.load(QString(":/i18n/qtlobby_") + locale);
-    qApp->installTranslator(&translator);
+    } else return;
+    QCoreApplication::instance()->installTranslator(&translator);
 }
 
 QVector<QStringList> UserPreference::getPathElements() {

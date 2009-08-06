@@ -68,23 +68,32 @@ void LobbyTabs::connectionStateChanged( ConnectionState connectionState ) {
     this->connectionState = connectionState;
 
     if ( connectionState == AUTHENTICATED ) {
-        bool qtlobbyChannelFound = false;
-        foreach( AbstractLobbyTab * l, lobbyTabList ) {
+        bool qtlobbyChannelFound = false, mainChannelFound = false;
+/*        foreach( AbstractLobbyTab * l, lobbyTabList ) {
             if ( QString(l->metaObject()->className()) == "Channel" ) {
                 if ( QString(l->objectName()) == "qtlobby" )
                     qtlobbyChannelFound = true;
                 receiveInput( QString( "/j " ) + l->objectName() );
             }
         }
+        */
         //Restoring channels
-        QStringList channels = Settings::Instance()->value("channels").toStringList();
+        QSettings * settings = Settings::Instance();
+        QStringList channels = settings->value("channels").toStringList();
         foreach(QString channel, channels) {
             receiveInput("/j " + channel);
+            if ( channel == "qtlobby" )
+                qtlobbyChannelFound = true;
+            if ( channel == "main" )
+                mainChannelFound = true;
         }
         if ( !qtlobbyChannelFound ) {
-            if ( lobbyTabList.count() > 0 ) {
+            if ( !settings->contains("Chat/joinQtlobby") || settings->value("Chat/joinQtlobby").toBool() )
                 lobbyTabList[0]->receiveInput( "/j qtlobby" );
-            }
+        }
+        if ( !mainChannelFound ) {
+            if ( !settings->contains("Chat/joinMain") || settings->value("Chat/joinMain").toBool() )
+                lobbyTabList[0]->receiveInput( "/j main" );
         }
     }
 }

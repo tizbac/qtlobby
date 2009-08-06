@@ -38,7 +38,7 @@
      <x>0</x>
      <y>0</y>
      <width>795</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Program">
@@ -372,7 +372,7 @@
     <string>&amp;Exit</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Q</string>
+    <string notr="true">Ctrl+Q</string>
    </property>
   </action>
   <action name="action_Connect">
@@ -384,7 +384,7 @@
     <string>&amp;Login</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+L</string>
+    <string notr="true">Ctrl+L</string>
    </property>
   </action>
   <action name="action_About">
@@ -430,7 +430,7 @@
     <string>&amp;Battle list</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+B</string>
+    <string notr="true">Ctrl+B</string>
    </property>
   </action>
   <action name="action_User_list">
@@ -448,7 +448,7 @@
     <string>&amp;User list</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+U</string>
+    <string notr="true">Ctrl+U</string>
    </property>
   </action>
   <action name="actionHelp">
@@ -489,7 +489,7 @@
     <string>&amp;Preferences</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+P</string>
+    <string notr="true">Ctrl+P</string>
    </property>
   </action>
   <action name="action_Spring_Settings">
@@ -497,7 +497,7 @@
     <string>Spring Settin&amp;gs</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+S</string>
+    <string notr="true">Ctrl+Shift+S</string>
    </property>
   </action>
   <action name="actionMap_list">
@@ -521,7 +521,7 @@
     <string>&amp;Groups</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+G</string>
+    <string notr="true">Ctrl+G</string>
    </property>
   </action>
   <action name="actionScripting">
@@ -544,7 +544,7 @@
     <string>Battle &amp;Info</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+I</string>
+    <string notr="true">Ctrl+I</string>
    </property>
   </action>
   <action name="actionDownloads">
@@ -562,7 +562,7 @@
     <string>&amp;Downloads</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+D</string>
+    <string notr="true">Ctrl+D</string>
    </property>
   </action>
   <action name="action_Host_a_Battle">
@@ -570,7 +570,7 @@
     <string>&amp;Host a Battle</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+H</string>
+    <string notr="true">Ctrl+H</string>
    </property>
   </action>
  </widget>

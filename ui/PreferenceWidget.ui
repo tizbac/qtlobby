@@ -27,17 +27,17 @@
      </property>
      <item>
       <property name="text">
-       <string>Language</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
        <string>Paths</string>
       </property>
      </item>
      <item>
       <property name="text">
        <string>Chat</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Language</string>
       </property>
      </item>
     </widget>
@@ -53,6 +53,47 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
+     <widget class="QWidget" name="pathWidget"/>
+     <widget class="QWidget" name="chatWidget">
+      <layout class="QFormLayout" name="formLayout_2">
+       <item row="0" column="0">
+        <widget class="QCheckBox" name="showFlagsCheckBox">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Show flags in Chat</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="tristate">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QCheckBox" name="joinMainCheckBox">
+         <property name="text">
+          <string>Join #main on start</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QCheckBox" name="joinQtlobbyCheckBox">
+         <property name="text">
+          <string>Join #qtlobby on start</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
      <widget class="QWidget" name="languageWidget">
       <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
@@ -120,27 +161,6 @@
         </item>
        </layout>
       </widget>
-     </widget>
-     <widget class="QWidget" name="pathWidget"/>
-     <widget class="QWidget" name="chatWidget">
-      <layout class="QFormLayout" name="formLayout_2">
-       <item row="0" column="0">
-        <widget class="QCheckBox" name="checkBox">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="text">
-          <string>Show flags in Chat</string>
-         </property>
-         <property name="checked">
-          <bool>true</bool>
-         </property>
-         <property name="tristate">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
      </widget>
     </widget>
    </item>
