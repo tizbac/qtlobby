@@ -27,8 +27,10 @@ ConnectionWidget::ConnectionWidget( ServerContextState* serverContextState,
     connectionLogTextBrowser->setDocument( connectionLogTextDocument );
 
     bool showSimple = settings->value("simpleloginform", 0).toBool();
-    complexloginform->setVisible(!showSimple);
-    simpleloginform->setVisible(showSimple);
+    if(showSimple)
+        simpleViewStackedWidget->setCurrentIndex(1);
+    else
+        simpleViewStackedWidget->setCurrentIndex(0);
     simpleDetailedSwitch->setChecked(showSimple);
 
     /* backend connections for network connectivity */
@@ -151,8 +153,10 @@ void ConnectionWidget::establishConnection() {
 void ConnectionWidget::simpleViewChanged() {
     bool showSimple = !settings->value("simpleloginform", 0).toBool();
     settings->setValue( "simpleloginform", showSimple);
-    simpleloginform->setVisible(showSimple);
-    complexloginform->setVisible(!showSimple);
+    if(showSimple)
+        simpleViewStackedWidget->setCurrentIndex(1);
+    else
+        simpleViewStackedWidget->setCurrentIndex(0);
 }
 
 /* simple login for lulz */
@@ -299,7 +303,7 @@ void ConnectionWidget::createNewProfile() {
     QUrl url;
     url.setHost( "taspring.clan-sy.com" );
     url.setPort( 8200 );
-    url.setUserName( "qtlobby" );
+    url.setUserName( "new_profile_" + QString::number(list.size()) );
 
     //list.append( url );
     list.prepend( url);

@@ -21,6 +21,11 @@ desktop.files = src/qtlobby.desktop
 desktop.path = $$INSTALL_ROOT/share/applications
 INSTALLS += desktop
 
+contains( CONFIG, buildbot ) {
+     QMAKE_LFLAGS += -static-libgcc
+}
+
+
 # SVNDEF := -DSVN_REV=444
 # DEFINES += SVN_REV=444
 # QMAKE_CFLAGS += $(SVNDEF)
@@ -181,17 +186,24 @@ DISTFILES += doc/ProtocolDescription.xml \
     TODO \
     doc/xml2html.xsl \
     doc/z
-win32 {
-    LIBS += QScintilla2.lib
+
+
+contains( CONFIG, vc ) {
     HEADERS += src/MiniDumper.h
     SOURCES += src/MiniDumper.cpp
-}
-unix { 
+    LIBS += QScintilla2.lib
+} else {
     LIBS += -lqscintilla2
-    HEADERS += src/DBusVisualNotificationBackend.h
-    SOURCES += src/DBusVisualNotificationBackend.cpp
-    QT += dbus
 }
+
+unix {
+    !contains( CONFIG, buildbot ) {
+        HEADERS += src/DBusVisualNotificationBackend.h
+        SOURCES += src/DBusVisualNotificationBackend.cpp
+        QT += dbus
+    }
+}
+
 RC_FILE += src/qtlobby.rc
 OTHER_FILES += src/sqads.js
 TRANSLATIONS = i18n/qtlobby_de.ts
