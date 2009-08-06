@@ -36,6 +36,7 @@ public:
     int usersCountInCurrentChannel();
     void wipeModels();
     QString getCurrentUsername();
+    void modUserInAllManagers( User );
 signals:
     void sendCommand( Command command );
     void sendInput( QString input );
@@ -72,7 +73,6 @@ protected:
     QString currentTabType;
     QString currentTabName;
     void delUserFromAllManagers( QString ); // delete user from all managers
-    void modUserInAllManagers( User );    // modify user in all managers
     QMap<QString, User> userMap;
     QMap<QString, UserManager*> channelUserManagerMap;
     QMap<int, UserManager*> battleIdUserManagerMap;

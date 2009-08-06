@@ -76,7 +76,9 @@ void BattleChannel::setupUi( QWidget * tab ) {
              Users::getCurrentUsers(), SLOT( onReadyStateChanged( int ) ));
     connect(battleWindowForm->specCheckBox, SIGNAL( stateChanged ( int ) ),
             Users::getCurrentUsers(),SLOT(onSpecStateChanged( int ))); // NEW
-    connect(battleWindowForm->factionsComboBox, SIGNAL( currentIndexChanged( int)),
+    connect(battleWindowForm->factionsComboBox, SIGNAL( activated( int)),
+            this,SLOT(onSideComboBoxChanged( int )));
+    connect(battleWindowForm->factionsComboBox, SIGNAL( activated( int)),
             Users::getCurrentUsers(),SLOT(onSideComboBoxChanged( int )));
     connect(battleWindowForm->colorToolButton, SIGNAL(clicked()),
             this, SLOT(onColorClicked()));
@@ -117,6 +119,7 @@ void BattleChannel::setupUi( QWidget * tab ) {
     currentMap = m_battle.mapName;
     requestMapInfo( m_battle.mapName );
     fillSides();
+    battleWindowForm->factionsComboBox->setCurrentIndex(settings->value("sidesPreferences/" + m_battle.modName, 0).toInt());
 }
 
 void BattleChannel::receiveCommand( Command command ) {
@@ -310,7 +313,6 @@ void BattleChannel::receiveCommand( Command command ) {
                     battleWindowForm->ghostedBuildingsCheckBox->setChecked( val > 0 );
                 else if ( key == "disablemapdamage" )
                     battleWindowForm->undeformableMapSpeedCheckBox->setChecked( val > 0 );
-                qDebug() << key << " = " << val;
                 m_battle.options[key] = val;
                 UNBLOCK_UI_SIGNALS;
             } else if ( re_game.exactMatch(s) ) {
@@ -319,9 +321,9 @@ void BattleChannel::receiveCommand( Command command ) {
                 if(key == "startpostype") {
                     val = qMax( qMin( val, 3 ), 0 );
                     BLOCK_UI_SIGNALS
-                    battleWindowForm->startPositionComboBox->setCurrentIndex( val );
+                            battleWindowForm->startPositionComboBox->setCurrentIndex( val );
                     UNBLOCK_UI_SIGNALS
-                }
+                        }
             }
         }
         fillModOptions();
@@ -697,4 +699,8 @@ void BattleChannel::onModOptionsAnchorClicked(QUrl url) {
 
 bool BattleChannel::isBlocked() const {
     return wasKicked;
+}
+
+void BattleChannel::onSideComboBoxChanged(int side) {
+    Settings::Instance()->setValue("sidesPreferences/" + m_battle.modName, side);
 }

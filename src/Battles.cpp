@@ -239,10 +239,13 @@ void Battles::receiveCommand( Command command ) {
         u.userState.setIngame(true);
         u.battleState.setTeamNo(playersNum);
         u.battleState.setAllyTeamNo(playersNum);
-        u.battleState.setSide(0);
+        Battle b = battleManager->getBattle(u.joinedBattleId);
+        int preferedSide = settings->value("sidesPreferences/" + b.modName, 0).toInt();
+        u.battleState.setSide(preferedSide);
         u.m_color = QColor( "red" );
         u.battleState.setPlayer(true);
         u.battleState.setSyncState(resyncStatus());
+        users->modUserInAllManagers(u);
         users->onMyBattleStateChanged( u );
     } else if ( command.name == "HOSTPORT" ) {
         m_portOverride = command.attributes.at(0).toInt();
