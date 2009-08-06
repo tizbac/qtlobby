@@ -155,6 +155,7 @@ set( qtlobby_UIS
 ../ui/StylesheetDialog.ui
 ../ui/UserGroupsDialog.ui
 )
+# TODO: the wrapped ui_*.h files contain src/*.h includes, that could not be found, they should be just ./*.h
 QT4_WRAP_UI(qtlobby_UIS_H ${qtlobby_UIS})
 include_directories(../ui)
 
