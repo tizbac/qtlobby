@@ -18,6 +18,7 @@ int main( int argc, char *argv[] ) {
     #else
     LoadLibrary("exchndl.dll");
     #endif
+    #endif
     QApplication app( argc, argv );
     QString locale = QLocale::system().name();
     QTranslator translator;
