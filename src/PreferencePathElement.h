@@ -25,7 +25,8 @@ protected:
     bool exists;
     bool isDirectory;
     QStringList examples;
-
+signals:
+    void pathChanged(QString dir);
 public slots:
     void SaveElement();
     void ResetConfiguration();

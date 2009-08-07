@@ -479,7 +479,7 @@ void BattleChannel::updateMapInfo( QString mapName ) {
     if (noMapUpdates) return;
     battleWindowForm->nameLabel->setText(mapName);
     if (!loader->mapPresent) {
-        QString mapNotFoundError = tr("Map % not found").arg(mapName);
+        QString mapNotFoundError = tr("Map %1 not found").arg(mapName);
         battleWindowForm->minimapWidget->setErrorMessage(mapNotFoundError);
         battleWindowForm->heightmapWidget->setErrorMessage(mapNotFoundError);
         battleWindowForm->metalmapWidget->setErrorMessage(mapNotFoundError);

@@ -65,6 +65,7 @@ void PreferencePathElement::openFileBrowser() {
     if ( isDirectory ) {
         QString path = exists ? lineEdit->text().trimmed() : QDir::homePath();
         fileOrDirName = fileDialog.getExistingDirectory( this, tr( "Select Directory" ), path, QFileDialog::ShowDirsOnly );
+        emit pathChanged(fileOrDirName);
     } else {
         QFileInfo fi = QFileInfo( lineEdit->text().trimmed() );
         QString path = fi.exists() ? fi.absoluteFilePath() : QDir::homePath();
