@@ -219,7 +219,7 @@ QString AbstractChannel::processIRCCodes(QString in) {
 
 QString AbstractChannel::urlify(QString in) {
     //   QRegExp urlPattern( "(http|ftp)s?://[^/?# ]+[^?# ]*(\?[^# ]*)?(#[^#? ]*)?" );
-    QRegExp urlPattern( "(http|ftp)s?://[^\n<>\\[\\] ]*" );
+    QRegExp urlPattern( "(http|ftp)s?://[^\n<>\\[\\]\" ]+" );
     QStringList ct;
     int pos = 0;
     while (( pos = urlPattern.indexIn( in, pos ) ) != -1 ) {
