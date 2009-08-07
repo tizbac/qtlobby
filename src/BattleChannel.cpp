@@ -61,9 +61,9 @@ void BattleChannel::setupUi( QWidget * tab ) {
     AbstractChannel::setupUi( tab );
     QSplitter* s = new QSplitter(Qt::Vertical, tab);
     gridLayout->removeWidget(channelTextBrowser);
-    QWidget * t = new QWidget;
-    battleWindowForm->setupUi( t );
-    s->addWidget(t);
+    battleWindowForm_ui = new QWidget;
+    battleWindowForm->setupUi( battleWindowForm_ui );
+    s->addWidget(battleWindowForm_ui);
     s->addWidget(channelTextBrowser);
     QSettings* settings = Settings::Instance();
     if (settings->contains("mainwindow/chatsplitter"))
@@ -250,8 +250,8 @@ void BattleChannel::receiveCommand( Command command ) {
     } else if ( command.name == "FORCEQUITBATTLE" ) {
         QMessageBox::critical(NULL, "Kicked from battle", "You have been kicked from the battle, poor you!");
         insertLine("You have been kicked from the battle!\n");
+        battleWindowForm_ui->setEnabled(false);
         wasKicked = true;
-        battleWindowForm->battleSettingsGroupBox->setEnabled(false);
     } else if ( command.name == "JOINEDBATTLE" ) {
         if ( command.attributes.takeFirst() == objectName() ) {
             QString userName = command.attributes.takeFirst();

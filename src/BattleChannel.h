@@ -71,6 +71,7 @@ private:
     QByteArray splitterState;
     bool wasKicked;
     Notification* notify;
+    QWidget* battleWindowForm_ui;
 protected:
     Battles* battles;
 };
