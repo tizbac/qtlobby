@@ -30,7 +30,8 @@ void PrivateChannel::receiveCommand( Command command ) {
 		}
     } else if ( command.name == "SAYPRIVATE" ) {
         if ( command.attributes.takeFirst() == objectName() && command.attributes.join( " " ).trimmed() != "" ) {
-            insertLine( line.arg( "&lt;%1&gt; %2" )
+            insertLine( line.arg( "%1&lt;%2&gt; %3" )
+                        .arg( flag( myUserName ) )
                         .arg( myUserName )
                         .arg( processInput(command.attributes.join( " " ))));
         }
