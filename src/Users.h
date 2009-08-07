@@ -3,7 +3,6 @@
 #ifndef USERS_H
 #define USERS_H
 
-// #include <QObject>
 #include <QStringListModel>
 #include <QSortFilterProxyModel>
 #include <QDebug>
@@ -20,9 +19,6 @@
 #include "UserManager.h"
 #include "AbstractStateClient.h"
 
-/**
- @author Joachim Schiele <js@lastlog.de>
-*/
 class Users : public QTreeView {
     Q_OBJECT
 public:
@@ -67,7 +63,7 @@ protected slots:
     void customContextMenuRequestedSlot( const QPoint & point );
     void doubleClickedSlot( const QModelIndex & index );
     void joinSameBattle( User u );
-	void toggleIgnoreUser( User u );
+    void toggleIgnoreUser( User u );
     void addUserToGroup(QString user, QString group);
     void removeUserFromGroup(QString user);
 

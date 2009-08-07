@@ -24,6 +24,9 @@ UserPreference::UserPreference( QDialog* parent ) : QDialog( parent ) {
     if(!settings->contains("Chat/joinQtlobby"))
         settings->setValue("Chat/joinQtlobby", true);
     joinQtlobbyCheckBox->setChecked(settings->value("Chat/joinQtlobby").toBool());
+    if(!settings->contains("Chat/showFlags"))
+        settings->setValue("Chat/showFlags", true);
+    chatShowFlagsCheckBox->setChecked(settings->value("Chat/showFlags").toBool());
 }
 
 UserPreference::~UserPreference() { }
@@ -40,6 +43,7 @@ void UserPreference::applyClicked() {
     UnitSyncLib::getInstance()->loadLibrary();
     settings->setValue("Chat/joinMain", joinMainCheckBox->isChecked());
     settings->setValue("Chat/joinQtlobby", joinQtlobbyCheckBox->isChecked());
+    settings->setValue("Chat/showFlags", chatShowFlagsCheckBox->isChecked());
 }
 
 void UserPreference::cancelClicked() {
@@ -47,6 +51,7 @@ void UserPreference::cancelClicked() {
         pathElements[i]->ResetConfiguration();
     joinMainCheckBox->setChecked(settings->value("Chat/joinMain").toBool());
     joinQtlobbyCheckBox->setChecked(settings->value("Chat/joinQtlobby").toBool());
+    chatShowFlagsCheckBox->setChecked(settings->value("Chat/showFlags").toBool());
     hide();
 }
 

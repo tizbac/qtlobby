@@ -22,7 +22,7 @@ public:
 public slots:
     virtual void receiveInput( QString input ) = 0;
     virtual void receiveCommand( Command command ) = 0;
-
+//    virtual void anchorClicked(QUrl url); //TODO needs to be reimplemented by all inheritants
 protected:
     void setActive( bool isActive );
     virtual void setupUi( QWidget * tab );

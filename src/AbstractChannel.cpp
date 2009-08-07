@@ -28,6 +28,9 @@ void AbstractChannel::setupUi( QWidget * channelTabWidget ) {
     gridLayout = new QGridLayout( channelTabWidget );
     gridLayout->setObjectName( QString::fromUtf8( "channelGridLayout" ) + objectName() );
     gridLayout->addWidget( channelTextBrowser, 1, 0, 1, 1 );
+//TODO move somewhere, where it works
+//    connect(channelTextBrowser, SIGNAL(anchorClicked(QUrl)),
+//            this, SLOT(anchorClicked(QUrl)));
 }
 
 void AbstractChannel::setActive( bool isActive ) {
@@ -310,4 +313,3 @@ QString AbstractChannel::processInput(QString input, bool fomatting) {
     }
     else return urlify(input);
 }
-
