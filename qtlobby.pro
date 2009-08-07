@@ -22,7 +22,8 @@ desktop.path = $$INSTALL_ROOT/share/applications
 INSTALLS += desktop
 
 contains( CONFIG, buildbot ) {
-     QMAKE_LFLAGS += -static-libgcc
+     QMAKE_LFLAGS += -static-libgcc -Wl,-subsystem,windows
+     QMAKE_CXX_FLAGS += -g
 }
 
 
