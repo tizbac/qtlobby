@@ -155,7 +155,9 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     connect( battles, SIGNAL( sendInput( QString ) ),
              lobbyTabs, SLOT( receiveInput( QString ) ) );
 
-    //New group action in users
+    connect( users, SIGNAL(teamPlayerSpecCountChanged(QString)),
+             this, SLOT(onTeamPlayerSpecCountChanged(QString)));
+    //Group action in users
     connect( users, SIGNAL(openGroupsDialog()),
              userGroupsDialog, SLOT(show()));
     //Stats updates for status bar
@@ -504,12 +506,14 @@ void MainWindow::connectionStatusChanged(ConnectionState state) {
 }
 
 void MainWindow::onCurrentTabChanged() {
+    onTeamPlayerSpecCountChanged(users->teamPlayerSpecCount());
+}
+
+void MainWindow::onTeamPlayerSpecCountChanged(QString ratio) {
     usersInCurrentChannel->setText(
             tr("Users: %1")
             .arg(QString::number(users->usersCountInCurrentChannel()))
-            .append(users->playerSpecRatio()));
-    //FIXME: wtf? (ko)
-    //usersTeamCount->setText("blablabla");
+            .append(ratio));
 }
 
 void MainWindow::on_hostPushButton_clicked() {

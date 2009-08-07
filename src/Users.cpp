@@ -109,6 +109,8 @@ void Users::receiveCommand( Command command ) {
         modUserInAllManagers( u );
         if (u.name == url.userName())
             emit myStateChanged(u);
+        if ( currentTabType == "BattleChannel" && currentTabName.toInt() == u.joinedBattleId )
+            emit teamPlayerSpecCountChanged(teamPlayerSpecCount());
     } else if ( command.name == "JOINBATTLE" ) {
         int id = command.attributes.takeFirst().toInt();
         if ( !battleIdUserManagerMap.contains( id ) )
@@ -148,10 +150,6 @@ void Users::receiveCommand( Command command ) {
         channelUserManagerMap[command.attributes[0]]->delUser( command.attributes[1] );
     } else if ( command.name == "BATTLECLOSED" ) {
         int id = command.attributes[0].toInt();
-        // FIXME right now the map isn't removed, this leads to (js)
-        //       high memory usage since we do not free it!
-        //       Q: why did i comment the next line?
-        //       A: because if not, then we get a segfault on BATTLECLOSED
         battleIdUserManagerMap[id]->model()->clear();
         battleIdUserManagerMap.remove( id );
         updateUserList();
@@ -341,7 +339,7 @@ void Users::removeUserFromGroup(QString user) {
 
 void Users::toggleIgnoreUser( User u ) {
     UserGroupList* list = UserGroupList::getInstance();
-	list->toggleIgnore( u.name );
+    list->toggleIgnore( u.name );
 
     invalidateModel();
     list->save();
@@ -355,6 +353,7 @@ void Users::onMyBattleStateChanged( User u ) {
     Command command( "MYBATTLESTATUS" );
     command.attributes << QString( "%1 %2" ).arg( u.battleState.getState() ).arg( u.color() );
     emit sendCommand( command );
+    emit teamPlayerSpecCountChanged(teamPlayerSpecCount());
 }
 
 void Users::onMyStateChanged( User u ) {
@@ -424,11 +423,11 @@ int Users::usersCountInCurrentChannel() {
     return model()->rowCount(QModelIndex());
 }
 
-QString Users::playerSpecRatio() {
+QString Users::teamPlayerSpecCount() {
     if ( currentTabType == "BattleChannel" ) {
         QMap<int,int> teamCounter;
         foreach(User u, battleIdUserManagerMap[currentTabName.toInt()]->model()->userList()) {
-            int tn = u.battleState.isPlayer() ? 0 : u.battleState.getAllyTeamNo()+1;
+            int tn = u.battleState.isPlayer() ? u.battleState.getAllyTeamNo()+1 : 0;
             if( teamCounter.contains(tn) )
                 teamCounter[tn]++;
             else

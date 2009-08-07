@@ -7,25 +7,7 @@
 UserPreference::UserPreference( QDialog* parent ) : QDialog( parent ) {
 
     setupUi( this );
-
-    QVector<QStringList> elements = getPathElements();
-    QGridLayout *mainLayout = new QGridLayout();
-    QWidget* container = new QWidget( this );
-    container->setLayout( mainLayout );
-    int h = 0;
-    for ( int i = 0; i < elements.size(); ++i ) {
-        PreferencePathElement* pathElement = new PreferencePathElement( elements[i], container );
-        mainLayout->addWidget( pathElement, i, 0, 1, 1 );
-        h += pathElement->height();
-        this->pathElements << pathElement;
-    }
-    container->setMinimumHeight( h );
-    QScrollArea* scrollArea = new QScrollArea( this );
-    scrollArea->setWidget( container );
-    scrollArea->setWidgetResizable( true );
-    QGridLayout* f = new QGridLayout( pathWidget );
-    f->addWidget( scrollArea, 0, 0, 1, 1 );
-
+    setUpPathForm();
     settings = Settings::Instance();
 
     connect( okPushButton, SIGNAL( clicked() ),
@@ -66,6 +48,26 @@ void UserPreference::cancelClicked() {
     joinMainCheckBox->setChecked(settings->value("Chat/joinMain").toBool());
     joinQtlobbyCheckBox->setChecked(settings->value("Chat/joinQtlobby").toBool());
     hide();
+}
+
+void UserPreference::setUpPathForm() {
+    QVector<QStringList> elements = getPathElements();
+    QGridLayout *mainLayout = new QGridLayout();
+    QWidget* container = new QWidget( this );
+    container->setLayout( mainLayout );
+    int h = 0;
+    for ( int i = 0; i < elements.size(); ++i ) {
+        PreferencePathElement* pathElement = new PreferencePathElement( elements[i], container );
+        mainLayout->addWidget( pathElement, i, 0, 1, 1 );
+        h += pathElement->height();
+        this->pathElements << pathElement;
+    }
+    container->setMinimumHeight( h );
+    QScrollArea* scrollArea = new QScrollArea( this );
+    scrollArea->setWidget( container );
+    scrollArea->setWidgetResizable( true );
+    QGridLayout* f = new QGridLayout( pathWidget );
+    f->addWidget( scrollArea, 0, 0, 1, 1 );
 }
 
 void UserPreference::languageChanged(QString language) {

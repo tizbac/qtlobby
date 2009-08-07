@@ -10,9 +10,9 @@ using namespace std;
 Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
     battleManager = new BattleManager( this );
     gamePasswordWidget = new GamePasswordWidget();
-    
+
     settings = Settings::Instance();
-    
+
     setModel( battleManager->proxyModel() );
     setSortingEnabled( true );
     sortByColumn( 0, Qt::AscendingOrder );
@@ -24,7 +24,7 @@ Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
     setColumnWidth( 5, 80 );
     setColumnWidth( 6, 100 );
     setColumnWidth( 7, 60 );
-    
+
     m_menu = new QMenu();
     openPrivateChannelAction = new QAction("Private Chat to Host", this);
     m_menu->addAction(openPrivateChannelAction);
@@ -117,7 +117,7 @@ void Battles::receiveCommand( Command command ) {
                 User me = users->getUser( url.userName() );
                 if(u.name == me.name) {
                     startGame( b, true );
-                }else {
+                } else {
                     me.userState.setIngame(true);
                     emit sendCommand(Command(QString("MYSTATUS %1").arg(me.userState.getState())));
                     startGame( b, false );
@@ -152,7 +152,7 @@ void Battles::receiveCommand( Command command ) {
         b.isPasswordProtected = command.attributes.takeFirst().toInt() > 0;
         b.minRank             = command.attributes.takeFirst().toInt();
         b.mapHash             = command.attributes.takeFirst().toInt();
-        command.attributes = command.attributes.join( " " ).split( "\t" );
+        command.attributes    = command.attributes.join( " " ).split( "\t" );
         QString mapName       = command.attributes.takeFirst();
         b.mapName             = mapName;
         b.title               = command.attributes.takeFirst();
@@ -244,7 +244,7 @@ void Battles::receiveCommand( Command command ) {
         u.battleState.setTeamNo(playersNum);
         u.battleState.setAllyTeamNo(playersNum);
         Battle b = battleManager->getBattle(u.joinedBattleId);
-        int preferedSide = settings->value("sidesPreferences/" + b.modName, 0).toInt();
+        int preferedSide = settings->value("sidesPreferences/" + b.modName).toInt();
         u.battleState.setSide(preferedSide);
         u.m_color = QColor( "red" );
         u.battleState.setPlayer(true);

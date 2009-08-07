@@ -24,8 +24,8 @@ public:
 private:
     QSettings* settings;
     QList<PreferencePathElement*> pathElements;
-
     QVector<QStringList> getPathElements();
+    void setUpPathForm();
 private slots:
     void languageChanged(QString language);
     void okClicked();

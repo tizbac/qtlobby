@@ -10,8 +10,6 @@
 
 /**
 represents the structure of a battle
-
- @author Joachim Schiele <js@lastlog.de>
 */
 
 struct StartRect {

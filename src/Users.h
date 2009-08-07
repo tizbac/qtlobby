@@ -37,12 +37,14 @@ public:
     void wipeModels();
     QString getCurrentUsername();
     void modUserInAllManagers( User );
+    QString teamPlayerSpecCount();
 signals:
     void sendCommand( Command command );
     void sendInput( QString input );
     void myStateChanged(User u);
     void openGroupsDialog();
     void statsChange(int userCount, int moderatorCount);
+    void teamPlayerSpecCountChanged(QString ratio);
 
 public slots:
     void setRegExp( QString regExp );
@@ -59,7 +61,6 @@ public slots:
     void onTeamNumberChanged( int i );
     void onAllyTeamNumberChanged( int i );
     void invalidateModel();
-    QString playerSpecRatio();
     void connectionStateChanged(ConnectionState state);
     void onSpringStopped();
 protected slots:

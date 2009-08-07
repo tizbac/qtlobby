@@ -106,6 +106,7 @@ private slots:
     void setCurrentUsername( QString username );
     void onCurrentChanged(const QModelIndex & current, const QModelIndex & previous);
     void onCurrentTabChanged();
+    void onTeamPlayerSpecCountChanged(QString ratio);
     void onStatsChange(int users, int moderators);
     void onStatsChange(int battles);
     void connectionStatusChanged(ConnectionState);
