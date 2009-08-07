@@ -23,7 +23,7 @@ INSTALLS += desktop
 
 contains( CONFIG, buildbot ) {
      QMAKE_LFLAGS += -static-libgcc -Wl,-subsystem,windows
-     QMAKE_CXX_FLAGS += -g
+     QMAKE_CXXFLAGS += -g
 }
 
 
