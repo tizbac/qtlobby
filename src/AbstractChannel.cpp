@@ -69,8 +69,7 @@ bool AbstractChannel::executeChannelInput( QString input ) {
     } else if ( QString( "/h,/help" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
         ret.name = "CLIENTMSG";
         QString row( "<tr><td style=\"padding:0;border:none;\">%1</td><td style=\"padding:0;border:none;\">%2</td></tr>" );
-        ret.attributes << objectName()
-                << QString( "Chat Help <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">%1</table>" ).arg(
+        ret.attributes << objectName() << tr("Chat Help").append(" <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">%1</table>" ).arg(
                         row.arg( "/help, /h", tr( "Display this help" ) ) +
                         row.arg( "/channels, /list", tr( "Display channel list" ) ) +
                         row.arg( "/join, /j &lt;channel&gt;", tr( "Join channel" ) ) +

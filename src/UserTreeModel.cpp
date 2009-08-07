@@ -35,28 +35,28 @@ QVariant UserTreeModel::data( const QModelIndex& index, int role ) const {
     case 0: //status
         if ( role == Qt::DecorationRole || role == Qt::ToolTipRole ) {
             User u = m_userList[index.row()];
-            QString tip;
+            QString tip = tr("%1 %2");
             QStringList fileNameParts;
             if ( u.userState.isBot() ) {
                 fileNameParts << "bot";
-                tip += tr( "Bot" );
+                tip.arg(tr( "Bot" ));
             } else if ( u.userState.isModerator() ) {
                 fileNameParts << "chanop";
-                tip += tr( "Moderator" );
+                tip.arg(tr( "Moderator" ));
             }   else {
-                tip += tr( "Player" );
+                tip.arg(tr( "Player" ));
             }
             if ( u.userState.isAway() ) {
                 fileNameParts << "away";
-                tip += " is away";
+                tip.arg(tr("is away"));
             } else if ( u.userState.isIngame() ) {
                 fileNameParts << "ingame";
-                tip += " is in game";
+                tip.arg(tr("is in game"));
             } else if ( u.joinedBattleId != -1 ) {
                 fileNameParts << "broom";
-                tip += " is in battle room";
+                tip.arg(tr("is in battle room"));
             } else
-                tip += " is available";
+                tip.arg(tr("is available"));
             if ( role == Qt::DecorationRole )
                 return QIcon( QString( ":/icons/%1.xpm" ).arg( fileNameParts.join( "_" ) ) );
             return tip;
@@ -84,21 +84,21 @@ QVariant UserTreeModel::data( const QModelIndex& index, int role ) const {
         if ( role == Qt::ToolTipRole ) {
             switch ( m_userList[index.row()].userState.getRank() ) {
             case 0:
-                return "1/7 Newbie";
+                return tr("1/7 Newbie");
             case 1:
-                return "2/7 Beginner";
+                return tr("2/7 Beginner");
             case 2:
-                return "3/7 Average";
+                return tr("3/7 Average");
             case 3:
-                return "4/7 Above average";
+                return tr("4/7 Above average");
             case 4:
-                return "5/7 Experienced";
+                return tr("5/7 Experienced");
             case 5:
-                return "6/7 Highly experienced";
+                return tr("6/7 Highly experienced");
             case 6:
-                return "7/7 Veteran";
+                return tr("7/7 Veteran");
             }
-            return "no rank set";
+            return tr("no rank set");
         }
         break;
     case 3: //username

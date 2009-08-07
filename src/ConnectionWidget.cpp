@@ -103,8 +103,8 @@ ConnectionWidget::ConnectionWidget( ServerContextState* serverContextState,
     updateComboBoxes();
     profileModified = false;
 
-    msgBox.setText("Profile has been modified.");
-    msgBox.setInformativeText("Do you want to save your changes?");
+    msgBox.setText(tr("Profile has been modified."));
+    msgBox.setInformativeText(tr("Do you want to save your changes?"));
     msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
     msgBox.setDefaultButton(QMessageBox::Save);
 
@@ -117,8 +117,8 @@ void ConnectionWidget::establishConnection() {
     settings->setValue( "SelectedServerProfile", index );
 
     if ( index == -1 ) {
-        QMessageBox::critical( this, "No Profile selected",
-                               "You have to add a profile in the 'Profile' tab first before you can connect to a server." );
+        QMessageBox::critical( this, tr("No Profile selected"),
+                               tr("You have to add a profile in the 'Profile' tab first before you can connect to a server.") );
         return;
     }
     QUrl url = profileComboBox->itemData(index, Qt::UserRole ).toUrl();
@@ -130,8 +130,8 @@ void ConnectionWidget::establishConnection() {
 
     if ( passwordLineEdit->text() == "" ) {
         if ( url.password() == "" ) {
-            QMessageBox::critical( this, "No password",
-                                   "Type in the password and try again!" );
+            QMessageBox::critical( this, tr("No password"),
+                                   tr("Type in the password and try again!") );
             return;
         } else {
             passwordLineEdit->setText( url.password() );
@@ -168,14 +168,14 @@ void ConnectionWidget::establishSimpleConnection() {
     url.setPassword( simplePasswdEdit->text() );
 
     if ( url.userName() == "" ) {
-        QMessageBox::critical( this, "No username",
-                               "Type in the username and try again!" );
+        QMessageBox::critical( this, tr("No username"),
+                               tr("Type in the username and try again!") );
         return;
     }
 
     if ( url.password() == "" ) {
-        QMessageBox::critical( this, "No password",
-                               "Type in the password and try again!" );
+        QMessageBox::critical( this, tr("No password"),
+                               tr("Type in the password and try again!") );
         return;
     }
 
@@ -337,24 +337,24 @@ void ConnectionWidget::connectionStatusChanged( ConnectionState state ) {
         lockRenameAndChangePassword();
         break;
     case CONNECTING:
-        loginButton->setText("&Login");
+        loginButton->setText(tr("&Login"));
         loginButton->setEnabled( false );
         logoutButton->setEnabled( true );
-        statusLabel->setText( "connecting" );
+        statusLabel->setText( tr("connecting") );
         //lockInterface();
         break;
     case CONNECTED:
         connected = true;
-        statusLabel->setText( "connected" );
+        statusLabel->setText( tr("connected") );
         break;
     case AUTHENTICATING:
-        statusLabel->setText( "authenticating" );
+        statusLabel->setText( tr("authenticating") );
         break;
     case AUTHENTICATED:
         simpleLoginButton->setEnabled(false);
         loginButton->setEnabled(true);
         unlockRenameAndChangePassword();
-        statusLabel->setText( "authenticated (logged in)" );
+        statusLabel->setText( tr("authenticated (logged in)") );
         registerUserPushButton->setEnabled(false);
         hide();
         break;
@@ -429,13 +429,13 @@ void ConnectionWidget::renameLoginName() {
 }
 
 void ConnectionWidget::renameLoginNameFeedbackSuccess( QString newName ) {
-    QString renameString = QString( "Please change your new name to %1 and reconnect to the server." )
+    QString renameString = QString( tr("Please change your new name to %1 and reconnect to the server.") )
                            .arg( newName );
-    QMessageBox::information( this, "Rename success", renameString );
+    QMessageBox::information( this, tr("Rename success"), renameString );
 }
 
 void ConnectionWidget::renameLoginNameFeedbackFailure( QString failureMsg ) {
-    QMessageBox::critical( this, "Rename failure", failureMsg );
+    QMessageBox::critical( this, tr("Rename failure"), failureMsg );
 }
 
 void ConnectionWidget::changePassword() {
@@ -452,12 +452,12 @@ void ConnectionWidget::changePassword() {
 }
 
 void ConnectionWidget::changePasswordSuccess( QString pwString ) {
-    QMessageBox::information( this, "Password change success", pwString );
+    QMessageBox::information( this, tr("Password change success"), pwString );
     //FIXME add direct modificator to profiles
 }
 
 void ConnectionWidget::changePasswordFailure( QString pwString ) {
-    QMessageBox::critical( this, "Password change error", pwString );
+    QMessageBox::critical( this, tr("Password change error"), pwString );
 }
 
 void ConnectionWidget::toggleRememberPassword() {
@@ -512,7 +512,8 @@ void ConnectionWidget::onLogin() {
         countdown = 10;
         serverContextState->forceDisconnect();
         countdownTimer = new QTimer(this);
-        countdownDialog = new QProgressDialog("Reconnecting...","Nooo!",0,10,this);
+        //FIXME is reported to be too long, should be faster. Why do we need this? (mw)
+        countdownDialog = new QProgressDialog(tr("Reconnecting..."),tr("Nooo!"),0,10,this);
         countdownDialog->setValue(countdown);
         countdownDialog->setWindowModality(Qt::WindowModal);
         countdownDialog->show();

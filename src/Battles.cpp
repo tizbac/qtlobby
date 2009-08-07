@@ -26,30 +26,30 @@ Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
     setColumnWidth( 7, 60 );
 
     m_menu = new QMenu();
-    openPrivateChannelAction = new QAction("Private Chat to Host", this);
+    openPrivateChannelAction = new QAction(tr("Private Chat to Host"), this);
     m_menu->addAction(openPrivateChannelAction);
-    joinBattleAction = new QAction("Join Battle", this);
+    joinBattleAction = new QAction(tr("Join Battle"), this);
     m_menu->addAction(joinBattleAction);
-    m_filterMenu = new QMenu("Filter Battles");
-    filterPasswordedAction = new QAction("Hide battles with password", this);
+    m_filterMenu = new QMenu(tr("Filter Battles"));
+    filterPasswordedAction = new QAction(tr("Hide battles with password"), this);
     filterPasswordedAction->setCheckable(true);
     m_filterMenu->addAction(filterPasswordedAction);
-    filterInGameAction = new QAction("Hide running battles", this);
+    filterInGameAction = new QAction(tr("Hide running battles"), this);
     filterInGameAction->setCheckable(true);
     m_filterMenu->addAction(filterInGameAction);
-    filterLockedAction = new QAction("Hide locked battles", this);
+    filterLockedAction = new QAction(tr("Hide locked battles"), this);
     filterLockedAction->setCheckable(true);
     m_filterMenu->addAction(filterLockedAction);
-    filterUnavailableModsAction = new QAction("Hide not installed mods", this);
+    filterUnavailableModsAction = new QAction(tr("Hide not installed mods"), this);
     filterUnavailableModsAction->setCheckable(true);
     m_filterMenu->addAction(filterUnavailableModsAction);
-    filterUnavailableMapsAction = new QAction("Hide not installed maps", this);
+    filterUnavailableMapsAction = new QAction(tr("Hide not installed maps"), this);
     filterUnavailableMapsAction->setCheckable(true);
     m_filterMenu->addAction(filterUnavailableMapsAction);
-    filterWithoutPlayersAction = new QAction("Hide battles without players", this);
+    filterWithoutPlayersAction = new QAction(tr("Hide battles without players"), this);
     filterWithoutPlayersAction->setCheckable(true);
     m_filterMenu->addAction(filterWithoutPlayersAction);
-    filterWithoutFriendsAction = new QAction("Hide battles without friends", this);
+    filterWithoutFriendsAction = new QAction(tr("Hide battles without friends"), this);
     filterWithoutFriendsAction->setCheckable(true);
     m_filterMenu->addAction(filterWithoutFriendsAction);
     m_menu->addMenu(m_filterMenu);
@@ -320,13 +320,13 @@ void Battles::startGame( Battle b, bool host ) {
     QString springDir = settings->value("spring_user_dir").toString();
     QFile scriptFile( springDir + "/script_qtlobby.txt" );
     if ( !scriptFile.open( QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate ) ) {
-        qDebug() << "Error: Could not open script file for write: " << scriptFile.fileName();
+        qDebug() << tr("Error: Could not open script file for write: ") << scriptFile.fileName();
         return;
     }
     QTextStream out( &scriptFile );
     out << generateScript( b, host );
     scriptFile.close();
-    qDebug() << "Script file " << springDir + "/script_qtlobby.txt" << " written";
+    qDebug() << tr("Script file %1 written.").arg(springDir + "/script_qtlobby.txt");
     emit start();
 }
 
@@ -511,8 +511,6 @@ int Battles::resyncStatus() {
 
     if ( UnitSyncLib::getInstance()->mapChecksum( b.mapName ) != ( unsigned int ) b.mapHash )
         return 2; // 2 = not sync
-
-    //qDebug() << "flux: modindex is: " << UnitSyncLib::getInstance()->modIndex(modName);
     if (UnitSyncLib::getInstance()->modIndex(modName) < 0)
         return 2; // 2 = not sync
 

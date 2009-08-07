@@ -36,7 +36,7 @@ void BattleHostingDialog::changeEvent(QEvent *e) {
 
 void BattleHostingDialog::on_buttonBox_accepted() {
     if(m_battleHost) {
-        QMessageBox::critical(this, "Error", "You have a battle running!\nClose it first!");
+        QMessageBox::critical(this, tr("Error"), tr("You have a battle running!\nClose it first!"));
         return;
     }
     m_battleHost = new BattleHost(m_currentUsername, this);

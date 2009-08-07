@@ -1,11 +1,13 @@
-<!DOCTYPE TS><TS>
-<context encoding="UTF-8">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
+<context>
     <name>AboutWidget</name>
     <message>
         <source>About QTLobby</source>
         <translation type="unfinished">Über QtLobby</translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -80,6 +82,10 @@ p, li { white-space: pre-wrap; }
         <source>Leave the channel</source>
         <translation>Verlasse den Channel</translation>
     </message>
+    <message>
+        <source>Chat Help</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AgreementWidget</name>
@@ -113,6 +119,92 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Battle unlocked.</source>
         <translation>Der Battlechannel wurde aufgeschlossen.</translation>
+    </message>
+    <message>
+        <source>Ring!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 wants attention!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kicked from battle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have been kicked from the battle!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have been kicked from the battle!
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please, download %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Missing content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You don&apos;t have the mod or you have broken version.
+Do you want to download it?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading %1...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Map % not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You don&apos;t have the map or you have broken version.
+Do you want to download it?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select color for group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select value for %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BattleHost</name>
+    <message>
+        <source>Map not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mod not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Battle hosting failed: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to load </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -205,6 +297,15 @@ p, li { white-space: pre-wrap; }
         <source>M&amp;ap:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have a battle running!
+Close it first!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>BattleTreeModel</name>
@@ -227,6 +328,147 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Battle is  opened</source>
         <translation>Battle ist offen</translation>
+    </message>
+    <message>
+        <source>1/7 Newbie</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>2/7 Beginner</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3/7 Average</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>4/7 Above average</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>5/7 Experienced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>6/7 Highly experienced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>7/7 Veteran</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>no rank</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 players battle
+%2 players maximum
+%3 spectators in game</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>State: green open, red locked, swords started</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>S</source>
+        <translation type="unfinished">S</translation>
+    </message>
+    <message>
+        <source>Country</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>C</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minimum rank needed to join</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>R</source>
+        <translation type="unfinished">R</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Map</source>
+        <translation type="unfinished">Map</translation>
+    </message>
+    <message>
+        <source>Mod</source>
+        <translation type="unfinished">Mod</translation>
+    </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source># of Players / # of max. Players + # of Spectators</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Players</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BattleUserTreeModel</name>
+    <message>
+        <source>Ready, sync status unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ready</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ready, unsynced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not ready, sync status unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not ready</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not ready, unsynced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spectating</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Faction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Team Number</source>
+        <translation type="unfinished">Teamnummer</translation>
+    </message>
+    <message>
+        <source>Ally Team Number</source>
+        <translation type="unfinished">Allianz Teamnummer</translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Handicap</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -393,6 +635,57 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>Battles</name>
+    <message>
+        <source>Private Chat to Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Join Battle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filter Battles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide battles with password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide running battles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide locked battles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide not installed mods</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide not installed maps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide battles without players</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide battles without friends</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error: Could not open script file for write: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Script file %1 written.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Channel</name>
     <message>
         <source>** %1 joined the channel.</source>
@@ -405,6 +698,25 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>%1 joined the channel.</source>
         <translation>%1 hat den Channel betreten.</translation>
+    </message>
+    <message>
+        <source>Topic is &apos; %1 &apos; set by %2 %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>dd.MM.yyyy hh:mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ChannelTextBrowser</name>
+    <message>
+        <source>Enable join/leave messages for this channel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable join/leave messages by default</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -572,6 +884,141 @@ p, li { white-space: pre-wrap; }
         <source>You must be logged in to change your password.</source>
         <translation type="unfinished">Du musst eingeloggt sein, um dein Passwort zu ändern.</translation>
     </message>
+    <message>
+        <source>Profile has been modified.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No Profile selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You have to add a profile in the &apos;Profile&apos; tab first before you can connect to a server.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type in the password and try again!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No username</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type in the username and try again!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>connecting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>authenticating</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>authenticated (logged in)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please change your new name to %1 and reconnect to the server.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename success</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename failure</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password change success</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password change error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reconnecting...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nooo!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Downloader</name>
+    <message>
+        <source>Resolving filename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Retrieving mirror list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Retrieving file size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Estimating mirrors speeds</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to create file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloading from %1 mirror(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finished</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloading file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to fetch %1. Error: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error: </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DownloadsDialog</name>
@@ -591,6 +1038,61 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#aaff00;&quot;&gt;Content hosting is provided by &lt;/span&gt;&lt;a href=&quot;http://spring.jobjol.nl/&quot;&gt;&lt;span style=&quot; font-size:12pt; text-decoration: underline; color:#aaff00;&quot;&gt;Spring Files&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#aaff00;&quot;&gt;To keep this website up and running is costing a lot of money for hosting, the use of bandwidth and maintaining this site. Your voluntary donation is very much appreciated and any money donated will be invested back into this website for its further development. &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://spring.jobjol.nl/donate.php&quot;&gt;&lt;span style=&quot; font-size:12pt; text-decoration: underline; color:#aaff00;&quot;&gt;Make a donation please!&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadsModel</name>
+    <message>
+        <source>%1 GiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 MiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 KiB</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 GiB/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 MiB/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 KiB/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 B/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>State</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Speed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ETA</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -785,7 +1287,7 @@ Bitte Passwort eingeben:</translation>
     </message>
     <message>
         <source>Ctrl+Q</source>
-        <translation>Strg+Q</translation>
+        <translation type="obsolete">Strg+Q</translation>
     </message>
     <message>
         <source>&amp;Login</source>
@@ -793,7 +1295,7 @@ Bitte Passwort eingeben:</translation>
     </message>
     <message>
         <source>Ctrl+L</source>
-        <translation>Strg+L</translation>
+        <translation type="obsolete">Strg+L</translation>
     </message>
     <message>
         <source>&amp;About</source>
@@ -821,7 +1323,7 @@ Bitte Passwort eingeben:</translation>
     </message>
     <message>
         <source>Ctrl+B</source>
-        <translation>Strg+B</translation>
+        <translation type="obsolete">Strg+B</translation>
     </message>
     <message>
         <source>&amp;User list</source>
@@ -829,7 +1331,7 @@ Bitte Passwort eingeben:</translation>
     </message>
     <message>
         <source>Ctrl+U</source>
-        <translation>Strg+U</translation>
+        <translation type="obsolete">Strg+U</translation>
     </message>
     <message>
         <source>&amp;Join</source>
@@ -853,7 +1355,7 @@ Bitte Passwort eingeben:</translation>
     </message>
     <message>
         <source>Ctrl+P</source>
-        <translation>Strg+P</translation>
+        <translation type="obsolete">Strg+P</translation>
     </message>
     <message>
         <source>Spring Settin&amp;gs</source>
@@ -861,7 +1363,7 @@ Bitte Passwort eingeben:</translation>
     </message>
     <message>
         <source>Ctrl+Shift+S</source>
-        <translation>Strg+Shift+S</translation>
+        <translation type="obsolete">Strg+Shift+S</translation>
     </message>
     <message>
         <source>Map list</source>
@@ -877,7 +1379,7 @@ Bitte Passwort eingeben:</translation>
     </message>
     <message>
         <source>Ctrl+G</source>
-        <translation>Strg+G</translation>
+        <translation type="obsolete">Strg+G</translation>
     </message>
     <message>
         <source>S&amp;cripting</source>
@@ -885,7 +1387,7 @@ Bitte Passwort eingeben:</translation>
     </message>
     <message>
         <source>Ctrl+I</source>
-        <translation>Strg+I</translation>
+        <translation type="obsolete">Strg+I</translation>
     </message>
     <message>
         <source>&amp;Downloads</source>
@@ -893,7 +1395,7 @@ Bitte Passwort eingeben:</translation>
     </message>
     <message>
         <source>Ctrl+D</source>
-        <translation>Strg+D</translation>
+        <translation type="obsolete">Strg+D</translation>
     </message>
     <message>
         <source>&amp;Host a Battle</source>
@@ -901,7 +1403,7 @@ Bitte Passwort eingeben:</translation>
     </message>
     <message>
         <source>Ctrl+H</source>
-        <translation>Strg+H</translation>
+        <translation type="obsolete">Strg+H</translation>
     </message>
     <message>
         <source>&amp;Restore</source>
@@ -911,12 +1413,64 @@ Bitte Passwort eingeben:</translation>
         <source>QtLobby</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Users online: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moderators online: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Battles: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disconnected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connecting...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Authenticating...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Authenticated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Users: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Join channel</source>
+        <translation type="unfinished">Betrete Channel</translation>
+    </message>
+    <message>
+        <source>Specify a channel you want to join</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MapOverviewDialog</name>
     <message>
         <source>Dialog</source>
         <translation>Dialog</translation>
+    </message>
+    <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Use  left mouse button to rotates the map, middle button moves the map and wheel changes zoom&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1011,7 +1565,7 @@ p, li { white-space: pre-wrap; }
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>
-    <message encoding="UTF-8">
+    <message>
         <source>Русский</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1025,6 +1579,14 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Show flags in Chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Join #main on start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Join #qtlobby on start</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1041,6 +1603,13 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>&lt;span style=&quot;color:darkgreen;&quot;&gt;** %1 is now online.&lt;/span&gt;</source>
         <translation>&lt;span style=&quot;color:darkgreen;&quot;&gt;** %1 ist jetzt online.&lt;/span&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>ProgressBarItemDelegate</name>
+    <message>
+        <source>File size unknown</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1115,6 +1684,37 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>UnitSyncLib</name>
+    <message>
+        <source>UnitSyncLibrary is not usable!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unitSyncLib - library not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unitsync library was not found or is unusable.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unitSyncLib - library not loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>UnitSyncLib was compiled against Spring version: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Found %1 maps and %2 mods.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Your library is not loaded, you can&apos;t use it!</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>UserGroupsDialog</name>
     <message>
         <source>Dialog</source>
@@ -1155,6 +1755,49 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Close</source>
         <translation>Schließen</translation>
+    </message>
+    <message>
+        <source>New group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Descriptioin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Player1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Player2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select color for group</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>UserPreference</name>
+    <message>
+        <source>To execute spring we need the path to the spring binary.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This folder usually contains the most spring data as for example the directories: AI/, base/, fonts/ and startscripts/.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This library will provide Qtlobby access to maps/mods which spring uses as well.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>On multiuser systems this path is used to store maps, mods and configurations which are user specific since most normal users won&apos;t have write-access to the global spring directory.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Springsettings is a detailed and advanced configuration program. This binary is not in the qtlobby distribution yet so you might have to download it at springlobby.info</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1198,6 +1841,141 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Player rank</source>
         <translation>Rang</translation>
+    </message>
+    <message>
+        <source>%1 %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is away</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is in game</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is in battle room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1/7 Newbie</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>2/7 Beginner</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3/7 Average</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>4/7 Above average</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>5/7 Experienced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>6/7 Highly experienced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>7/7 Veteran</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>no rank set</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Users</name>
+    <message>
+        <source>Start private chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Slap around</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Join same battle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Toggle ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove from group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add clan to group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove clan from group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Force</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Team</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ally</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spec</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kick</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select team</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select a team to force player to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select ally team</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select an ally team to force player to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select user color</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

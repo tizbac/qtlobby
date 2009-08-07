@@ -87,10 +87,11 @@ void Channel::receiveCommand( Command command ) {
             date.setTime_t(uint(time_t.toULong()/1000));
 
             insertLine(line
-                       .arg("<span style=\"color: darkred;\">** Topic is ' %1 ' set by %2 %3</span>")
+                       .arg("<span style=\"color: darkred;\">** %1</span>")
+                       .arg(tr("Topic is ' %1 ' set by %2 %3"))
                        .arg( urlify(msg) )
                        .arg( name )
-                       .arg( date.toString("dd.MM.yyyy hh:mm") ));
+                       .arg( date.toString(tr("dd.MM.yyyy hh:mm")) ));
         }
     }
 }

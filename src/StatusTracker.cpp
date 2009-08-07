@@ -8,7 +8,7 @@
 StatusTracker::StatusTracker( QStatusBar *s ) {
     statusbar = s;
 
-
+    //TODO refactor that, what is the StatusTracker? (mw)
 
     // connection status: CONNECTED:LOGIN:ACCEPTED:...
     // connectiontime

@@ -136,21 +136,21 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
         if ( role == Qt::ToolTipRole ) {
             switch ( m_battleList[index.row()].minRank ) {
             case 0:
-                return "1/7 Newbie";
+                return tr("1/7 Newbie");
             case 1:
-                return "2/7 Beginner";
+                return tr("2/7 Beginner");
             case 2:
-                return "3/7 Average";
+                return tr("3/7 Average");
             case 3:
-                return "4/7 Above average";
+                return tr("4/7 Above average");
             case 4:
-                return "5/7 Experienced";
+                return tr("5/7 Experienced");
             case 5:
-                return "6/7 Highly experienced";
+                return tr("6/7 Highly experienced");
             case 6:
-                return "7/7 Veteran";
+                return tr("7/7 Veteran");
             }
-            return "no rank";
+            return tr("no rank");
         }
         break;
     case 3: // title
@@ -181,7 +181,7 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
             .arg( m_battleList[index.row()].spectatorCount );
         if ( role == Qt::ToolTipRole ) {
             Battle b = m_battleList[index.row()];
-            return QString( "%1 players battle\n%2 players maximum\n%3 spectators in game" )
+            return tr("%1 players battle\n%2 players maximum\n%3 spectators in game")
                     .arg( b.playerCount -b.spectatorCount )
                     .arg( b.maxPlayers )
                     .arg( b.spectatorCount );
@@ -201,21 +201,21 @@ QVariant BattleTreeModel::headerData( int col, Qt::Orientation, int role ) const
     if ( role == Qt::DisplayRole || role == Qt::ToolTipRole ) {
         switch ( col ) {
         case 0:
-            return role == Qt::ToolTipRole ? "State: green open, red locked, swords started" : "S";
+            return role == Qt::ToolTipRole ? tr("State: green open, red locked, swords started") : tr("S");
         case 1:
-            return role == Qt::ToolTipRole ? "Country" : "C";
+            return role == Qt::ToolTipRole ? tr("Country") : tr("C");
         case 2:
-            return role == Qt::ToolTipRole ? "Minimum rank needed to join" : "R";
+            return role == Qt::ToolTipRole ? tr("Minimum rank needed to join") : tr("R");
         case 3:
-            return role == Qt::ToolTipRole ? "" : "Title";
+            return role == Qt::ToolTipRole ? "" : tr("Title");
         case 4:
-            return role == Qt::ToolTipRole ? "" : "Map";
+            return role == Qt::ToolTipRole ? "" : tr("Map");
         case 5:
-            return role == Qt::ToolTipRole ? "" : "Mod";
+            return role == Qt::ToolTipRole ? "" : tr("Mod");
         case 6:
-            return role == Qt::ToolTipRole ? "" : "Host";
+            return role == Qt::ToolTipRole ? "" : tr("Host");
         case 7:
-            return role == Qt::ToolTipRole ? "# of Players / # of max. Players + # of Spectators" : "Players";
+            return role == Qt::ToolTipRole ? tr("# of Players / # of max. Players + # of Spectators") : tr("Players");
         }
     }
     return QVariant();

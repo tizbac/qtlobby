@@ -48,7 +48,7 @@ void Downloader::start() {
     connect(m_reply, SIGNAL(finished()), this, SLOT(onResolverFinished()));
 	connect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
 		this, SLOT(onError(QNetworkReply::NetworkError)));
-    emit stateChanged(m_resourceName, "Resolving filename");
+    emit stateChanged(m_resourceName, tr("Resolving filename"));
 }
 
 
@@ -61,7 +61,7 @@ Slot for getting resource filename from resource name via Mirko's gateway
 void Downloader::onResolverFinished() {
     QString result = m_reply->readAll().trimmed();
     if(result.isEmpty()) {
-        emit stateChanged(m_resourceName, "File not found");
+        emit stateChanged(m_resourceName, tr("File not found"));
         emit finished(m_resourceName, false);
         return;
     }
@@ -82,7 +82,7 @@ void Downloader::onResolverFinished() {
     connect(m_reply, SIGNAL(finished()), this, SLOT(onMirrorListFinished()));
 	connect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
 		this, SLOT(onError(QNetworkReply::NetworkError)));
-    emit stateChanged(m_resourceName, "Retrieving mirror list");
+    emit stateChanged(m_resourceName, tr("Retrieving mirror list"));
 }
 
 /**
@@ -115,7 +115,7 @@ void Downloader::onMirrorListFinished() {
         connect(reply, SIGNAL(metaDataChanged()), this, SLOT(onFileSizeFinished()));
 		connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
 			this, SLOT(onError(QNetworkReply::NetworkError)));
-        emit stateChanged(m_resourceName, "Retrieving file size");
+        emit stateChanged(m_resourceName, tr("Retrieving file size"));
     }
 }
 
@@ -143,7 +143,7 @@ void Downloader::onFileSizeFinished() {
         m_replies << reply;
     }
     QTimer::singleShot(15000, this, SLOT(download())); //start download anyway in 15 seconds if one ore more of mirrors failed
-    emit stateChanged(m_resourceName, "Estimating mirrors speeds");
+    emit stateChanged(m_resourceName, tr("Estimating mirrors speeds"));
 }
 
 /**
@@ -171,7 +171,7 @@ void Downloader::openFile() {
     QString dir = Settings::Instance()->value("spring_user_dir").toString();
     m_out.setFileName(dir + "/" + (m_map ? "maps" : "mods") + "/" + m_fileName);
     if(!m_out.open(QIODevice::WriteOnly)) {
-        emit stateChanged(m_resourceName, "Failed to create file");
+        emit stateChanged(m_resourceName, tr("Failed to create file"));
         emit finished(m_resourceName, false);
         return;
     }
@@ -202,7 +202,7 @@ void Downloader::download() {
             m_downloadSources++;
         }
     }
-    emit stateChanged(m_resourceName, QString("Downloading from %1 mirror(s)").arg(m_downloadSources));
+    emit stateChanged(m_resourceName, QString(tr("Downloading from %1 mirror(s)")).arg(m_downloadSources));
     startTimer(timerInterval);
 }
 
@@ -221,7 +221,7 @@ void Downloader::onDownloadFinished() {
     if(n == m_downloadSources) {
         n = 0;
         m_out.close();
-        emit stateChanged(m_resourceName, "Finished");
+        emit stateChanged(m_resourceName, tr("Finished"));
         emit finished(m_resourceName, true);
     }
 }
@@ -239,7 +239,7 @@ void Downloader::onJobjolSessionFinished() {
 		this, SLOT(onError(QNetworkReply::NetworkError)));
     connect(reply, SIGNAL(downloadProgress(qint64,qint64)),
             this, SLOT(onDownloadProgress(qint64,qint64)));
-    emit stateChanged(m_resourceName, "Downloading file");
+    emit stateChanged(m_resourceName, tr("Downloading file"));
     startTimer(timerInterval);
 }
 
@@ -252,7 +252,7 @@ void Downloader::onJobjolFinished() {
     m_out.seek(0);
     m_out.write(data);
     m_out.close();
-    emit stateChanged(m_resourceName, "Finished");
+    emit stateChanged(m_resourceName, tr("Finished"));
     emit finished(m_resourceName, true);
 }
 
@@ -329,7 +329,7 @@ void Downloader::timerEvent(QTimerEvent* /*e*/) {
 
 void Downloader::onError(QNetworkReply::NetworkError /*code*/) {
 	QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-	qCritical() << "Failed to fetch " << reply->url().toString() << ". Error: " << reply->errorString();
-        emit stateChanged(m_resourceName, "Error: " + reply->errorString());
+	qCritical() << tr("Failed to fetch %1. Error: %2").arg(reply->url().toString()).arg(reply->errorString());
+        emit stateChanged(m_resourceName, tr("Error: ") + reply->errorString());
         emit finished(m_resourceName, false);
 }

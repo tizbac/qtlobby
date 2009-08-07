@@ -35,10 +35,10 @@ void ChannelTextBrowser::onCustomContextMenuRequested(QPoint point) {
     QAction* jl_all = NULL;
     if(m_menuEnabled) {
         contextMenu->addSeparator();
-        jl_this = contextMenu->addAction("Enable join/leave messages for this channel");
+        jl_this = contextMenu->addAction(tr("Enable join/leave messages for this channel"));
         jl_this->setCheckable(true);
         jl_this->setChecked(m_enableJoinLeave);
-        jl_all = contextMenu->addAction("Enable join/leave messages by default");
+        jl_all = contextMenu->addAction(tr("Enable join/leave messages by default"));
         jl_all->setCheckable(true);
         jl_all->setChecked(m_enableJoinLeaveDefault);
     }

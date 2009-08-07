@@ -75,21 +75,21 @@ QVariant DownloadsModel::data(const QModelIndex & index, int role) const {
         } else if(index.column() == 3) {
             int downloaded = m_downloads[index.row()]->downloaded;
             if(downloaded > Gb)
-                return QString::number((float)downloaded/Gb,'f',2) + " GiB";
+                return tr("%1 GiB").arg(QString::number((float)downloaded/Gb,'f',2));
             if(downloaded > Mb)
-                return QString::number((float)downloaded/Mb,'f',2) + " MiB";
+                return tr("%1 MiB").arg(QString::number((float)downloaded/Mb,'f',2));
             if(downloaded > Kb)
-                return QString::number((float)downloaded/Kb,'f',2) + " KiB";
+                return tr("%1 KiB").arg(QString::number((float)downloaded/Kb,'f',2));
             return QString::number(downloaded) + " B";
         } else if(index.column() == 4) {
             int speed = m_downloads[index.row()]->speed;
             if(speed > Gb)
-                return QString::number((float)speed/Gb,'f',2) + " GiB/s";
+                return tr("%1 GiB/s").arg(QString::number((float)speed/Gb,'f',2));
             if(speed > Mb)
-                return QString::number((float)speed/Mb,'f',2) + " MiB/s";
+                return tr("%1 MiB/s").arg(QString::number((float)speed/Mb,'f',2));
             if(speed > Kb)
-                return QString::number((float)speed/Kb,'f',2) + " KiB/s";
-            return  QString::number(speed) + " B/s";
+                return tr("%1 KiB/s").arg(QString::number((float)speed/Kb,'f',2));
+            return tr("%1 B/s").arg(QString::number(speed));
         } else if(index.column() == 5) {
             int eta = m_downloads[index.row()]->eta;
             QTime t(0,0,0);
@@ -103,17 +103,17 @@ QVariant DownloadsModel::data(const QModelIndex & index, int role) const {
 QVariant DownloadsModel::headerData ( int section, Qt::Orientation /*rientation*/, int role) const {
     if(role == Qt::DisplayRole) {
         if(section == 0) {
-            return "Title";
+            return tr("Title");
         } else if(section == 1) {
-            return "State";
+            return tr("State");
         } else if(section == 2) {
-            return "Progress";
+            return tr("Progress");
         } else if(section == 3) {
-            return "Downloaded";
+            return tr("Downloaded");
         } else if(section == 4) {
-            return "Speed";
+            return tr("Speed");
         } else if(section == 5) {
-            return "ETA";
+            return tr("ETA");
         }
     }
     return QVariant();

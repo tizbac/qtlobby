@@ -141,7 +141,7 @@ void ServerContextState::connectionStateChanged( State state ) {
 
 void ServerContextState::ping() {
     if ( !keepaliveping ) {
-        qDebug() << "no more sending of keepaliveping";
+//        qDebug() << "no more sending of keepaliveping";
         return;
     }
     sendMessage( "PING 1" );

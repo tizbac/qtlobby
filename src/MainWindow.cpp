@@ -466,12 +466,12 @@ void MainWindow::showEvent(QShowEvent * /*event*/) {
 
 
 void MainWindow::onStatsChange(int users, int moderators) {
-    usersOnline->setText("Users online: " + QString::number(users));
-    moderatorsOnline->setText("Moderators online: " + QString::number(moderators));
+    usersOnline->setText(tr("Users online: %1").arg(QString::number(users)));
+    moderatorsOnline->setText(tr("Moderators online: %1").arg(QString::number(moderators)));
 }
 
 void MainWindow::onStatsChange(int battles) {
-    battlesOnline->setText("Battles: " + QString::number(battles));
+    battlesOnline->setText(tr("Battles: %1").arg(QString::number(battles)));
 }
 
 void MainWindow::on_actionScripting_triggered() {
@@ -483,23 +483,23 @@ void MainWindow::on_actionScripting_triggered() {
 void MainWindow::connectionStatusChanged(ConnectionState state) {
     switch ( state ) {
     case DISCONNECTED:
-        statusBar()->showMessage("Disconnected");
+        statusBar()->showMessage(tr("Disconnected"));
         users->wipeModels();
         battles->wipeModels();
         hostPushButton->setEnabled(false);
         break;
     case CONNECTING:
-        statusBar()->showMessage("Connecting...", 20000);
+        statusBar()->showMessage(tr("Connecting..."), 20000);
         break;
     case CONNECTED:
-        statusBar()->showMessage("Connected", 20000);
+        statusBar()->showMessage(tr("Connected"), 20000);
         hostPushButton->setEnabled(true);
         break;
     case AUTHENTICATING:
-        statusBar()->showMessage("Authenticating...", 20000);
+        statusBar()->showMessage(tr("Authenticating..."), 20000);
         break;
     case AUTHENTICATED:
-        statusBar()->showMessage("Authenticated");
+        statusBar()->showMessage(tr("Authenticated"));
         break;
     }
 }
@@ -528,8 +528,8 @@ void MainWindow::onBlockInput(bool b) {
 void MainWindow::onJoinRequested() {
     bool ok;
     QString channel = QInputDialog::getText(this,
-                                            "Join channel",
-                                            "Specify a channel you want to join",
+                                            tr("Join channel"),
+                                            tr("Specify a channel you want to join"),
                                             QLineEdit::Normal,
                                             "",
                                             &ok);

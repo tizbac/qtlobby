@@ -16,7 +16,7 @@ void ProgressBarItemDelegate::paint(QPainter * painter, const QStyleOptionViewIt
         progressBarOption.minimum = 0;
         progressBarOption.maximum = 1;
         progressBarOption.progress = 0;
-        progressBarOption.text = "File size unknown";
+        progressBarOption.text = tr("File size unknown");
     } else {
         progressBarOption.minimum = 0;
         progressBarOption.maximum = 100;

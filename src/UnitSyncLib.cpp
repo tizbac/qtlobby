@@ -14,7 +14,6 @@ QMutex unitsync_mutex;
 #define MANUAL_LOCK unitsync_mutex.lock();
 #define MANUAL_UNLOCK unitsync_mutex.unlock();
 
-
 UnitSyncLib::UnitSyncLib( QObject *parent ) : QObject( parent ) {
     unitsynclib = new QLibrary( this );
     settings = Settings::Instance();
@@ -26,7 +25,7 @@ UnitSyncLib::UnitSyncLib( QObject *parent ) : QObject( parent ) {
             TestCall();
             //     QMessageBox::information( NULL, "unitSyncLib", "library loaded");
         } else {
-            qDebug() << "library is not usable!";
+            qDebug() << tr("UnitSyncLibrary is not usable!");
         }
     }
 
@@ -60,8 +59,8 @@ bool UnitSyncLib::loadLibrary() {
     //       .arg(fi.absolutePath()));
 
     if (!QFile::exists(lib_with_path)) {
-        QMessageBox::information( NULL, "unitSyncLib - library not found",
-                                  "Unitsync library was not found or is unusable.");
+        QMessageBox::information( NULL, tr("unitSyncLib - library not found"),
+                                  tr("Unitsync library was not found or is unusable."));
         return false;
     }
     unitsynclib->setFileName( lib_with_path );
@@ -69,7 +68,7 @@ bool UnitSyncLib::loadLibrary() {
     unitsynclib->load();
 
     if ( !unitsynclib->isLoaded() ) {
-        QMessageBox::information( NULL, "unitSyncLib - library not loaded",
+        QMessageBox::information( NULL, tr("unitSyncLib - library not loaded"),
                                   QString( "%1 -- %2" )
                                   .arg( unitsynclib->errorString() )
                                   .arg( lib_with_path ) );
@@ -185,25 +184,19 @@ void UnitSyncLib::TestCall() {
     NON_REENTRANT;
     if ( !library_loaded )
         return;
-
-    //   qDebug() << mapChecksum("Victoria Crater.smf");
-    //   qDebug() << modChecksum("BA61.sd7");
-    qDebug() << "Unitsync was compiled against Spring version: " << m_GetSpringVersion();
+    qDebug() << tr("UnitSyncLib was compiled against Spring version: ") << m_GetSpringVersion();
     int mapcount = m_GetMapCount();
-    qDebug() << "Found " << mapcount << " maps";
-    for ( int i = 0; i < mapcount; ++i ) {
-        unsigned int checksum = m_GetMapChecksum( i );
-        QString mapName = m_GetMapName( i );
-        qDebug() << "  " <<  i << " mapName: " << mapName << ", checksum: " << checksum;
-    }
     int modcount = m_GetPrimaryModCount();
-    qDebug() << "Found " << modcount << " mods";
-    for ( int i = 0; i < modcount; ++i ) {
-        qDebug() << "  " << i << " modName " << m_GetPrimaryModName( i ) << m_GetPrimaryModChecksum( i );
-        qDebug() << "        based on: " << m_GetPrimaryModArchive( i );
-    }
-
-    //   example to get the checksum of a mod by name
+    qDebug() << tr("Found %1 maps and %2 mods.").arg(mapcount).arg(modcount);
+//    for ( int i = 0; i < mapcount; ++i ) {
+//        unsigned int checksum = m_GetMapChecksum( i );
+//        QString mapName = m_GetMapName( i );
+//        qDebug() << "  " <<  i << " mapName: " << mapName << ", checksum: " << checksum;
+//    }
+//    for ( int i = 0; i < modcount; ++i ) {
+//        qDebug() << "  " << i << " modName " << m_GetPrimaryModName( i ) << m_GetPrimaryModChecksum( i );
+//        qDebug() << "        based on: " << m_GetPrimaryModArchive( i );
+//    }
 }
 
 QImage UnitSyncLib::getMinimapQImage( const QString mapFileName, int miplevel, bool scaled ) {
@@ -395,7 +388,7 @@ QString UnitSyncLib::sideName( int index ) {
 
 bool UnitSyncLib::libraryLoaded() {
     if ( !library_loaded ) {
-        qDebug() << "Your library is not loaded, you can't use it!";
+        qDebug() << tr("Your library is not loaded, you can't use it!");
         return false;
     }
     return true;

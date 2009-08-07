@@ -238,8 +238,8 @@ void BattleChannel::receiveCommand( Command command ) {
         QString userName = command.attributes.takeFirst();
         emit playSample( RingSample );
         //emit newTrayMessage( QString("RING!? Where are you!? Get up! %1!").arg(userName) );
-        QString title = QString("Ring!");
-        QString message = QString("%1 wants attention!").arg(userName);
+        QString title = QString(tr("Ring!"));
+        QString message = QString(tr("%1 wants attention!")).arg(userName);
         notify->showMessage(title, message);
     } else if ( command.name == "SAIDBATTLEEX" ) {
         QString userName = command.attributes.takeFirst();
@@ -248,8 +248,8 @@ void BattleChannel::receiveCommand( Command command ) {
                     .arg( userName )
                     .arg( processInput(command.attributes.join( " " ), false)));
     } else if ( command.name == "FORCEQUITBATTLE" ) {
-        QMessageBox::critical(NULL, "Kicked from battle", "You have been kicked from the battle, poor you!");
-        insertLine("You have been kicked from the battle!\n");
+        QMessageBox::critical(NULL, tr("Kicked from battle"), tr("You have been kicked from the battle!"));
+        insertLine(tr("You have been kicked from the battle!\n"));
         battleWindowForm_ui->setEnabled(false);
         wasKicked = true;
     } else if ( command.name == "JOINEDBATTLE" ) {
@@ -379,10 +379,10 @@ void BattleChannel::onSpecCheckBoxChanged(int state) {
 void BattleChannel::fillModOptions() {
     UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
     if (!unitSyncLib->setCurrentMod(m_battle.modName)) {
-        battleWindowForm->modOptions->setHtml("<font size=\"16\" color=\"red\">Please, download " + m_battle.modName+"</font>");
+        battleWindowForm->modOptions->setHtml(QString("<font size=\"16\" color=\"red\">") + tr("Please, download %1").arg(m_battle.modName) + "</font>");
         if(QMessageBox::information(0,
-                                    "Missing content",
-                                    "You don't have the mod or you have broken version.\nDo you want to download it?",
+                                    tr("Missing content"),
+                                    tr("You don't have the mod or you have broken version.\nDo you want to download it?"),
                                     QMessageBox::Yes,
                                     QMessageBox::No) == QMessageBox::Yes) {
             DownloadsModel::getInstance()->startModDownload(m_battle.modName);
@@ -411,6 +411,7 @@ void BattleChannel::fillModOptions() {
         buffer.append("</td>");
         buffer.append("<td>");
         bool nondefault = m_battle.options.contains(unitSyncLib->getOptionKey(i));
+        QString bold = "<b>%1</b>", colored = "<font color=\"%1\">%2</font>";
         switch (unitSyncLib->getOptionType(i)) {
         case OT_UNDEFINED:
             buffer.append("Undefined");
@@ -418,9 +419,9 @@ void BattleChannel::fillModOptions() {
         case OT_BOOLEAN:
             nondefault = nondefault && m_battle.options[unitSyncLib->getOptionKey(i)].toFloat() != unitSyncLib->getOptionBoolDef(i);
             if (nondefault)
-                buffer.append(m_battle.options[unitSyncLib->getOptionKey(i)].toFloat() ? "<b><font color=\"green\">Yes</font><b>" : "<b><font color=\"red\">No</font><b>" );
+                buffer.append(m_battle.options[unitSyncLib->getOptionKey(i)].toFloat() ? bold.arg(colored.arg("green").arg(tr("Yes"))) : bold.arg(colored.arg("red").arg(tr("No"))) );
             else
-                buffer.append(unitSyncLib->getOptionBoolDef(i) ? "<font color=\"green\">Yes</font>" : "<font color=\"red\">No</font>" );
+                buffer.append(unitSyncLib->getOptionBoolDef(i) ? colored.arg("green").arg(tr("Yes")) : colored.arg("red").arg(tr("No")) );
             break;
         case OT_LIST:
             nondefault = nondefault && m_battle.options[unitSyncLib->getOptionKey(i)].toString() != unitSyncLib->getOptionListDef(i);
@@ -467,9 +468,10 @@ void BattleChannel::requestMapInfo( QString mapName ) {
         connect(loader, SIGNAL(loadCompleted(QString)), SLOT(updateMapInfo(QString)));
     }
     loader->setMap(mapName);
-    battleWindowForm->minimapWidget->setErrorMessage("Loading " + mapName + "...");
-    battleWindowForm->heightmapWidget->setErrorMessage("Loading " + mapName + "...");
-    battleWindowForm->metalmapWidget->setErrorMessage("Loading " + mapName + "...");
+    QString lodingMapError = tr("Loading %1...").arg(mapName);
+    battleWindowForm->minimapWidget->setErrorMessage(lodingMapError);
+    battleWindowForm->heightmapWidget->setErrorMessage(lodingMapError);
+    battleWindowForm->metalmapWidget->setErrorMessage(lodingMapError);
     loader->start();
 }
 
@@ -477,12 +479,13 @@ void BattleChannel::updateMapInfo( QString mapName ) {
     if (noMapUpdates) return;
     battleWindowForm->nameLabel->setText(mapName);
     if (!loader->mapPresent) {
-        battleWindowForm->minimapWidget->setErrorMessage("Map " + mapName + " not found");
-        battleWindowForm->heightmapWidget->setErrorMessage("Map " + mapName + " not found");
-        battleWindowForm->metalmapWidget->setErrorMessage("Map " + mapName + " not found");
+        QString mapNotFoundError = tr("Map % not found").arg(mapName);
+        battleWindowForm->minimapWidget->setErrorMessage(mapNotFoundError);
+        battleWindowForm->heightmapWidget->setErrorMessage(mapNotFoundError);
+        battleWindowForm->metalmapWidget->setErrorMessage(mapNotFoundError);
         if(QMessageBox::information(0,
-                                    "Missing content",
-                                    "You don't have the map or you have broken version.\nDo you want to download it?",
+                                    tr("Missing content"),
+                                    tr("You don't have the map or you have broken version.\nDo you want to download it?"),
                                     QMessageBox::Yes,
                                     QMessageBox::No) == QMessageBox::Yes) {
             DownloadsModel::getInstance()->startMapDownload(mapName);
@@ -521,7 +524,7 @@ void BattleChannel::onBattleSplitterMoved ( int /*pos*/, int /*index*/ ) {
 }
 
 void BattleChannel::onColorClicked() {
-    QColor newColor = QColorDialog::getColor (currentcolor, 0, "Select color for group");
+    QColor newColor = QColorDialog::getColor (currentcolor, 0, tr("Select color for group"));
     if (!newColor.isValid()) return;
     currentcolor = newColor;
     QPixmap color(16,16);
@@ -640,9 +643,8 @@ void BattleChannel::onModOptionsAnchorClicked(QUrl url) {
         break;
     case OT_LIST:
         item = QInputDialog::getItem(NULL,
-                                     "Select value",
-                                     "Select value for " +
-                                     unitSyncLib->getOptionName(i),
+                                     tr("Select value"),
+                                     tr("Select value for %1").arg(unitSyncLib->getOptionName(i)),
                                      unitSyncLib->getOptionListItems(i),
                                      unitSyncLib->getOptionListItems(i).indexOf(m_battle.options[key].toString()),
                                      true,
@@ -656,9 +658,8 @@ void BattleChannel::onModOptionsAnchorClicked(QUrl url) {
         step = unitSyncLib->getOptionNumberStep(i);
         if(step == (int)step) {
             val = QInputDialog::getInt(NULL,
-                                       "Select value",
-                                       "Select value for " +
-                                       unitSyncLib->getOptionName(i),
+                                       tr("Select value"),
+                                       tr("Select value for %1").arg(unitSyncLib->getOptionName(i)),
                                        m_battle.options[key].toFloat(),
                                        min,
                                        max,
@@ -667,9 +668,8 @@ void BattleChannel::onModOptionsAnchorClicked(QUrl url) {
         } else {
             int decimals = qMax( 1, (int) ceil(-log10(fabs(step)))); // log10(0.01)=-2
             val = QInputDialog::getDouble(NULL,
-                                          "Select value",
-                                          "Select value for " +
-                                          unitSyncLib->getOptionName(i),
+                                          tr("Select value"),
+                                          tr("Select value for %1").arg(unitSyncLib->getOptionName(i)),
                                           m_battle.options[key].toFloat(),
                                           min,
                                           max,
@@ -683,9 +683,8 @@ void BattleChannel::onModOptionsAnchorClicked(QUrl url) {
         length = unitSyncLib->getOptionStringMaxLen(i);
         do {
             item = QInputDialog::getText(NULL,
-                                         "Select value",
-                                         "Select value for " +
-                                         unitSyncLib->getOptionName(i),
+                                         tr("Select value"),
+                                         tr("Select value for %1").arg(unitSyncLib->getOptionName(i)),
                                          QLineEdit::Normal,
                                          m_battle.options[key].toString()
                                          );

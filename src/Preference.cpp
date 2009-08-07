@@ -71,8 +71,8 @@ void UserPreference::setUpPathForm() {
 }
 
 void UserPreference::languageChanged(QString language) {
-    //language switch does not work yet
-    //need to update the languageComboBox state for current locale in constructor
+    //FIXME language switch does not work yet
+    //need to update the languageComboBox state for current locale in constructor (mw)
     QString locale;
     QTranslator translator;
     translator.load(QString(":/i18n/qtlobby_de"));
@@ -98,7 +98,7 @@ QVector<QStringList> UserPreference::getPathElements() {
     QStringList el;
     el << "spring_executable_with_abs_path_to_it"
             << "/usr/local/bin/spring"
-            << "To execute spring we need the path to the spring binary."
+            << tr("To execute spring we need the path to the spring binary.")
 #ifdef Q_WS_WIN
             <<
             pfiles+"/Spring/Spring.exe;" +
@@ -116,7 +116,7 @@ QVector<QStringList> UserPreference::getPathElements() {
     el.clear();
     el << "spring_system_dir" // important that "dir" is at the and of the name!
             << "/usr/local/share/games/spring/"
-            << "This folder usually contains the most spring data as for example the directories: AI/, base/, fonts/ and startscripts/."
+            << tr("This folder usually contains the most spring data as for example the directories: AI/, base/, fonts/ and startscripts/.")
 #ifdef Q_WS_WIN
             <<
             pfiles+"/Spring/;" +
@@ -139,7 +139,7 @@ QVector<QStringList> UserPreference::getPathElements() {
     el.clear();
     el <<  "unitsync"
             << "/usr/local/lib/libunitsync.so"
-            << "This library will provide Qtlobby access to maps/mods which spring uses as well."
+            << tr("This library will provide Qtlobby access to maps/mods which spring uses as well.")
 #ifdef Q_WS_WIN
             <<
             pfiles+"/Spring/unitsync.dll;" +
@@ -165,7 +165,7 @@ QVector<QStringList> UserPreference::getPathElements() {
     el.clear();
     el << "spring_user_dir" // important that "dir" is at the and of the name!
             << QString( "%1/.spring/" ).arg( QDir::homePath() )
-            << "On multiuser systems this path is used to store maps, mods and configurations which are user specific since most normal users won't have write-access to the global spring directory."
+            << tr("On multiuser systems this path is used to store maps, mods and configurations which are user specific since most normal users won't have write-access to the global spring directory.")
 #ifdef Q_WS_WIN
             <<
             pfiles+"/Spring/;" +
@@ -180,7 +180,7 @@ QVector<QStringList> UserPreference::getPathElements() {
     el.clear();
     el <<  "springsettings+"
             << "/usr/bin/springsettings"
-            << "Springsettings is a detailed and advanced configuration program. This binary is not in the qtlobby distribution yet so you might have to download it at springlobby.info"
+            << tr("Springsettings is a detailed and advanced configuration program. This binary is not in the qtlobby distribution yet so you might have to download it at springlobby.info")
 #ifdef Q_WS_WIN
             <<
             pfiles+"/Spring/springsettings.exe;" +

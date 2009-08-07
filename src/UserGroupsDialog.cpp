@@ -40,10 +40,10 @@ void UserGroupsDialog::onNewClicked() {
     }
     UserGroup* g = new UserGroup();
     int n = 1;
-    while (groups->findGroup("New group"+QString::number(n))) n++;
-    g->name = "New group"+QString::number(n);
-    g->description = "New Descriptioin";
-    g->members << "Player1" << "Player2";
+    while (groups->findGroup(tr("New group")+QString::number(n))) n++;
+    g->name = tr("New group")+QString::number(n);
+    g->description = tr("New Descriptioin");
+    g->members << tr("Player1") << tr("Player2");
     groups->append(g);
     m_ui->groupsListWidget->clear();
     m_ui->groupsListWidget->addItems(groups->getGroupNames());
@@ -79,7 +79,7 @@ void UserGroupsDialog::onSaveClicked() {
 }
 
 void UserGroupsDialog::onColorClicked() {
-    QColor newColor = QColorDialog::getColor (currentcolor, this, "Select color for group");
+    QColor newColor = QColorDialog::getColor (currentcolor, this, tr("Select color for group"));
     UserGroup* g = UserGroupList::getInstance()->findGroup(currentName);
     g->color = newColor;
     currentcolor = newColor;

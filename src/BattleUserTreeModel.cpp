@@ -60,17 +60,17 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
                         if (role == Qt::DecorationRole)
                             return QIcon( QString( ":/icons/ready_q.xpm" ));
                         else
-                            return "Ready, sync status unknown";
+                            return tr("Ready, sync status unknown");
                     case 1:
                         if (role == Qt::DecorationRole)
                             return QIcon( QString( ":/icons/open_game.xpm" ));
                         else
-                            return "Ready";
+                            return tr("Ready");
                     case 2:
                         if (role == Qt::DecorationRole)
                             return QIcon( QString( ":/icons/ready_unsync.xpm" ));
                         else
-                            return "Ready, unsynced";
+                            return tr("Ready, unsynced");
                     }
                 } else {
                     switch (u.battleState.syncState()) {
@@ -78,17 +78,17 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
                         if (role == Qt::DecorationRole)
                             return QIcon( QString( ":/icons/nready_q.xpm" ));
                         else
-                            return "Not ready, sync status unknown";
+                            return tr("Not ready, sync status unknown");
                     case 1:
                         if (role == Qt::DecorationRole)
                             return QIcon( QString( ":/icons/closed_game.xpm" ));
                         else
-                            return "Not ready";
+                            return tr("Not ready");
                     case 2:
                         if (role == Qt::DecorationRole)
                             return QIcon( QString( ":/icons/nready_unsync.xpm" ));
                         else
-                            return "Not ready, unsynced";
+                            return tr("Not ready, unsynced");
                     }
                 }
 
@@ -96,7 +96,7 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
                 if (role == Qt::DecorationRole)
                     return QIcon( QString( ":/icons/spectator.xpm" ));
                 else
-                    return "Spectating";
+                    return tr("Spectating");
             }
         }
         break;
@@ -162,12 +162,12 @@ QVariant BattleUserTreeModel::headerData( int col, Qt::Orientation o, int role )
     if (col <= 3) return UserTreeModel::headerData(col, o, role);
     QString ret;
     switch ( col ) {
-        case 4: ret = "State"; break;
-        case 5: ret = "Faction"; break;
-        case 6: ret = "Team Number"; break;
-        case 7: ret = "Ally Team Number"; break;
-        case 8: ret = "Color"; break;
-        case 9: ret = "Handicap"; break;
+        case 4: ret = tr("State"); break;
+        case 5: ret = tr("Faction"); break;
+        case 6: ret = tr("Team Number"); break;
+        case 7: ret = tr("Ally Team Number"); break;
+        case 8: ret = tr("Color"); break;
+        case 9: ret = tr("Handicap"); break;
         default: break;
     }
     if ( role == Qt::ToolTipRole ) {

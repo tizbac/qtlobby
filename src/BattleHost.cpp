@@ -39,14 +39,14 @@ void BattleHost::run() {
     UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
     int maphash = unitSyncLib->mapChecksum(m_map);
     if(!maphash) {
-        emit errorMessage("Map not found");
-        qDebug() << "Map not found";
+        emit errorMessage(tr("Map not found"));
+        qDebug() << tr("Map not found");
         return;
     }
     int modhash = unitSyncLib->modChecksum(m_mod);
     if(!modhash) {
-        emit errorMessage("Mod not found");
-        qDebug() << "Mod not found";
+        emit errorMessage(tr("Mod not found"));
+        qDebug() << tr("Mod not found");
         return;
     }
     Command c(openBattle
@@ -90,7 +90,7 @@ void BattleHost::receiveCommand( Command command ) {
         broadcastScriptTags();
     } else if ( command.name == "OPENBATTLEFAILED" ) {
         QString reason = command.attributes[0];
-        emit errorMessage("Battle hosting failed: " + reason);
+        emit errorMessage(tr("Battle hosting failed: ") + reason);
         quit();
     } else if ( command.name == "JOINEDBATTLE" ) {
         int id = command.attributes[0].toInt();
@@ -114,7 +114,7 @@ void BattleHost::receiveCommand( Command command ) {
         }
     } else if ( command.name == "OPENBATTLEFAILED" ) {
         QString reason = command.attributes[0];
-        emit errorMessage("Battle hosting failed: " + reason);
+        emit errorMessage(tr("Battle hosting failed: ") + reason);
         quit();
     } else if ( command.name == "SAIDPRIVATE" || command.name == "SAIDBATTLE" ) {
         QString user = command.attributes[0];
@@ -148,8 +148,8 @@ void BattleHost::setMap(QString mapname) {
     UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
     m_hash = unitSyncLib->mapChecksum(m_map);
     if(!m_hash) {
-        emit errorMessage("Map not found");
-        qDebug() << "Map not found";
+        emit errorMessage(tr("Map not found"));
+        qDebug() << tr("Map not found");
         return;
     }
     m_map = mapname;
@@ -226,7 +226,7 @@ void BattleHost::broadCastMyUserStatus(User* u) {
 void BattleHost::fillScriptTags() {
     UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
     if (!unitSyncLib->setCurrentMod(m_mod)) {
-        qDebug() << "Failed to load " << m_mod;
+        qDebug() << tr("Failed to load ") << m_mod;
         return;
     }
     //Mod options
