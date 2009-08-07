@@ -505,8 +505,9 @@ void MainWindow::connectionStatusChanged(ConnectionState state) {
 
 void MainWindow::onCurrentTabChanged() {
     usersInCurrentChannel->setText(
-            "Users: " + QString::number(users->usersCountInCurrentChannel())
-            );
+            tr("Users: %1")
+            .arg(QString::number(users->usersCountInCurrentChannel()))
+            .append(users->playerSpecRatio()));
     //FIXME: wtf? (ko)
     //usersTeamCount->setText("blablabla");
 }

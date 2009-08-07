@@ -424,6 +424,26 @@ int Users::usersCountInCurrentChannel() {
     return model()->rowCount(QModelIndex());
 }
 
+QString Users::playerSpecRatio() {
+    if ( currentTabType == "BattleChannel" ) {
+        QMap<int,int> teamCounter;
+        foreach(User u, battleIdUserManagerMap[currentTabName.toInt()]->model()->userList()) {
+            int tn = u.battleState.isPlayer() ? 0 : u.battleState.getAllyTeamNo()+1;
+            if( teamCounter.contains(tn) )
+                teamCounter[tn]++;
+            else
+                teamCounter[tn] = 1;
+        }
+        QList<int> vals = teamCounter.values();
+        vals.push_back(vals.takeFirst()); // move specs to the end
+        QStringList ret;
+        foreach( int val, vals)
+            ret.append(QString::number(val));
+        return QString(" (%1)").arg(ret.join("/"));
+    }
+    return "";
+}
+
 // This slot is contained in AbstractStateClient, but we inherit already from QTreeView
 void Users::connectionStateChanged(ConnectionState state) {
     if( state == CONNECTED) {

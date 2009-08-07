@@ -59,6 +59,7 @@ public slots:
     void onTeamNumberChanged( int i );
     void onAllyTeamNumberChanged( int i );
     void invalidateModel();
+    QString playerSpecRatio();
     void connectionStateChanged(ConnectionState state);
     void onSpringStopped();
 protected slots:
