@@ -1,5 +1,6 @@
 include(${QT_USE_FILE})
 include_directories(${QTSCRIPTTOOLS_INCLUDE_DIR})
+include_directories(..)
 # source files
 set(qtlobby_SRCS
     #sources
@@ -171,3 +172,4 @@ target_link_libraries(qtlobby ${QT_LIBRARIES} ${QSCINTILLA_LIBRARIES} ${QTSCRIPT
 
 #install
 install(TARGETS qtlobby DESTINATION bin)
+
