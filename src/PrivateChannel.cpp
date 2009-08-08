@@ -14,20 +14,20 @@ void PrivateChannel::receiveCommand( Command command ) {
     command.name = command.name.toUpper();
     QString line = QString( "%1\n" );
     if ( command.name == "SAIDPRIVATE" ) {
-		if( !UserGroupList::getInstance()->getIgnore(command.attributes.first()) ) {
-			if ( command.attributes.takeFirst() == objectName() && command.attributes.join( " " ).trimmed() != "" ) {
-				insertLine( flag( objectName() ) + line
-					.arg( "&lt;%1&gt; %2" )
-					.arg( objectName() )
-					.arg( processInput(command.attributes.join( " " ))));
+        if( !UserGroupList::getInstance()->getIgnore(command.attributes.first()) ) {
+            if ( command.attributes.takeFirst() == objectName() && command.attributes.join( " " ).trimmed() != "" ) {
+                insertLine( flag( objectName() ) + line
+                    .arg( "&lt;%1&gt; %2" )
+                    .arg( objectName() )
+                    .arg( processInput(command.attributes.join( " " ))));
                                 if(isActive == false)
                                 {
                                     QString title = QString("PM from " + objectName());
                                     QString message = QString(processInput(command.attributes.join( " " )));
                                     notify->showMessage(title, message);
                                 }
-			}
-		}
+            }
+        }
     } else if ( command.name == "SAYPRIVATE" ) {
         if ( command.attributes.takeFirst() == objectName() && command.attributes.join( " " ).trimmed() != "" ) {
             insertLine( line.arg( "%1&lt;%2&gt; %3" )

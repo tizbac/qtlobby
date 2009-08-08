@@ -10,9 +10,8 @@
 #include "Command.h"
 
 /**
- This class delegates parsed commands to all potential receivers.
- @author Joachim Schiele <js@lastlog.de>
-*/
+ * This class delegates parsed commands to all potential receivers.
+ */
 class CommandAssigner : public QObject {
     Q_OBJECT
 public:

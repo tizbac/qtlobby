@@ -9,15 +9,13 @@
 #include <QTime>
 #include <QTimer>
 #include <QUrl>
+#include <QFile>
 
 #include "NetworkInterface.h"
 #include "AbstractStateClient.h"
 #include "Command.h"
 #include "AgreementWidget.h"
 
-/**
- @author Joachim Schiele <js@lastlog.de>
-*/
 class ServerContextState : public NetworkInterface {
     Q_OBJECT
 

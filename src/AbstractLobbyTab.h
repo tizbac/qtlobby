@@ -11,10 +11,8 @@
 #include "Battles.h"
 
 /**
-This is an abstract class, all lobby tab objects should derive from it
-
- @author Mirko Windhoff <qtlobby.reg@ncnever.de>
-*/
+ * This is an abstract class, all lobby tab objects should derive from it
+ */
 class AbstractLobbyTab : public QObject {
     Q_OBJECT
 public:

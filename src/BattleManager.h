@@ -13,7 +13,7 @@
 #include "Users.h"
 
 /**
- @author Joachim Schiele <js@lastlog.de>
+ * Stores and manages the Battles and the models for the battle list.
  */
 class BattleManager : public QObject {
     friend class Battles;

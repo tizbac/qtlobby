@@ -145,8 +145,8 @@ void LobbyTabs::receiveCommand( Command command ) {
             lobbyTabList.removeAt(index);
         }
     } else if ( command.name == "SAIDPRIVATE" ) {
-		if( !UserGroupList::getInstance()->getIgnore(command.attributes.first()) )
-	        privateChannelOpen( command.attributes.first(), false );
+        if( !UserGroupList::getInstance()->getIgnore(command.attributes.first()) )
+            privateChannelOpen( command.attributes.first(), false );
     } else if ( command.name == "SAYPRIVATE" ) {
         privateChannelOpen( command.attributes.first(), false );
     } else if ( command.name == "ADDUSER" ) {

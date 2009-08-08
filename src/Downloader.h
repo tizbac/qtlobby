@@ -34,7 +34,7 @@ private slots:
     void onJobjolSessionFinished();
     void onJobjolFinished();
     void onDownloadProgress(qint64 bytesReceived, qint64 bytesTotal);
-	void onError(QNetworkReply::NetworkError code);
+    void onError(QNetworkReply::NetworkError code);
 protected:
     void timerEvent(QTimerEvent* e);
 private:

@@ -6,15 +6,8 @@
 #include <QObject>
 
 /**
- @author Joachim Schiele <js@lastlog.de>
-*/
-
-/*
-** The main important class in the state hierarchy is the
-**
-**
-**
-*/
+ * The main important class in the state hierarchy.
+ */
 enum ConnectionState {
     DISCONNECTED,
     CONNECTING,
@@ -33,7 +26,6 @@ public:
 
 public slots:
     virtual void connectionStateChanged( ConnectionState ) = 0;
-
 };
 
 #endif

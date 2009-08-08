@@ -5,10 +5,8 @@
 #include "AbstractChannel.h"
 #include "Notification.h"
 /**
-a private chat channel
-
- @author Mirko Windhoff <qtlobby.reg@ncnever.de>
-*/
+ * A private chat channel
+ */
 class PrivateChannel : public AbstractChannel {
     Q_OBJECT
 public:

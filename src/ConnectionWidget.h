@@ -20,8 +20,8 @@
 #include "Settings.h"
 
 /**
- @author Joachim Schiele <js@lastlog.de>
-*/
+ * Handles connections to the Server. Manages the profiles.
+ */
 class ConnectionWidget : public QDialog, public Ui::ConnectionWidget {
   Q_OBJECT
 public:

@@ -4,10 +4,8 @@
 #define INFOCHANNEL_H
 #include "AbstractChannel.h"
 /**
-this channel displays the server messages and server commands
-
- @author Mirko Windhoff <qtlobby.reg@ncnever.de>
-*/
+ * This channel displays the server messages and server commands
+ */
 class InfoChannel : public AbstractChannel {
     Q_OBJECT
 public:

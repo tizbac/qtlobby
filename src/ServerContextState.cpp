@@ -165,7 +165,29 @@ void ServerContextState::authenticate() {
     QString user = url.userName();
 
     // FIXME the correct values have to be put in here later!
-    unsigned int cpu = 3200;
+    //
+    unsigned int cpu = 0;
+#ifdef Q_WS_WIN
+    cpu = Settings::Instance()->value("HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\CentralProcessor\0").toUint(), QSettings::NativeFormat);
+#else
+//    QFile file("/proc/cpuinfo");
+//    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+//        qDebug() << tr("Could not retreive CPU information.");
+//    QTextStream in(&file);
+//    QRegExp rx = QRegExp("^.*MHz\\s*([0-9]+)");
+//    while (!in.atEnd()) {
+//        QString line = in.readLine();
+//        qDebug() << line;
+//        if(line.contains(rx)) {
+//            rx.exactMatch(line);
+//            cpu = rx.capturedTexts().at(1).toInt();
+//            break;
+//        }
+//    }
+//    file.close();
+#endif
+    qDebug() << cpu;
+    cpu = 3200;
     QString lobbyclient = "qtlobby";
     QString version = QString( "0.0.%1-svn" ).arg( SVN_REV );
     QString loginstring = QString( "LOGIN %1 %2 %3 * %4 %5\n" )

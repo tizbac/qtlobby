@@ -11,14 +11,14 @@ UserTreeModel::UserTreeModel( QObject* parent ) : QAbstractItemModel( parent ) {
 UserTreeModel::~UserTreeModel() {}
 
 QVariant UserTreeModel::data( const QModelIndex& index, int role ) const {
-	if (role == Qt::FontRole) {
-		if(UserGroupList::getInstance()->getIgnore(m_userList[index.row()].name)) {
-			QFont font;
-			font.setStrikeOut(true);
-			return font;
-		}
+    if (role == Qt::FontRole) {
+        if(UserGroupList::getInstance()->getIgnore(m_userList[index.row()].name)) {
+            QFont font;
+            font.setStrikeOut(true);
+            return font;
+        }
         return QVariant();
-	}
+    }
     if (role == Qt::BackgroundRole) {
         QColor c = UserGroupList::getInstance()->getUserColor(m_userList[index.row()].name);
         if (c.isValid()) {
@@ -111,9 +111,6 @@ QVariant UserTreeModel::data( const QModelIndex& index, int role ) const {
 
 bool UserTreeModel::setData( const QModelIndex index, QVariant v, int /*role*/ ) {
     m_userList[index.row()] = v.value<User>();
-    // next line is needed to get stuff working but to test the model it's commented right now (js)
-    // FIXME in case the model is working and debugged and i have forgotten to uncomment the next line
-    // then please remove this comment and uncomment the next line (js)
     dataChanged( index, index );
     return true;
 }

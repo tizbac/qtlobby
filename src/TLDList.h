@@ -6,14 +6,13 @@
 #include <QString>
 #include <QStringList>
 /**
-        @author Joachim Schiele <js@lastlog.de>
-*/
-
+ * Contains all Top Level Domains for the countries.
+ */
 class TLDList {
 public:
     TLDList();
     ~TLDList();
-    static QMap<QString,QString>* TLDMap;
+    static QMap<QString, QString>* TLDMap;
 };
 
 #endif

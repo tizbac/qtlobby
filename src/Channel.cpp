@@ -30,22 +30,22 @@ void Channel::receiveCommand( Command command ) {
     if ( command.name == "SAID" ) {
         if ( command.attributes.takeFirst() == objectName() ) {//BROKEN
             QString userName = command.attributes.takeFirst();
-			if(!UserGroupList::getInstance()->getIgnore(userName)) {
-				insertLine( flag( userName ) + line
-					.arg( "&lt;%1&gt; %2" )
+            if(!UserGroupList::getInstance()->getIgnore(userName)) {
+                insertLine( flag( userName ) + line
+                    .arg( "&lt;%1&gt; %2" )
                                         .arg( userNameLink( userName ) )
-					.arg( processInput(command.attributes.join( " " ))));
-			}
+                    .arg( processInput(command.attributes.join( " " ))));
+            }
         }
     } else if ( command.name == "SAIDEX" ) {
         if ( command.attributes.takeFirst() == objectName() ) {
             QString userName = command.attributes.takeFirst();
-			if(!UserGroupList::getInstance()->getIgnore(userName)) {
-				insertLine( flag( userName ) + line
-					.arg( "<span style=\"color:magenta;\">* %1 %2</span>" )
+            if(!UserGroupList::getInstance()->getIgnore(userName)) {
+                insertLine( flag( userName ) + line
+                    .arg( "<span style=\"color:magenta;\">* %1 %2</span>" )
                                         .arg( userNameLink( userName ) )
                                         .arg( processInput(command.attributes.join( " " ), false)));
-			}
+            }
         }
     } else if ( command.name == "JOINED"  && showJoinLeave ) {
         if ( command.attributes.takeFirst() == objectName() ) {

@@ -14,10 +14,8 @@
 #include <QKeyEvent>
 
 /**
-the input line provides a message history, user name tab completion etc.
-
- @author Mirko Windhoff <qtlobby.reg@ncnever.de>
-*/
+ * The input line provides a message history, user name tab completion etc.
+ */
 class InputLine : public QLineEdit {
     Q_OBJECT
 public:

@@ -28,7 +28,7 @@ void AbstractChannel::setupUi( QWidget * channelTabWidget ) {
     gridLayout = new QGridLayout( channelTabWidget );
     gridLayout->setObjectName( QString::fromUtf8( "channelGridLayout" ) + objectName() );
     gridLayout->addWidget( channelTextBrowser, 1, 0, 1, 1 );
-//TODO move somewhere, where it works
+    //TODO uncomment after implementing anchorClicked slots
 //    connect(channelTextBrowser, SIGNAL(anchorClicked(QUrl)),
 //            this, SLOT(anchorClicked(QUrl)));
 }
@@ -126,12 +126,12 @@ void AbstractChannel::setCurrentUsername(QString user) {
 }
 
 /*
- 2  	\b  	Ctrl+B  Bold (toggle)
-15 	\o 	Ctrl+O 	Normal (turn off bold, italic, underline, fixed pitch, reverse, and colors)
-17 	\f 	Ctrl+F 	Fixed pitch (toggle)
-18 	\r 	Ctrl+R 	Reverse foreground/background (toggle)
-29 	\s 	Ctrl+N 	Italic (toggle)
-31 	\u 	Ctrl+U 	Underline (toggle)
+ 2  \b  Ctrl+B  Bold (toggle)
+15  \o  Ctrl+O  Normal (turn off bold, italic, underline, fixed pitch, reverse, and colors)
+17  \f  Ctrl+F  Fixed pitch (toggle)
+18  \r  Ctrl+R  Reverse foreground/background (toggle)
+29  \s  Ctrl+N  Italic (toggle)
+31  \u  Ctrl+U  Underline (toggle)
 */
 
 QString AbstractChannel::processIRCCodes(QString in) {

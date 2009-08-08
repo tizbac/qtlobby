@@ -13,7 +13,7 @@
 #include "Users.h"
 
 /**
- @author Joachim Schiele <js@lastlog.de>
+ * Model for the Battle Tree. Defines the columns and roles.
  */
 class BattleTreeModel : public QAbstractItemModel {
     Q_OBJECT

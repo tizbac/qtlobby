@@ -140,9 +140,7 @@ public:
 private:
     int m_state;
 };
-/**
-        @author Joachim Schiele <js@lastlog.de>
-*/
+
 class User { /*: public QObject*/
     // Q_OBJECT
 public:

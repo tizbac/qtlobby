@@ -35,10 +35,6 @@
 #define CONV
 #endif
 
-/**
- @author Joachim Schiele <js@lastlog.de>
-*/
-
 enum OptionType {
     OT_UNDEFINED  = 0,
     OT_BOOLEAN    = 1,
@@ -47,7 +43,6 @@ enum OptionType {
     OT_STRING     = 4,
     OT_SECTION    = 5
              };
-
 
 struct StartPos {
     int x;

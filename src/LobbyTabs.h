@@ -25,9 +25,6 @@
 
 class MainWindow;
 
-/**
-  @author Mirko Windhoff <qtlobby.reg@ncnever.de>
-*/
 class LobbyTabs : public AbstractStateClient {
     Q_OBJECT
 public:

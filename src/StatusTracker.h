@@ -7,8 +7,8 @@
 #include <QStatusBar>
 
 /**
- @author Joachim Schiele <js@lastlog.de>
-*/
+ * 
+ */
 class StatusTracker : public QObject {
     Q_OBJECT
 public:

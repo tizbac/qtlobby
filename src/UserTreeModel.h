@@ -11,8 +11,8 @@
 #include "TLDList.h"
 
 /**
- @author Joachim Schiele <js@lastlog.de>
-*/
+ * Model for the user list. Defines the columns and roles.
+ */
 class UserTreeModel : public QAbstractItemModel {
     Q_OBJECT
 public:

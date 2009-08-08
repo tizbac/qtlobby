@@ -14,7 +14,6 @@
 #include <QSet>
 #include "Settings.h"
 
-
 struct UserGroup {
     QString name;
     QString description;
@@ -39,17 +38,16 @@ public:
     void save();
     void load();
     bool containsUserName(QString name);
-	void toggleIgnore(QString name);
-	bool getIgnore(QString name);
+    void toggleIgnore(QString name);
+    bool getIgnore(QString name);
 private:
     QMap<QString, UserGroup*> groupsMap;
     QMap<QString, QColor> colorsMap;
-	QSet<QString> ignoreSet;
+    QSet<QString> ignoreSet;
     QList<UserGroup*> groups;
     QRegExp clanRegexp;
     UserGroupList();
     ~UserGroupList();
 };
-
 
 #endif // USERGROUP_H

@@ -23,9 +23,6 @@
 #include "Settings.h"
 #include "AbstractStateClient.h"
 
-/**
- @author Joachim Schiele <js@lastlog.de>
- */
 class Battles : public QTreeView {
     Q_OBJECT
 public:

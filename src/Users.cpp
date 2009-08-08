@@ -434,11 +434,11 @@ QString Users::teamPlayerSpecCount() {
                 teamCounter[tn] = 1;
         }
         QList<int> vals = teamCounter.values();
-        vals.push_back(vals.takeFirst()); // move specs to the end
+        int specs = vals.takeFirst();
         QStringList ret;
         foreach( int val, vals)
             ret.append(QString::number(val));
-        return QString(" (%1)").arg(ret.join("/"));
+        return QString(" (%1+%2)").arg(ret.join(":")).arg(QString::number(specs));
     }
     return "";
 }
@@ -468,4 +468,3 @@ void Users::onSpringStopped() {
     u.userState.setIngame(false);
     onMyStateChanged( u );
 }
-

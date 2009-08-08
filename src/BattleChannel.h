@@ -16,10 +16,8 @@
 #include "Notification.h"
 
 /**
-represents the battle tab with chat, map and options overview
-
- @author Mirko Windhoff <qtlobby.reg@ncnever.de>
-*/
+ * Represents the battle tab with chat, map and options overview.
+ */
 
 class BattleChannel : public AbstractChannel {
     Q_OBJECT

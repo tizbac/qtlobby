@@ -6,10 +6,8 @@
 #include "AbstractChannel.h"
 
 /**
-this channel displays the chat messages
-
- @author Mirko Windhoff <qtlobby.reg@ncnever.de>
-*/
+ * This channel displays the chat messages
+ */
 class Channel : public AbstractChannel {
     Q_OBJECT
 public:

@@ -6,7 +6,6 @@
 #include <QObject>
 #include <QDebug>
 #include <QSortFilterProxyModel>
-// #include <modeltest.h>
 #include <QItemSelectionModel>
 
 #include "UserTreeModel.h"
@@ -16,7 +15,8 @@
 #include "TreeSortFilterProxyModel.h"
 
 /**
- @author Joachim Schiele <js@lastlog.de>
+ * Manages the users for one Channel. 
+ * Can be initialized to use the BatlleUSerTreeModel, for BattleChannels.
 */
 class UserManager : public QObject {
     Q_OBJECT
