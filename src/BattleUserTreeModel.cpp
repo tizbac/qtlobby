@@ -18,8 +18,7 @@ int BattleUserTreeModel::columnCount( const QModelIndex& /*parent*/ ) const {
 QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
     if (role == Qt::BackgroundRole || role == Qt::UserRole) {
         return UserTreeModel::data(index, role);
-    }
-    if (role == Qt::UserRole+1) {
+    } else if (role == Qt::UserRole+1) {
         User u = m_userList[index.row()];
         switch ( index.column() ) {
         case 0: //status
@@ -34,7 +33,7 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
         case 5: //side
             return !u.battleState.isPlayer() ? QString("") : QString::number(u.battleState.getSide()).rightJustified(5,'0');
         case 6: //team
-			return !u.battleState.isPlayer() ? QString("") : QString::number(u.battleState.getTeamNo()).rightJustified(5,'0');
+            return !u.battleState.isPlayer() ? QString("") : QString::number(u.battleState.getTeamNo()).rightJustified(5,'0');
         case 7: //ally
             return !u.battleState.isPlayer() ? QString("") : QString::number(u.battleState.getAllyTeamNo()).rightJustified(5,'0');
         case 8: //color
@@ -43,6 +42,8 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
             return !u.battleState.isPlayer() ? QString("") : QString::number(u.battleState.getHandicap()).rightJustified(5,'0');
         }
         return QVariant();
+    } else if (role == Qt::UserRole+2) {
+        return m_userList[index.row()].battleState.isPlayer();
     }
     switch ( index.column() ) {
     case 0: //status
@@ -106,11 +107,11 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
 
             User u = m_userList[index.row()];
             QString sideName = unitSyncLib->sideName(u.battleState.getSide());
-			if (role == Qt::DecorationRole) {
-				if( !u.battleState.isPlayer() )
-					return QIcon();
+            if (role == Qt::DecorationRole) {
+                if( !u.battleState.isPlayer() )
+                    return QIcon();
                 return QIcon( unitSyncLib->getSideIcon(sideName));
-			}
+            }
             else
                 return sideName;
         }
@@ -118,16 +119,16 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
     case 6: //team
         if ( role == Qt::DisplayRole) {
             User u = m_userList[index.row()];
-			if( !u.battleState.isPlayer() )
-				return QString("");
+            if( !u.battleState.isPlayer() )
+                return QString("");
             return QString::number(u.battleState.getTeamNo()+1);
         }
         break;
     case 7: //ally
         if ( role == Qt::DisplayRole) {
             User u = m_userList[index.row()];
-			if( !u.battleState.isPlayer() )
-				return QString("");
+            if( !u.battleState.isPlayer() )
+                return QString("");
             return QString::number(u.battleState.getAllyTeamNo()+1);
         }
         break;
@@ -135,9 +136,9 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
         if ( role == Qt::DecorationRole) {
             User u = m_userList[index.row()];
             QPixmap p(16,16);
-			QColor col = u.m_color;
-			if( !u.battleState.isPlayer() )
-				col.setAlpha(0);
+            QColor col = u.m_color;
+            if( !u.battleState.isPlayer() )
+                col.setAlpha(0);
             p.fill(col);
             return p;
         }
@@ -149,8 +150,8 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
     case 9: //handicap
         if ( role == Qt::DisplayRole) {
             User u = m_userList[index.row()];
-			if( !u.battleState.isPlayer() )
-				return QString("");
+            if( !u.battleState.isPlayer() )
+                return QString("");
             return QString::number(u.battleState.getHandicap())+"%";
         }
         break;
@@ -177,4 +178,3 @@ QVariant BattleUserTreeModel::headerData( int col, Qt::Orientation o, int role )
     }
     return QVariant();
 }
-

@@ -32,6 +32,16 @@ void TreeSortFilterProxyModel::setBitState( unsigned int bit, bool state ) {
     invalidateFilter();
 }
 
+bool TreeSortFilterProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const {
+    if( sourceModel()->data(left,Qt::UserRole+2).isValid() ) {
+        if( sourceModel()->data(left,Qt::UserRole+2).toBool() && !sourceModel()->data(right,Qt::UserRole+2).toBool())
+            return true;
+        else if( !sourceModel()->data(left,Qt::UserRole+2).toBool() && sourceModel()->data(right,Qt::UserRole+2).toBool())
+            return false;
+    }
+    return QSortFilterProxyModel::lessThan(left, right);
+}
+
 bool TreeSortFilterProxyModel::filterAcceptsRow (int source_row, const QModelIndex & source_parent) const {
     unsigned int state = sourceModel()->data(sourceModel()->index(source_row, 0, source_parent), Qt::UserRole+2).value<unsigned int>();
     if ( state & m_filterState ) // some filter hits a filter state in bitmask

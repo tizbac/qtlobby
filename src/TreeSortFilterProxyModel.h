@@ -13,8 +13,6 @@
 
 /**
 Sets the sort roles for the rows before sorting.
-
-        @author Mirko Windhoff <qtlobby.reg@ncnever.de>
 */
 class TreeSortFilterProxyModel : public QSortFilterProxyModel {
 public:
@@ -28,6 +26,7 @@ public:
 
 protected:
     bool filterAcceptsRow (int source_row, const QModelIndex & source_parent) const;
+    bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 private:
     QString m_filterString;
     unsigned int m_filterState;
