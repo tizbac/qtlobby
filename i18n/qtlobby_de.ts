@@ -204,12 +204,12 @@ Möchtest du ihn runterladen?</translation>
     </message>
     <message>
         <source>Map %1 not found</source>
-        <translation>Karte % nicht gefunden</translation>
+        <translation>Karte %1 nicht gefunden</translation>
     </message>
     <message>
         <source>You don&apos;t have the map or you have a broken version.
 Do you want to download it?</source>
-        <translation>Entweder fehlt ddie Karte oder du hast eine fehlerhafte Version.
+        <translation>Entweder fehlt die Karte oder du hast eine fehlerhafte Version.
 Möchtest du sie runterladen?</translation>
     </message>
 </context>
