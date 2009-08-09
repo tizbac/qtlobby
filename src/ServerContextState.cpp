@@ -173,9 +173,7 @@ void ServerContextState::authenticate() {
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         qDebug() << tr("Could not retreive CPU information.");
     QTextStream in(&file);
-    QString line = in.readLine();
-    qDebug() << line;
-    cpu = line.toInt()/1000;
+    cpu = in.readLine().toInt()/1000;
     file.close();
 #endif
     QString lobbyclient = "qtlobby";

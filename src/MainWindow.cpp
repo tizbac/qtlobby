@@ -319,7 +319,7 @@ void MainWindow::showConnectionWidget( bool ) {
 
 void MainWindow::createTrayIcon() {
     trayIcon = new QSystemTrayIcon( this );
-    QIcon icon = QIcon( ":/icons/logo.xmp" );
+    QIcon icon = QIcon( ":/icons/logo.xpm" );
 
     trayIconMenu = new QMenu( this );
 
