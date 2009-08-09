@@ -306,12 +306,10 @@ void MainWindow::toggleShowHideMainWindow( QSystemTrayIcon::ActivationReason rea
 }
 
 void MainWindow::about() {
-    //FIXME this code is bad, and this can be made better (js)
-    // HINT in general prefere the "multiple inheritance approach" instead of this
-    //      but since this widget doesn't have any input it doesn't matter anyway
-    QDialog* a = new QDialog;
-    Ui::AboutWidget* about = new Ui::AboutWidget;
+    QDialog* a = new QDialog(this);
+    Ui::AboutWidget* about = new Ui::AboutWidget();
     about->setupUi( a );
+    about->label->setText(about->label->text().replace("#version#", SVN_REV));
     a->show();
 }
 
