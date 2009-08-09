@@ -13,9 +13,12 @@ Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
 
     settings = Settings::Instance();
 
+    // FIXME: the descending sort of column 7 does not work.
     setModel( battleManager->proxyModel() );
     setSortingEnabled( true );
-    sortByColumn( 0, Qt::AscendingOrder );
+    sortByColumn( 7, Qt::DescendingOrder );
+    battleManager->proxyModel()->invalidate();
+
     setColumnWidth( 0, 20 );
     setColumnWidth( 1, 20 );
     setColumnWidth( 2, 20 );

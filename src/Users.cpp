@@ -11,7 +11,7 @@ Users::Users( QWidget* parent ) : QTreeView( parent ) {
     infoChannelUserManager = new UserManager( this );
 
     setModel( infoChannelUserManager->proxyModel() );
-    sortByColumn( 3, Qt::AscendingOrder );
+    sortByColumn( 7, Qt::AscendingOrder );
 
     //   selectionModel = infoChannelUserManager->selectionModel();
     proxyModel = infoChannelUserManager->proxyModel();

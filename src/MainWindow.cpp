@@ -509,6 +509,10 @@ void MainWindow::onTeamPlayerSpecCountChanged(QString ratio) {
             tr("Users: %1")
             .arg(QString::number(users->usersCountInCurrentChannel()))
             .append(ratio));
+    if(ratio.isEmpty())
+        usersInCurrentChannel->setToolTip(tr("# Users"));
+    else
+        usersInCurrentChannel->setToolTip(tr("# Users (# 1st Ally: # 2nd Ally:... + # Specs)"));
 }
 
 void MainWindow::on_hostPushButton_clicked() {
