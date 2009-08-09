@@ -15,5 +15,4 @@ public:
     QVariant data( const QModelIndex& index, int role ) const;
     QVariant headerData( int col, Qt::Orientation o, int role ) const;
 };
-
 #endif

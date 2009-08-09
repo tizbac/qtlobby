@@ -121,7 +121,7 @@ QVector<QStringList> UserPreference::getPathElements() {
     el.clear();
     el << "spring_system_dir" // important that "dir" is at the and of the name!
             << "/usr/local/share/games/spring/"
-            << tr("This folder usually contains the most spring data as for example the directories: AI/, base/, fonts/ and startscripts/.")
+            << tr("This folder usually contains the most spring data for example the directories: AI/, base/, fonts/ and startscripts/.")
 #ifdef Q_WS_WIN
             <<
             pfiles+"/Spring/;" +
@@ -144,7 +144,7 @@ QVector<QStringList> UserPreference::getPathElements() {
     el.clear();
     el <<  "unitsync"
             << "/usr/local/lib/libunitsync.so"
-            << tr("This library will provide Qtlobby access to maps/mods which spring uses as well.")
+            << tr("This library is used to retreive information about maps and mods.")
 #ifdef Q_WS_WIN
             <<
             pfiles+"/Spring/unitsync.dll;" +
