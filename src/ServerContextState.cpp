@@ -2,6 +2,7 @@
 // QtLobby released under the GPLv3, see COPYING for details.
 
 #include "ServerContextState.h"
+#include "Settings.h"
 
 ServerContextState::ServerContextState( QObject * parent ) : NetworkInterface( parent ) {
     keepaliveping = false;
@@ -167,7 +168,8 @@ void ServerContextState::authenticate() {
     unsigned int cpu = 0;
 #ifdef Q_WS_WIN
     // FIXME windows untested, need testing feedback for this.
-    cpu = Settings::Instance()->value("HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\CentralProcessor\0").toUint(), QSettings::NativeFormat);
+	QSettings settings("HKEY_LOCAL_MACHINE\\HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", QSettings::NativeFormat);
+	cpu = settings.value("~MHz").toUInt();
 #else
     QFile file("/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
