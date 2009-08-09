@@ -92,11 +92,6 @@ bool AbstractChannel::executeChannelInput( QString input ) {
 }
 
 void AbstractChannel::insertLine( QString line ) {
-    // highlight currentUsername
-    QString pattern = currentUsername;
-    pattern.replace("[", "\\[").replace("]", "\\]");
-    pattern += "(?!&gt;)";
-    line.replace(QRegExp(pattern), "<font style=\" font-weight:600; color:#aa0000;\">"+currentUsername+"</font>");
     QString timeString = QString( "<span style=\"color:gray;\">%1</span> " ).arg( QTime().currentTime().toString( "[hh:mm:ss]" ) );
     bool scrollToMaximum = channelTextBrowser->verticalScrollBar()->value() == channelTextBrowser->verticalScrollBar()->maximum();
     QTextCursor c = channelTextBrowser->textCursor();
@@ -219,21 +214,14 @@ QString AbstractChannel::processIRCCodes(QString in) {
 }
 
 QString AbstractChannel::urlify(QString in) {
-    //   QRegExp urlPattern( "(http|ftp)s?://[^/?# ]+[^?# ]*(\?[^# ]*)?(#[^#? ]*)?" );
     QRegExp urlPattern( "(http|ftp)s?://[^\n<>\\[\\]\" ]+" );
-    QStringList ct;
+    QString replacePattern = "<a href=\"%1\">%1</a>";
+    unsigned addedSize = replacePattern.size() - 4;
     int pos = 0;
     while (( pos = urlPattern.indexIn( in, pos ) ) != -1 ) {
-        pos += urlPattern.matchedLength();
-        ct << urlPattern.cap( 0 );
+        in.replace(pos, urlPattern.matchedLength(), replacePattern.arg( urlPattern.cap(0) ) );
+        pos += urlPattern.matchedLength() + addedSize;
     }
-    int count = ct.count();
-    QString placeHolder = "__###PLACEHOLDER:%1###__";
-    QString linkTag = "<a href=\"%1\">%1</a>";
-    for ( int i = 0; i < count; ++i )
-        in.replace( ct[i], placeHolder.arg( i ) );
-    for ( int i = 0; i < count; ++i )
-        in.replace( placeHolder.arg( i ), linkTag.arg( ct[i] ) );
     return in;
 }
 
@@ -305,11 +293,23 @@ QString AbstractChannel::processBBCodes(QString in) {
 
 QString AbstractChannel::processInput(QString input, bool formatting) {
     input.replace( "<", "&lt;" ).replace( ">", "&gt;" );
+    input = highlightUserName( input );
     if(formatting) {
         input.replace("\n","[br]");
         return processBBCodes(processIRCCodes(input));
-    }
-    else return urlify(input);
+    } else
+        return urlify(input);
+}
+
+QString AbstractChannel::highlightUserName( QString input ) {
+    if( !Settings::Instance()->value("Chat/highlightUserName").toBool() )
+        return input;
+    // highlight currentUsername
+    QString pattern = currentUsername;
+    pattern.replace("[", "\\[").replace("]", "\\]");
+    pattern += "(?!&gt;)";
+    input.replace(QRegExp(pattern), "<font style=\" font-weight:600; color:#aa0000;\">"+currentUsername+"</font>");
+    return input;
 }
 
 QString AbstractChannel::userNameLink( const QString userName ) {

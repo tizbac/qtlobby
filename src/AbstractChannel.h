@@ -31,6 +31,7 @@ protected:
     QString makeHtml( QString in );
     QString processBBCodes(QString in);
     QString processInput(QString input, bool formatting = true);
+    QString highlightUserName( QString input );
     QString processIRCCodes(QString in);
     QString urlify(QString in);
     ChannelTextBrowser * channelTextBrowser;

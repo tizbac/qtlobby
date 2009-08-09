@@ -88,6 +88,16 @@
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QCheckBox" name="chatHighlightUserNameCheckBox">
+           <property name="text">
+            <string>Highlight my username in Chat messages</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
       </layout>
