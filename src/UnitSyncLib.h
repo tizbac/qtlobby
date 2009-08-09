@@ -15,6 +15,7 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QIcon>
+#include <QSet>
 
 #include "Settings.h"
 
@@ -72,6 +73,8 @@ class UnitSyncLib : public QObject, public Singleton<UnitSyncLib> {
     Q_OBJECT
     friend class Singleton<UnitSyncLib>;
 public:
+    QLibrary* unitsynclib;
+
     QImage getMinimapQImage( const QString, int miplevel = 0, bool scaled = true );
     QImage getHeightMapQImage( const QString mapFileName );
     RawHeightMap getHeightMapRaw( const QString mapFileName );
@@ -86,11 +89,10 @@ public:
     signed int modIndex( QString modName );
     QString modArchive( int modIndex );
     signed int mapIndex( QString mapName );
-    QLibrary* unitsynclib;
     bool setCurrentMod(QString modname);
     QString getSpringVersion();
-    QStringList getModNames();
-    QStringList getMapNames();
+    QSet<QString> getModNames();
+    QSet<QString> getMapNames();
     int getModOptionCount();
     OptionType getOptionType(int optIndex);
     QString getOptionName(int optIndex);
@@ -112,6 +114,8 @@ public:
     int getSideNameCount();
     QString sideName( int index );
     QIcon getSideIcon(QString sidename);
+    void initMapNamesCache();
+    void initModNamesCache();
 public slots:
     void reboot();
 
@@ -119,11 +123,14 @@ signals:
     void rebooted();
 
 private:
-    QMap<QString, QIcon> m_sideIconsCache;
-    QMap<int, QString> m_sideNamesCache;
+    QMap<QString, QIcon> m_sideIconsCache; //TODO refactor to QHash<String, QIcon>
+    QMap<int, QString> m_sideNamesCache; //TODO refactor to QHash<int, QString>
+    QSet<QString> m_mapNamesCache;
+    QSet<QString> m_modNamesCache;
     QSettings* settings;
     QString m_currentModName;
-    QStringList m_gameOptionKeys;
+    QStringList m_gameOptionKeys; //TODO refactor to QSet<QString>
+
     UnitSyncLib( QObject *parent = 0 );
     ~UnitSyncLib();
     typedef const char* (CONV * GetSpringVersion )();

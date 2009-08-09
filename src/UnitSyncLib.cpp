@@ -496,7 +496,6 @@ int UnitSyncLib::getOptionStringMaxLen(int optIndex) {
     return m_GetOptionStringMaxLen(optIndex);
 }
 
-
 void UnitSyncLib::reboot() {
     MANUAL_LOCK;
     if (library_loaded) {
@@ -514,29 +513,38 @@ void UnitSyncLib::reboot() {
             m_AddAllArchives(m_GetPrimaryModArchive(index));
         }
         MANUAL_UNLOCK;
+        initMapNamesCache();
+        initModNamesCache();
         emit rebooted();
     }
 }
 
-QStringList UnitSyncLib::getModNames() {
-    QStringList ret;
-    if (library_loaded) {
-        int modcount = m_GetPrimaryModCount();
-        for ( int i = 0; i < modcount; ++i ) {
-            ret << m_GetPrimaryModName(i);
+void UnitSyncLib::initMapNamesCache() {
+    m_mapNamesCache.clear();
+    if( library_loaded ) {
+        int mapcount = m_GetMapCount();
+        for ( int i = 0; i < mapcount; ++i ) {
+            m_mapNamesCache << m_GetMapName(i);
         }
     }
-    return ret;
 }
 
-QStringList UnitSyncLib::getMapNames() {
-    QStringList ret;
-    if (library_loaded) {
-        int mapcount = m_GetMapCount();
-        for ( int i = 0; i < mapcount; ++i )
-            ret << m_GetMapName( i );
+void UnitSyncLib::initModNamesCache() {
+    m_modNamesCache.clear();
+    if( library_loaded ) {
+        int modcount = m_GetPrimaryModCount();
+        for ( int i = 0; i < modcount; ++i ) {
+            m_modNamesCache << m_GetPrimaryModName(i);
+        }
     }
-    return ret;
+}
+
+QSet<QString> UnitSyncLib::getModNames() {
+    return m_modNamesCache;
+}
+
+QSet<QString> UnitSyncLib::getMapNames() {
+    return m_mapNamesCache;
 }
 
 QStringList UnitSyncLib::getOptionListItems(int optIndex) {
