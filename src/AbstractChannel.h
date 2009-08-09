@@ -7,12 +7,13 @@
 #include <QScrollBar>
 #include <QTime>
 #include <QGridLayout>
+#include <QDesktopServices>
+
 #include "Command.h"
 #include "AbstractLobbyTab.h"
-//#include "ui_AbstractChannelWidget.h"
 #include "ChannelTextBrowser.h"
 
-class AbstractChannel : public AbstractLobbyTab { /*, public Ui_AbstractChannelWidget*/
+class AbstractChannel : public AbstractLobbyTab {
     Q_OBJECT
 public:
     AbstractChannel( QString name, QObject * parent = 0 );
@@ -22,7 +23,6 @@ public:
 public slots:
     virtual void receiveInput( QString input ) = 0;
     virtual void receiveCommand( Command command ) = 0;
-//    virtual void anchorClicked(QUrl url); //TODO needs to be reimplemented by all inheritants
 protected:
     void setActive( bool isActive );
     virtual void setupUi( QWidget * tab );
@@ -40,6 +40,9 @@ protected:
     QColor activeTextColor;
     QColor inactiveTextColor;
     static QString currentUsername;
+    QString userNameLink( const QString userName );
+protected slots:
+    void anchorClicked(QUrl url);
 };
 
 #endif

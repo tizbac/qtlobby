@@ -208,6 +208,8 @@ void LobbyTabs::createLobbyTab( AbstractLobbyTab * lobbyTab ) {
     //connect the lobbyTab to that it can send commands
     connect( lobbyTab, SIGNAL( sendCommand( Command ) ),
              this, SLOT( sendCommandSlot( Command ) ) );
+    connect( lobbyTab, SIGNAL(sendInput(QString)),
+             this, SLOT(receiveInput(QString)));
     //save the lobbyTab
     lobbyTabList.append(lobbyTab);
     //focus the inserted tab

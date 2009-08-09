@@ -33,7 +33,7 @@ void Channel::receiveCommand( Command command ) {
             if(!UserGroupList::getInstance()->getIgnore(userName)) {
                 insertLine( flag( userName ) + line
                     .arg( "&lt;%1&gt; %2" )
-                                        .arg( userNameLink( userName ) )
+                    .arg( userNameLink( userName ) )
                     .arg( processInput(command.attributes.join( " " ))));
             }
         }
@@ -43,17 +43,17 @@ void Channel::receiveCommand( Command command ) {
             if(!UserGroupList::getInstance()->getIgnore(userName)) {
                 insertLine( flag( userName ) + line
                     .arg( "<span style=\"color:magenta;\">* %1 %2</span>" )
-                                        .arg( userNameLink( userName ) )
-                                        .arg( processInput(command.attributes.join( " " ), false)));
+                    .arg( userNameLink( userName ) )
+                    .arg( processInput(command.attributes.join( " " ), false)));
             }
         }
     } else if ( command.name == "JOINED"  && showJoinLeave ) {
         if ( command.attributes.takeFirst() == objectName() ) {
             QString userName = command.attributes.takeFirst();
             insertLine( flag( userName ) + line
-                        .arg( "<span style=\"color:darkgreen;\">%1</span>" )
-                        .arg( tr( "** %1 joined the channel." ) )
-                        .arg( userNameLink( userName ) ) );
+                    .arg( "<span style=\"color:darkgreen;\">%1</span>" )
+                    .arg( tr( "** %1 joined the channel." ) )
+                    .arg( userNameLink( userName ) ) );
         }
     } else if ( command.name == "LEFT" && showJoinLeave) {
         if ( command.attributes.takeFirst() == objectName()) {
@@ -99,9 +99,6 @@ void Channel::receiveCommand( Command command ) {
 void Channel::receiveInput( QString input ) {
     if ( executeChannelInput( input ) )
         return;
-    //input.replace( "<", "&lt;" );
-    //input.replace( ">", "&gt;" );
-
     // Remove Right to Left mark so text doesnt get messed up
     input.replace(QChar(0x202E),"");
 
@@ -122,13 +119,6 @@ void Channel::receiveInput( QString input ) {
         ret.attributes << objectName() << input;
     }
     emit sendCommand( ret );
-}
-
-void Channel::anchorClicked(QUrl url) {
-    if( url.scheme() == "qtlobby" ) {
-        //TODO connect this to the Users::rightClickMenu to give options for the clicked Username
-        // url.host() is the username
-    }
 }
 
 void Channel::setShowJoinLeave(bool b) { //Setting default from lobby tabs

@@ -15,11 +15,10 @@ AbstractChannel::AbstractChannel( QString name, QObject * parent ) : AbstractLob
 AbstractChannel::~AbstractChannel() {}
 
 void AbstractChannel::setupUi( QWidget * channelTabWidget ) {
-    //FIXME inherit from AbstractChannelWidget
     channelTabWidget->setObjectName( QString::fromUtf8( "channelTabWidget" ) + objectName() );
     channelTextBrowser = new ChannelTextBrowser( channelTabWidget );
     channelTextBrowser->setObjectName( "channelTextBrowser" + objectName() );
-    channelTextBrowser->setOpenExternalLinks( true );
+    channelTextBrowser->setOpenLinks(false);
     channelTextBrowser->setReadOnly( true );
     QTextDocument * channelTextDocument = new QTextDocument( channelTextBrowser );
     //after exeeding the 500 blocks the first block will be removed
@@ -28,9 +27,8 @@ void AbstractChannel::setupUi( QWidget * channelTabWidget ) {
     gridLayout = new QGridLayout( channelTabWidget );
     gridLayout->setObjectName( QString::fromUtf8( "channelGridLayout" ) + objectName() );
     gridLayout->addWidget( channelTextBrowser, 1, 0, 1, 1 );
-    //TODO uncomment after implementing anchorClicked slots
-//    connect(channelTextBrowser, SIGNAL(anchorClicked(QUrl)),
-//            this, SLOT(anchorClicked(QUrl)));
+    connect(channelTextBrowser, SIGNAL(anchorClicked(QUrl)),
+            this, SLOT(anchorClicked(QUrl)));
 }
 
 void AbstractChannel::setActive( bool isActive ) {
@@ -51,7 +49,7 @@ bool AbstractChannel::executeChannelInput( QString input ) {
     QStringList inputList = input.split( " " );
     QString firstWord = inputList.takeFirst();
     Command ret;
-    if ( QString( "/j,/join,/peter" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
+    if ( QString( "/j,/join" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
         ret.name = "JOIN";
         ret.attributes << inputList;
         QStringList channels = inputList.join( " " ).split( "," );
@@ -94,10 +92,11 @@ bool AbstractChannel::executeChannelInput( QString input ) {
 }
 
 void AbstractChannel::insertLine( QString line ) {
+    // highlight currentUsername
     QString pattern = currentUsername;
     pattern.replace("[", "\\[").replace("]", "\\]");
     pattern += "(?!&gt;)";
-    line.replace(QRegExp(pattern), "<span style=\" font-weight:600; text-decoration: underline; color:#aa0000;\">"+currentUsername+"</span>");
+    line.replace(QRegExp(pattern), "<font style=\" font-weight:600; color:#aa0000;\">"+currentUsername+"</font>");
     QString timeString = QString( "<span style=\"color:gray;\">%1</span> " ).arg( QTime().currentTime().toString( "[hh:mm:ss]" ) );
     bool scrollToMaximum = channelTextBrowser->verticalScrollBar()->value() == channelTextBrowser->verticalScrollBar()->maximum();
     QTextCursor c = channelTextBrowser->textCursor();
@@ -304,12 +303,28 @@ QString AbstractChannel::processBBCodes(QString in) {
     return urlify(in);
 }
 
-
-QString AbstractChannel::processInput(QString input, bool fomatting) {
+QString AbstractChannel::processInput(QString input, bool formatting) {
     input.replace( "<", "&lt;" ).replace( ">", "&gt;" );
-    if(fomatting) {
+    if(formatting) {
         input.replace("\n","[br]");
         return processBBCodes(processIRCCodes(input));
     }
     else return urlify(input);
+}
+
+QString AbstractChannel::userNameLink( const QString userName ) {
+    if( userName == currentUsername )
+        return userName;
+    QUrl url("qtlobby://query");
+    url.addQueryItem("username",userName);
+    return QString( "<a style=\"text-decoration:none; color:black;\" href=\"%1\">%2</a>" ).arg(url.toString()).arg(userName);
+}
+
+void AbstractChannel::anchorClicked(QUrl url) {
+    if( url.scheme() == "qtlobby" ) {
+        if( url.host() == "query" )
+            emit sendInput( "/query " + url.queryItemValue("username") );
+    } else {
+        QDesktopServices::openUrl(url);
+    }
 }

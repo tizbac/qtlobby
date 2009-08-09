@@ -32,6 +32,7 @@ public:
 
 signals:
     void sendCommand( Command );
+    void sendInput(QString input);
 
 public slots:
     virtual void receiveInput( QString input ) = 0;
@@ -39,7 +40,6 @@ public slots:
 
 protected:
     QString flag( const QString userName );
-    QString userNameLink( const QString userName );
     QMap<QString, QString>* userNameCountryCodeMap;
 };
 

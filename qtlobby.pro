@@ -184,7 +184,6 @@ FORMS += ui/MainWidget.ui \
     ui/ToolBarWidget.ui
 
 # ui/MapSelectorWidget.ui \ # not used
-# ui/AbstractChannelWidget.ui \ # not used
 DISTFILES += doc/ProtocolDescription.xml \
     TODO \
     doc/xml2html.xsl \

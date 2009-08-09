@@ -18,10 +18,6 @@ QString AbstractLobbyTab::flag( const QString userName ) {
     return "";
 }
 
-QString AbstractLobbyTab::userNameLink( const QString userName ) {
-    return QString( "<a href=\"qtlobby://%1\">%1</a>" ).arg(userName);
-}
-
 void AbstractLobbyTab::setUserNameCountryCodeMap( QMap<QString, QString>* userNameCountryCodeMap ) {
     this->userNameCountryCodeMap = userNameCountryCodeMap;
 }

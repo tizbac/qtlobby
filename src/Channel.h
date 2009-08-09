@@ -19,7 +19,6 @@ signals:
 public slots:
     void receiveInput( QString input );
     void receiveCommand( Command command );
-    void anchorClicked(QUrl url);
     void setShowJoinLeave(bool b);
 private slots:
     void onEnableJoinLeave(bool b);
