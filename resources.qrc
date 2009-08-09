@@ -328,10 +328,10 @@
         <file>icons/userchat.xpm</file>
         <file>icons/userlist.png</file>
 	<file>icons/logo.ico</file>
-	<file>icons/logo.xpm</file>
         <file>src/sqads.js</file>
-	<file>icons/qtlobby-logo.svg</file>
-	<file>icons/qtlobby-logo.png</file>
+	<file>icons/qtlobby-logo-64x64.svg</file>
+	<file>icons/qtlobby-logo-64x64.png</file>
+	<file>icons/qtlobby-logo-64x64.xpm</file>
         <file>icons/logos/jobjol/logo0.xpm</file>
         <file>icons/logos/jobjol/logo1.xpm</file>
         <file>icons/logos/jobjol/logo2.xpm</file>
