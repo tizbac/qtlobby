@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="de">
 <context>
     <name>AboutWidget</name>
     <message>
         <source>About QTLobby</source>
-        <translation type="unfinished">Über QtLobby</translation>
+        <translation>Über QtLobby</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -41,7 +41,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Schließen</translation>
+        <translation>Schließen</translation>
     </message>
 </context>
 <context>
@@ -84,22 +84,22 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Chat Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat Hilfe</translation>
     </message>
 </context>
 <context>
     <name>AgreementWidget</name>
     <message>
         <source>Server agreement</source>
-        <translation type="unfinished">Server Vereinbarung</translation>
+        <translation>Server Vereinbarung</translation>
     </message>
     <message>
         <source>&amp;Deny</source>
-        <translation type="unfinished">A&amp;blehnen</translation>
+        <translation>A&amp;blehnen</translation>
     </message>
     <message>
         <source>&amp;Accept</source>
-        <translation type="unfinished">&amp;Akzeptieren</translation>
+        <translation>&amp;Akzeptieren</translation>
     </message>
 </context>
 <context>
@@ -122,89 +122,91 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Ring!</source>
-        <translation type="unfinished"></translation>
+        <translation>Klingeling!</translation>
     </message>
     <message>
         <source>%1 wants attention!</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 bittet um Aufmerksamkeit!</translation>
     </message>
     <message>
         <source>Kicked from battle</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus dem Spiel gekickt</translation>
     </message>
     <message>
         <source>You have been kicked from the battle!</source>
-        <translation type="unfinished"></translation>
+        <translation>Du wurdest aus dem Spiel gekickt!</translation>
     </message>
     <message>
         <source>You have been kicked from the battle!
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Du wurdest aus dem Spiel gekickt!</translation>
     </message>
     <message>
         <source>Please, download %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte %1 herunterladen</translation>
     </message>
     <message>
         <source>Missing content</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You don&apos;t have the mod or you have broken version.
-Do you want to download it?</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehlende Inhalte</translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation>Ja</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation>Nein</translation>
     </message>
     <message>
         <source>Loading %1...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Map % not found</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You don&apos;t have the map or you have broken version.
-Do you want to download it?</source>
-        <translation type="unfinished"></translation>
+        <translation>Lade %1...</translation>
     </message>
     <message>
         <source>Select color for group</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppenfarbe auswählen</translation>
     </message>
     <message>
         <source>Select value</source>
-        <translation type="unfinished"></translation>
+        <translation>Wert auswählen</translation>
     </message>
     <message>
         <source>Select value for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Wähle einen Wert für %1</translation>
+    </message>
+    <message>
+        <source>You don&apos;t have the mod or you have a broken version.
+Do you want to download it?</source>
+        <translation>Entweder fehlt der Mod oder du hast eine fehlerhafte Version.
+Möchtest du ihn runterladen?</translation>
+    </message>
+    <message>
+        <source>Map %1 not found</source>
+        <translation>Karte % nicht gefunden</translation>
+    </message>
+    <message>
+        <source>You don&apos;t have the map or you have a broken version.
+Do you want to download it?</source>
+        <translation>Entweder fehlt ddie Karte oder du hast eine fehlerhafte Version.
+Möchtest du sie runterladen?</translation>
     </message>
 </context>
 <context>
     <name>BattleHost</name>
     <message>
         <source>Map not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Karte nicht gefunden</translation>
     </message>
     <message>
         <source>Mod not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Mod nicht gefunden</translation>
     </message>
     <message>
         <source>Battle hosting failed: </source>
-        <translation type="unfinished"></translation>
+        <translation>Battle hosten fehlgeschlagen: </translation>
     </message>
     <message>
         <source>Failed to load </source>
-        <translation type="unfinished"></translation>
+        <translation>Laden fehlgeschlagen </translation>
     </message>
 </context>
 <context>
@@ -212,26 +214,6 @@ Do you want to download it?</source>
     <message>
         <source>Dialog</source>
         <translation>Dialog</translation>
-    </message>
-    <message>
-        <source>Description:</source>
-        <translation type="obsolete">Beschreibung:</translation>
-    </message>
-    <message>
-        <source>Password:</source>
-        <translation type="obsolete">Passwort:</translation>
-    </message>
-    <message>
-        <source>Port:</source>
-        <translation type="obsolete">Port:</translation>
-    </message>
-    <message>
-        <source>Max. players:</source>
-        <translation type="obsolete">Max. Spieler:</translation>
-    </message>
-    <message>
-        <source>Rank:</source>
-        <translation type="obsolete">Rang:</translation>
     </message>
     <message>
         <source>Newbie</source>
@@ -262,49 +244,55 @@ Do you want to download it?</source>
         <translation>Veteran</translation>
     </message>
     <message>
-        <source>Mod</source>
-        <translation type="obsolete">Mod</translation>
-    </message>
-    <message>
-        <source>Map</source>
-        <translation type="obsolete">Map</translation>
-    </message>
-    <message>
         <source>&amp;Description:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Beschreibung:</translation>
     </message>
     <message>
         <source>&amp;Password:</source>
-        <translation type="unfinished">&amp;Passwort:</translation>
+        <translation>&amp;Passwort:</translation>
     </message>
     <message>
         <source>P&amp;ort:</source>
-        <translation type="unfinished">P&amp;ort:</translation>
+        <translation>P&amp;ort:</translation>
     </message>
     <message>
         <source>Ma&amp;x. Players:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ma&amp;x. Spieler:</translation>
     </message>
     <message>
         <source>&amp;Rank:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Rang:</translation>
     </message>
     <message>
         <source>&amp;Mod:</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Mod:</translation>
     </message>
     <message>
         <source>M&amp;ap:</source>
-        <translation type="unfinished"></translation>
+        <translation>M&amp;ap:</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <source>You have a battle running!
 Close it first!</source>
+        <translation>Es ist noch ein Battle geöffnet!
+Schließe es zuerst!</translation>
+    </message>
+</context>
+<context>
+    <name>BattlePasswordWidget</name>
+    <message>
+        <source>Game Password</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This game is password protected.
+Please enter the Password:</source>
+        <translation type="unfinished">Diese Battle ist passwortgeschützt.
+Bitte Passwort eingeben:</translation>
     </message>
 </context>
 <context>
@@ -331,358 +319,348 @@ Close it first!</source>
     </message>
     <message>
         <source>1/7 Newbie</source>
-        <translation type="unfinished"></translation>
+        <translation>1/7 Blutiger Anfänger</translation>
     </message>
     <message>
         <source>2/7 Beginner</source>
-        <translation type="unfinished"></translation>
+        <translation>2/7 Anfänger</translation>
     </message>
     <message>
         <source>3/7 Average</source>
-        <translation type="unfinished"></translation>
+        <translation>3/7 Durchschnittlich</translation>
     </message>
     <message>
         <source>4/7 Above average</source>
-        <translation type="unfinished"></translation>
+        <translation>4/7 Überdurchschnittlich</translation>
     </message>
     <message>
         <source>5/7 Experienced</source>
-        <translation type="unfinished"></translation>
+        <translation>5/7 Erfahren</translation>
     </message>
     <message>
         <source>6/7 Highly experienced</source>
-        <translation type="unfinished"></translation>
+        <translation>6/7 Sehr erfahren</translation>
     </message>
     <message>
         <source>7/7 Veteran</source>
-        <translation type="unfinished"></translation>
+        <translation>7/7 Veteran</translation>
     </message>
     <message>
         <source>no rank</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 players battle
-%2 players maximum
-%3 spectators in game</source>
-        <translation type="unfinished"></translation>
+        <translation>kein Rang</translation>
     </message>
     <message>
         <source>State: green open, red locked, swords started</source>
-        <translation type="unfinished"></translation>
+        <translation>Status: grün offen, rot gelockt, Schwerter gestartet</translation>
     </message>
     <message>
         <source>S</source>
-        <translation type="unfinished">S</translation>
+        <translation>S</translation>
     </message>
     <message>
         <source>Country</source>
-        <translation type="unfinished"></translation>
+        <translation>Land</translation>
     </message>
     <message>
         <source>C</source>
-        <translation type="unfinished"></translation>
+        <translation>L</translation>
     </message>
     <message>
         <source>Minimum rank needed to join</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimaler benötiger Rang um beizutreten</translation>
     </message>
     <message>
         <source>R</source>
-        <translation type="unfinished">R</translation>
+        <translation>R</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Bezeichnung</translation>
     </message>
     <message>
         <source>Map</source>
-        <translation type="unfinished">Map</translation>
+        <translation>Map</translation>
     </message>
     <message>
         <source>Mod</source>
-        <translation type="unfinished">Mod</translation>
+        <translation>Mod</translation>
     </message>
     <message>
         <source>Host</source>
-        <translation type="unfinished"></translation>
+        <translation>Host</translation>
     </message>
     <message>
         <source># of Players / # of max. Players + # of Spectators</source>
-        <translation type="unfinished"></translation>
+        <translation># Spieler / # max. Spieler +# Zuschauer</translation>
     </message>
     <message>
         <source>Players</source>
-        <translation type="unfinished"></translation>
+        <translation>Spieler</translation>
+    </message>
+    <message>
+        <source>%1 players in battle
+%2 players maximum
+%3 spectators in battle</source>
+        <translation>%1 Spieler im Battle
+%2 maximale Spieler
+%3 Zuschauer im Battle</translation>
     </message>
 </context>
 <context>
     <name>BattleUserTreeModel</name>
     <message>
         <source>Ready, sync status unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Bereit, Synchronisationsstatus unbekannt</translation>
     </message>
     <message>
         <source>Ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Bereit</translation>
     </message>
     <message>
         <source>Ready, unsynced</source>
-        <translation type="unfinished"></translation>
+        <translation>Bereit, nicht synchronisiert</translation>
     </message>
     <message>
         <source>Not ready, sync status unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht bereit, Synchronisationsstatus unbekannt</translation>
     </message>
     <message>
         <source>Not ready</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht bereit</translation>
     </message>
     <message>
         <source>Not ready, unsynced</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht bereit, unsynchron</translation>
     </message>
     <message>
         <source>Spectating</source>
-        <translation type="unfinished"></translation>
+        <translation>Zuschauer</translation>
     </message>
     <message>
         <source>State</source>
-        <translation type="unfinished"></translation>
+        <translation>Status</translation>
     </message>
     <message>
         <source>Faction</source>
-        <translation type="unfinished"></translation>
+        <translation>Fraktion</translation>
     </message>
     <message>
         <source>Team Number</source>
-        <translation type="unfinished">Teamnummer</translation>
+        <translation>Teamnummer</translation>
     </message>
     <message>
         <source>Ally Team Number</source>
-        <translation type="unfinished">Allianz Teamnummer</translation>
+        <translation>Allianz Teamnummer</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Farbe</translation>
     </message>
     <message>
         <source>Handicap</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachteiligung</translation>
     </message>
 </context>
 <context>
     <name>BattleWindowForm</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished">Formular</translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <source>Map</source>
-        <translation type="unfinished">Map</translation>
+        <translation>Karte</translation>
     </message>
     <message>
         <source>Height</source>
-        <translation type="unfinished">Höhe</translation>
+        <translation>Höhe</translation>
     </message>
     <message>
         <source>Metal</source>
-        <translation type="unfinished">Metall</translation>
+        <translation>Metall</translation>
     </message>
     <message>
         <source>Game</source>
-        <translation type="unfinished">Spiel</translation>
+        <translation>Spiel</translation>
     </message>
     <message>
         <source>Start &amp;position:</source>
-        <translation type="unfinished">Start&amp;position:</translation>
+        <translation>Start&amp;position:</translation>
     </message>
     <message>
         <source>Fixed</source>
-        <translation type="unfinished">Fix</translation>
+        <translation>Fest</translation>
     </message>
     <message>
         <source>Random</source>
-        <translation type="unfinished">Zufällig</translation>
+        <translation>Zufällig</translation>
     </message>
     <message>
         <source>In game</source>
-        <translation type="unfinished">Im Spiel</translation>
+        <translation>Im Spiel</translation>
     </message>
     <message>
         <source>Before Game</source>
-        <translation type="unfinished">Vor dem Spiel</translation>
+        <translation>Vor dem Spiel</translation>
     </message>
     <message>
         <source>Game &amp;end:</source>
-        <translation type="unfinished">Spiel&amp;ende:</translation>
+        <translation>Spiel&amp;ende:</translation>
     </message>
     <message>
         <source>Kill everything</source>
-        <translation type="unfinished">Alles zerstören</translation>
+        <translation>Alles zerstören</translation>
     </message>
     <message>
         <source>Comm ends</source>
-        <translation type="unfinished">Comm beendet</translation>
+        <translation>Comm beendet</translation>
     </message>
     <message>
         <source>Lineage</source>
-        <translation type="unfinished"></translation>
+        <translation>Lineage</translation>
     </message>
     <message>
         <source>Limit &amp;D-Gun to start</source>
-        <translation type="unfinished">&amp;D-Gun auf Startposition begrenzen</translation>
+        <translation>&amp;D-Gun auf Startposition begrenzen</translation>
     </message>
     <message>
         <source>&amp;Ghosted buildings</source>
-        <translation type="unfinished">&amp;Geistergebäude</translation>
+        <translation>&amp;Geistergebäude</translation>
     </message>
     <message>
         <source>Diminishing &amp;metal makers</source>
-        <translation type="unfinished">Abgeschwächte &amp;metal maker</translation>
+        <translation>Abgeschwächte &amp;Metallumwandler</translation>
     </message>
     <message>
         <source>Undeformable map</source>
-        <translation type="unfinished">Undeformierbare Map</translation>
+        <translation>Undeformierbare Karte</translation>
     </message>
     <message>
         <source>Mod options</source>
-        <translation type="unfinished">Modoptionen</translation>
+        <translation>Modoptionen</translation>
     </message>
     <message>
         <source>&amp;Units</source>
-        <translation type="unfinished">&amp;Einheiten</translation>
+        <translation>&amp;Einheiten</translation>
     </message>
     <message>
         <source>Battle settings</source>
-        <translation type="unfinished">Battle-Einstellungen</translation>
+        <translation>Battle-Einstellungen</translation>
     </message>
     <message>
         <source>Color:</source>
-        <translation type="unfinished">Farbe:</translation>
+        <translation>Farbe:</translation>
     </message>
     <message>
         <source>Team:</source>
-        <translation type="unfinished">Team:</translation>
-    </message>
-    <message>
-        <source>Team Number</source>
-        <translation type="obsolete">Teamnummer</translation>
-    </message>
-    <message>
-        <source>Ally:</source>
-        <translation type="obsolete">Allianz:</translation>
-    </message>
-    <message>
-        <source>Ally Team Number</source>
-        <translation type="obsolete">Allianz Teamnummer</translation>
+        <translation>Team:</translation>
     </message>
     <message>
         <source>Side:</source>
-        <translation type="unfinished">Seite:</translation>
+        <translation>Seite:</translation>
     </message>
     <message>
         <source>Choose your faction</source>
-        <translation type="unfinished">Wähle deine Fraktion</translation>
+        <translation>Wähle deine Fraktion</translation>
     </message>
     <message>
         <source>Do you want to spectate?</source>
-        <translation type="unfinished">Möchtest du zuschauen?</translation>
+        <translation>Möchtest du zuschauen?</translation>
     </message>
     <message>
         <source>Spectator</source>
-        <translation type="unfinished">Zuschauer</translation>
+        <translation>Zuschauer</translation>
     </message>
     <message>
         <source>Are you ready?</source>
-        <translation type="unfinished">Bist du bereit?</translation>
+        <translation>Bist du bereit?</translation>
     </message>
     <message>
         <source>&amp;Ready</source>
-        <translation type="unfinished">Be&amp;reit</translation>
+        <translation>Be&amp;reit</translation>
     </message>
     <message>
         <source>Map info</source>
-        <translation type="unfinished">Mapinfo</translation>
+        <translation>Karteninfo</translation>
     </message>
     <message>
         <source>Size:</source>
-        <translation type="unfinished">Größe:</translation>
+        <translation>Größe:</translation>
     </message>
     <message>
         <source>Wind:</source>
-        <translation type="unfinished">Wind:</translation>
+        <translation>Wind:</translation>
     </message>
     <message>
         <source>Tidal:</source>
-        <translation type="unfinished">Gezeiten:</translation>
+        <translation>Gezeiten:</translation>
     </message>
     <message>
         <source>3D Preview</source>
-        <translation type="unfinished">3D Vorschau</translation>
+        <translation>3D Vorschau</translation>
     </message>
     <message>
         <source>Id:</source>
-        <translation type="unfinished"></translation>
+        <translation>Id:</translation>
     </message>
     <message>
         <source>Your ally team number</source>
-        <translation type="unfinished"></translation>
+        <translation>Deine Allianz Teamnummer</translation>
     </message>
     <message>
         <source>Your ID number</source>
-        <translation type="unfinished"></translation>
+        <translation>Deine ID-Nummer</translation>
     </message>
 </context>
 <context>
     <name>Battles</name>
     <message>
         <source>Private Chat to Host</source>
-        <translation type="unfinished"></translation>
+        <translation>Private Nachricht an den Host</translation>
     </message>
     <message>
         <source>Join Battle</source>
-        <translation type="unfinished"></translation>
+        <translation>Battle beitreten</translation>
     </message>
     <message>
         <source>Filter Battles</source>
-        <translation type="unfinished"></translation>
+        <translation>Battles filtern</translation>
     </message>
     <message>
         <source>Hide battles with password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwortgeschützte Battles ausblenden</translation>
     </message>
     <message>
         <source>Hide running battles</source>
-        <translation type="unfinished"></translation>
+        <translation>Laufende Battles ausblenden</translation>
     </message>
     <message>
         <source>Hide locked battles</source>
-        <translation type="unfinished"></translation>
+        <translation>Geschlossene Battles ausblenden</translation>
     </message>
     <message>
         <source>Hide not installed mods</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht installierte Mods ausblenden</translation>
     </message>
     <message>
         <source>Hide not installed maps</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht installierte Karten ausblenden</translation>
     </message>
     <message>
         <source>Hide battles without players</source>
-        <translation type="unfinished"></translation>
+        <translation>Battles ohne Spieler ausblenden</translation>
     </message>
     <message>
         <source>Hide battles without friends</source>
-        <translation type="unfinished"></translation>
+        <translation>Battles ohne Freunde ausblenden</translation>
     </message>
     <message>
         <source>Error: Could not open script file for write: </source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler: Konnte Skriptdatei nicht zum Schreiben öffnen:</translation>
     </message>
     <message>
         <source>Script file %1 written.</source>
-        <translation type="unfinished"></translation>
+        <translation>Skriptdatei %1 geschrieben.</translation>
     </message>
 </context>
 <context>
@@ -701,40 +679,29 @@ Close it first!</source>
     </message>
     <message>
         <source>Topic is &apos; %1 &apos; set by %2 %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Thema &apos; %1 &apos; wurde gesetzt von %2 %3</translation>
     </message>
     <message>
         <source>dd.MM.yyyy hh:mm</source>
-        <translation type="unfinished"></translation>
+        <translation>dd.MM.yyyy hh:mm</translation>
     </message>
 </context>
 <context>
     <name>ChannelTextBrowser</name>
     <message>
         <source>Enable join/leave messages for this channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktiviere join-/leave-Benachrichtigung für diesen Channel</translation>
     </message>
     <message>
         <source>Enable join/leave messages by default</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ConfigElement</name>
-    <message>
-        <source>Select Directory</source>
-        <translation type="obsolete">Wähle Ordner aus</translation>
-    </message>
-    <message>
-        <source>Select File</source>
-        <translation type="obsolete">Wähle Datei aus</translation>
+        <translation>Aktiviere join-/leave-Benachrichtigung standardmäßig</translation>
     </message>
 </context>
 <context>
     <name>ConnectionWidget</name>
     <message>
         <source>Connect to a lobby server </source>
-        <translation type="unfinished">Verbinde mit einem Lobby-Server</translation>
+        <translation>Verbinde mit einem Lobby-Server</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -754,222 +721,224 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>unconnected</source>
-        <translation type="unfinished">unverbunden</translation>
+        <translation>unverbunden</translation>
     </message>
     <message>
         <source>Connection status: </source>
-        <translation type="unfinished">Verbindungsstatus: </translation>
+        <translation>Verbindungsstatus: </translation>
     </message>
     <message>
         <source>Login</source>
-        <translation type="unfinished">Login</translation>
+        <translation>Login</translation>
     </message>
     <message>
         <source>Profile:</source>
-        <translation type="unfinished">Profil:</translation>
+        <translation>Profil:</translation>
     </message>
     <message>
         <source>user @ taspring.clan-sy.com</source>
-        <translation type="unfinished">user @ taspring.clan-sy.com</translation>
+        <translation>user @ taspring.clan-sy.com</translation>
     </message>
     <message>
         <source>&amp;User name:</source>
-        <translation type="unfinished">Ben&amp;utzername:</translation>
+        <translation>Ben&amp;utzername:</translation>
     </message>
     <message>
         <source>Lobby username like drZero23 or [Clan]Username</source>
-        <translation type="unfinished">Lobby-Benutzername wie drZero23 oder [Clan]Benutzername</translation>
+        <translation>Lobby-Benutzername wie drZero23 oder [Clan]Benutzername</translation>
     </message>
     <message>
         <source>user</source>
-        <translation type="unfinished">Benutzer</translation>
+        <translation>Benutzer</translation>
     </message>
     <message>
         <source>&amp;Address:</source>
-        <translation type="unfinished">&amp;Adresse:</translation>
+        <translation>&amp;Adresse:</translation>
     </message>
     <message>
         <source>Address of the TASServer. Most likely taspring.clan-sy.com</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresse des TASServers. Meist taspring.clan-sy.com</translation>
     </message>
     <message>
         <source>taspring.clan-sy.com</source>
-        <translation type="unfinished">taspring.clan-sy.com</translation>
+        <translation>taspring.clan-sy.com</translation>
     </message>
     <message>
         <source>P&amp;ort:</source>
-        <translation type="unfinished">P&amp;ort:</translation>
+        <translation>P&amp;ort:</translation>
     </message>
     <message>
         <source>TCP port which is used by the TASServer. Most likely 8200.</source>
-        <translation type="unfinished"></translation>
+        <translation>TASServer TCP-Port. Meist 8200</translation>
     </message>
     <message>
         <source>&amp;Password:</source>
-        <translation type="unfinished">&amp;Passwort:</translation>
+        <translation>&amp;Passwort:</translation>
     </message>
     <message>
         <source>Current Profile:</source>
-        <translation type="unfinished">Aktuelles Profil:</translation>
+        <translation>Aktuelles Profil:</translation>
     </message>
     <message>
         <source>Auto login</source>
-        <translation type="unfinished">Autologin</translation>
+        <translation>Autologin</translation>
     </message>
     <message>
         <source>Remember password</source>
-        <translation type="unfinished">Passwort merken</translation>
+        <translation>Passwort merken</translation>
     </message>
     <message>
         <source>Logout</source>
-        <translation type="unfinished">Logout</translation>
+        <translation>Logout</translation>
     </message>
     <message>
         <source>&amp;Register</source>
-        <translation type="unfinished">&amp;Registrieren</translation>
+        <translation>&amp;Registrieren</translation>
     </message>
     <message>
         <source>&amp;Login</source>
-        <translation type="unfinished">&amp;Login</translation>
+        <translation>&amp;Login</translation>
     </message>
     <message>
         <source>Simple Login:</source>
-        <translation type="unfinished">Einfacher Login:</translation>
+        <translation>Einfacher Login:</translation>
     </message>
     <message>
         <source>Show simple view</source>
-        <translation type="unfinished">Zeige einfache Ansicht</translation>
+        <translation>Zeige einfache Ansicht</translation>
     </message>
     <message>
         <source>A&amp;ccount</source>
-        <translation type="unfinished">A&amp;ccount</translation>
+        <translation>A&amp;ccount</translation>
     </message>
     <message>
         <source>If logged in you can rename your account login (username / login name). Usename [fOO]baR </source>
-        <translation type="unfinished">Wenn du eingeloggt bist, kannst du deinen Account umbenennen.</translation>
+        <translation>Wenn du eingeloggt bist, kannst du deinen Account umbenennen.</translation>
     </message>
     <message>
         <source>Rename:</source>
-        <translation type="unfinished">Umbenennen:</translation>
+        <translation>Umbenennen:</translation>
     </message>
     <message>
         <source>&amp;New user name:</source>
-        <translation type="unfinished">&amp;Neuer Benutzername:</translation>
+        <translation>&amp;Neuer Benutzername:</translation>
     </message>
     <message>
         <source>R&amp;ename</source>
-        <translation type="unfinished">Umb&amp;enennen</translation>
+        <translation>Umb&amp;enennen</translation>
     </message>
     <message>
         <source>You must be logged in to rename your account (username).</source>
-        <translation type="unfinished">Du musst eingeloggt sein, um deinen Benutzername umbenennen zu können.</translation>
+        <translation>Du musst eingeloggt sein, um deinen Benutzername umbenennen zu können.</translation>
     </message>
     <message>
         <source>Change password:</source>
-        <translation type="unfinished">Ändere Passwort:</translation>
+        <translation>Ändere Passwort:</translation>
     </message>
     <message>
         <source>&amp;Old password:</source>
-        <translation type="unfinished">&amp;Altes Passwort:</translation>
+        <translation>&amp;Altes Passwort:</translation>
     </message>
     <message>
         <source>&amp;New password:</source>
-        <translation type="unfinished">&amp;Neues Passwort:</translation>
+        <translation>&amp;Neues Passwort:</translation>
     </message>
     <message>
         <source>&amp;Change</source>
-        <translation type="unfinished">&amp;Ändern</translation>
+        <translation>&amp;Ändern</translation>
     </message>
     <message>
         <source>You must be logged in to change your password.</source>
-        <translation type="unfinished">Du musst eingeloggt sein, um dein Passwort zu ändern.</translation>
+        <translation>Du musst eingeloggt sein, um dein Passwort zu ändern.</translation>
     </message>
     <message>
         <source>Profile has been modified.</source>
-        <translation type="unfinished"></translation>
+        <translation>Profil wurde geändert.</translation>
     </message>
     <message>
         <source>Do you want to save your changes?</source>
-        <translation type="unfinished"></translation>
+        <translation>Möchtest du deine Änderungen speichern?</translation>
     </message>
     <message>
         <source>No Profile selected</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You have to add a profile in the &apos;Profile&apos; tab first before you can connect to a server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kein Profil ausgewählt</translation>
     </message>
     <message>
         <source>No password</source>
-        <translation type="unfinished"></translation>
+        <translation>Kein Passwort</translation>
     </message>
     <message>
         <source>Type in the password and try again!</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort eingeben und nochmals versuchen!</translation>
     </message>
     <message>
         <source>No username</source>
-        <translation type="unfinished"></translation>
+        <translation>Kein Benutzername</translation>
     </message>
     <message>
         <source>Type in the username and try again!</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort eingeben und nochmals versuchen!</translation>
     </message>
     <message>
         <source>connecting</source>
-        <translation type="unfinished"></translation>
+        <translation>verbinde</translation>
     </message>
     <message>
         <source>connected</source>
-        <translation type="unfinished"></translation>
+        <translation>verbunden</translation>
     </message>
     <message>
         <source>authenticating</source>
-        <translation type="unfinished"></translation>
+        <translation>authentifiziere</translation>
     </message>
     <message>
         <source>authenticated (logged in)</source>
-        <translation type="unfinished"></translation>
+        <translation>authentifiziert (eingeloggt)</translation>
     </message>
     <message>
         <source>Please change your new name to %1 and reconnect to the server.</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>I dont understand this sentence.</translatorcomment>
+        <translation>Bitte ändere deinen neuen Namen zu %1 und verbinde dich erneut zum Server.</translation>
     </message>
     <message>
         <source>Rename success</source>
-        <translation type="unfinished"></translation>
+        <translation>Umbenennen erfolgreich</translation>
     </message>
     <message>
         <source>Rename failure</source>
-        <translation type="unfinished"></translation>
+        <translation>Umbenennen fehlgeschlagen</translation>
     </message>
     <message>
         <source>Password change success</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwortänderung erfolgreich</translation>
     </message>
     <message>
         <source>Password change error</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwortänderung Fehlgeschlagen</translation>
     </message>
     <message>
         <source>Reconnecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Neu verbinden...</translation>
     </message>
     <message>
         <source>Nooo!</source>
-        <translation type="unfinished"></translation>
+        <translation>Neiiiin!</translation>
     </message>
     <message>
         <source>New profile</source>
-        <translation type="unfinished"></translation>
+        <extracomment>this</extracomment>
+        <translation>Neues Profil</translation>
     </message>
     <message>
         <source>Save profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Profil abspeichern</translation>
     </message>
     <message>
         <source>Delete profile</source>
+        <translation>Profil löschen</translation>
+    </message>
+    <message>
+        <source>You have to add a profile first before you can connect to a server.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -977,47 +946,47 @@ p, li { white-space: pre-wrap; }
     <name>Downloader</name>
     <message>
         <source>Resolving filename</source>
-        <translation type="unfinished"></translation>
+        <translation>Dateiname holen</translation>
     </message>
     <message>
         <source>File not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei nicht gefunden</translation>
     </message>
     <message>
         <source>Retrieving mirror list</source>
-        <translation type="unfinished"></translation>
+        <translation>Empfange Mirrorliste</translation>
     </message>
     <message>
         <source>Retrieving file size</source>
-        <translation type="unfinished"></translation>
+        <translation>Ermittle Dateigröße</translation>
     </message>
     <message>
         <source>Estimating mirrors speeds</source>
-        <translation type="unfinished"></translation>
+        <translation>Schätze Mirrorgeschwindigkeiten</translation>
     </message>
     <message>
         <source>Failed to create file</source>
-        <translation type="unfinished"></translation>
+        <translation>Dateierstellung fehlgeschlagen</translation>
     </message>
     <message>
         <source>Downloading from %1 mirror(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Herunterladen von %1 Mirror(s)</translation>
     </message>
     <message>
         <source>Finished</source>
-        <translation type="unfinished"></translation>
+        <translation>Beendet</translation>
     </message>
     <message>
         <source>Downloading file</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei herunterladen</translation>
     </message>
     <message>
         <source>Failed to fetch %1. Error: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Holen von %1 fehlgeschlagen. Fehler: %2</translation>
     </message>
     <message>
         <source>Error: </source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler:</translation>
     </message>
 </context>
 <context>
@@ -1045,55 +1014,55 @@ p, li { white-space: pre-wrap; }
     <name>DownloadsModel</name>
     <message>
         <source>%1 GiB</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 GiB</translation>
     </message>
     <message>
         <source>%1 MiB</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 MiB</translation>
     </message>
     <message>
         <source>%1 KiB</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 KiB</translation>
     </message>
     <message>
         <source>%1 GiB/s</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 GiB/s</translation>
     </message>
     <message>
         <source>%1 MiB/s</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 MiB/s</translation>
     </message>
     <message>
         <source>%1 KiB/s</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 KiB/s</translation>
     </message>
     <message>
         <source>%1 B/s</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 B/s</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation type="unfinished"></translation>
+        <translation>Bezeichnung</translation>
     </message>
     <message>
         <source>State</source>
-        <translation type="unfinished"></translation>
+        <translation>Status</translation>
     </message>
     <message>
         <source>Progress</source>
-        <translation type="unfinished"></translation>
+        <translation>Fortschritt</translation>
     </message>
     <message>
         <source>Downloaded</source>
-        <translation type="unfinished"></translation>
+        <translation>Heruntergeladen</translation>
     </message>
     <message>
         <source>Speed</source>
-        <translation type="unfinished"></translation>
+        <translation>Geschwindigkeit</translation>
     </message>
     <message>
         <source>ETA</source>
-        <translation type="unfinished"></translation>
+        <translation>ETA</translation>
     </message>
 </context>
 <context>
@@ -1105,19 +1074,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Compiling GL display list, please wait...</source>
         <translation>Compiliere GL Displayliste, bitte warten...</translation>
-    </message>
-</context>
-<context>
-    <name>GamePasswordWidget</name>
-    <message>
-        <source>Game Password</source>
-        <translation type="unfinished">Game Passwort</translation>
-    </message>
-    <message>
-        <source>This game is password protected.
-Please enter the Password:</source>
-        <translation type="unfinished">Diese Game ist passwortgeschützt.
-Bitte Passwort eingeben:</translation>
     </message>
 </context>
 <context>
@@ -1286,16 +1242,8 @@ Bitte Passwort eingeben:</translation>
         <translation>B&amp;eenden</translation>
     </message>
     <message>
-        <source>Ctrl+Q</source>
-        <translation type="obsolete">Strg+Q</translation>
-    </message>
-    <message>
         <source>&amp;Login</source>
         <translation>&amp;Login</translation>
-    </message>
-    <message>
-        <source>Ctrl+L</source>
-        <translation type="obsolete">Strg+L</translation>
     </message>
     <message>
         <source>&amp;About</source>
@@ -1322,16 +1270,8 @@ Bitte Passwort eingeben:</translation>
         <translation>&amp;Battleliste</translation>
     </message>
     <message>
-        <source>Ctrl+B</source>
-        <translation type="obsolete">Strg+B</translation>
-    </message>
-    <message>
         <source>&amp;User list</source>
         <translation>Ben&amp;utzerliste</translation>
-    </message>
-    <message>
-        <source>Ctrl+U</source>
-        <translation type="obsolete">Strg+U</translation>
     </message>
     <message>
         <source>&amp;Join</source>
@@ -1354,16 +1294,8 @@ Bitte Passwort eingeben:</translation>
         <translation>&amp;Einstellungen</translation>
     </message>
     <message>
-        <source>Ctrl+P</source>
-        <translation type="obsolete">Strg+P</translation>
-    </message>
-    <message>
         <source>Spring Settin&amp;gs</source>
         <translation>Spring-Einstellun&amp;gen</translation>
-    </message>
-    <message>
-        <source>Ctrl+Shift+S</source>
-        <translation type="obsolete">Strg+Shift+S</translation>
     </message>
     <message>
         <source>Map list</source>
@@ -1378,32 +1310,16 @@ Bitte Passwort eingeben:</translation>
         <translation>&amp;Gruppen</translation>
     </message>
     <message>
-        <source>Ctrl+G</source>
-        <translation type="obsolete">Strg+G</translation>
-    </message>
-    <message>
         <source>S&amp;cripting</source>
         <translation>S&amp;cripting</translation>
-    </message>
-    <message>
-        <source>Ctrl+I</source>
-        <translation type="obsolete">Strg+I</translation>
     </message>
     <message>
         <source>&amp;Downloads</source>
         <translation>&amp;Downloads</translation>
     </message>
     <message>
-        <source>Ctrl+D</source>
-        <translation type="obsolete">Strg+D</translation>
-    </message>
-    <message>
         <source>&amp;Host a Battle</source>
         <translation>Ein Battle &amp;hosten</translation>
-    </message>
-    <message>
-        <source>Ctrl+H</source>
-        <translation type="obsolete">Strg+H</translation>
     </message>
     <message>
         <source>&amp;Restore</source>
@@ -1411,51 +1327,51 @@ Bitte Passwort eingeben:</translation>
     </message>
     <message>
         <source>QtLobby</source>
-        <translation type="unfinished"></translation>
+        <translation>QtLobby</translation>
     </message>
     <message>
         <source>Users online: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzer online: %1</translation>
     </message>
     <message>
         <source>Moderators online: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Moderator(en) online: %1</translation>
     </message>
     <message>
         <source>Battles: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Battles: %1</translation>
     </message>
     <message>
         <source>Disconnected</source>
-        <translation type="unfinished"></translation>
+        <translation>Getrennt</translation>
     </message>
     <message>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbinde...</translation>
     </message>
     <message>
         <source>Connected</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbunden</translation>
     </message>
     <message>
         <source>Authenticating...</source>
-        <translation type="unfinished"></translation>
+        <translation>Authentifiziere...</translation>
     </message>
     <message>
         <source>Authenticated</source>
-        <translation type="unfinished"></translation>
+        <translation>Authentifiziert</translation>
     </message>
     <message>
         <source>Users: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzer: %1</translation>
     </message>
     <message>
         <source>Join channel</source>
-        <translation type="unfinished">Betrete Channel</translation>
+        <translation>Betrete Channel</translation>
     </message>
     <message>
         <source>Specify a channel you want to join</source>
-        <translation type="unfinished"></translation>
+        <translation>Zu betretenden Channel angeben</translation>
     </message>
 </context>
 <context>
@@ -1469,34 +1385,15 @@ Bitte Passwort eingeben:</translation>
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Use  left mouse button to rotates the map, middle button moves the map and wheel changes zoom&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Use left mouse button to rotate the map, middle mouse button to move the map and mouse wheel to zoom in and out.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>MapSelectorWidget</name>
-    <message>
-        <source>Form</source>
-        <translation type="obsolete">Formular</translation>
-    </message>
-    <message>
-        <source>Zoom</source>
-        <translation type="obsolete">Zoomen</translation>
-    </message>
-    <message>
-        <source>Select</source>
-        <translation type="obsolete">Auswählen</translation>
-    </message>
-    <message>
-        <source>Rate</source>
-        <translation type="obsolete">Bewerten</translation>
     </message>
 </context>
 <context>
     <name>PreferencePathElement</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished">Formular</translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <source>TextLabel</source>
@@ -1504,7 +1401,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1512,23 +1409,23 @@ p, li { white-space: pre-wrap; }
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Select Directory</source>
-        <translation type="unfinished">Wähle Ordner aus</translation>
+        <translation>Wähle Ordner</translation>
     </message>
     <message>
         <source>Select File</source>
-        <translation type="unfinished">Wähle Datei aus</translation>
+        <translation>Wähle Datei</translation>
     </message>
 </context>
 <context>
     <name>PreferenceWidget</name>
-    <message>
-        <source>QT::Lobby preferences</source>
-        <translation type="obsolete">QT::Lobby Einstellungen</translation>
-    </message>
     <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Abbrechen</translation>
@@ -1543,51 +1440,55 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>QtLobby Preferences</source>
-        <translation type="unfinished"></translation>
+        <translation>QtLobby Einstellungen</translation>
     </message>
     <message>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>Sprache</translation>
     </message>
     <message>
         <source>Paths</source>
-        <translation type="unfinished"></translation>
+        <translation>Pfade</translation>
     </message>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat</translation>
     </message>
     <message>
         <source>Application Language</source>
-        <translation type="unfinished"></translation>
+        <translation>Programmsprache</translation>
     </message>
     <message>
         <source>English</source>
-        <translation type="unfinished"></translation>
+        <translation>English</translation>
     </message>
-    <message>
+    <message utf8="true">
         <source>Русский</source>
-        <translation type="unfinished"></translation>
+        <translation>Русский</translation>
     </message>
     <message>
         <source>Suomi</source>
-        <translation type="unfinished"></translation>
+        <translation>Suomi</translation>
     </message>
     <message>
         <source>Deutsch</source>
-        <translation type="unfinished"></translation>
+        <translation>Deutsch</translation>
     </message>
     <message>
         <source>Show flags in Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Flaggen im Chat</translation>
     </message>
     <message>
         <source>Join #main on start</source>
-        <translation type="unfinished"></translation>
+        <translation>Betrete #main beim Start</translation>
     </message>
     <message>
         <source>Join #qtlobby on start</source>
-        <translation type="unfinished"></translation>
+        <translation>Betrete #qtlobby beim Start</translation>
+    </message>
+    <message>
+        <source>Show Flags near user names</source>
+        <translation>Zeige die Flaggen bei den Usernamen an</translation>
     </message>
 </context>
 <context>
@@ -1609,7 +1510,7 @@ p, li { white-space: pre-wrap; }
     <name>ProgressBarItemDelegate</name>
     <message>
         <source>File size unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Dateigröße unbekannt</translation>
     </message>
 </context>
 <context>
@@ -1676,42 +1577,42 @@ p, li { white-space: pre-wrap; }
     <name>ToolBarWidget</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished">Formular</translation>
+        <translation>Formular</translation>
     </message>
     <message>
         <source>Join a channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Channel beitreten</translation>
     </message>
 </context>
 <context>
     <name>UnitSyncLib</name>
     <message>
         <source>UnitSyncLibrary is not usable!</source>
-        <translation type="unfinished"></translation>
+        <translation>UnitSyncLibrary ist nicht verwendbar!</translation>
     </message>
     <message>
         <source>unitSyncLib - library not found</source>
-        <translation type="unfinished"></translation>
+        <translation>unitSyncLib - Bibliothek nicht gefunden</translation>
     </message>
     <message>
         <source>Unitsync library was not found or is unusable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Unitsync Bibliothek wurde nicht gefunden oder ist nicht verwendbar.</translation>
     </message>
     <message>
         <source>unitSyncLib - library not loaded</source>
-        <translation type="unfinished"></translation>
+        <translation>unitSyncLib - Bibliothek nicht geladen</translation>
     </message>
     <message>
         <source>UnitSyncLib was compiled against Spring version: </source>
-        <translation type="unfinished"></translation>
+        <translation>UnitSyncLib wurde kompiliert gegen die Springversion: </translation>
     </message>
     <message>
         <source>Found %1 maps and %2 mods.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Karten und %2 Mods gefunden.</translation>
     </message>
     <message>
         <source>Your library is not loaded, you can&apos;t use it!</source>
-        <translation type="unfinished"></translation>
+        <translation>Deine Bibliothek ist nicht geladen, du kannst sie nicht verwenden!</translation>
     </message>
 </context>
 <context>
@@ -1758,30 +1659,30 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>New group</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Gruppe</translation>
     </message>
     <message>
         <source>New Descriptioin</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Beschreibung</translation>
     </message>
     <message>
         <source>Player1</source>
-        <translation type="unfinished"></translation>
+        <translation>Spieler1</translation>
     </message>
     <message>
         <source>Player2</source>
-        <translation type="unfinished"></translation>
+        <translation>Spieler2</translation>
     </message>
     <message>
         <source>Select color for group</source>
-        <translation type="unfinished"></translation>
+        <translation>Gruppenfarbe auswählen</translation>
     </message>
 </context>
 <context>
     <name>UserPreference</name>
     <message>
         <source>To execute spring we need the path to the spring binary.</source>
-        <translation type="unfinished"></translation>
+        <translation>Um Spring zu starten benötigen wir den Pfad zur Spring-Binärdatei.</translation>
     </message>
     <message>
         <source>This folder usually contains the most spring data as for example the directories: AI/, base/, fonts/ and startscripts/.</source>
@@ -1793,11 +1694,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>On multiuser systems this path is used to store maps, mods and configurations which are user specific since most normal users won&apos;t have write-access to the global spring directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bei Mehrbenutzersystemen wird dieser Pfad verwendet, um benutzerspezifische Karten, Mods und Konfigurationen zu speichern, da normale Benutzer normalerweise keinen Schreibzugriff auf das globale Springverzeichnis haben.</translation>
     </message>
     <message>
         <source>Springsettings is a detailed and advanced configuration program. This binary is not in the qtlobby distribution yet so you might have to download it at springlobby.info</source>
-        <translation type="unfinished"></translation>
+        <translation>Springsettings ist ein externes Konfigurations-Programm, welches nicht Bestandteil von QtLobby ist. Es muss eventuell bei springlobby.info herunter geladen werden</translation>
     </message>
 </context>
 <context>
@@ -1844,486 +1745,138 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>%1 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <source>is away</source>
-        <translation type="unfinished"></translation>
+        <translation>ist abwesend</translation>
     </message>
     <message>
         <source>is in game</source>
-        <translation type="unfinished"></translation>
+        <translation>ist im Spiel</translation>
     </message>
     <message>
         <source>is in battle room</source>
-        <translation type="unfinished"></translation>
+        <translation>ist im Battleraum</translation>
     </message>
     <message>
         <source>is available</source>
-        <translation type="unfinished"></translation>
+        <translation>ist anwesend</translation>
     </message>
     <message>
         <source>1/7 Newbie</source>
-        <translation type="unfinished"></translation>
+        <translation>1/7 Blutiger Anfänger</translation>
     </message>
     <message>
         <source>2/7 Beginner</source>
-        <translation type="unfinished"></translation>
+        <translation>2/7 Anfänger</translation>
     </message>
     <message>
         <source>3/7 Average</source>
-        <translation type="unfinished"></translation>
+        <translation>3/7 Durchschnittlich</translation>
     </message>
     <message>
         <source>4/7 Above average</source>
-        <translation type="unfinished"></translation>
+        <translation>4/7 Überdurchschnittlich</translation>
     </message>
     <message>
         <source>5/7 Experienced</source>
-        <translation type="unfinished"></translation>
+        <translation>5/7 Erfahren</translation>
     </message>
     <message>
         <source>6/7 Highly experienced</source>
-        <translation type="unfinished"></translation>
+        <translation>6/7 Sehr erfahren</translation>
     </message>
     <message>
         <source>7/7 Veteran</source>
-        <translation type="unfinished"></translation>
+        <translation>7/7 Veteran</translation>
     </message>
     <message>
         <source>no rank set</source>
-        <translation type="unfinished"></translation>
+        <translation>kein Rang</translation>
     </message>
 </context>
 <context>
     <name>Users</name>
     <message>
         <source>Start private chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Öffne privaten Chat</translation>
     </message>
     <message>
         <source>Slap around</source>
-        <translation type="unfinished"></translation>
+        <translation>Ohrfeigen</translation>
     </message>
     <message>
         <source>Join same battle</source>
-        <translation type="unfinished"></translation>
+        <translation>Gleiches Spiel betreten</translation>
     </message>
     <message>
         <source>Toggle ignore</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorieren umschalten</translation>
     </message>
     <message>
         <source>Add to group</source>
-        <translation type="unfinished"></translation>
+        <translation>Zu Gruppe hinzufügen</translation>
     </message>
     <message>
         <source>Remove from group</source>
-        <translation type="unfinished"></translation>
+        <translation>Von Gruppe entfernen</translation>
     </message>
     <message>
         <source>Add clan to group</source>
-        <translation type="unfinished"></translation>
+        <translation>Clan zu Gruppe hinzufügen</translation>
     </message>
     <message>
         <source>Remove clan from group</source>
-        <translation type="unfinished"></translation>
+        <translation>Clan von Gruppe entfernen</translation>
     </message>
     <message>
         <source>Force</source>
-        <translation type="unfinished"></translation>
+        <translation>Erzwingen</translation>
     </message>
     <message>
         <source>Team</source>
-        <translation type="unfinished"></translation>
+        <translation>Team</translation>
     </message>
     <message>
         <source>Ally</source>
-        <translation type="unfinished"></translation>
+        <translation>Allianz</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Farbe</translation>
     </message>
     <message>
         <source>Spec</source>
-        <translation type="unfinished"></translation>
+        <translation>Zuschauer</translation>
     </message>
     <message>
         <source>Kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Kicken</translation>
     </message>
     <message>
         <source>New Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Gruppe</translation>
     </message>
     <message>
         <source>Select team</source>
-        <translation type="unfinished"></translation>
+        <translation>Wähle Team</translation>
     </message>
     <message>
         <source>Select a team to force player to</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein Team wählen, in das der Spieler gezwungen werden soll</translation>
     </message>
     <message>
         <source>Select ally team</source>
-        <translation type="unfinished"></translation>
+        <translation>Allianzteam auswählen</translation>
     </message>
     <message>
         <source>Select an ally team to force player to</source>
-        <translation type="unfinished"></translation>
+        <translation>Eine Allianz wählen, in die der Spieler gezwungen werden soll</translation>
     </message>
     <message>
         <source>Select user color</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>aboutWidget</name>
-    <message>
-        <source>About QTLobby</source>
-        <translation type="obsolete">Über QtLobby</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="obsolete">Schließen</translation>
-    </message>
-</context>
-<context>
-    <name>abstractChannelWidget</name>
-    <message>
-        <source>Form</source>
-        <translation type="obsolete">Formular</translation>
-    </message>
-</context>
-<context>
-    <name>agreementWidget</name>
-    <message>
-        <source>Server agreement</source>
-        <translation type="obsolete">Server Vereinbarung</translation>
-    </message>
-    <message>
-        <source>&amp;Deny</source>
-        <translation type="obsolete">A&amp;blehnen</translation>
-    </message>
-    <message>
-        <source>&amp;Accept</source>
-        <translation type="obsolete">&amp;Akzeptieren</translation>
-    </message>
-</context>
-<context>
-    <name>battleWindowForm</name>
-    <message>
-        <source>Form</source>
-        <translation type="obsolete">Formular</translation>
-    </message>
-    <message>
-        <source>Map</source>
-        <translation type="obsolete">Map</translation>
-    </message>
-    <message>
-        <source>Height</source>
-        <translation type="obsolete">Höhe</translation>
-    </message>
-    <message>
-        <source>Metal</source>
-        <translation type="obsolete">Metall</translation>
-    </message>
-    <message>
-        <source>Game</source>
-        <translation type="obsolete">Spiel</translation>
-    </message>
-    <message>
-        <source>Start &amp;position:</source>
-        <translation type="obsolete">Start&amp;position:</translation>
-    </message>
-    <message>
-        <source>Fixed</source>
-        <translation type="obsolete">Fix</translation>
-    </message>
-    <message>
-        <source>Random</source>
-        <translation type="obsolete">Zufällig</translation>
-    </message>
-    <message>
-        <source>In game</source>
-        <translation type="obsolete">Im Spiel</translation>
-    </message>
-    <message>
-        <source>Before Game</source>
-        <translation type="obsolete">Vor dem Spiel</translation>
-    </message>
-    <message>
-        <source>Game &amp;end:</source>
-        <translation type="obsolete">Spiel&amp;ende:</translation>
-    </message>
-    <message>
-        <source>Kill everything</source>
-        <translation type="obsolete">Alles zerstören</translation>
-    </message>
-    <message>
-        <source>Comm ends</source>
-        <translation type="obsolete">Comm beendet</translation>
-    </message>
-    <message>
-        <source>Limit &amp;D-Gun to start</source>
-        <translation type="obsolete">&amp;D-Gun auf Startposition begrenzen</translation>
-    </message>
-    <message>
-        <source>&amp;Ghosted buildings</source>
-        <translation type="obsolete">&amp;Geistergebäude</translation>
-    </message>
-    <message>
-        <source>Diminishing &amp;metal makers</source>
-        <translation type="obsolete">Abgeschwächte &amp;metal maker</translation>
-    </message>
-    <message>
-        <source>Undeformable map</source>
-        <translation type="obsolete">Undeformierbare Map</translation>
-    </message>
-    <message>
-        <source>Mod options</source>
-        <translation type="obsolete">Modoptionen</translation>
-    </message>
-    <message>
-        <source>&amp;Units</source>
-        <translation type="obsolete">&amp;Einheiten</translation>
-    </message>
-    <message>
-        <source>Battle settings</source>
-        <translation type="obsolete">Battle-Einstellungen</translation>
-    </message>
-    <message>
-        <source>Color:</source>
-        <translation type="obsolete">Farbe:</translation>
-    </message>
-    <message>
-        <source>Team:</source>
-        <translation type="obsolete">Team:</translation>
-    </message>
-    <message>
-        <source>Team Number</source>
-        <translation type="obsolete">Teamnummer</translation>
-    </message>
-    <message>
-        <source>Ally:</source>
-        <translation type="obsolete">Allianz:</translation>
-    </message>
-    <message>
-        <source>Ally Team Number</source>
-        <translation type="obsolete">Allianz Teamnummer</translation>
-    </message>
-    <message>
-        <source>Side:</source>
-        <translation type="obsolete">Seite:</translation>
-    </message>
-    <message>
-        <source>Choose your faction</source>
-        <translation type="obsolete">Wähle deine Fraktion</translation>
-    </message>
-    <message>
-        <source>Do you want to spectate?</source>
-        <translation type="obsolete">Möchtest du zuschauen?</translation>
-    </message>
-    <message>
-        <source>Spectator</source>
-        <translation type="obsolete">Zuschauer</translation>
-    </message>
-    <message>
-        <source>Are you ready?</source>
-        <translation type="obsolete">Bist du bereit?</translation>
-    </message>
-    <message>
-        <source>&amp;Ready</source>
-        <translation type="obsolete">Be&amp;reit</translation>
-    </message>
-    <message>
-        <source>Map info</source>
-        <translation type="obsolete">Mapinfo</translation>
-    </message>
-    <message>
-        <source>Size:</source>
-        <translation type="obsolete">Größe:</translation>
-    </message>
-    <message>
-        <source>Wind:</source>
-        <translation type="obsolete">Wind:</translation>
-    </message>
-    <message>
-        <source>Tidal:</source>
-        <translation type="obsolete">Gezeiten:</translation>
-    </message>
-    <message>
-        <source>3D Preview</source>
-        <translation type="obsolete">3D Vorschau</translation>
-    </message>
-</context>
-<context>
-    <name>connectionWidget</name>
-    <message>
-        <source>Connect to a lobby server </source>
-        <translation type="obsolete">Verbinde mit einem Lobby-Server</translation>
-    </message>
-    <message>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;If you hit connect in the Login tab you will see the client server communication logs here. &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;This is handy if something doesn&apos;t work as expected.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="obsolete">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;Wenn du auf &quot;Verbinden&quot; klickst, siehst du die Serverkommunikation hier.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;Das ist nützlich, wenn etwas nicht wie erwartet funktioniert.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <source>unconnected</source>
-        <translation type="obsolete">unverbunden</translation>
-    </message>
-    <message>
-        <source>Connection status: </source>
-        <translation type="obsolete">Verbindungsstatus: </translation>
-    </message>
-    <message>
-        <source>Login</source>
-        <translation type="obsolete">Login</translation>
-    </message>
-    <message>
-        <source>Profile:</source>
-        <translation type="obsolete">Profil:</translation>
-    </message>
-    <message>
-        <source>user @ taspring.clan-sy.com</source>
-        <translation type="obsolete">user @ taspring.clan-sy.com</translation>
-    </message>
-    <message>
-        <source>&amp;User name:</source>
-        <translation type="obsolete">Ben&amp;utzername:</translation>
-    </message>
-    <message>
-        <source>Lobby username like drZero23 or [Clan]Username</source>
-        <translation type="obsolete">Lobby-Benutzername wie drZero23 oder [Clan]Benutzername</translation>
-    </message>
-    <message>
-        <source>user</source>
-        <translation type="obsolete">Benutzer</translation>
-    </message>
-    <message>
-        <source>&amp;Address:</source>
-        <translation type="obsolete">&amp;Adresse:</translation>
-    </message>
-    <message>
-        <source>Address of the TASServer. Most likely taspring.clan-sy.com</source>
-        <translation type="obsolete">Adresse des TASServers, wahrscheinlich taspring.clan-sy.com</translation>
-    </message>
-    <message>
-        <source>taspring.clan-sy.com</source>
-        <translation type="obsolete">taspring.clan-sy.com</translation>
-    </message>
-    <message>
-        <source>P&amp;ort:</source>
-        <translation type="obsolete">P&amp;ort:</translation>
-    </message>
-    <message>
-        <source>TCP port which is used by the TASServer. Most likely 8200.</source>
-        <translation type="obsolete">TCP Port, der vom TASServer verwendet wird, häufig 8200.</translation>
-    </message>
-    <message>
-        <source>&amp;Password:</source>
-        <translation type="obsolete">&amp;Passwort:</translation>
-    </message>
-    <message>
-        <source>Current Profile:</source>
-        <translation type="obsolete">Aktuelles Profil:</translation>
-    </message>
-    <message>
-        <source>Auto login</source>
-        <translation type="obsolete">Autologin</translation>
-    </message>
-    <message>
-        <source>Remember password</source>
-        <translation type="obsolete">Passwort merken</translation>
-    </message>
-    <message>
-        <source>Logout</source>
-        <translation type="obsolete">Logout</translation>
-    </message>
-    <message>
-        <source>&amp;Register</source>
-        <translation type="obsolete">&amp;Registrieren</translation>
-    </message>
-    <message>
-        <source>&amp;Login</source>
-        <translation type="obsolete">&amp;Login</translation>
-    </message>
-    <message>
-        <source>Simple Login:</source>
-        <translation type="obsolete">Einfacher Login:</translation>
-    </message>
-    <message>
-        <source>Show simple view</source>
-        <translation type="obsolete">Zeige einfache Ansicht</translation>
-    </message>
-    <message>
-        <source>A&amp;ccount</source>
-        <translation type="obsolete">A&amp;ccount</translation>
-    </message>
-    <message>
-        <source>If logged in you can rename your account login (username / login name). Usename [fOO]baR </source>
-        <translation type="obsolete">Wenn du eingeloggt bist, kannst du deinen Account umbenennen.</translation>
-    </message>
-    <message>
-        <source>Rename:</source>
-        <translation type="obsolete">Umbenennen:</translation>
-    </message>
-    <message>
-        <source>&amp;New user name:</source>
-        <translation type="obsolete">&amp;Neuer Benutzername:</translation>
-    </message>
-    <message>
-        <source>R&amp;ename</source>
-        <translation type="obsolete">Umb&amp;enennen</translation>
-    </message>
-    <message>
-        <source>You must be logged in to rename your account (username).</source>
-        <translation type="obsolete">Du musst eingeloggt sein, um deinen Benutzername umbenennen zu können.</translation>
-    </message>
-    <message>
-        <source>Change password:</source>
-        <translation type="obsolete">Ändere Passwort:</translation>
-    </message>
-    <message>
-        <source>&amp;Old password:</source>
-        <translation type="obsolete">&amp;Altes Passwort:</translation>
-    </message>
-    <message>
-        <source>&amp;New password:</source>
-        <translation type="obsolete">&amp;Neues Passwort:</translation>
-    </message>
-    <message>
-        <source>&amp;Change</source>
-        <translation type="obsolete">&amp;Ändern</translation>
-    </message>
-    <message>
-        <source>You must be logged in to change your password.</source>
-        <translation type="obsolete">Du musst eingeloggt sein, um dein Passwort zu ändern.</translation>
-    </message>
-</context>
-<context>
-    <name>gamePasswordWidget</name>
-    <message>
-        <source>Game Password</source>
-        <translation type="obsolete">Game Passwort</translation>
-    </message>
-    <message>
-        <source>This game is password protected.
-Please enter the Password:</source>
-        <translation type="obsolete">Diese Game ist passwortgeschützt.
-Bitte Passwort eingeben:</translation>
+        <translation>Wähle Benutzerfarbe</translation>
     </message>
 </context>
 </TS>

@@ -382,7 +382,7 @@ void BattleChannel::fillModOptions() {
         battleWindowForm->modOptions->setHtml(QString("<font size=\"16\" color=\"red\">") + tr("Please, download %1").arg(m_battle.modName) + "</font>");
         if(QMessageBox::information(0,
                                     tr("Missing content"),
-                                    tr("You don't have the mod or you have broken version.\nDo you want to download it?"),
+                                    tr("You don't have the mod or you have a broken version.\nDo you want to download it?"),
                                     QMessageBox::Yes,
                                     QMessageBox::No) == QMessageBox::Yes) {
             DownloadsModel::getInstance()->startModDownload(m_battle.modName);
@@ -485,7 +485,7 @@ void BattleChannel::updateMapInfo( QString mapName ) {
         battleWindowForm->metalmapWidget->setErrorMessage(mapNotFoundError);
         if(QMessageBox::information(0,
                                     tr("Missing content"),
-                                    tr("You don't have the map or you have broken version.\nDo you want to download it?"),
+                                    tr("You don't have the map or you have a broken version.\nDo you want to download it?"),
                                     QMessageBox::Yes,
                                     QMessageBox::No) == QMessageBox::Yes) {
             DownloadsModel::getInstance()->startMapDownload(mapName);

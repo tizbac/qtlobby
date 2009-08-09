@@ -20,12 +20,11 @@ INSTALLS += target
 desktop.files = src/qtlobby.desktop
 desktop.path = $$INSTALL_ROOT/share/applications
 INSTALLS += desktop
-
-contains( CONFIG, buildbot ) {
-     QMAKE_LFLAGS += -static-libgcc -Wl,-subsystem,windows
-     QMAKE_CXXFLAGS += -g
+contains( CONFIG, buildbot ) { 
+    QMAKE_LFLAGS += -static-libgcc \
+        -Wl,-subsystem,windows
+    QMAKE_CXXFLAGS += -g
 }
-
 
 # SVNDEF := -DSVN_REV=444
 # DEFINES += SVN_REV=444
@@ -63,7 +62,7 @@ HEADERS += src/MainWindow.h \
     src/UnitSyncLib.h \
     src/AudioBackend.h \
     src/Preference.h \
-    src/GamePasswordWidget.h \
+    src/BattlePasswordWidget.h \
     src/BattleUserTreeModel.h \
     src/TreeSortFilterProxyModel.h \
     src/PreferencePathElement.h \
@@ -93,6 +92,7 @@ HEADERS += src/MainWindow.h \
     src/DownloadsDialog.h \
     src/DownloadsModel.h \
     src/ToolBarWidget.h
+
 # src/MapSelector.h \ # not used
 # src/MapElementWidget.h \ # not used
 SOURCES += src/main.cpp \
@@ -127,7 +127,7 @@ SOURCES += src/main.cpp \
     src/UnitSyncLib.cpp \
     src/AudioBackend.cpp \
     src/Preference.cpp \
-    src/GamePasswordWidget.cpp \
+    src/BattlePasswordWidget.cpp \
     src/BattleUserTreeModel.cpp \
     src/TreeSortFilterProxyModel.cpp \
     src/PreferencePathElement.cpp \
@@ -156,6 +156,7 @@ SOURCES += src/main.cpp \
     src/DownloadsDialog.cpp \
     src/DownloadsModel.cpp \
     src/ToolBarWidget.cpp
+
 # src/MapSelector.cpp \ # not used
 # src/MapElementWidget.cpp \ # not used
 QT += gui \
@@ -167,7 +168,7 @@ QT += gui \
 FORMS += ui/MainWidget.ui \
     ui/ConnectionWidget.ui \
     ui/BattleWindowForm.ui \
-    ui/GamePasswordWidget.ui \
+    ui/BattlePasswordWidget.ui \
     ui/AboutWidget.ui \
     ui/AgreementWidget.ui \
     ui/PreferenceWidget.ui \
@@ -181,30 +182,24 @@ FORMS += ui/MainWidget.ui \
     ui/BattleHostingDialog.ui \
     ui/DownloadsDialog.ui \
     ui/ToolBarWidget.ui
+
 # ui/MapSelectorWidget.ui \ # not used
 # ui/AbstractChannelWidget.ui \ # not used
 DISTFILES += doc/ProtocolDescription.xml \
     TODO \
     doc/xml2html.xsl \
     doc/z
-
-
-contains( CONFIG, vc ) {
+contains( CONFIG, vc ) { 
     HEADERS += src/MiniDumper.h
     SOURCES += src/MiniDumper.cpp
     LIBS += QScintilla2.lib
-} else {
-    LIBS += -lqscintilla2
 }
-
-unix {
-    !contains( CONFIG, buildbot ) {
-        HEADERS += src/DBusVisualNotificationBackend.h
-        SOURCES += src/DBusVisualNotificationBackend.cpp
-        QT += dbus
-    }
+else:LIBS += -lqscintilla2
+unix:!contains( CONFIG, buildbot ) { 
+    HEADERS += src/DBusVisualNotificationBackend.h
+    SOURCES += src/DBusVisualNotificationBackend.cpp
+    QT += dbus
 }
-
 RC_FILE += src/qtlobby.rc
 OTHER_FILES += src/sqads.js
 TRANSLATIONS = i18n/qtlobby_de.ts

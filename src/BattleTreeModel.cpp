@@ -181,7 +181,7 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
             .arg( m_battleList[index.row()].spectatorCount );
         if ( role == Qt::ToolTipRole ) {
             Battle b = m_battleList[index.row()];
-            return tr("%1 players battle\n%2 players maximum\n%3 spectators in game")
+            return tr("%1 players in battle\n%2 players maximum\n%3 spectators in battle")
                     .arg( b.playerCount -b.spectatorCount )
                     .arg( b.maxPlayers )
                     .arg( b.spectatorCount );

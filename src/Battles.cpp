@@ -9,7 +9,7 @@ using namespace std;
 
 Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
     battleManager = new BattleManager( this );
-    gamePasswordWidget = new GamePasswordWidget();
+    battlePasswordWidget = new BattlePasswordWidget();
 
     settings = Settings::Instance();
 
@@ -60,7 +60,7 @@ Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
              this, SLOT( doubleClicked( const QModelIndex & ) ) );
     connect( this, SIGNAL( wantJoinBattle( unsigned int, QString ) ),
              this, SLOT( joinBattleCommand( unsigned int, QString ) ) );
-    connect( gamePasswordWidget, SIGNAL( wantJoinBattle( unsigned int, QString ) ),
+    connect( battlePasswordWidget, SIGNAL( wantJoinBattle( unsigned int, QString ) ),
              this, SLOT( joinBattleCommand( unsigned int, QString ) ) );
     connect( filterPasswordedAction, SIGNAL( toggled( bool ) ),
              this, SLOT( setFilterPasswordedSlot( bool ) ) );
@@ -270,9 +270,9 @@ void Battles::doubleClicked( const QModelIndex & index ) {
     Battle b = battleManager->model()-> data(
             battleManager->proxyModel()->mapToSource( index ), Qt::UserRole ).value<Battle>();
     if ( !b.isLocked && b.isPasswordProtected ) {
-        gamePasswordWidget->setBattleId( b.id );
-        gamePasswordWidget->resetPassword();
-        gamePasswordWidget->show();
+        battlePasswordWidget->setBattleId( b.id );
+        battlePasswordWidget->resetPassword();
+        battlePasswordWidget->show();
     } else {
         emit wantJoinBattle( b.id, "" );
     }

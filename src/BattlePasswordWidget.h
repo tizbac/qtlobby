@@ -1,21 +1,18 @@
 // $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
-#ifndef GAMEPASSWORDWIDGET_H
-#define GAMEPASSWORDWIDGET_H
+#ifndef BATTLEPASSWORDWIDGET_H
+#define BATTLEPASSWORDWIDGET_H
 
 #include <QDialog>
 #include <QDebug>
 
-#include "ui_GamePasswordWidget.h"
+#include "ui_BattlePasswordWidget.h"
 
-/**
-        @author Joachim Schiele <js@lastlog.de>
-*/
-class GamePasswordWidget : public QDialog, private Ui::GamePasswordWidget {
+class BattlePasswordWidget : public QDialog, private Ui::BattlePasswordWidget {
     Q_OBJECT
 public:
-    GamePasswordWidget(QDialog *parent = 0);
-    ~GamePasswordWidget();
+    BattlePasswordWidget(QDialog *parent = 0);
+    ~BattlePasswordWidget();
     void setBattleId(int);
     void resetPassword();
 private:

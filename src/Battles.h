@@ -17,7 +17,7 @@
 #include "BattleTreeModel.h"
 #include "BattleManager.h"
 #include "Users.h"
-#include "GamePasswordWidget.h"
+#include "BattlePasswordWidget.h"
 #include "TreeSortFilterProxyModel.h"
 #include "UnitSyncLib.h"
 #include "Settings.h"
@@ -70,7 +70,7 @@ protected:
     QString username;
     Users* users;
     QUrl url;
-    GamePasswordWidget* gamePasswordWidget;
+    BattlePasswordWidget* battlePasswordWidget;
     QSettings* settings;
     int battleCount;
     QMenu* m_menu;

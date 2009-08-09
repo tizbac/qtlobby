@@ -118,7 +118,7 @@ void ConnectionWidget::establishConnection() {
 
     if ( index == -1 ) {
         QMessageBox::critical( this, tr("No Profile selected"),
-                               tr("You have to add a profile in the 'Profile' tab first before you can connect to a server.") );
+                               tr("You have to add a profile first before you can connect to a server.") );
         return;
     }
     QUrl url = profileComboBox->itemData(index, Qt::UserRole ).toUrl();

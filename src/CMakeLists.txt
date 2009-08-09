@@ -35,7 +35,7 @@ set(qtlobby_SRCS
     UnitSyncLib.cpp 
     AudioBackend.cpp 
     Preference.cpp 
-    GamePasswordWidget.cpp  # MapSelector.cpp  # not used
+    BattlePasswordWidget.cpp  # MapSelector.cpp  # not used
     BattleUserTreeModel.cpp 
     TreeSortFilterProxyModel.cpp  # MapElementWidget.cpp  # not used
     PreferencePathElement.cpp 
@@ -98,7 +98,7 @@ set(qtlobby_SRCS_H
     UnitSyncLib.h 
     AudioBackend.h 
     Preference.h 
-    GamePasswordWidget.h  # MapSelector.h  # not used
+    BattlePasswordWidget.h  # MapSelector.h  # not used
     BattleUserTreeModel.h 
     TreeSortFilterProxyModel.h  # MapElementWidget.h  # not used
     PreferencePathElement.h 
@@ -143,7 +143,7 @@ set( qtlobby_UIS
 ../ui/ConnectionWidget.ui
 ../ui/DownloadsDialog.ui
 ../ui/GLProgressDialog.ui
-../ui/GamePasswordWidget.ui
+../ui/BattlePasswordWidget.ui
 ../ui/LoginDialog.ui
 ../ui/MapOverviewDialog.ui
 ../ui/PreferencePathElement.ui
