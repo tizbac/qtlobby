@@ -316,14 +316,12 @@ void MainWindow::about() {
 }
 
 void MainWindow::showConnectionWidget( bool ) {
-    //FIXME this code might be unneeded, please remove it if you are (js)
-    //   connectionWidget->hide();
     connectionWidget->show();
 }
 
 void MainWindow::createTrayIcon() {
     trayIcon = new QSystemTrayIcon( this );
-    QIcon icon = QIcon( ":/icons/logo.xpm" );
+    QIcon icon = QIcon( ":/icons/qtlobby-logo.png" );
 
     trayIconMenu = new QMenu( this );
 
