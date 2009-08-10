@@ -63,6 +63,7 @@ class Main:
                     revision = a
                 elif o in ("-h", "--help"):
                     self.SendHelp(user)
+                    return
 
             self.Translate(user, url, revision)
             return
@@ -96,6 +97,7 @@ class Main:
                 self.revision = a
             elif o in ("-h", "--help"):
                 self.SendHelp(user)
+                return
         
         if not self.profile in self.config['buildbot']:
             self.SayPrivate(user, "Could not find profile in config file.")
