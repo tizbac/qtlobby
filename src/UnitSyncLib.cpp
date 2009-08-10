@@ -24,6 +24,8 @@ UnitSyncLib::UnitSyncLib( QObject *parent ) : QObject( parent ) {
             //     qDebug() << "library is usable";
             TestCall();
             //     QMessageBox::information( NULL, "unitSyncLib", "library loaded");
+            initMapNamesCache();
+            initModNamesCache();
         } else {
             qDebug() << tr("UnitSyncLibrary is not usable!");
         }

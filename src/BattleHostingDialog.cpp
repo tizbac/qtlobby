@@ -81,7 +81,11 @@ void BattleHostingDialog::setCurrentUsername(QString username) {
 void BattleHostingDialog::onReboot() {
     UnitSyncLib* unitSyncLib = UnitSyncLib::getInstance();
     m_ui->modComboBox->clear();
-    m_ui->modComboBox->addItems(QStringList(unitSyncLib->getModNames().toList()));
+    QList<QString> list = unitSyncLib->getModNames().toList();
+    qSort(list.begin(), list.end());
+    m_ui->modComboBox->addItems(QStringList(list));
     m_ui->mapComboBox->clear();
-    m_ui->mapComboBox->addItems(QStringList(unitSyncLib->getMapNames().toList()));
+    list = unitSyncLib->getMapNames().toList();
+    qSort(list.begin(), list.end());
+    m_ui->mapComboBox->addItems(QStringList(list));
 }
