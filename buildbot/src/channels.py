@@ -37,7 +37,6 @@ class Main:
 		joinChan = self.config['channels']['join']
 		for channel in joinChan:
 			self.JoinChannel(channel)
-			self.joinedChannels.append(channel)
 
 	def onsaidprivate(self,user,message):
 		if user in self.operator == False:
@@ -46,11 +45,9 @@ class Main:
 		if "!chan.join" in args and len(args) > 1:
 			for count in range(1, len(args)):
 				self.JoinChannel(args[count])
-				self.joinedChannels.append(args[count])
 		elif "!chan.leave" in args and len(args) > 1:
 			for count in range(1, len(args)):
 				self.LeaveChannel(args[count])
-				self.joinedChannels.remove(args[count])
 		elif "!chan.list" in args:
 			joinedChan = ""
 			for channel in self.joinedChannels:
@@ -66,7 +63,11 @@ class Main:
 		self.client.sock.send ("SAYPRIVATE %s %s \n"% (user, message) )
 	
 	def JoinChannel(self, channel):
-		self.client.sock.send ("JOIN %s\n" % (channel))        
+		if not channel in self.joinedChannels:
+			self.client.sock.send ("JOIN %s\n" % (channel))
+			self.joinedChannels.append(channel)
 		
 	def LeaveChannel(self, channel):
-		self.client.sock.send("LEAVE %s\n" % (channel))
+		if channel in self.joinedChannels:
+			self.client.sock.send("LEAVE %s\n" % (channel))
+			self.joinedChannels.remove(channel)
