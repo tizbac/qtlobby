@@ -152,13 +152,11 @@ void Users::receiveCommand( Command command ) {
         int id = command.attributes[0].toInt();
         battleIdUserManagerMap[id]->model()->clear();
         battleIdUserManagerMap.remove( id );
-        updateUserList();
     } else if ( command.name == "FORCEQUITBATTLE" ) {
         User u = infoChannelUserManager->getUser( url.userName() );
         battleIdUserManagerMap[u.joinedBattleId]->delUser( url.userName() );
         u.joinedBattleId = -1;
         modUserInAllManagers( u );
-        updateUserList();
     } else if ( command.name == "JOINED" ) {
         channelUserManagerMap[command.attributes[0]]->addUser( infoChannelUserManager->getUser( command.attributes[1] ) );
     } else if ( command.name == "JOIN" ) {
