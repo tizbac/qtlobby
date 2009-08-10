@@ -432,11 +432,13 @@ QString Users::teamPlayerSpecCount() {
                 teamCounter[tn] = 1;
         }
         QList<int> vals = teamCounter.values();
-        int specs = vals.takeFirst();
-        QStringList ret;
-        foreach( int val, vals)
-            ret.append(QString::number(val));
-        return QString(" (%1+%2)").arg(ret.join(":")).arg(QString::number(specs));
+        if( !vals.empty() ) {
+            int specs = vals.takeFirst();
+            QStringList ret;
+            foreach( int val, vals)
+                ret.append(QString::number(val));
+            return QString(" (%1+%2)").arg(ret.join(":")).arg(QString::number(specs));
+        }
     }
     return "";
 }
