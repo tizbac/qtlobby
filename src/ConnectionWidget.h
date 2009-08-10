@@ -11,6 +11,7 @@
 #include <QMessageBox>
 #include <QWizard>
 #include <QSound>
+#include <QKeyEvent>
 
 #include <QProgressDialog>
 #include <QTimer>
@@ -23,51 +24,53 @@
  * Handles connections to the Server. Manages the profiles.
  */
 class ConnectionWidget : public QDialog, public Ui::ConnectionWidget {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  ConnectionWidget( ServerContextState*, QWidget *parent = 0 );
-  ~ConnectionWidget();
+    ConnectionWidget( ServerContextState*, QWidget *parent = 0 );
+    ~ConnectionWidget();
 signals:
-  void emitConfiguration( QUrl );
-  void establishConnection_();
-  void usernameChanged(QString username);
+    void emitConfiguration( QUrl );
+    void establishConnection_();
+    void usernameChanged(QString username);
 public slots:
-  void show_if_wanted();
-  void modifyServerProfile(signed int index, QUrl url);
-  void logWrite( QString );
-  void toggleAutoLogin();
-  void toggleRememberPassword();
-  void establishConnection();
-  void addDefaultServers();
-  void comboBoxCurrentIndexChanged(int index);
-  void updateComboBoxes();
-  void saveModifiedProfile();
-  void createNewProfile();
-  void delSelectedProfile();
-  void registerNewAccount();
-  void renameLoginNameFeedbackSuccess(QString);
-  void renameLoginNameFeedbackFailure(QString);
-  void changePasswordSuccess( QString );
-  void changePasswordFailure( QString );
-  void onLogin();
-  void updateCountdown();
-  void establishSimpleConnection();
-  void simpleViewChanged();
+    void show_if_wanted();
+    void modifyServerProfile(signed int index, QUrl url);
+    void logWrite( QString );
+    void toggleAutoLogin();
+    void toggleRememberPassword();
+    void establishConnection();
+    void addDefaultServers();
+    void comboBoxCurrentIndexChanged(int index);
+    void updateComboBoxes();
+    void saveModifiedProfile();
+    void createNewProfile();
+    void delSelectedProfile();
+    void registerNewAccount();
+    void renameLoginNameFeedbackSuccess(QString);
+    void renameLoginNameFeedbackFailure(QString);
+    void changePasswordSuccess( QString );
+    void changePasswordFailure( QString );
+    void onLogin();
+    void updateCountdown();
+    void establishSimpleConnection();
+    void simpleViewChanged();
+protected:
+    void keyPressEvent(QKeyEvent* event);
 private slots:
-  void connectionStatusChanged(ConnectionState state);
-  void renameLoginName();
-  void changePassword();
+    void connectionStatusChanged(ConnectionState state);
+    void renameLoginName();
+    void changePassword();
 private:
-  QTimer *countdownTimer;
-  QProgressDialog *countdownDialog;
-  bool connected;
-  int countdown;
-  QSettings* settings;
-  ServerContextState* serverContextState;
-  void lockInterface();
-  void unlockInterface();
-  void unlockRenameAndChangePassword();
-  void lockRenameAndChangePassword();
+    QTimer *countdownTimer;
+    QProgressDialog *countdownDialog;
+    bool connected;
+    int countdown;
+    QSettings* settings;
+    ServerContextState* serverContextState;
+    void lockInterface();
+    void unlockInterface();
+    void unlockRenameAndChangePassword();
+    void lockRenameAndChangePassword();
 };
 
 #endif

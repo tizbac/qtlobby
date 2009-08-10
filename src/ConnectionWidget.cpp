@@ -1,6 +1,7 @@
 // $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "ConnectionWidget.h"
+#include <QProgressBar>
 
 ConnectionWidget::ConnectionWidget( ServerContextState* serverContextState,
                                     QWidget *parent ) : QDialog( parent ) {
@@ -467,13 +468,12 @@ void ConnectionWidget::show_if_wanted() {
 
 void ConnectionWidget::updateCountdown() {
     if(countdownDialog->wasCanceled()){
-        //qDebug()<<"CANGEL MAN CANGLE";
         countdownDialog->cancel();
         countdownTimer->stop();
         return;
     }
     countdown--;
-    countdownDialog->setValue(countdown);
+    countdownDialog->setValue(countdownDialog->maximum() - countdown);
     if(countdown <=0){
         countdownDialog->done(0);
         countdownTimer->stop();
@@ -488,9 +488,15 @@ void ConnectionWidget::onLogin() {
         serverContextState->forceDisconnect();
         countdownTimer = new QTimer(this);
         //FIXME is reported to be too long, should be faster. Why do we need this? (mw)
-        countdownDialog = new QProgressDialog(tr("Reconnecting..."),tr("Nooo!"),0,10,this);
+        //tas server dislikes when user reconnects faster then in 5 seconds,
+        //so i changed it to 5 seconds for now (ko)
+        countdownDialog = new QProgressDialog(tr("Reconnecting..."),tr("Nooo!"),0,5,this);
+        QProgressBar* bar = new QProgressBar(countdownDialog);
+        bar->setTextVisible(false);
+        countdownDialog->setBar(bar);
         countdownDialog->setValue(countdown);
         countdownDialog->setWindowModality(Qt::WindowModal);
+        countdownDialog->setLabelText(tr("Wait 5 seconds to reconnect"));
         countdownDialog->show();
         countdownTimer->start(1000);
         connect(countdownTimer, SIGNAL(timeout()), this, SLOT(updateCountdown()));
@@ -498,4 +504,11 @@ void ConnectionWidget::onLogin() {
         return;
     }
     establishConnection();
+}
+
+void ConnectionWidget::keyPressEvent(QKeyEvent* event) {
+    if(event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
+        onLogin();
+    }
+    QWidget::keyPressEvent(event);
 }

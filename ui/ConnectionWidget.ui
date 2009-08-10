@@ -221,10 +221,10 @@
                    <string>Logout</string>
                   </property>
                   <property name="autoDefault">
-                   <bool>true</bool>
+                   <bool>false</bool>
                   </property>
                   <property name="default">
-                   <bool>true</bool>
+                   <bool>false</bool>
                   </property>
                  </widget>
                 </item>
@@ -240,7 +240,7 @@
                    <bool>true</bool>
                   </property>
                   <property name="default">
-                   <bool>true</bool>
+                   <bool>false</bool>
                   </property>
                  </widget>
                 </item>
@@ -483,6 +483,9 @@
                  <widget class="QPushButton" name="simpleLoginButton">
                   <property name="text">
                    <string>Login</string>
+                  </property>
+                  <property name="default">
+                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
@@ -819,14 +822,14 @@ p, li { white-space: pre-wrap; }
   <tabstop>profilePortSpinBox</tabstop>
   <tabstop>autoLoginCheckBox</tabstop>
   <tabstop>rememberPassCheckBox</tabstop>
-  <tabstop>loginButton</tabstop>
-  <tabstop>registerUserPushButton</tabstop>
   <tabstop>logoutButton</tabstop>
-  <tabstop>simpleUsernameEdit</tabstop>
-  <tabstop>simplePasswdEdit</tabstop>
-  <tabstop>simpleLoginButton</tabstop>
+  <tabstop>registerUserPushButton</tabstop>
+  <tabstop>loginButton</tabstop>
   <tabstop>simpleDetailedSwitch</tabstop>
   <tabstop>connectionLogTextBrowser</tabstop>
+  <tabstop>simpleLoginButton</tabstop>
+  <tabstop>simpleUsernameEdit</tabstop>
+  <tabstop>simplePasswdEdit</tabstop>
   <tabstop>newUsernameLineEdit</tabstop>
   <tabstop>renameButton</tabstop>
   <tabstop>oldPasswordLineEdit</tabstop>
