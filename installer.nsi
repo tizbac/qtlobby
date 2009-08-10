@@ -55,6 +55,7 @@ Section "MainSection" SEC01
   File "..\build\msvcp90.dll"
   File "..\build\msvcr90.dll"
   File "..\build\libgcc_s_dw2-1.dll"
+  File "..\build\mingwm10.dll"
   File "..\build\exchndl.dll"
   File "..\build\qscintilla2.dll"   
   File "..\build\QtCore4.dll"       
