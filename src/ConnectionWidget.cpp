@@ -101,13 +101,6 @@ ConnectionWidget::ConnectionWidget( ServerContextState* serverContextState,
     registerUserPushButton->setEnabled(false); // Remove when registering is working correctly
 
     updateComboBoxes();
-    profileModified = false;
-
-    msgBox.setText(tr("Profile has been modified."));
-    msgBox.setInformativeText(tr("Do you want to save your changes?"));
-    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-    msgBox.setDefaultButton(QMessageBox::Save);
-
 }
 
 ConnectionWidget::~ConnectionWidget() { }
@@ -230,7 +223,6 @@ void ConnectionWidget::comboBoxCurrentIndexChanged( int index ) {
     profileUserNameLineEdit->setText( url.userName() );
     profileServerAddressLineEdit->setText( url.host() );
     profilePortSpinBox->setValue( url.port() );
-    profileModified = false;
 }
 
 // profile edit tab: when a profile was altered the values need to be
@@ -245,10 +237,10 @@ void ConnectionWidget::saveModifiedProfile() {
     url.setUserName( profileUserNameLineEdit->text() );
     url.setHost( profileServerAddressLineEdit->text() );
     url.setPort( profilePortSpinBox->value() );
+    url.setPassword( passwordLineEdit->text() );
     //qDebug()<<"Modify profile.";
 
     modifyServerProfile( index, url );
-    profileModified = false;
 }
 
 // this function handles the change of combobox entries which happen
@@ -281,7 +273,6 @@ void ConnectionWidget::updateComboBoxes() {
         if ( i == index )
             if( rememberPassCheckBox->isChecked()) {
 
-            //qDebug() << "Laeta paekallee";
             passwordLineEdit->setText( url.password() );
         }
         profileComboBox->insertItem( i, QString( urldescription ), url );
@@ -290,14 +281,7 @@ void ConnectionWidget::updateComboBoxes() {
 }
 
 void ConnectionWidget::createNewProfile() {
-    if(profileModified) {
-        int ret = msgBox.exec();
-        if(ret == QMessageBox::Save) {
-            saveModifiedProfile();
-        } else if (ret == QMessageBox::Cancel) {
-            return;
-        }
-    }
+    saveModifiedProfile();
     QList<QVariant> list = settings->value( "ServerProfiles" ).toList();
 
     QUrl url;
@@ -309,7 +293,6 @@ void ConnectionWidget::createNewProfile() {
     list.prepend( url);
     settings->setValue( "ServerProfiles", list );
     updateComboBoxes();
-    profileModified = false;
 }
 
 void ConnectionWidget::delSelectedProfile() {
@@ -321,7 +304,6 @@ void ConnectionWidget::delSelectedProfile() {
         settings->setValue( "SelectedServerProfile", 0 );
         updateComboBoxes();
     }
-    profileModified = false;
 }
 
 void ConnectionWidget::connectionStatusChanged( ConnectionState state ) {
@@ -500,14 +482,7 @@ void ConnectionWidget::updateCountdown() {
 }
 
 void ConnectionWidget::onLogin() {
-    if(profileModified) {
-        int ret = msgBox.exec();
-        if(ret == QMessageBox::Save) {
-            saveModifiedProfile();
-        } else if (ret == QMessageBox::Cancel) {
-            return;
-        }
-    }
+    saveModifiedProfile();
     if(connected) {
         countdown = 10;
         serverContextState->forceDisconnect();
@@ -523,17 +498,4 @@ void ConnectionWidget::onLogin() {
         return;
     }
     establishConnection();
-    profileModified = false;
-}
-
-void ConnectionWidget::on_profileUserNameLineEdit_textChanged(QString ) {
-    profileModified = true;
-}
-
-void ConnectionWidget::on_profileServerAddressLineEdit_textChanged(QString ) {
-    profileModified = true;
-}
-
-void ConnectionWidget::on_profilePortSpinBox_valueChanged(int ) {
-    profileModified = true;
 }
