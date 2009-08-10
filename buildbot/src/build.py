@@ -20,11 +20,12 @@ class QtLobbyBuilder(Thread):
                 self.revision = "HEAD"             
                 self.abort = False
 		self.dir = targetDir
+		self.config = "debug"
 
         def runCommand(self, command):
                 print command         
                 p = Popen(command, stdout=PIPE, stderr=PIPE, shell=True)
-                (stdout, stderr) = p.communicate()                      
+                (stdout, stderr) = p.communicate()
                 if p.returncode != 0:                                   
                         self.onMessage("Error executing " + command + "!\n" + str(stderr))
                         raise CommandError("Command failed")                              
@@ -39,17 +40,17 @@ class QtLobbyBuilder(Thread):
                         self.runCommand("svn up -r " + rev)      
                         rev = self.runCommand("svn up | perl -e '<> =~ /At revision (\d+)./; print $1;'")
                         self.onMessage("Building revision "+rev+"...")
-                        self.runCommand("qmake -spec win32-x-g++ CONFIG+=buildbot CONFIG+=release")
+                        self.runCommand("qmake -spec win32-x-g++ CONFIG+=buildbot CONFIG+="+self.config)
                         self.runCommand("make")
-                        #os.chdir("release")
-                        #self.runCommand("objcopy --only-keep-debug qtlobby.exe qtlobby.dbg")
-                        #self.runCommand("strip --strip-debug --strip-unneeded qtlobby.exe")
-                        #os.chdir("..")
+                        os.chdir(self.config)
+                        self.runCommand("objcopy --only-keep-debug qtlobby.exe qtlobby.dbg")
+                        self.runCommand("strip --strip-debug --strip-unneeded qtlobby.exe")
+                        os.chdir("..")
                         self.onMessage("Compiling installer...")
                         self.runCommand("makensis installer.nsi")
-                        self.runCommand("mv release/qtlobby.exe ~apache/qtlobby.oxnull.net/htdocs/qtlobby.r"+rev+".exe")
+                        self.runCommand("mv "+self.config+"/qtlobby.exe ~apache/qtlobby.oxnull.net/htdocs/qtlobby.r"+rev+".exe")
                         self.runCommand("mv qtlobby_installer.exe ~apache/qtlobby.oxnull.net/htdocs/qtlobby.r"+rev+"_installer.exe")
-                        #self.runCommand("mv release/qtlobby.dbg ~apache/qtlobby.oxnull.net/htdocs/qtlobby.r"+rev+"_symbols.dbg")
+                        self.runCommand("mv "+self.config+"/qtlobby.dbg ~apache/qtlobby.oxnull.net/htdocs/qtlobby.r"+rev+"_symbols.dbg")
                         self.onCompleted({"Exe": "http://qtlobby.oxnull.net/qtlobby.r"+rev+".exe", \
                                           "Installer": "http://qtlobby.oxnull.net/qtlobby.r"+rev+"_installer.exe", \
                                           "Debug symbols": "http://qtlobby.oxnull.net/qtlobby.r"+rev+"_symbols.dbg"})
@@ -68,6 +69,7 @@ def completed(links):
                 print k + ": " + links[k]
 
 if __name__ == "__main__":
-        builder = QtLobbyBuilder(message, completed)
-        builder.revision = 347
+        builder = QtLobbyBuilder("../qtlobby", message, completed)
+	builder.revision = "HEAD"
         builder.start()
+
