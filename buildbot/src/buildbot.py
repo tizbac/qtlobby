@@ -31,7 +31,10 @@ import configobj
 
 class Main:
     operator = []
-
+    isBusy = False
+    profile = "debug"
+    revision = "HEAD"
+    
     def onload(self,tasc):
         self.client = tasc
         self.app = tasc.main
@@ -44,34 +47,37 @@ class Main:
     def onsaidprivate(self,user,message):
         if message.startswith("!build") == False or user in self.operator == False:
             return
+
         try:
             opts, args = getopt.gnu_getopt(message.split(), "h", ["profile=", "revision=", "help"])
         except getopt.GetoptError, err:
             self.SayPrivate(user, err)
             return;
-        profile = "QtLobby"
-        revision = "HEAD"
+
         help = False
+
         for o, a in opts:
             if o == "--profile":
-                profile = a
+                self.profile = a
             if o == "--revision":
-                revision = a
+                self.revision = a
             elif o in ("-h", "--help"):
                 help = True
         
         if help:
             self.SendHelp(user)
-            return;
-        
-        if profile == "":
-            self.SayPrivate(user, "Please specify profile. For more information use --help.")
             return
-        elif profile == "QtLobby":
+        if not self.profile in self.config['buildbot']:
+            self.SayPrivate(user, "Could not find profile in config file.")
+            return
+        if self.config['buildbot'][self.profile]['builddir'] == "rpm":
+            self.SayPrivate(user, "Rpm packaging not implemented.")
+            return
+        else:
             self.employer = user
-            self.SayPrivate(user, "Building profile " + profile)
-            builder = build.QtLobbyBuilder(self.onMessage, self.onCompleted)
-            builder.revision = revision
+            self.SayPrivate(user, "Building QtLobby with profile " + self.profile + " on revision " + self.revision)
+            builder = build.QtLobbyBuilder(self.config['buildbot'][self.profile]['builddir'], self.onMessage, self.onCompleted)
+            builder.revision = self.revision
             builder.start()
     
     def onMessage(self, msg):
@@ -87,6 +93,6 @@ class Main:
         
     def SendHelp(self, user):
         self.SayPrivate(user, "Help:")
-        self.SayPrivate(user, "--profile (required) The build profile.")
+        self.SayPrivate(user, "--profile The build profile.")
         self.SayPrivate(user, "--revision The targeted revision.")
         self.SayPrivate(user, "-h --help Displays this help text.")
