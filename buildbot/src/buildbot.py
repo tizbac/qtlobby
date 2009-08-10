@@ -28,6 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import build
 import getopt
 import configobj
+import translate
 
 class Main:
     operator = []
@@ -45,16 +46,48 @@ class Main:
 
         
     def onsaidprivate(self,user,message):
-        if message.startswith("!build") == False or user in self.operator == False:
+        if user in self.operator == False:
             return
+        elif message.startswith("!translate"):
+            try:
+                opts, args = getopt.gnu_getopt(message.split(), "u:r:h", ["url=", "revision=", "help"])
+            except getopt.GetoptError, err:
+                self.SayPrivate(user, err)
+                return;
+            url = ""
+            revision = ""
+            for o, a in opts:
+                if o == "--url":
+                    url = a
+                if o == "--revision":
+                    revision = a
+                elif o in ("-h", "--help"):
+                    self.SendHelp(user)
 
+            self.Translate(user, url, revision)
+            return
+        elif message.startswith("!build"):
+            self.Build(user, message)
+
+    def Translate(self, user, url, revision):
+        if revision == "":
+            self.SayPrivate(user, "You are missing a revision.")
+            return
+        elif url == "":
+            self.SayPrivate(user, "You are missing an url.")
+            return
+        else:
+            self.SayPrivate(user, "Translating url " + url + " with revision " + revision)
+            translator = translate.QtLobbyStackTranslator()
+            message = translator.translate(url, int(revision))
+            self.SayPrivate(user, message)
+
+    def Build(self, user, message):
         try:
             opts, args = getopt.gnu_getopt(message.split(), "h", ["profile=", "revision=", "help"])
         except getopt.GetoptError, err:
             self.SayPrivate(user, err)
             return;
-
-        help = False
 
         for o, a in opts:
             if o == "--profile":
@@ -62,11 +95,8 @@ class Main:
             if o == "--revision":
                 self.revision = a
             elif o in ("-h", "--help"):
-                help = True
+                self.SendHelp(user)
         
-        if help:
-            self.SendHelp(user)
-            return
         if not self.profile in self.config['buildbot']:
             self.SayPrivate(user, "Could not find profile in config file.")
             return
@@ -93,6 +123,10 @@ class Main:
         
     def SendHelp(self, user):
         self.SayPrivate(user, "Help:")
-        self.SayPrivate(user, "--profile The build profile.")
-        self.SayPrivate(user, "--revision The targeted revision.")
         self.SayPrivate(user, "-h --help Displays this help text.")
+        self.SayPrivate(user, "!build")
+        self.SayPrivate(user, "     --profile The build profile.")
+        self.SayPrivate(user, "     --revision The targeted revision.")
+        self.SayPrivate(user, "!translate")
+        self.SayPrivate(user, "     --url The url where to download the stacktrace from.")
+        self.SayPrivate(user, "     --revision The targeted subversion revision.")
