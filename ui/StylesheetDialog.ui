@@ -67,7 +67,7 @@
    <sender>loadPushButton</sender>
    <signal>clicked()</signal>
    <receiver>StylesheetDialog</receiver>
-   <slot>open()</slot>
+   <slot>load()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>38</x>

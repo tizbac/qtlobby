@@ -3,6 +3,7 @@
 #include "StylesheetDialog.h"
 #include "ui_StylesheetDialog.h"
 #include <Qsci/qscilexercss.h>
+#include <QFileDialog>
 
 StylesheetDialog::StylesheetDialog(QWidget *parent) :
         QDialog(parent),
@@ -28,14 +29,29 @@ void StylesheetDialog::changeEvent(QEvent *e) {
 }
 
 void StylesheetDialog::save() {
-
+    QString filename = QFileDialog::getSaveFileName(this,
+                                                    tr("Seleft file to save stylesheet"),
+                                                    QDir::currentPath(),
+                                                    "*.qss");
+    if(filename.isEmpty()) return;
+    QFile f(filename);
+    f.open(QIODevice::WriteOnly);
+    f.write(m_ui->styleSheetTextEdit->text().toUtf8());
+    f.close();
 }
 
 void StylesheetDialog::load() {
-
+QString filename = QFileDialog::getOpenFileName(this,
+                                                    tr("Seleft stylesheet to load"),
+                                                    QDir::currentPath(),
+                                                    "*.qss");
+    if(filename.isEmpty()) return;
+    QFile f(filename);
+    f.open(QIODevice::ReadOnly);
+    m_ui->styleSheetTextEdit->setText(f.readAll());
+    f.close();
 }
 
 void StylesheetDialog::apply() {
     qApp->setStyleSheet(m_ui->styleSheetTextEdit->text());
 }
-
