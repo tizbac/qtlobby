@@ -32,7 +32,6 @@ import translate
 
 class Main:
     operator = []
-    isBusy = False
     profile = "debug"
     revision = "HEAD"
     employer = ""
@@ -45,7 +44,7 @@ class Main:
         self.config = configobj.ConfigObj("FlexBot.conf")
         self.config.list_values = True
         self.operator = self.config['buildbot']['operator']
-
+        self.builder = build.QtLobbyBuilder(self.config['buildbot'][self.profile]['builddir'], self.onMessage, self.onCompleted)
 
     def onsaid(self, channel,user,message):
         self.sayTo("Marcel", message)
@@ -55,9 +54,6 @@ class Main:
         
     def onsaidprivate(self,user,message):
         if not user in self.operator:
-            return
-        if self.isBusy == True:
-            self.sayTo(user, "Build process already in running.")
             return
         if message.startswith("!translate"):
             try:
@@ -75,13 +71,11 @@ class Main:
                 elif o in ("-h", "--help"):
                     self.SendHelp(user)
                     return
-            self.isBusy = True
             self.Translate(user, url, revision)
-            self.isBusy = False
             return
         elif message.startswith("!build"):
-            self.isBusy = True
             self.Build(user, message)
+            return
 
     def Translate(self, user, url, revision):
         if revision == "":
@@ -101,7 +95,6 @@ class Main:
             opts, args = getopt.gnu_getopt(message.split(), "h", ["profile=", "revision=", "help"])
         except getopt.GetoptError, err:
             self.sayTo(user, err)
-            self.isBusy = False
             return
 
         for o, a in opts:
@@ -111,23 +104,24 @@ class Main:
                 self.revision = a
             elif o in ("-h", "--help"):
                 self.SendHelp(user)
-                self.isBusy = False
                 return
         
         if not self.profile in self.config['buildbot']:
             self.sayTo(user, "Could not find profile in config file.")
-            self.isBusy = False
             return
         if self.config['buildbot'][self.profile]['builddir'] == "rpm":
             self.sayTo(user, "Rpm packaging not implemented.")
-            self.isBusy = False
             return
         else:
-            self.employer = user
-            self.sayTo(user, "Building QtLobby with profile " + self.profile + " on revision " + self.revision)
-            builder = build.QtLobbyBuilder(self.config['buildbot'][self.profile]['builddir'], self.onMessage, self.onCompleted)
-            builder.revision = self.revision
-            builder.start()
+            if self.builder.isRunning == True:
+                self.sayTo(user, "A build process is already running.")
+                return
+            else:
+                self.employer = user
+                self.sayTo(user, "Building QtLobby with profile " + self.profile + " on revision " + self.revision)
+                self.builder.dir = self.config['buildbot'][self.profile]['builddir']
+                self.builder.revision = self.revision
+                self.builder.start()
     
     def onMessage(self, msg):
         self.sayTo(self.employer, msg)
@@ -136,7 +130,6 @@ class Main:
         self.sayTo(self.employer, "Build complete.")
         for k in links.keys():
             self.sayTo(self.employer, k + ": " + links[k])
-        self.isBusy = False
         return
         
     def sayTo(self, user, message):
