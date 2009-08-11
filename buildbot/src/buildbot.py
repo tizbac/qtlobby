@@ -113,15 +113,18 @@ class Main:
             self.sayTo(user, "Rpm packaging not implemented.")
             return
         else:
-            if self.builder.isRunning == True:
+            if self.builder.isAlive() == True:
                 self.sayTo(user, "A build process is already running.")
                 return
             else:
-                self.employer = user
-                self.sayTo(user, "Building QtLobby with profile " + self.profile + " on revision " + self.revision)
-                self.builder.dir = self.config['buildbot'][self.profile]['builddir']
-                self.builder.revision = self.revision
-                self.builder.start()
+                try:
+                    self.employer = user
+                    self.builder.dir = self.config['buildbot'][self.profile]['builddir']
+                    self.builder.revision = self.revision
+                    self.builder.start()
+                    self.sayTo(user, "Building QtLobby with profile " + self.profile + " on revision " + self.revision)
+                except Exception, err:
+                    self.sayTo(user, "A build is already in progress.")
     
     def onMessage(self, msg):
         self.sayTo(self.employer, msg)

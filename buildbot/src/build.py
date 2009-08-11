@@ -21,7 +21,6 @@ class QtLobbyBuilder(Thread):
                 self.abort = False
 		self.dir = targetDir
 		self.config = "debug"
-                self.isRunning = False
 
         def runCommand(self, command):
                 print command         
@@ -33,7 +32,6 @@ class QtLobbyBuilder(Thread):
                 return stdout                                                             
 
         def run(self):
-                self.isRunning = True
 		pwd = os.getcwd()
                 os.chdir(self.dir)
                 try:               
@@ -60,7 +58,6 @@ class QtLobbyBuilder(Thread):
                         pass
                 finally:
                         os.chdir(pwd)
-                        self.isRunning = False
 
 
 def message(msg):
