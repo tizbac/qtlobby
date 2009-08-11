@@ -102,7 +102,10 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
                 return QIcon( ":/icons/closed_game.xpm" );
             if ( b.isPasswordProtected )
                 return QIcon( ":/icons/open_pw_game.xpm" );
-            return QIcon( ":/icons/open_game.xpm" );
+            if(b.playerCount - b.spectatorCount == 0)
+                return QIcon( ":/icons/open_game_empty.xpm" );
+            else
+                return QIcon( ":/icons/open_game.xpm" );
         }
         if ( role == Qt::ToolTipRole ) {
             Battle b = m_battleList[index.row()];
