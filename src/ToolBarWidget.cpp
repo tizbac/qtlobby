@@ -21,3 +21,15 @@ void ToolBarWidget::changeEvent(QEvent *e) {
         break;
     }
 }
+
+void ToolBarWidget::onNextTab() {
+    ui->tabBar->setCurrentIndex((ui->tabBar->currentIndex() + 1) % ui->tabBar->count());
+}
+
+void ToolBarWidget::onPreviousTab() {
+    ui->tabBar->setCurrentIndex((ui->tabBar->currentIndex() - 1 + ui->tabBar->count()) % ui->tabBar->count());
+}
+
+void ToolBarWidget::onCloseTab() {
+    ui->tabBar->removeTab(ui->tabBar->currentIndex());
+}

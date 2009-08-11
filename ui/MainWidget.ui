@@ -38,7 +38,7 @@
      <x>0</x>
      <y>0</y>
      <width>795</width>
-     <height>24</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Program">
@@ -114,7 +114,7 @@
     <set>Qt::AllDockWidgetAreas</set>
    </property>
    <property name="windowTitle">
-    <string>&amp;User List</string>
+    <string>User List</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -221,7 +221,7 @@
     <set>Qt::AllDockWidgetAreas</set>
    </property>
    <property name="windowTitle">
-    <string>&amp;Battle List</string>
+    <string>Battle List</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>8</number>
@@ -311,7 +311,7 @@
     <set>Qt::AllDockWidgetAreas</set>
    </property>
    <property name="windowTitle">
-    <string>Battle &amp;Info</string>
+    <string>Battle Info</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>8</number>

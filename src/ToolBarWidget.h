@@ -13,6 +13,10 @@ public:
 
     Ui::ToolBarWidget *ui;
 
+public slots:
+    void onNextTab();
+    void onPreviousTab();
+    void onCloseTab();
 protected:
     virtual void changeEvent(QEvent *e);
 };

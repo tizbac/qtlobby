@@ -259,16 +259,15 @@ void MainWindow::setupToolbar() {
     connect(newTabButton, SIGNAL(clicked()), this, SLOT(onJoinRequested()));
     QAction* a = tabsToolBar->addWidget(toolBarWidget);
     a->setVisible(true);
-    // FIXME Do I have to delete them in Destructor? Please remove and state in answer. (mw)
     nextTab = new QShortcut(QKeySequence(QKeySequence::NextChild), this);
     connect( nextTab, SIGNAL( activated() ),
-            this, SLOT( onNextTab() ) );
+            toolBarWidget, SLOT( onNextTab() ) );
     previousTab = new QShortcut(QKeySequence(QKeySequence::PreviousChild), this);
     connect( previousTab, SIGNAL( activated() ),
-            this, SLOT( onPreviousTab() ) );
+            toolBarWidget, SLOT( onPreviousTab() ) );
     closeTab = new QShortcut(QKeySequence(QKeySequence::Close), this);
     connect( closeTab, SIGNAL( activated() ),
-            this, SLOT( onCloseTab() ) );
+            toolBarWidget, SLOT( onCloseTab() ) );
     openNewTab = new QShortcut(QKeySequence(QKeySequence::Open), this);
     connect( openNewTab, SIGNAL( activated() ),
              this, SLOT( onJoinRequested() ) );
@@ -558,16 +557,4 @@ void MainWindow::on_actionDownloads_triggered() {
     downloadsDialog->show();
     downloadsDialog->activateWindow();
     downloadsDialog->raise();
-}
-
-void MainWindow::onNextTab() {
-    tabBar->setCurrentIndex((tabBar->currentIndex() + 1) % tabBar->count());
-}
-
-void MainWindow::onPreviousTab() {
-    tabBar->setCurrentIndex((tabBar->currentIndex() - 1 + tabBar->count()) % tabBar->count());
-}
-
-void MainWindow::onCloseTab() {
-    tabBar->removeTab(tabBar->currentIndex());
 }

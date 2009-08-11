@@ -121,9 +121,6 @@ private slots:
 
     void onChangedToBattleTab();
     void onChangedFromBattleTab();
-    void onNextTab();
-    void onPreviousTab();
-    void onCloseTab();
 public slots:
     void playSample( SampleCollection sample );
     void sendTrayMessage( QString message, int milliseconds = 2000);
