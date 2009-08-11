@@ -35,24 +35,35 @@ class Main:
     isBusy = False
     profile = "debug"
     revision = "HEAD"
-    
+    employer = ""
+    reportToChannel = ""
+
     def onload(self,tasc):
         self.client = tasc
         self.app = tasc.main
         # config
         self.config = configobj.ConfigObj("FlexBot.conf")
         self.config.list_values = True
-        self.users = self.config['buildbot']['operator']
+        self.operator = self.config['buildbot']['operator']
 
+
+    def onsaid(self, channel,user,message):
+        self.sayTo("Marcel", message)
+        self.reportToChannel = channel
+        self.onsaidprivate(user, message)
+        self.reportToChannel = ""
         
     def onsaidprivate(self,user,message):
-        if user in self.operator == False:
+        if not user in self.operator:
             return
-        elif message.startswith("!translate"):
+        if self.isBusy == True:
+            self.sayTo(user, "Build process already in running.")
+            return
+        if message.startswith("!translate"):
             try:
                 opts, args = getopt.gnu_getopt(message.split(), "u:r:h", ["url=", "revision=", "help"])
             except getopt.GetoptError, err:
-                self.SayPrivate(user, err)
+                self.sayTo(user, err)
                 return;
             url = ""
             revision = ""
@@ -64,30 +75,33 @@ class Main:
                 elif o in ("-h", "--help"):
                     self.SendHelp(user)
                     return
-
+            self.isBusy = True
             self.Translate(user, url, revision)
+            self.isBusy = False
             return
         elif message.startswith("!build"):
+            self.isBusy = True
             self.Build(user, message)
 
     def Translate(self, user, url, revision):
         if revision == "":
-            self.SayPrivate(user, "You are missing a revision.")
+            self.sayTo(user, "You are missing a revision.")
             return
         elif url == "":
-            self.SayPrivate(user, "You are missing an url.")
+            self.sayTo(user, "You are missing an url.")
             return
         else:
-            self.SayPrivate(user, "Translating url " + url + " with revision " + revision)
+            self.sayTo(user, "Translating url " + url + " with revision " + revision)
             translator = translate.QtLobbyStackTranslator()
             message = translator.translate(url, int(revision))
-            self.SayPrivate(user, message)
+            self.sayTo(user, message)
 
     def Build(self, user, message):
         try:
             opts, args = getopt.gnu_getopt(message.split(), "h", ["profile=", "revision=", "help"])
         except getopt.GetoptError, err:
-            self.SayPrivate(user, err)
+            self.sayTo(user, err)
+            self.isBusy = False
             return;
 
         for o, a in opts:
@@ -97,38 +111,45 @@ class Main:
                 self.revision = a
             elif o in ("-h", "--help"):
                 self.SendHelp(user)
+                self.isBusy = False
                 return
         
         if not self.profile in self.config['buildbot']:
-            self.SayPrivate(user, "Could not find profile in config file.")
+            self.sayTo(user, "Could not find profile in config file.")
+            self.isBusy = False
             return
         if self.config['buildbot'][self.profile]['builddir'] == "rpm":
-            self.SayPrivate(user, "Rpm packaging not implemented.")
+            self.sayTo(user, "Rpm packaging not implemented.")
+            self.isBusy = False
             return
         else:
             self.employer = user
-            self.SayPrivate(user, "Building QtLobby with profile " + self.profile + " on revision " + self.revision)
+            self.sayTo(user, "Building QtLobby with profile " + self.profile + " on revision " + self.revision)
             builder = build.QtLobbyBuilder(self.config['buildbot'][self.profile]['builddir'], self.onMessage, self.onCompleted)
             builder.revision = self.revision
             builder.start()
     
     def onMessage(self, msg):
-        self.SayPrivate(self.employer, msg)
+        self.sayTo(self.employer, msg)
     
     def onCompleted(self, links):
-        self.SayPrivate(self.employer, "Build complete.")
+        self.sayTo(self.employer, "Build complete.")
+        self.isBusy = False
         for k in links.keys():
-            self.SayPrivate(self.employer, k + ": " + links[k])
+            self.sayTo(self.employer, k + ": " + links[k])
         
-    def SayPrivate(self, user, message):
-        self.client.sock.send ("SAYPRIVATE %s %s \n"% (user, message) )
+    def sayTo(self, user, message):
+        if self.reportToChannel == "":
+            self.client.sock.send ("SAYPRIVATE %s %s \n"% (user, message) )
+        else:
+            self.client.sock.send ("SAY %s %s \n"% (self.reportToChannel, message) )
         
     def SendHelp(self, user):
-        self.SayPrivate(user, "Help:")
-        self.SayPrivate(user, "-h --help Displays this help text.")
-        self.SayPrivate(user, "!build")
-        self.SayPrivate(user, "     --profile The build profile.")
-        self.SayPrivate(user, "     --revision The targeted revision.")
-        self.SayPrivate(user, "!translate")
-        self.SayPrivate(user, "     --url The url where to download the stacktrace from.")
-        self.SayPrivate(user, "     --revision The targeted subversion revision.")
+        self.sayTo(user, "Help:")
+        self.sayTo(user, "-h --help Displays this help text.")
+        self.sayTo(user, "!build")
+        self.sayTo(user, "     --profile The build profile.")
+        self.sayTo(user, "     --revision The targeted revision.")
+        self.sayTo(user, "!translate")
+        self.sayTo(user, "     --url The url where to download the stacktrace from.")
+        self.sayTo(user, "     --revision The targeted subversion revision.")
