@@ -58,7 +58,7 @@ QVariant UserTreeModel::data( const QModelIndex& index, int role ) const {
             } else
                 tip.arg(tr("is available"));
             if ( role == Qt::DecorationRole )
-                return QIcon( QString( ":/icons/%1-icons.png" ).arg( fileNameParts.join( "_" ) ) );
+                return QIcon( QString( ":/icons/%1.xpm" ).arg( fileNameParts.join( "_" ) ) );
             return tip;
         }
         break;
