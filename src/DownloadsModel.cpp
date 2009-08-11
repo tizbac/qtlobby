@@ -144,8 +144,9 @@ void DownloadsModel::stateChanged(QString name, QString state) {
     emit dataChanged(index(m_downloads.indexOf(d), 3), index(m_downloads.indexOf(d), 3));
 }
 
-void DownloadsModel::finished(QString /*name*/, bool success) {
-    //Download* d = findResource(name);
+void DownloadsModel::finished(QString name, bool success) {
+    Download* d = findResource(name);
+    d->finished = true;
     if(success)
         UnitSyncLib::getInstance()->reboot();
     sender()->deleteLater();
@@ -156,4 +157,12 @@ void DownloadsModel::speedEtaChanged(QString name, int speed, int eta) {
     d->speed = speed;
     d->eta = eta;
     emit dataChanged(index(m_downloads.indexOf(d), 4), index(m_downloads.indexOf(d), 5));
+}
+
+void DownloadsModel::clearFinished() {
+    for(int i = 0; i < m_downloads.size(); i++) {
+        if(m_downloads.at(i)->finished)
+            m_downloads.removeAt(i);
+    }
+    reset();
 }

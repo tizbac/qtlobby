@@ -20,6 +20,9 @@ protected:
 
 private:
     Ui::DownloadsDialog *m_ui;
+
+private slots:
+    void on_clearPushButton_clicked();
 };
 
 #endif // DOWNLOADSDIALOG_H

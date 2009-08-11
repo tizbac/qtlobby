@@ -13,6 +13,7 @@ struct Download {
         speed = 0;
         eta = 0;
         downloaded = 0;
+        finished = false;
     }
     QString title;
     float percent;
@@ -20,6 +21,7 @@ struct Download {
     int downloaded;
     float speed;
     int eta;
+    bool finished;
 };
 
 /**
@@ -31,6 +33,7 @@ class DownloadsModel : public QAbstractTableModel, public Singleton<DownloadsMod
 public:
     void startMapDownload(QString mapName);
     void startModDownload(QString modName);
+    void clearFinished();
 
     int rowCount(const QModelIndex & parent = QModelIndex()) const;
     int columnCount(const QModelIndex & parent = QModelIndex()) const;

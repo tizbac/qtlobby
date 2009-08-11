@@ -35,3 +35,7 @@ void DownloadsDialog::showEvent(QShowEvent* /*event*/) {
     int idx = qrand() % 16;
     m_ui->jobjolLogoLabel->setPixmap(QPixmap(file.arg(idx)));
 }
+
+void DownloadsDialog::on_clearPushButton_clicked() {
+    DownloadsModel::getInstance()->clearFinished();
+}
