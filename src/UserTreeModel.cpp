@@ -58,7 +58,7 @@ QVariant UserTreeModel::data( const QModelIndex& index, int role ) const {
             } else
                 tip.arg(tr("is available"));
             if ( role == Qt::DecorationRole )
-                return QIcon( QString( ":/icons/%1.xpm" ).arg( fileNameParts.join( "_" ) ) );
+                return QIcon( QString( ":/icons/%1-icons.png" ).arg( fileNameParts.join( "_" ) ) );
             return tip;
         }
         break;
@@ -79,7 +79,7 @@ QVariant UserTreeModel::data( const QModelIndex& index, int role ) const {
         if ( role == Qt::DecorationRole ) {
             int rank = m_userList[index.row()].userState.getRank();
             if ( rank > 6 ) return QVariant();
-            return QIcon( QString( ":/icons/rank%1.xpm" ).arg( rank ) );
+            return QIcon( QString( ":/icons/rank%1-icon.png" ).arg( rank ) );
         }
         if ( role == Qt::ToolTipRole ) {
             switch ( m_userList[index.row()].userState.getRank() ) {

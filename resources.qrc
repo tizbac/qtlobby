@@ -332,6 +332,20 @@
 	<file>icons/qtlobby-logo.svg</file>
 	<file>icons/qtlobby-logo-64x64.png</file>
 	<file>icons/qtlobby-logo-64x64.xpm</file>
+	<file>icons/rank0-icon.png</file>
+	<file>icons/rank0-icon.svg</file>
+	<file>icons/rank1-icon.png</file>
+	<file>icons/rank1-icon.svg</file>
+	<file>icons/rank2-icon.png</file>
+	<file>icons/rank2-icon.svg</file>
+	<file>icons/rank3-icon.png</file>
+	<file>icons/rank3-icon.svg</file>
+	<file>icons/rank4-icon.png</file>
+	<file>icons/rank4-icon.svg</file>
+	<file>icons/rank5-icon.png</file>
+	<file>icons/rank5-icon.svg</file>
+	<file>icons/rank6-icon.png</file>
+	<file>icons/rank6-icon.svg</file>
         <file>icons/logos/jobjol/logo0.xpm</file>
         <file>icons/logos/jobjol/logo1.xpm</file>
         <file>icons/logos/jobjol/logo2.xpm</file>

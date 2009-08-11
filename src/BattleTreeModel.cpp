@@ -130,7 +130,7 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
         break;
     case 2: //rank
         if ( role == Qt::DecorationRole ) {
-            QString filename = QString( ":/icons/rank%1.xpm" ).arg( m_battleList[index.row()].minRank );
+            QString filename = QString( ":/icons/rank%1-icon.png" ).arg( m_battleList[index.row()].minRank );
             return QIcon( filename );
         }
         if ( role == Qt::ToolTipRole ) {
