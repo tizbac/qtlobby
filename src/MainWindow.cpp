@@ -154,7 +154,6 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
              lobbyTabs, SLOT( receiveInput( QString ) ) );
     connect( battles, SIGNAL( sendInput( QString ) ),
              lobbyTabs, SLOT( receiveInput( QString ) ) );
-
     connect( users, SIGNAL(teamPlayerSpecCountChanged(QString)),
              this, SLOT(onTeamPlayerSpecCountChanged(QString)));
     //Group action in users
@@ -260,6 +259,22 @@ void MainWindow::setupToolbar() {
     connect(newTabButton, SIGNAL(clicked()), this, SLOT(onJoinRequested()));
     QAction* a = tabsToolBar->addWidget(toolBarWidget);
     a->setVisible(true);
+    // FIXME Do I have to delete them in Destructor? Please remove and state in answer. (mw)
+    nextTab = new QShortcut(QKeySequence(QKeySequence::NextChild), this);
+    connect( nextTab, SIGNAL( activated() ),
+            this, SLOT( onNextTab() ) );
+    previousTab = new QShortcut(QKeySequence(QKeySequence::PreviousChild), this);
+    connect( previousTab, SIGNAL( activated() ),
+            this, SLOT( onPreviousTab() ) );
+    closeTab = new QShortcut(QKeySequence(QKeySequence::Close), this);
+    connect( closeTab, SIGNAL( activated() ),
+            this, SLOT( onCloseTab() ) );
+    openNewTab = new QShortcut(QKeySequence(QKeySequence::Open), this);
+    connect( openNewTab, SIGNAL( activated() ),
+             this, SLOT( onJoinRequested() ) );
+    openNewTab2 = new QShortcut(QKeySequence(QKeySequence::New), this);
+    connect( openNewTab2, SIGNAL( activated() ),
+             this, SLOT( onJoinRequested() ) );
 }
 
 MainWindow::~MainWindow() {
@@ -545,3 +560,14 @@ void MainWindow::on_actionDownloads_triggered() {
     downloadsDialog->raise();
 }
 
+void MainWindow::onNextTab() {
+    tabBar->setCurrentIndex((tabBar->currentIndex() + 1) % tabBar->count());
+}
+
+void MainWindow::onPreviousTab() {
+    tabBar->setCurrentIndex((tabBar->currentIndex() - 1 + tabBar->count()) % tabBar->count());
+}
+
+void MainWindow::onCloseTab() {
+    tabBar->removeTab(tabBar->currentIndex());
+}

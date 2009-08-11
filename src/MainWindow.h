@@ -8,6 +8,7 @@
 #include <QDialog>
 #include <QSystemTrayIcon>
 #include <QScriptEngine>
+#include <QShortcut>
 
 #include "ui_MainWidget.h"
 #include "ui_AboutWidget.h"
@@ -82,6 +83,11 @@ private:
     QByteArray lastBattleState;
     QByteArray state;
     QScriptEngine scriptingEngine;
+    QShortcut* nextTab;
+    QShortcut* previousTab;
+    QShortcut* closeTab;
+    QShortcut* openNewTab;
+    QShortcut* openNewTab2;
 signals:
     void newTrayMessage(QString);
 protected:
@@ -115,6 +121,9 @@ private slots:
 
     void onChangedToBattleTab();
     void onChangedFromBattleTab();
+    void onNextTab();
+    void onPreviousTab();
+    void onCloseTab();
 public slots:
     void playSample( SampleCollection sample );
     void sendTrayMessage( QString message, int milliseconds = 2000);
