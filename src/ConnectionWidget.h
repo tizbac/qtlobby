@@ -51,7 +51,6 @@ public slots:
     void changePasswordSuccess( QString );
     void changePasswordFailure( QString );
     void onLogin();
-    void updateCountdown();
     void establishSimpleConnection();
     void simpleViewChanged();
 protected:

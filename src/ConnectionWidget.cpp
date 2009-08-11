@@ -466,41 +466,22 @@ void ConnectionWidget::show_if_wanted() {
     } else show();
 }
 
-void ConnectionWidget::updateCountdown() {
-    if(countdownDialog->wasCanceled()){
-        countdownDialog->cancel();
-        countdownTimer->stop();
-        return;
-    }
-    countdown--;
-    countdownDialog->setValue(countdownDialog->maximum() - countdown);
-    if(countdown <=0){
-        countdownDialog->done(0);
-        countdownTimer->stop();
-        return;
-    }
-}
-
 void ConnectionWidget::onLogin() {
     saveModifiedProfile();
     if(connected) {
-        countdown = 10;
         serverContextState->forceDisconnect();
         countdownTimer = new QTimer(this);
         //FIXME is reported to be too long, should be faster. Why do we need this? (mw)
         //tas server dislikes when user reconnects faster then in 5 seconds,
         //so i changed it to 5 seconds for now (ko)
-        countdownDialog = new QProgressDialog(tr("Reconnecting..."),tr("Nooo!"),0,5,this);
-        QProgressBar* bar = new QProgressBar(countdownDialog);
-        bar->setTextVisible(false);
-        countdownDialog->setBar(bar);
-        countdownDialog->setValue(countdown);
+        //and removed countdown - just "busy" progress bar
+        countdownDialog = new QProgressDialog(tr("Reconnecting..."),tr("Nooo!"),0,0,this);
+        countdownDialog->setValue(0);
         countdownDialog->setWindowModality(Qt::WindowModal);
         countdownDialog->setLabelText(tr("Wait 5 seconds to reconnect"));
         countdownDialog->show();
-        countdownTimer->start(1000);
-        connect(countdownTimer, SIGNAL(timeout()), this, SLOT(updateCountdown()));
-        connect(countdownDialog, SIGNAL(finished(int)), this, SLOT(establishConnection()));
+        QTimer::singleShot(5000, this, SLOT(establishConnection()));
+        QTimer::singleShot(5000, countdownDialog, SLOT(hide()));
         return;
     }
     establishConnection();
