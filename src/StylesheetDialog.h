@@ -20,12 +20,14 @@ private slots:
     void save();
     void load();
     void apply();
+    void chooseColor();
 
 protected:
     virtual void changeEvent(QEvent *e);
 
 private:
     Ui::StylesheetDialog *m_ui;
+    static QString m_stylesheet;
 };
 
 #endif // STYLESHEETDIALOG_H

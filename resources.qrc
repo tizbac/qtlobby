@@ -327,11 +327,11 @@
         <file>icons/upsel_down.xpm</file>
         <file>icons/userchat.xpm</file>
         <file>icons/userlist.png</file>
-	<file>icons/logo.ico</file>
+        <file>icons/logo.ico</file>
         <file>src/sqads.js</file>
-	<file>icons/qtlobby-logo.svg</file>
-	<file>icons/qtlobby-logo-64x64.png</file>
-	<file>icons/qtlobby-logo-64x64.xpm</file>
+        <file>icons/qtlobby-logo.svg</file>
+        <file>icons/qtlobby-logo-64x64.png</file>
+        <file>icons/qtlobby-logo-64x64.xpm</file>
 	<file>icons/rank0-icon.png</file>
 	<file>icons/rank0-icon.svg</file>
 	<file>icons/rank1-icon.png</file>
@@ -373,5 +373,6 @@
         <file>icons/logos/jobjol/logo24.xpm</file>
         <file>icons/logos/jobjol/logo25.xpm</file>
         <file>i18n/qtlobby_de.qm</file>
+        <file>icons/color-picker-black.png</file>
     </qresource>
 </RCC>

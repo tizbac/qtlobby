@@ -4,6 +4,10 @@
 #include "ui_StylesheetDialog.h"
 #include <Qsci/qscilexercss.h>
 #include <QFileDialog>
+#include <QColorDialog>
+#include <QCursor>
+
+QString StylesheetDialog::m_stylesheet;
 
 StylesheetDialog::StylesheetDialog(QWidget *parent) :
         QDialog(parent),
@@ -53,5 +57,17 @@ QString filename = QFileDialog::getOpenFileName(this,
 }
 
 void StylesheetDialog::apply() {
-    qApp->setStyleSheet(m_ui->styleSheetTextEdit->text());
+    qApp->setStyleSheet("");
+    m_stylesheet = QString(m_ui->styleSheetTextEdit->text());
+    qApp->setStyleSheet(m_stylesheet);
+}
+
+void StylesheetDialog::chooseColor() {
+    QString selection = m_ui->styleSheetTextEdit->selectedText();
+    QColor initial;
+    initial.setNamedColor(selection);
+    QColor c = QColorDialog::getColor(initial, this);
+    if(!c.isValid()) return;
+    m_ui->styleSheetTextEdit->removeSelectedText();
+    m_ui->styleSheetTextEdit->insert(c.name());
 }
