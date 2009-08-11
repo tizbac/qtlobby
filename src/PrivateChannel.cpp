@@ -54,8 +54,6 @@ void PrivateChannel::receiveCommand( Command command ) {
 void PrivateChannel::receiveInput( QString input ) {
     if ( executeChannelInput( input ) )
         return;
-    input.replace( "<", "&lt;" );
-    input.replace( ">", "&gt;" );
     QStringList inputList = input.split( " " );
     QString firstWord = inputList.takeFirst();
     if ( firstWord == "/leave" )
