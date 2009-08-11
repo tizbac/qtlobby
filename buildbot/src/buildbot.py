@@ -102,7 +102,7 @@ class Main:
         except getopt.GetoptError, err:
             self.sayTo(user, err)
             self.isBusy = False
-            return;
+            return
 
         for o, a in opts:
             if o == "--profile":
@@ -134,9 +134,10 @@ class Main:
     
     def onCompleted(self, links):
         self.sayTo(self.employer, "Build complete.")
-        self.isBusy = False
         for k in links.keys():
             self.sayTo(self.employer, k + ": " + links[k])
+        self.isBusy = False
+        return
         
     def sayTo(self, user, message):
         if self.reportToChannel == "":
