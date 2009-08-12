@@ -523,14 +523,13 @@ void MainWindow::onCurrentTabChanged() {
 }
 
 void MainWindow::onTeamPlayerSpecCountChanged(QString ratio) {
-    usersInCurrentChannel->setText(
-            tr("Users: %1")
-            .arg(QString::number(users->usersCountInCurrentChannel()))
-            .append(ratio));
-    if(ratio.isEmpty())
+    if( ratio.isEmpty() ) {
+        usersInCurrentChannel->setText( tr("Users: %1").arg(QString::number(users->usersCountInCurrentChannel())));
         usersInCurrentChannel->setToolTip(tr("# Users"));
-    else
-        usersInCurrentChannel->setToolTip(tr("# Users (# 1st Ally: # 2nd Ally:... + # Specs)"));
+    } else {
+        usersInCurrentChannel->setText(ratio);
+        usersInCurrentChannel->setToolTip(tr("# Players + # Specs (# 1st Ally : # 2nd Ally :...)"));
+    }
 }
 
 void MainWindow::on_hostPushButton_clicked() {

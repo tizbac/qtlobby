@@ -451,9 +451,13 @@ QString Users::teamPlayerSpecCount() {
         if( !vals.empty() ) {
             int specs = vals.takeFirst();
             QStringList ret;
-            foreach( int val, vals)
+            int sum = 0;
+            foreach( int val, vals) {
                 ret.append(QString::number(val));
-            return QString(" (%1+%2)").arg(ret.join(":")).arg(QString::number(specs));
+                sum += val;
+            }
+            QString ratio = ret.size() > 0 ? QString(" (%1)").arg(ret.join(":")) : "";
+            return QString("Users: %1+%2").arg(sum).arg(QString::number(specs)).append(ratio);
         }
     }
     return "";
