@@ -109,7 +109,9 @@ void Users::receiveCommand( Command command ) {
     } else if ( command.name == "CLIENTBATTLESTATUS" ) {
         User u = infoChannelUserManager->getUser( command.attributes.takeFirst() );
         u.battleState.setState(command.attributes.takeFirst().toInt());
-        u.setColor( command.attributes.takeFirst().toInt() );
+        // seems, that this happens to occure, why?
+        if( command.attributes.size() > 0 )
+            u.setColor( command.attributes.takeFirst().toInt() );
         modUserInAllManagers( u );
         if (u.name == url.userName())
             emit myStateChanged(u);
