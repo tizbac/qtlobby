@@ -16,6 +16,7 @@ void TreeSortFilterProxyModel::sort( int col, Qt::SortOrder order ) {
     if ( colRoleMap.contains( col ) )
         setSortRole( colRoleMap[col] );
     QSortFilterProxyModel::sort( col, order );
+    invalidate();
 }
 
 void TreeSortFilterProxyModel::setColRole( int col, Qt::ItemDataRole role ) {

@@ -46,6 +46,10 @@ Users::Users( QWidget* parent ) : QTreeView( parent ) {
     lastThis = this;
     userCount = 0;
     moderatorCount = 0;
+    chatCol = 3;
+    chatSortOrder = Qt::DescendingOrder;
+    battleCol = 7;
+    battleSortOrder = Qt::DescendingOrder;
 }
 
 Users::~Users() { }
@@ -171,9 +175,19 @@ void Users::setConfiguration( QUrl url ) {
 }
 
 void Users::currentTabChanged( QString name, QString lobbyTabType ) {
-    currentTabName = name;
+    QString oldTabType = currentTabType;
     currentTabType = lobbyTabType;
+    currentTabName = name;
     updateUserList();
+    if ( oldTabType == "Channel" && currentTabType == "BattleChannel" ) {
+        chatCol = proxyModel->sortColumn();
+        chatSortOrder = proxyModel->sortOrder();
+        sortByColumn(battleCol, battleSortOrder);
+    } else if ( oldTabType == "BattleChannel" && currentTabType == "Channel" ) {
+        battleCol = proxyModel->sortColumn();
+        battleSortOrder = proxyModel->sortOrder();
+        sortByColumn(chatCol, chatSortOrder);
+    }
 }
 
 void Users::updateUserList() {

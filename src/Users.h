@@ -97,6 +97,11 @@ protected:
     int userCount;
     int moderatorCount;
     static Users* lastThis;
+
+    int battleCol;
+    Qt::SortOrder battleSortOrder;
+    int chatCol;
+    Qt::SortOrder chatSortOrder;
 };
 
 #endif
