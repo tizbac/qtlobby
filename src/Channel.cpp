@@ -93,6 +93,15 @@ void Channel::receiveCommand( Command command ) {
                        .arg( name )
                        .arg( date.toString(tr("dd.MM.yyyy hh:mm")) ));
         }
+    } else if ( command.name == "CHANNELMESSAGE" ) {
+        if (command.attributes.takeFirst() == objectName()) {
+            QString msg = command.attributes.join(" ");
+            msg.replace("\\n","<br/>");
+
+            insertLine(line
+                       .arg("<span style=\"color: #5673a4;\">** %1</span>")
+                       .arg( processInput(msg) ));
+        }
     }
 }
 
