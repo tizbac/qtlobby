@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from threading import Thread
+import threading
 from subprocess import Popen, PIPE
 import os                         
 
@@ -11,6 +12,7 @@ class CommandError(Exception):
         def __str__(self):        
                 return repr(self.value)
 
+builder_lock  = threading.RLock()
 
 class QtLobbyBuilder(Thread):
         def __init__(self, targetDir, onMessage, onCompleted):
@@ -21,6 +23,7 @@ class QtLobbyBuilder(Thread):
                 self.abort = False
 		self.dir = targetDir
 		self.config = "debug"
+		print "QtLobbyBuilder instance created"
 
         def runCommand(self, command):
                 print command         
@@ -32,32 +35,42 @@ class QtLobbyBuilder(Thread):
                 return stdout                                                             
 
         def run(self):
-		pwd = os.getcwd()
-                os.chdir(self.dir)
-                try:               
-                        rev = str(self.revision)
-                        self.onMessage("Perforimg svn update...")
-                        self.runCommand("svn up -r " + rev)      
-                        rev = self.runCommand("svn up | perl -e '<> =~ /At revision (\d+)./; print $1;'")
-                        self.onMessage("Building revision "+rev+"...")
-                        self.runCommand("qmake -spec win32-x-g++ CONFIG+=buildbot CONFIG+="+self.config)
-                        self.runCommand("make")
-                        os.chdir(self.config)
-                        self.runCommand("objcopy --only-keep-debug qtlobby.exe qtlobby.dbg")
-                        self.runCommand("strip --strip-debug --strip-unneeded qtlobby.exe")
-                        os.chdir("..")
-                        self.onMessage("Compiling installer...")
-                        self.runCommand("makensis installer.nsi")
-                        self.runCommand("mv "+self.config+"/qtlobby.exe ~apache/qtlobby.oxnull.net/htdocs/qtlobby.r"+rev+".exe")
-                        self.runCommand("mv qtlobby_installer.exe ~apache/qtlobby.oxnull.net/htdocs/qtlobby.r"+rev+"_installer.exe")
-                        self.runCommand("mv "+self.config+"/qtlobby.dbg ~apache/qtlobby.oxnull.net/htdocs/qtlobby.r"+rev+"_symbols.dbg")
-                        self.onCompleted({"Exe": "http://qtlobby.oxnull.net/qtlobby.r"+rev+".exe", \
-                                          "Installer": "http://qtlobby.oxnull.net/qtlobby.r"+rev+"_installer.exe", \
-                                          "Debug symbols": "http://qtlobby.oxnull.net/qtlobby.r"+rev+"_symbols.dbg"})
-                except CommandError:
-                        pass
-                finally:
-                        os.chdir(pwd)
+		print "Running thread"
+		locked = builder_lock.acquire(False)
+		if not locked:
+			print "Locked!"
+			self.onMessage("Another build is running now. Please try later")
+			return
+		try:
+			print "Building"
+			pwd = os.getcwd()
+        	        os.chdir(self.dir)
+                	try:               
+                        	rev = str(self.revision)
+	                        self.onMessage("Perforimg svn update...")
+        	                self.runCommand("svn up -r " + rev)      
+                	        rev = self.runCommand("svn up | perl -e '<> =~ /At revision (\d+)./; print $1;'")
+	                        self.onMessage("Building revision "+rev+"...")
+        	                self.runCommand("qmake -spec win32-x-g++ CONFIG+=buildbot CONFIG+="+self.config)
+                	        self.runCommand("make")
+                        	os.chdir(self.config)
+	                        self.runCommand("objcopy --only-keep-debug qtlobby.exe qtlobby.dbg")
+        	                self.runCommand("strip --strip-debug --strip-unneeded qtlobby.exe")
+                	        os.chdir("..")
+                        	self.onMessage("Compiling installer...")
+	                        self.runCommand("makensis installer.nsi")
+        	                self.runCommand("mv "+self.config+"/qtlobby.exe ~apache/qtlobby.oxnull.net/htdocs/qtlobby.r"+rev+".exe")
+                	        self.runCommand("mv qtlobby_installer.exe ~apache/qtlobby.oxnull.net/htdocs/qtlobby.r"+rev+"_installer.exe")
+                        	self.runCommand("mv "+self.config+"/qtlobby.dbg ~apache/qtlobby.oxnull.net/htdocs/qtlobby.r"+rev+"_symbols.dbg")
+	                        self.onCompleted({"Exe": "http://qtlobby.oxnull.net/qtlobby.r"+rev+".exe", \
+        	                                  "Installer": "http://qtlobby.oxnull.net/qtlobby.r"+rev+"_installer.exe", \
+                	                          "Debug symbols": "http://qtlobby.oxnull.net/qtlobby.r"+rev+"_symbols.dbg"})
+	                except CommandError:
+        	                pass
+                	finally:
+	                        os.chdir(pwd)
+		finally:
+			builder_lock.release()
 
 
 def message(msg):
