@@ -11,6 +11,8 @@
 #include <QUrl>
 #include <QFile>
 
+#include <QProcess>
+
 #include "NetworkInterface.h"
 #include "AbstractStateClient.h"
 #include "Command.h"

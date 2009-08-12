@@ -170,6 +170,17 @@ void ServerContextState::authenticate() {
     // FIXME windows untested, need testing feedback for this.
 	QSettings settings("HKEY_LOCAL_MACHINE\\HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", QSettings::NativeFormat);
 	cpu = settings.value("~MHz").toUInt();
+#endif
+#ifdef Q_WS_MAC
+    QProcess *myProcess = new QProcess();
+    myProcess->start("sysctl", QStringList() << "-n" << "hw.cpufrequency");
+    myProcess->waitForFinished();
+
+    QString result;
+    while( myProcess->canReadLine())
+        result= myProcess->readLine();
+    cpu = result.toInt()/1000000;
+    qDebug() << tr("Detected cpu frequency is: %1 MHz").arg(cpu);
 #else
     QFile file("/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))

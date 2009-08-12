@@ -333,7 +333,7 @@ void MainWindow::showConnectionWidget( bool ) {
 
 void MainWindow::createTrayIcon() {
     trayIcon = new QSystemTrayIcon( this );
-    QIcon icon = QIcon( ":/icons/qtlobby-logo-64x64.xpm" );
+    QIcon icon = QIcon( ":/icons/qtlobby-logo.svg" );
 
     trayIconMenu = new QMenu( this );
 
@@ -348,6 +348,9 @@ void MainWindow::createTrayIcon() {
 
     trayIcon->setIcon( icon );
     setWindowIcon( icon );
+
+    // set icon for macos dock
+    QApplication::setWindowIcon(icon);
 }
 
 void MainWindow::setColorInducatorUsers( QString regExp ) {
