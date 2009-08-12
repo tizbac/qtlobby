@@ -58,7 +58,9 @@ class Main:
                     self.displayedFeedIDs.append(entrie.id)
                     changed = True
                     for chan in self.broadcastChannels:
-                        self.sendChannelEX(chan, entrie.title + " " + entrie.link)
+                        self.sendChannelEX(chan, entrie.title + " by " + entrie.author)
+			self.sendChannelEX(chan, entrie.link)
+			self.sendChannelEX(chan, "PM !build to me to get windows installer")
         if changed == True:
             self.config[self.configSection]['displayedFeedIDs'] = self.displayedFeedIDs
             self.config.write()
