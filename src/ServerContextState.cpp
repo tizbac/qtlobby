@@ -167,7 +167,6 @@ void ServerContextState::authenticate() {
 
     unsigned int cpu = 0;
 #ifdef Q_WS_WIN
-    // FIXME windows untested, need testing feedback for this.
 	QSettings settings("HKEY_LOCAL_MACHINE\\HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", QSettings::NativeFormat);
 	cpu = settings.value("~MHz").toUInt();
 #endif
