@@ -19,6 +19,7 @@
 #include "ui_ConnectionWidget.h"
 #include "ServerContextState.h"
 #include "Settings.h"
+#include "ServerProfilesModel.h"
 
 /**
  * Handles connections to the Server. Manages the profiles.
@@ -34,15 +35,12 @@ signals:
     void usernameChanged(QString username);
 public slots:
     void show_if_wanted();
-    void modifyServerProfile(signed int index, QUrl url);
     void logWrite( QString );
-    void toggleAutoLogin();
-    void toggleRememberPassword();
+    void toggleAutoLogin(bool checked);
+    void toggleRememberPassword(bool checked);
     void establishConnection();
-    void addDefaultServers();
-    void comboBoxCurrentIndexChanged(int index);
-    void updateComboBoxes();
-    void saveModifiedProfile();
+//    void addDefaultServers();
+    void comboBoxCurrentIndexChanged(QModelIndex current, QModelIndex previous);
     void createNewProfile();
     void delSelectedProfile();
     void registerNewAccount();
@@ -53,9 +51,16 @@ public slots:
     void onLogin();
     void establishSimpleConnection();
     void simpleViewChanged();
+    void saveModifiedProfile();
 protected:
     void keyPressEvent(QKeyEvent* event);
+    void hideEvent(QHideEvent* event);
 private slots:
+    void on_simpleAutologinChechbox_toggled(bool checked);
+    void on_profilePortSpinBox_valueChanged(int );
+    void on_profileServerAddressLineEdit_textChanged(QString );
+    void on_passwordLineEdit_textChanged(QString );
+    void on_profileUserNameLineEdit_textChanged(QString );
     void connectionStatusChanged(ConnectionState state);
     void renameLoginName();
     void changePassword();
@@ -66,6 +71,9 @@ private:
     int countdown;
     QSettings* settings;
     ServerContextState* serverContextState;
+    bool showSimple;
+    bool simpleAutologin;
+    QUrl simpleUrl;
     void lockInterface();
     void unlockInterface();
     void unlockRenameAndChangePassword();

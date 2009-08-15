@@ -264,8 +264,6 @@ int BattleTreeModel::rowPositionForBattle( int battleId ) {
         //       qDebug() << i << ": " << m_battleList[i].id;
         return i;
     }
-    //I'm not sure that it's a criminal
-    //qDebug() << "FIXME: Couldn't find rowPositionForBattle " << battleId << ". This should not happen!";
     return -1;
 }
 

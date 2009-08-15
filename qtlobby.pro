@@ -14,11 +14,8 @@ INCLUDEPATH += . \
 RESOURCES = resources.qrc
 UI_HEADERS_DIR = src
 SVN_REVISION = $$(SVN_REVISION)
-!isEmpty(SVN_REVISION) {
-    DEFINES += 'SVN_REV=\\"$$(SVN_REVISION)\\"'
-} else {
-    DEFINES += 'SVN_REV=\\"$$system(svnversion -n .)\\"'
-}
+!isEmpty(SVN_REVISION):DEFINES += 'SVN_REV=\\"$$(SVN_REVISION)\\"'
+else:DEFINES += 'SVN_REV=\\"$$system(svnversion -n .)\\"'
 DEFINES += RPM_OPT_FLAGS
 target.path += $$INSTALL_ROOT/bin
 INSTALLS += target
@@ -96,7 +93,8 @@ HEADERS += src/MainWindow.h \
     src/Downloader.h \
     src/DownloadsDialog.h \
     src/DownloadsModel.h \
-    src/ToolBarWidget.h
+    src/ToolBarWidget.h \
+    src/ServerProfilesModel.h
 
 # src/MapSelector.h \ # not used
 # src/MapElementWidget.h \ # not used
@@ -160,7 +158,8 @@ SOURCES += src/main.cpp \
     src/Downloader.cpp \
     src/DownloadsDialog.cpp \
     src/DownloadsModel.cpp \
-    src/ToolBarWidget.cpp
+    src/ToolBarWidget.cpp \
+    src/ServerProfilesModel.cpp
 
 # src/MapSelector.cpp \ # not used
 # src/MapElementWidget.cpp \ # not used
