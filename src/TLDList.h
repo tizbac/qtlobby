@@ -8,9 +8,10 @@
 /**
  * Contains all Top Level Domains for the countries.
  */
-class TLDList {
+class TLDList : public QObject {
+    Q_OBJECT
 public:
-    TLDList();
+    TLDList( QObject* parent = 0);
     ~TLDList();
     static QMap<QString, QString>* TLDMap;
 };

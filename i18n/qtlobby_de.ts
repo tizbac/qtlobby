@@ -933,7 +933,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Wait 5 seconds to reconnect</source>
-        <translation type="unfinished"></translation>
+        <translation>5 Sekunden warten für Neuverbindung</translation>
     </message>
 </context>
 <context>
@@ -1190,10 +1190,6 @@ p, li { white-space: pre-wrap; }
         <translation>&amp;Game</translation>
     </message>
     <message>
-        <source>&amp;User List</source>
-        <translation>Ben&amp;utzerliste</translation>
-    </message>
-    <message>
         <source>Clear the userlistfilter string</source>
         <translation>Benutzerlistenfilter zurücksetzen</translation>
     </message>
@@ -1204,10 +1200,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>This userlist filter string is used to match playernames</source>
         <translation>Dieses Benutzerlistenfilterwort wird verwendet, um die Spielernamen zu filtern</translation>
-    </message>
-    <message>
-        <source>&amp;Battle List</source>
-        <translation>&amp;Battleliste</translation>
     </message>
     <message>
         <source>Clear the battlefilter string</source>
@@ -1381,6 +1373,18 @@ p, li { white-space: pre-wrap; }
         <source>Users: 0</source>
         <translation>Benutzer: 0</translation>
     </message>
+    <message>
+        <source>User List</source>
+        <translation>Benutzerliste</translation>
+    </message>
+    <message>
+        <source>Battle List</source>
+        <translation>Battleliste</translation>
+    </message>
+    <message>
+        <source>Battle Info</source>
+        <translation>Battleinfo</translation>
+    </message>
 </context>
 <context>
     <name>MapOverviewDialog</name>
@@ -1496,7 +1500,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Highlight my username in Chat messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Meinen Benutzernamen in Chat-Nachrichten hervorheben</translation>
     </message>
 </context>
 <context>
@@ -1530,6 +1534,501 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>I couldn&apos;t detect any system tray on this system.</source>
         <translation>Konnte keinen Systray auf diesem System finden.</translation>
+    </message>
+</context>
+<context>
+    <name>QString</name>
+    <message>
+        <source>AC:Ascension Island
+AD:Andorra
+AE:United Arab Emirates
+AERO:Aircraft-related
+AF:Afghanistan
+AG:Antigua and Barbuda
+AI:Anguilla
+AL:Albania
+AM:Armenia
+AN:Netherland Antilles
+AO:Angola
+AQ:Antarctica
+AR:Argentina
+ARPA:Address and Routing Parameter Area
+AS:American Samoa
+AT:Austria
+AU:Australia
+AW:Aruba
+AZ:Azerbaijan
+BA:Bosnia-Herzegovina
+BB:Barbados
+BE:Belgium
+BF:Burkina Faso
+BG:Bulgaria
+BH:Bahrain
+BI:Burundi
+BIz:Business
+BJ:Benin
+BM:Bermuda
+BN:Brunei Darussalam
+BO:Bolivia
+BR:Brazil
+BS:Bahamas
+BT:Bhutan
+BW:Botswana
+BY:Belarus
+BZ:Belize
+CA:Canada
+CC:Cocos (Keeling) Islands
+CD:Democratic Republic of Congo
+CF:Central African Republic
+CG:Congo
+CH:Switzerland
+CI:Ivory Coast (C&amp;ocirc;te D&apos;Ivoire)
+CK:Cook Islands
+CL:Chile
+CM:Cameroon
+CN:China
+CO:Colombia
+COM:Commercial
+COOP:Cooperative-related
+CR:Costa Rica
+CU:Cuba
+CV:Cape Verde
+CX:Christmas Island
+CY:Cyprus
+CZ:Czech Republic
+DE:Germany
+DJ:Djibouti
+DK:Denmark
+DM:Dominica
+DO:Dominican Republic
+DZ:Algeria
+EC:Ecuador
+EDU:Educational
+EE:Estonia
+EG:Egypt
+ES:Spain
+ET:Ethiopia
+FI:Finland
+FJ:Fiji
+FK:Falkland Islands (Malvinas)
+FM:Micronesia
+FO:Faroe Islands
+FR:France
+GB:Great Britan
+GA:Gabon
+GD:Grenada
+GE:Georgia
+GF:French Guyana
+GH:Ghana
+GI:Gibraltar
+GL:Greenland
+GM:Gambia
+GN:Guinea
+GOV:Government
+GP:Guadeloupe (French)
+GQ:Equatorial Guinea
+GR:Greece
+GT:Guatemala
+GU:Guam (US)
+GY:Guyana
+HK:Hong Kong
+HM:Heard and McDonald Islands
+HN:Honduras
+HR:Croatia (Hrvatska)
+HU:Hungary
+ID:Indonesia
+IE:Ireland
+IL:Israel
+IN:India
+INFO:General-purpose TLD
+INT:International
+IO:British Indian Ocean Territory
+IR:Islamic Republic of Iran
+IS:Iceland
+IT:Italy
+JM:Jamaica
+JO:Jordan
+JP:Japan
+KE:Kenya
+KG:Kyrgyzstan
+KH:Cambodia
+KI:Kiribati
+KM:Comoros
+KN:Saint Kitts Nevis Anguilla
+KR:South Korea
+KW:Kuwait
+KY:Cayman Islands
+KZ:Kazakhstan
+LA:Laos (People&apos;s Democratic Republic)
+LB:Lebanon
+LC:Saint Lucia
+LI:Liechtenstein
+LK:Sri Lanka
+LR:Liberia
+LS:Lesotho
+LT:Lithuania
+LU:Luxembourg
+LV:Latvia
+LY:Libya (Libyan Arab Jamahiriya)
+MA:Morocco
+MC:Monaco
+MD:Moldavia
+MG:Madagascar
+MH:Marshall Islands
+MIL:US Military
+ML:Mali
+MM:Myanmar
+MN:Mongolia
+MO:Macau
+MP:Northern Mariana Islands
+MQ:Martinique (French)
+MR:Mauritania
+MS:Montserrat
+MT:Malta
+MU:Mauritius
+MUseum:Museum-related
+MV:Maldives
+MW:Malawi
+MX:Mexico
+MY:Malaysia
+MZ:Mozambique
+NA:Namibia
+NAME:Personal name
+NC:New Caledonia (French)
+NE:Niger
+NET:Network Infrastructure
+NF:Norfolk Island
+NG:Nigeria
+NI:Nicaragua
+NL:Netherlands
+NO:Norway
+NP:Nepal
+NR:Nauru
+NU:Niue
+NZ:New Zealand
+OM:Oman
+ORG:Nonprofit
+PA:Panama
+PE:Peru
+PF:French Polynesia
+PF:Polynesia (French)
+PG:Papua New Guinea
+PH:Philippines
+PK:Pakistan
+PL:Poland
+PM:Saint Pierre and Miquelon
+PN:Pitcairn
+PR:Puerto Rico (US)
+PRo:Professional domain
+PS:Palestina
+PT:Portugal
+PW:Palau
+PY:Paraguay
+QA:Qatar
+RE:Reunion (French)
+RO:Romania
+RU:Russian Federation
+RW:Rwanda
+SA:Saudi Arabia
+SB:Solomon Islands
+SC:Seychelles
+SE:Sweden
+SG:Singapore
+SH:Saint Helena
+SI:Slovenia
+SK:Slovak Republic (Slovakia)
+SL:Sierra Leone
+SM:San Marino
+SN:Senegal
+SO:Somalia
+SR:Surinam
+ST:Saint Tome and Principe
+SU:Soviet Union
+SV:El Salvador
+SZ:Swaziland
+TC:Turks and Caicos Islands
+TD:Chad
+TF:French Southern Territories
+TG:Togo
+TH:Thailand
+TJ:Tajikistan
+TK:Tokelau
+TM:Turkmenistan
+TN:Tunisia
+TO:Tonga
+TP:East Timor
+TR:Turkey
+TT:Trinidad and Tobago
+TV:Tuvalu
+TW:Taiwan
+TZ:Tanzania
+UA:Ukraine
+UG:Uganda
+UK:United Kingdom
+US:United States of America
+UY:Uruguay
+UZ:Uzbekistan
+VA:Vatican City State
+VC:Saint Vincent and the Grenadines
+VE:Venezuela
+VG:Virgin Islands (British)
+VI:Virgin Islands (US)
+VN:Vietnam
+VU:Vanuatu
+WS:Samoa
+YE:Yemen
+YU:Yugoslavia
+ZA:South Africa
+ZM:Zambia
+ZR:Zaire
+ZW:Zimbabwe
+XX:?
+</source>
+        <translation type="obsolete">AC:Ascension
+AD:Andorra
+AE:Vereinigte Arabische Emirate
+AERO:Aircraft-related
+AF:Afghanistan
+AG:Antigua und Barbuda
+AI:Anguilla
+AL:Albanien
+AM:Armenien
+AN:Niederländische Antillen
+AO:Angola
+AQ:Antarktis
+AR:Argentinien
+ARPA:Address and Routing Parameter Area
+AS:Amerikanisch-Samoa
+AT:Österreich
+AU:Australien
+AW:Aruba
+AZ:Aserbaidschan
+BA:Bosnien und Herzegowina
+BB:Barbados
+BE:Belgien
+BF:Burkina Faso
+BG:Bulgarien
+BH:Bahrain
+BI:Burundi
+BIz:Business
+BJ:Benin
+BM:Bermuda
+BN:Brunei Darussalam
+BO:Bolivien
+BR:Brasilien
+BS:Bahamas
+BT:Bhutan
+BW:Botswana
+BY:Weißrussland
+BZ:Belize
+CA:Kanada
+CC:Kokosinseln
+CD:Demokratische Republik Kongo
+CF:Zentralafrikanische Republik
+CG:Republik Kongo
+CH:Schweiz
+CI:Elfenbeinküste
+CK:Cookinseln
+CL:Chile
+CM:Kamerun
+CN:Volksrepublik China
+CO:Kolumbien
+COM:Commercial
+COOP:Cooperative-related
+CR:Costa Rica
+CU:Kuba
+CV:Kap Verde
+CX:Weihnachtsinseln
+CY:Zypern
+CZ:Tschechien
+DE:Deutschland
+DJ:Dschibuti
+DK:Dänemark
+DM:Dominica
+DO:Dominikanische Republik
+DZ:Algerien
+EC:Ecuador
+EDU:Educational
+EE:Estland
+EG:Ägypten
+ES:Spanien
+ET:Äthiopien
+FI:Finnland
+FJ:Fidschi
+FK:Falklandinseln (Malvinas)
+FM:Föderierte Staaten von Mikronesien
+FO:Färöer
+FR:Frankreich
+GB:Vereinigtes Königreich
+GA:Gabun
+GD:Grenada
+GE:Georgien
+GF:Französisch-Guayana
+GH:Ghana
+GI:Gibraltar
+GL:Grönland
+GM:Gambia
+GN:Guinea
+GOV:Government
+GP:Guadeloupe (Französisch)
+GQ:Äquatorialguinea
+GR:Griechenland
+GT:Guatemala
+GU:Guam (US)
+GY:Guyana
+HK:Hongkong
+HM:Heard und McDonaldislands
+HN:Honduras
+HR:Kroatien
+HU:Ungarn
+ID:Indonesien
+IE:Irland
+IL:Israel
+IN:Indien
+INFO:General-purpose TLD
+INT:International
+IO:Britisches Territorium im Indischen Ozean
+IR:Iran
+IS:Island
+IT:Italien
+JM:Jamaika
+JO:Jordanien
+JP:Japan
+KE:Kenia
+KG:Kirgisistan
+KH:Kambodscha
+KI:Kiribati
+KM:Komoren
+KN:St. Kitts und Nevis
+KR:Südkorea
+KW:Kuwait
+KY:Kaimaninsen
+KZ:Kasachstan
+LA:Laos
+LB:Libanon
+LC:St. Lucia
+LI:Liechtenstein
+LK:Sri Lanka
+LR:Liberia
+LS:Lesotho
+LT:Litauen
+LU:Luxemburg
+LV:Lettland
+LY:Libyen
+MA:Morokko
+MC:Monaco
+MD:Moldavien
+MG:Madagaskar
+MH:Marshallinseln
+MIL:US Military
+ML:Mali
+MM:Myanmar
+MN:Mongolei
+MO:Macao
+MP:Nördliche Marianen
+MQ:Martinique (Französisch)
+MR:Mauretanien
+MS:Montserrat
+MT:Malta
+MU:Mauritius
+MUseum:Museum-related
+MV:Maldiven
+MW:Malawi
+MX:Mexiko
+MY:Malaysia
+MZ:Mosambik
+NA:Namibia
+NAME:Personal name
+NC:Neukaledonien (French)
+NE:Niger
+NET:Network Infrastructure
+NF:Norfolkinseln
+NG:Nigeria
+NI:Nicaragua
+NL:Niederlande
+NO:Norwegen
+NP:Nepal
+NR:Nauru
+NU:Niue
+NZ:Neuseeland
+OM:Oman
+ORG:Nonprofit
+PA:Panama
+PE:Peru
+PF:French Polynesia
+PF:Französisch-Polynesien
+PG:Papua-Neuguinea
+PH:Philippinen
+PK:Pakistan
+PL:Polen
+PM:Saint Pierre und Miquelon
+PN:Pitcairninseln
+PR:Puerto Rico (US)
+PRo:Professional domain
+PS:Palästinensische Autonomiegebiete
+PT:Portugal
+PW:Palau
+PY:Paraguay
+QA:Katar
+RE:Réunion (Französisch)
+RO:Rumänien
+RU:Russland
+RW:Ruanda
+SA:Saudi-Arabien
+SB:Solomonen
+SC:Seychellen
+SE:Schweden
+SG:Singapur
+SH:St. Helena
+SI:Slovenien
+SK:Slowakei
+SL:Sierra Leone
+SM:San Marino
+SN:Senegal
+SO:Somalia
+SR:Suriname
+ST:São Tomé und Príncipe
+SU:Sowjetunion
+SV:El Salvador
+SZ:Swasiland
+TC:Turks- und Caicosinseln
+TD:Tschad
+TF:Französische Süd- und Antarktisgebiete
+TG:Togo
+TH:Thailand
+TJ:Tadschikistan
+TK:Tokelau
+TM:Turkmenistan
+TN:Tunesien
+TO:Tonga
+TP:Osttimor
+TR:Türkei
+TT:Trinidad und Tobago
+TV:Tuvalu
+TW:Taiwan
+TZ:Tansania
+UA:Ukraine
+UG:Uganda
+UK:Vereinigtes Königreich
+US:Vereinigte Staaten (USA)
+UY:Uruguay
+UZ:Usbekistan
+VA:Vatikanstadt
+VC:St. Vincent und die Grenadinen
+VE:Venezuela
+VG:Britische Jungferninseln
+VI:Amerikanische Jungferninseln
+VN:Vietnam
+VU:Vanuatu
+WS:Samoa
+YE:Jemen
+YU:Jugoslawien
+ZA:Südafrika
+ZM:Sambia
+ZR:Zaire
+ZW:Simbabwe
+XX:?
+</translation>
     </message>
 </context>
 <context>
@@ -1586,11 +2085,514 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Seleft file to save stylesheet</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei auswählen um das Stylesheet zu speichern</translation>
     </message>
     <message>
         <source>Seleft stylesheet to load</source>
-        <translation type="unfinished"></translation>
+        <translation>Stylesheet zu laden auswählen</translation>
+    </message>
+    <message>
+        <source>Choose color</source>
+        <translation>Wähle eine Farbe</translation>
+    </message>
+    <message>
+        <source>...</source>
+        <translation>...</translation>
+    </message>
+</context>
+<context>
+    <name>TLDList</name>
+    <message>
+        <source>AC:Ascension Island
+AD:Andorra
+AE:United Arab Emirates
+AERO:Aircraft-related
+AF:Afghanistan
+AG:Antigua and Barbuda
+AI:Anguilla
+AL:Albania
+AM:Armenia
+AN:Netherland Antilles
+AO:Angola
+AQ:Antarctica
+AR:Argentina
+ARPA:Address and Routing Parameter Area
+AS:American Samoa
+AT:Austria
+AU:Australia
+AW:Aruba
+AZ:Azerbaijan
+BA:Bosnia-Herzegovina
+BB:Barbados
+BE:Belgium
+BF:Burkina Faso
+BG:Bulgaria
+BH:Bahrain
+BI:Burundi
+BIz:Business
+BJ:Benin
+BM:Bermuda
+BN:Brunei Darussalam
+BO:Bolivia
+BR:Brazil
+BS:Bahamas
+BT:Bhutan
+BW:Botswana
+BY:Belarus
+BZ:Belize
+CA:Canada
+CC:Cocos (Keeling) Islands
+CD:Democratic Republic of Congo
+CF:Central African Republic
+CG:Congo
+CH:Switzerland
+CI:Ivory Coast (C&amp;ocirc;te D&apos;Ivoire)
+CK:Cook Islands
+CL:Chile
+CM:Cameroon
+CN:China
+CO:Colombia
+COM:Commercial
+COOP:Cooperative-related
+CR:Costa Rica
+CU:Cuba
+CV:Cape Verde
+CX:Christmas Island
+CY:Cyprus
+CZ:Czech Republic
+DE:Germany
+DJ:Djibouti
+DK:Denmark
+DM:Dominica
+DO:Dominican Republic
+DZ:Algeria
+EC:Ecuador
+EDU:Educational
+EE:Estonia
+EG:Egypt
+ES:Spain
+ET:Ethiopia
+FI:Finland
+FJ:Fiji
+FK:Falkland Islands (Malvinas)
+FM:Micronesia
+FO:Faroe Islands
+FR:France
+GB:Great Britan
+GA:Gabon
+GD:Grenada
+GE:Georgia
+GF:French Guyana
+GH:Ghana
+GI:Gibraltar
+GL:Greenland
+GM:Gambia
+GN:Guinea
+GOV:Government
+GP:Guadeloupe (French)
+GQ:Equatorial Guinea
+GR:Greece
+GT:Guatemala
+GU:Guam (US)
+GY:Guyana
+HK:Hong Kong
+HM:Heard and McDonald Islands
+HN:Honduras
+HR:Croatia (Hrvatska)
+HU:Hungary
+ID:Indonesia
+IE:Ireland
+IL:Israel
+IN:India
+INFO:General-purpose TLD
+INT:International
+IO:British Indian Ocean Territory
+IR:Islamic Republic of Iran
+IS:Iceland
+IT:Italy
+JM:Jamaica
+JO:Jordan
+JP:Japan
+KE:Kenya
+KG:Kyrgyzstan
+KH:Cambodia
+KI:Kiribati
+KM:Comoros
+KN:Saint Kitts Nevis Anguilla
+KR:South Korea
+KW:Kuwait
+KY:Cayman Islands
+KZ:Kazakhstan
+LA:Laos (People&apos;s Democratic Republic)
+LB:Lebanon
+LC:Saint Lucia
+LI:Liechtenstein
+LK:Sri Lanka
+LR:Liberia
+LS:Lesotho
+LT:Lithuania
+LU:Luxembourg
+LV:Latvia
+LY:Libya (Libyan Arab Jamahiriya)
+MA:Morocco
+MC:Monaco
+MD:Moldavia
+MG:Madagascar
+MH:Marshall Islands
+MIL:US Military
+ML:Mali
+MM:Myanmar
+MN:Mongolia
+MO:Macau
+MP:Northern Mariana Islands
+MQ:Martinique (French)
+MR:Mauritania
+MS:Montserrat
+MT:Malta
+MU:Mauritius
+MUseum:Museum-related
+MV:Maldives
+MW:Malawi
+MX:Mexico
+MY:Malaysia
+MZ:Mozambique
+NA:Namibia
+NAME:Personal name
+NC:New Caledonia (French)
+NE:Niger
+NET:Network Infrastructure
+NF:Norfolk Island
+NG:Nigeria
+NI:Nicaragua
+NL:Netherlands
+NO:Norway
+NP:Nepal
+NR:Nauru
+NU:Niue
+NZ:New Zealand
+OM:Oman
+ORG:Nonprofit
+PA:Panama
+PE:Peru
+PF:French Polynesia
+PF:Polynesia (French)
+PG:Papua New Guinea
+PH:Philippines
+PK:Pakistan
+PL:Poland
+PM:Saint Pierre and Miquelon
+PN:Pitcairn
+PR:Puerto Rico (US)
+PRo:Professional domain
+PS:Palestina
+PT:Portugal
+PW:Palau
+PY:Paraguay
+QA:Qatar
+RE:Reunion (French)
+RO:Romania
+RU:Russian Federation
+RW:Rwanda
+SA:Saudi Arabia
+SB:Solomon Islands
+SC:Seychelles
+SE:Sweden
+SG:Singapore
+SH:Saint Helena
+SI:Slovenia
+SK:Slovak Republic (Slovakia)
+SL:Sierra Leone
+SM:San Marino
+SN:Senegal
+SO:Somalia
+SR:Surinam
+ST:Saint Tome and Principe
+SU:Soviet Union
+SV:El Salvador
+SZ:Swaziland
+TC:Turks and Caicos Islands
+TD:Chad
+TF:French Southern Territories
+TG:Togo
+TH:Thailand
+TJ:Tajikistan
+TK:Tokelau
+TM:Turkmenistan
+TN:Tunisia
+TO:Tonga
+TP:East Timor
+TR:Turkey
+TT:Trinidad and Tobago
+TV:Tuvalu
+TW:Taiwan
+TZ:Tanzania
+UA:Ukraine
+UG:Uganda
+UK:United Kingdom
+US:United States of America
+UY:Uruguay
+UZ:Uzbekistan
+VA:Vatican City State
+VC:Saint Vincent and the Grenadines
+VE:Venezuela
+VG:Virgin Islands (British)
+VI:Virgin Islands (US)
+VN:Vietnam
+VU:Vanuatu
+WS:Samoa
+YE:Yemen
+YU:Yugoslavia
+ZA:South Africa
+ZM:Zambia
+ZR:Zaire
+ZW:Zimbabwe
+XX:?
+</source>
+        <translation type="unfinished">AC:Ascension
+AD:Andorra
+AE:Vereinigte Arabische Emirate
+AERO:Aircraft-related
+AF:Afghanistan
+AG:Antigua und Barbuda
+AI:Anguilla
+AL:Albanien
+AM:Armenien
+AN:Niederländische Antillen
+AO:Angola
+AQ:Antarktis
+AR:Argentinien
+ARPA:Address and Routing Parameter Area
+AS:Amerikanisch-Samoa
+AT:Österreich
+AU:Australien
+AW:Aruba
+AZ:Aserbaidschan
+BA:Bosnien und Herzegowina
+BB:Barbados
+BE:Belgien
+BF:Burkina Faso
+BG:Bulgarien
+BH:Bahrain
+BI:Burundi
+BIz:Business
+BJ:Benin
+BM:Bermuda
+BN:Brunei Darussalam
+BO:Bolivien
+BR:Brasilien
+BS:Bahamas
+BT:Bhutan
+BW:Botswana
+BY:Weißrussland
+BZ:Belize
+CA:Kanada
+CC:Kokosinseln
+CD:Demokratische Republik Kongo
+CF:Zentralafrikanische Republik
+CG:Republik Kongo
+CH:Schweiz
+CI:Elfenbeinküste
+CK:Cookinseln
+CL:Chile
+CM:Kamerun
+CN:Volksrepublik China
+CO:Kolumbien
+COM:Commercial
+COOP:Cooperative-related
+CR:Costa Rica
+CU:Kuba
+CV:Kap Verde
+CX:Weihnachtsinseln
+CY:Zypern
+CZ:Tschechien
+DE:Deutschland
+DJ:Dschibuti
+DK:Dänemark
+DM:Dominica
+DO:Dominikanische Republik
+DZ:Algerien
+EC:Ecuador
+EDU:Educational
+EE:Estland
+EG:Ägypten
+ES:Spanien
+ET:Äthiopien
+FI:Finnland
+FJ:Fidschi
+FK:Falklandinseln (Malvinas)
+FM:Föderierte Staaten von Mikronesien
+FO:Färöer
+FR:Frankreich
+GB:Vereinigtes Königreich
+GA:Gabun
+GD:Grenada
+GE:Georgien
+GF:Französisch-Guayana
+GH:Ghana
+GI:Gibraltar
+GL:Grönland
+GM:Gambia
+GN:Guinea
+GOV:Government
+GP:Guadeloupe (Französisch)
+GQ:Äquatorialguinea
+GR:Griechenland
+GT:Guatemala
+GU:Guam (US)
+GY:Guyana
+HK:Hongkong
+HM:Heard und McDonaldislands
+HN:Honduras
+HR:Kroatien
+HU:Ungarn
+ID:Indonesien
+IE:Irland
+IL:Israel
+IN:Indien
+INFO:General-purpose TLD
+INT:International
+IO:Britisches Territorium im Indischen Ozean
+IR:Iran
+IS:Island
+IT:Italien
+JM:Jamaika
+JO:Jordanien
+JP:Japan
+KE:Kenia
+KG:Kirgisistan
+KH:Kambodscha
+KI:Kiribati
+KM:Komoren
+KN:St. Kitts und Nevis
+KR:Südkorea
+KW:Kuwait
+KY:Kaimaninsen
+KZ:Kasachstan
+LA:Laos
+LB:Libanon
+LC:St. Lucia
+LI:Liechtenstein
+LK:Sri Lanka
+LR:Liberia
+LS:Lesotho
+LT:Litauen
+LU:Luxemburg
+LV:Lettland
+LY:Libyen
+MA:Morokko
+MC:Monaco
+MD:Moldavien
+MG:Madagaskar
+MH:Marshallinseln
+MIL:US Military
+ML:Mali
+MM:Myanmar
+MN:Mongolei
+MO:Macao
+MP:Nördliche Marianen
+MQ:Martinique (Französisch)
+MR:Mauretanien
+MS:Montserrat
+MT:Malta
+MU:Mauritius
+MUseum:Museum-related
+MV:Maldiven
+MW:Malawi
+MX:Mexiko
+MY:Malaysia
+MZ:Mosambik
+NA:Namibia
+NAME:Personal name
+NC:Neukaledonien (French)
+NE:Niger
+NET:Network Infrastructure
+NF:Norfolkinseln
+NG:Nigeria
+NI:Nicaragua
+NL:Niederlande
+NO:Norwegen
+NP:Nepal
+NR:Nauru
+NU:Niue
+NZ:Neuseeland
+OM:Oman
+ORG:Nonprofit
+PA:Panama
+PE:Peru
+PF:French Polynesia
+PF:Französisch-Polynesien
+PG:Papua-Neuguinea
+PH:Philippinen
+PK:Pakistan
+PL:Polen
+PM:Saint Pierre und Miquelon
+PN:Pitcairninseln
+PR:Puerto Rico (US)
+PRo:Professional domain
+PS:Palästinensische Autonomiegebiete
+PT:Portugal
+PW:Palau
+PY:Paraguay
+QA:Katar
+RE:Réunion (Französisch)
+RO:Rumänien
+RU:Russland
+RW:Ruanda
+SA:Saudi-Arabien
+SB:Solomonen
+SC:Seychellen
+SE:Schweden
+SG:Singapur
+SH:St. Helena
+SI:Slovenien
+SK:Slowakei
+SL:Sierra Leone
+SM:San Marino
+SN:Senegal
+SO:Somalia
+SR:Suriname
+ST:São Tomé und Príncipe
+SU:Sowjetunion
+SV:El Salvador
+SZ:Swasiland
+TC:Turks- und Caicosinseln
+TD:Tschad
+TF:Französische Süd- und Antarktisgebiete
+TG:Togo
+TH:Thailand
+TJ:Tadschikistan
+TK:Tokelau
+TM:Turkmenistan
+TN:Tunesien
+TO:Tonga
+TP:Osttimor
+TR:Türkei
+TT:Trinidad und Tobago
+TV:Tuvalu
+TW:Taiwan
+TZ:Tansania
+UA:Ukraine
+UG:Uganda
+UK:Vereinigtes Königreich
+US:Vereinigte Staaten (USA)
+UY:Uruguay
+UZ:Usbekistan
+VA:Vatikanstadt
+VC:St. Vincent und die Grenadinen
+VE:Venezuela
+VG:Britische Jungferninseln
+VI:Amerikanische Jungferninseln
+VN:Vietnam
+VU:Vanuatu
+WS:Samoa
+YE:Jemen
+YU:Jugoslawien
+ZA:Südafrika
+ZM:Sambia
+ZR:Zaire
+ZW:Simbabwe
+XX:?
+</translation>
     </message>
 </context>
 <context>
@@ -1718,7 +2720,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>This library is used to retreive information about maps and mods.</source>
-        <translation type="unfinished"></translation>
+        <translation>Diese Bibliothek wird verwenden um Informationen ueber Maps und Mods zu erhalten.</translation>
     </message>
 </context>
 <context>

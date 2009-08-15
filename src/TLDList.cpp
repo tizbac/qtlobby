@@ -2,13 +2,13 @@
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "TLDList.h"
 
+
 QMap<QString, QString>* TLDList::TLDMap;
 
-TLDList::TLDList() {
+TLDList::TLDList( QObject* parent) : QObject(parent){
     if ( TLDMap == NULL ) {
         TLDMap = new QMap<QString, QString>;
-        QString TLDString(
-                "AC:Ascension Island\n"
+        QString TLDString = tr("AC:Ascension Island\n"
                 "AD:Andorra\n"
                 "AE:United Arab Emirates\n"
                 "AERO:Aircraft-related\n"
