@@ -3,81 +3,137 @@
 
 #include "PreferencePathElement.h"
 
-PreferencePathElement::PreferencePathElement( QStringList config, QWidget* parent ) : QWidget( parent ), Ui::PreferencePathElement() {
+PreferencePathElement::PreferencePathElement( QWidget* parent ) : QWidget( parent ), Ui::PreferencePathElement() {
     setupUi( this );
     settings = Settings::Instance();
-    m_config = config;
-    variableName->setText( config[0] );
-    isDirectory = config[0].contains( QRegExp( "dir$" ) ) ? true : false;
-    examples = ( config[3] ).split( ";" );
-
-    for ( int i = 0; i < examples.size(); ++i )
-        examples[i] = QDir::toNativeSeparators( examples[i] );
-    bool hasSetting = settings->contains( config[0] );
-    if ( hasSetting )
-        lineEdit->setText( settings->value( config[0], config[1] ).toString() );
-    QStringList tmp;
-
-    for ( int i = 0; i < examples.size(); ++i ) {
-        QFileInfo fi( examples[i] );
-        tmp << QString( "<font style=\"color:%1;\">%2</font>" )
-            .arg( fi.exists() ? "green" : "red" )
-            .arg( examples[i] );
-        if( !hasSetting && fi.exists() ) {
-            lineEdit->setText( examples[i] );
-            hasSetting = true;
-        }
-    }
-
-    descriptionLabel->setText( QString( "<span style=\"font-size:7pt;\">%1<br>%2</span>" ).arg( config[2], tmp.join(" ") ) );
+    m_hasSetting = false;
+    m_isDirectory = false;
     connect( fileBrowserToolButton, SIGNAL( clicked() ),
         this, SLOT( openFileBrowser() ) );
     connect( lineEdit, SIGNAL( textChanged( QString ) ),
         this, SLOT( updateExistingState( QString ) ) );
-
-    updateExistingState();
 }
 
 PreferencePathElement::~PreferencePathElement() { }
 
-void PreferencePathElement::SaveElement() {
-    QString configparameter = settings->value( m_config[0] ).toString();
-    if ( exists ) {
-        if ( isDirectory ) {
-            QDir d( lineEdit->text().trimmed() );
-            QString dstr = QDir::toNativeSeparators( d.path() );
-            lineEdit->setText( dstr );
+bool PreferencePathElement::isDirectory() {
+    return m_isDirectory;
+}
+
+void PreferencePathElement::setIsDirectory( bool isDirectory ) {
+    m_isDirectory = isDirectory;
+}
+
+QString PreferencePathElement::variableName() {
+    return m_variableName;
+}
+
+void PreferencePathElement::setVariableName( const QString & variableName ) {
+    m_variableName = variableName;
+    variableNameLabel->setText( m_variableName );
+    if ( settings->contains( m_variableName ) ) {
+        QString s = settings->value( m_variableName ).toString();
+        if ( !s.isEmpty() ) {
+            m_hasSetting = true;
+            lineEdit->setText( s );
         }
-        lineEdit->setText( QDir::toNativeSeparators( lineEdit->text() ) );
-        settings->setValue( m_config[0], lineEdit->text() );
+    }
+}
+
+QStringList PreferencePathElement::examples() {
+    return m_examples;
+}
+
+void PreferencePathElement::setExamples( const QStringList & examples ) {
+    m_examples = examples;
+    searchInExamples();
+}
+
+void PreferencePathElement::searchInExamples() {
+    int s = m_examples.size();
+    for ( int i = 0; i < s; ++i ) {
+        m_examples[i] = QDir::toNativeSeparators( m_examples[i] );
+        QFileInfo fi( m_examples[i] );
+        if( !m_hasSetting && fi.exists() ) {
+            lineEdit->setText( m_examples[i] );
+            m_hasSetting = true;
+        }
+    }
+}
+
+void PreferencePathElement::setDescription( const QString & description ) {
+    descriptionLabel->setText( QString( "<span style=\"font-size:7pt;\">%1</span>" ).arg( description ) );
+}
+
+void PreferencePathElement::setConfig( QStringList config ) {
+    setVariableName( config.takeFirst() );
+    setDescription( config.takeFirst() );
+    setExamples( config.first().split(";") );
+    updateExistingState();
+}
+
+void PreferencePathElement::onBaseDirectoryChanged( QString baseDirectory ) {
+    m_baseDirectory = QDir::toNativeSeparators( QDir( baseDirectory ).path() + "/" );
+    QString newPath = QDir::cleanPath( m_baseDirectory + m_examples.last() );
+    if( isExistingPath( newPath ) && !m_examples.contains( newPath ) )
+        m_examples.prepend( newPath );
+    searchInExamples();
+    updateExistingState();
+}
+
+void PreferencePathElement::saveElement() {
+    QString configparameter = settings->value( m_variableName ).toString();
+    if ( m_exists ) {
+        if ( m_isDirectory )
+            lineEdit->setText( QDir::toNativeSeparators( QDir( lineEdit->text().trimmed() ).path() ) );
+        lineEdit->setText( QDir::toNativeSeparators( lineEdit->text().trimmed() ) );
+        settings->setValue( m_variableName, lineEdit->text() );
     }
     updateExistingState();
 }
 
-void PreferencePathElement::ResetConfiguration() {
-    lineEdit->setText( settings->value( m_config[0], m_config[1] ).toString() );
+void PreferencePathElement::resetConfiguration() {
+    lineEdit->setText( settings->value( m_variableName ).toString() );
 }
 
 void PreferencePathElement::openFileBrowser() {
-    QFileDialog fileDialog( this, m_config[0], examples.first() );
+    QFileDialog fileDialog( this, m_variableName, m_baseDirectory );
     QString fileOrDirName;
     updateExistingState();
-    if ( isDirectory ) {
-        QString path = exists ? lineEdit->text().trimmed() : QDir::homePath();
-        fileOrDirName = fileDialog.getExistingDirectory( this, tr( "Select Directory" ), path, QFileDialog::ShowDirsOnly );
-        emit pathChanged(fileOrDirName);
+    if ( m_isDirectory ) {
+        QString path;
+        if ( m_exists )
+            path = lineEdit->text().trimmed();
+        else if ( isExistingPath( m_baseDirectory ) )
+            path = m_baseDirectory;
+        else
+            path = QDir::homePath();
+        fileOrDirName = fileDialog.getExistingDirectory( this, tr( "Select Directory" ) + " " + m_variableName, path, QFileDialog::ShowDirsOnly );
+        emit pathChanged( fileOrDirName );
     } else {
         QFileInfo fi = QFileInfo( lineEdit->text().trimmed() );
-        QString path = fi.exists() ? fi.absoluteFilePath() : QDir::homePath();
-        fileOrDirName = fileDialog.getOpenFileName( this, tr( "Select File" ), path );
+        QString path;
+        if ( fi.exists() )
+            path = fi.absoluteFilePath();
+        else if ( isExistingPath( m_baseDirectory ) )
+            path = m_baseDirectory;
+        else
+            path = QDir::homePath();
+        QString filter = m_examples.last().contains(".") ? m_examples.last().split(".").last().prepend("*.") : "*";
+        fileOrDirName = fileDialog.getOpenFileName( this, tr( "Select File" ) + " " + m_variableName, path, filter );
     }
     if ( fileOrDirName != "" )
         lineEdit->setText( QDir::toNativeSeparators( fileOrDirName ) );
+    updateExistingState();
+}
+
+bool PreferencePathElement::isExistingPath( const QString & path ) {
+    return QFileInfo( path.trimmed() ).exists();
 }
 
 void PreferencePathElement::updateExistingState( QString ) {
     QFileInfo fi = QFileInfo( lineEdit->text().trimmed() );
-    exists = isDirectory ? fi.exists() && fi.isDir() : fi.exists();
-    QString iconName = exists ? ":/icons/open_game.xpm" : ":/icons/closed_game.xpm";
+    m_exists = m_isDirectory ? fi.exists() && fi.isDir() : fi.exists();
+    QString iconName = m_exists ? ":/icons/open_game.xpm" : ":/icons/closed_game.xpm";
     iconLabel->setPixmap( QPixmap( iconName ) );
 }

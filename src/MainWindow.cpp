@@ -9,18 +9,15 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     //   timer->start();
     //   setAttribute(Qt::WA_DeleteOnClose);
     setUnifiedTitleAndToolBarOnMac( true );
-    setupUi( this );
-    setWindowTitle(QString( "QtLobby 0.0.%1-svn" ).arg( SVN_REV ));
-
     settings = Settings::Instance();
     /* it's important to first init the preferences */
-
-    battles->setUsers( users );
-    preference          = new UserPreference();
-    preference->setWindowFlags(Qt::Window);
-    if (settings->value("unitsync").toString().isEmpty())
+    preference          = new Preference();
+    preference->setWindowFlags( Qt::Window );
+    if ( settings->value("unitsync").toString().isEmpty() )
         preference->exec();
-    UnitSyncLib::getInstance();
+    setupUi( this );
+    battles->setUsers( users );
+    setWindowTitle(QString( "QtLobby 0.0.%1-svn" ).arg( SVN_REV ));
     serverContextState  = new ServerContextState( this );
     connectionWidget    = new ConnectionWidget( serverContextState );
     connectionWidget->setWindowFlags(Qt::Window);
@@ -38,8 +35,6 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     battleHostingDialog->setWindowFlags(Qt::Window);
     downloadsDialog     = new DownloadsDialog(this);
     downloadsDialog->setWindowFlags(Qt::Window);
-
-
 
     scriptingEngine.globalObject().setProperty("battles", scriptingEngine.newQObject(battles));
     scriptingEngine.globalObject().setProperty("users", scriptingEngine.newQObject(users));
@@ -128,15 +123,6 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     // disconnect
     connect( action_Disconnect, SIGNAL( triggered() ),
              serverContextState, SLOT( forceDisconnect() ) );
-    // view menue
-    //connect( action_Battle_list, SIGNAL( triggered() ),
-    //         gameTreeVisibleCheckBox, SLOT( toggle() ) );
-    //connect( gameTreeVisibleCheckBox, SIGNAL( toggled( bool ) ),
-    //         action_Battle_list, SLOT( setChecked( bool ) ) );
-    //connect( action_User_list, SIGNAL( triggered() ),
-    //         this, SLOT( toggleUserListVisible() ) );
-    //connect( userListDockWidget, SIGNAL( visibilityChanged( bool ) ),
-    //         action_User_list, SLOT( setChecked( bool ) ) );
     // chat menue
     connect( actionLeave, SIGNAL( triggered() ),
              lobbyTabs, SLOT( closeTab() ) );
@@ -178,8 +164,6 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
              lobbyTabs, SLOT(onTabMoved(int,int)));
     connect (tabBar, SIGNAL(currentChanged(int)),
              this, SLOT(onCurrentTabChanged()));
-    //connect( lobbyTabs, SIGNAL( hideBattleList( bool ) ),
-    //         this, SLOT( hideBattleList( bool ) ) );
     // aboutDialog
     connect( action_About, SIGNAL( triggered() ),
              this, SLOT( about() ) );
@@ -379,7 +363,7 @@ void MainWindow::setColorInducatorBattles( QString regExp ) {
 
 void MainWindow::startSpring() {
     //emit newTrayMessage( "spring instance started" );
-	qpSpring.setWorkingDirectory( settings->value( "spring_user_dir" ).toString() );
+    qpSpring.setWorkingDirectory( settings->value( "spring_user_dir" ).toString() );
     qpSpring.start( settings->value( "spring_executable_with_abs_path_to_it" ).toString(),
                     QStringList( QString( "%1/%2" )
                                  .arg( settings->value( "spring_user_dir" ).toString() )

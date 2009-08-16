@@ -16,21 +16,31 @@
 #include "Settings.h"
 #include "PreferencePathElement.h"
 
-class UserPreference : public QDialog, private Ui::PreferenceWidget {
+class Preference : public QDialog, private Ui::PreferenceWidget {
     Q_OBJECT
 public:
-    UserPreference( QDialog* parent = 0 );
-    ~UserPreference();
+    Preference( QDialog* parent = 0 );
+    ~Preference();
 private:
     QSettings* settings;
     QList<PreferencePathElement*> pathElements;
-    QVector<QStringList> getPathElements();
+    QStringList springSystemDirConfig;
+    QStringList springExecutableFileConfig;
+    QStringList unitsyncLibFileConfig;
+    QStringList springUserDirConfig;
+    QStringList springSettingsFileConfig;
+    PreferencePathElement* springSystemDirPathElement;
+    PreferencePathElement* springExecutableFilePathElement;
+    PreferencePathElement* unitsyncLibFilePathElement;
+    PreferencePathElement* springUserDirPathElement;
+    PreferencePathElement* springSettingsFilePathElement;
+    void initPathExamples();
     void setUpPathForm();
 private slots:
-    void languageChanged(QString language);
-    void okClicked();
-    void applyClicked();
-    void cancelClicked();
+    void onLanguageChanged(QString language);
+    void onOk();
+    void onApply();
+    void onCancel();
 };
 
 #endif

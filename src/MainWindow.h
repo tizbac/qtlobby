@@ -54,12 +54,12 @@ private:
     ServerContextState* serverContextState;
     //receives all commands, parses and assigns it to its destination module
     CommandAssigner* commandAssigner;
-    //the tabs at the right top, which contain the chat etc.
+    //the tabs at the top, which contain the chat etc.
     LobbyTabs* lobbyTabs;
 
     AudioBackend audioBackend;
     UnitSyncLib* unitSyncLib;
-    UserPreference* preference;
+    Preference* preference;
 //    MapSelector* mapSelector;
     StylesheetDialog* stylesheetDialog;
     UserGroupsDialog* userGroupsDialog;
