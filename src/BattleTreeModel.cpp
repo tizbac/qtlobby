@@ -2,6 +2,7 @@
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "BattleTreeModel.h"
 #include "UserGroup.h"
+#include "TLDList.h"
 #include <QLinearGradient>
 
 BattleTreeModel::BattleTreeModel( QObject* parent ) : QAbstractItemModel( parent ) {
@@ -13,6 +14,7 @@ BattleTreeModel::~BattleTreeModel() {
 }
 
 QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
+    TLDList tldlist;
     if (index.row() >= m_battleList.size() || index.row() < 0) return QVariant();
     if (role == Qt::BackgroundRole && m_users) {
         QList<User> users = m_users->getUserList(m_battleList[index.row()].id);
@@ -127,7 +129,7 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
         }
         if ( role == Qt::ToolTipRole ) {
             QString t = m_battleList[index.row()].countryCode;
-            //         return tldlist.TLDMap->value( t );
+                     return tldlist.TLDMap->value( t );
             return t;
         }
         break;

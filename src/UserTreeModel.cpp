@@ -35,28 +35,31 @@ QVariant UserTreeModel::data( const QModelIndex& index, int role ) const {
     case 0: //status
         if ( role == Qt::DecorationRole || role == Qt::ToolTipRole ) {
             User u = m_userList[index.row()];
-            QString tip = tr("%1 %2");
+            QString tip;
             QStringList fileNameParts;
+
             if ( u.userState.isBot() ) {
                 fileNameParts << "bot";
-                tip.arg(tr( "Bot" ));
+                tip = tr("Bot ");
             } else if ( u.userState.isModerator() ) {
                 fileNameParts << "chanop";
-                tip.arg(tr( "Moderator" ));
+                tip = tr("Moderator ");
             }   else {
-                tip.arg(tr( "Player" ));
+                tip = tr("Player ");
             }
             if ( u.userState.isAway() ) {
                 fileNameParts << "away";
-                tip.arg(tr("is away"));
+                tip.append(tr("is away"));
             } else if ( u.userState.isIngame() ) {
                 fileNameParts << "ingame";
-                tip.arg(tr("is in game"));
+                tip.append(tr("is in game"));
             } else if ( u.joinedBattleId != -1 ) {
                 fileNameParts << "broom";
-                tip.arg(tr("is in battle room"));
+                tip.append(tr("is in battle room"));
             } else
-                tip.arg(tr("is available"));
+                tip.append(tr("is available"));
+            //tip.arg("aaa").arg("bbb");
+
             if ( role == Qt::DecorationRole )
                 return QIcon( QString( ":/icons/%1.xpm" ).arg( fileNameParts.join( "_" ) ) );
             return tip;
