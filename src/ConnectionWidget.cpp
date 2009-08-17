@@ -105,7 +105,7 @@ void ConnectionWidget::establishConnection() {
     QModelIndex index = profilesListView->currentIndex();
 
     if ( !index.isValid() ) {
-        QMessageBox::critical( this, tr("toProfile selected"),
+        QMessageBox::critical( this, tr("No Profile selected"),
                                tr("You have to add a profile first before you can connect to a server.") );
         return;
     }
