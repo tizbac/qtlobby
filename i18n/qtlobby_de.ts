@@ -861,7 +861,7 @@ Bitte Passwort angeben:</translation>
     </message>
     <message>
         <source>Save profile</source>
-        <translation>Profil abspeichern</translation>
+        <translation type="obsolete">Profil abspeichern</translation>
     </message>
     <message>
         <source>Delete profile</source>
@@ -895,7 +895,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt;&quot;&gt;If you hit connect in the Login tab you will see the client server communication logs here. &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt;&quot;&gt;This is handy if something doesn&apos;t work as expected.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="obsolete">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -986,6 +986,53 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Retype:</source>
         <translation>Neues Passwort (Wiederholung):</translation>
+    </message>
+    <message>
+        <source>Empty username</source>
+        <translation>Leerer Benutzername</translation>
+    </message>
+    <message>
+        <source>Please enter a username!</source>
+        <translation>Bitte einen Benutzernamen eingeben!</translation>
+    </message>
+    <message>
+        <source>Empty password</source>
+        <translation>Leeres Passwort</translation>
+    </message>
+    <message>
+        <source>Please enter a password!</source>
+        <translation>Bitte ein Passwort angeben!</translation>
+    </message>
+    <message>
+        <source>Registration was successful</source>
+        <translation>Die Registrierung war erfolgreich</translation>
+    </message>
+    <message>
+        <source>Registration failed</source>
+        <translation>Die Registrierung ist fehlgeschlagen</translation>
+    </message>
+    <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;If you hit connect in the Login tab you will see the client server communication logs here. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;This is handy if something doesn&apos;t work as expected.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Server:</source>
+        <translation>Server:</translation>
+    </message>
+    <message>
+        <source>Port</source>
+        <translation>Port</translation>
+    </message>
+    <message>
+        <source>springrts.com</source>
+        <translatorcomment>why does it need to be translated?</translatorcomment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1437,6 +1484,18 @@ p, li { white-space: pre-wrap; }
         <source># Players + # Specs (# 1st Ally : # 2nd Ally :...)</source>
         <translation># Spieler + # Zuschauer (# 1. Alli : # 2. Alli :...)</translation>
     </message>
+    <message>
+        <source>free slot(s): %1</source>
+        <translation>freie Slot(s): %1</translation>
+    </message>
+    <message>
+        <source># free slots in the current battle</source>
+        <translation># freier Slots in aktuellen Battle</translation>
+    </message>
+    <message>
+        <source>available Slots: 0</source>
+        <translation>freie Slots: 0</translation>
+    </message>
 </context>
 <context>
     <name>MapOverviewDialog</name>
@@ -1643,6 +1702,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Detected cpu frequency is: %1 MHz</source>
         <translation>Erkannte CPU-Frequenz ist: %1 MHz</translation>
+    </message>
+    <message>
+        <source>Registration was successful. You can now log in with your account</source>
+        <translation>Die Registrierung war erfolgreich. Du kannst dich jetzt mit deinem Account einloggen</translation>
     </message>
 </context>
 <context>

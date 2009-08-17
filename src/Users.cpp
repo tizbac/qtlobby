@@ -152,6 +152,8 @@ void Users::receiveCommand( Command command ) {
         u.joinedBattleId = -1;
         u.userState.setIngame(false);
         modUserInAllManagers( u );
+        if ( currentTabType == "BattleChannel" && currentTabName.toInt() == u.joinedBattleId )
+            emit teamPlayerSpecCountChanged(teamPlayerSpecCount());
     } else if ( command.name == "FORCELEAVECHANNEL" ) {
         channelUserManagerMap[command.attributes[0]]->delUser( command.attributes[1] );
     } else if ( command.name == "BATTLECLOSED" ) {
@@ -461,6 +463,16 @@ QString Users::teamPlayerSpecCount() {
         }
     }
     return "";
+}
+
+
+int Users::usersInChanCount() {
+    int users(0);
+    if ( currentTabType == "BattleChannel" )
+        foreach(User u, battleIdUserManagerMap[currentTabName.toInt()]->model()->userList())
+            if (u.battleState.isPlayer())
+                users++;
+    return users;
 }
 
 // This slot is contained in AbstractStateClient, but we inherit already from QTreeView

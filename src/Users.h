@@ -34,6 +34,7 @@ public:
     QString getCurrentUsername();
     void modUserInAllManagers( User );
     QString teamPlayerSpecCount();
+    int usersInChanCount();
 signals:
     void sendCommand( Command command );
     void sendInput( QString input );

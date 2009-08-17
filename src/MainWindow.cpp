@@ -510,9 +510,15 @@ void MainWindow::onTeamPlayerSpecCountChanged(QString ratio) {
     if( ratio.isEmpty() ) {
         usersInCurrentChannel->setText( tr("Users: %1").arg(QString::number(users->usersCountInCurrentChannel())));
         usersInCurrentChannel->setToolTip(tr("# Users"));
+        availableSlots->setText("");
     } else {
         usersInCurrentChannel->setText(ratio);
         usersInCurrentChannel->setToolTip(tr("# Players + # Specs (# 1st Ally : # 2nd Ally :...)"));
+        availableSlots->setText( tr("free slot(s): %1")
+            .arg(QString::number(battles->battleManager->getBattle(users->getUser(
+                    users->getCurrentUsername()).joinedBattleId).maxPlayers
+                    - users->usersInChanCount())));
+        availableSlots->setToolTip( tr("# free slots in the current battle"));
     }
 }
 
