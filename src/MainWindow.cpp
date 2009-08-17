@@ -307,7 +307,7 @@ void MainWindow::about() {
     QDialog* a = new QDialog(this);
     Ui::AboutWidget* about = new Ui::AboutWidget();
     about->setupUi( a );
-    about->label->setText(about->label->text().replace("#version#", SVN_REV));
+    about->label->setText(about->label->text().replace("#version#", QString(SVN_REV)));
     a->show();
 }
 
