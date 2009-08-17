@@ -149,7 +149,7 @@ void Preference::initPathExamples() {
 #ifdef Q_WS_WIN
             <<
             pfiles+"/Spring/;"
-            << pfiles2+"/Spring/;"
+            + pfiles2+"/Spring/;"
             "../;"
             "./;";
 #else
@@ -163,7 +163,7 @@ void Preference::initPathExamples() {
 #ifdef Q_WS_WIN
             <<
             pfiles+"/Spring/Spring.exe;"
-            << pfiles2+"/Spring/Spring.exe;"
+            + pfiles2+"/Spring/Spring.exe;"
             "../spring.exe;"
             "./spring.exe;";
 #else
@@ -179,7 +179,7 @@ void Preference::initPathExamples() {
 #ifdef Q_WS_WIN
             <<
             pfiles+"/Spring/unitsync.dll;"
-            << pfiles2+"/Spring/unitsync.dll;"
+            + pfiles2+"/Spring/unitsync.dll;"
             "../unitsync.dll;"
             "./unitsync.dll;";
 #else
@@ -200,7 +200,7 @@ void Preference::initPathExamples() {
 #ifdef Q_WS_WIN
             <<
             pfiles+"/Spring/;"
-            << pfiles2+"/Spring/;"
+            + pfiles2+"/Spring/;"
             "../;"
             "./;";
 #else
@@ -212,7 +212,7 @@ void Preference::initPathExamples() {
 #ifdef Q_WS_WIN
             <<
             pfiles+"/Spring/springsettings.exe;"
-            << pfiles2+"/Spring/springsettings.exe;"
+            + pfiles2+"/Spring/springsettings.exe;"
             "../springsettings.exe;"
             "./springsettings.exe;";
 #else
