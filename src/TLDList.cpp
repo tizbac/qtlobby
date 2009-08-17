@@ -51,7 +51,7 @@ TLDList::TLDList( QObject* parent) : QObject(parent){
                 "CF:Central African Republic\n"
                 "CG:Congo\n"
                 "CH:Switzerland\n"
-                "CI:Ivory Coast (C&ocirc;te D'Ivoire)\n"
+                "CI:Ivory Coast\n"
                 "CK:Cook Islands\n"
                 "CL:Chile\n"
                 "CM:Cameroon\n"

@@ -702,22 +702,6 @@ Bitte Passwort angeben:</translation>
         <translation>Verbinde mit einem Lobby-Server</translation>
     </message>
     <message>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;If you hit connect in the Login tab you will see the client server communication logs here. &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;This is handy if something doesn&apos;t work as expected.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;Wenn du auf &quot;Verbinden&quot; klickst, siehst du die Serverkommunikation hier.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;Das ist nützlich, wenn etwas nicht wie erwartet funktioniert.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
         <source>unconnected</source>
         <translation>unverbunden</translation>
     </message>
@@ -726,24 +710,8 @@ p, li { white-space: pre-wrap; }
         <translation>Verbindungsstatus: </translation>
     </message>
     <message>
-        <source>Login</source>
-        <translation>Login</translation>
-    </message>
-    <message>
-        <source>Profile:</source>
-        <translation>Profil:</translation>
-    </message>
-    <message>
-        <source>user @ taspring.clan-sy.com</source>
-        <translation>user @ taspring.clan-sy.com</translation>
-    </message>
-    <message>
         <source>&amp;User name:</source>
         <translation>Ben&amp;utzername:</translation>
-    </message>
-    <message>
-        <source>Lobby username like drZero23 or [Clan]Username</source>
-        <translation>Lobby-Benutzername wie drZero23 oder [Clan]Benutzername</translation>
     </message>
     <message>
         <source>user</source>
@@ -752,10 +720,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>&amp;Address:</source>
         <translation>&amp;Adresse:</translation>
-    </message>
-    <message>
-        <source>Address of the TASServer. Most likely taspring.clan-sy.com</source>
-        <translation>Adresse des TASServers. Meist taspring.clan-sy.com</translation>
     </message>
     <message>
         <source>taspring.clan-sy.com</source>
@@ -776,14 +740,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Current Profile:</source>
         <translation>Aktuelles Profil:</translation>
-    </message>
-    <message>
-        <source>Auto login</source>
-        <translation>Autologin</translation>
-    </message>
-    <message>
-        <source>Remember password</source>
-        <translation>Passwort merken</translation>
     </message>
     <message>
         <source>Logout</source>
@@ -810,10 +766,6 @@ p, li { white-space: pre-wrap; }
         <translation>A&amp;ccount</translation>
     </message>
     <message>
-        <source>If logged in you can rename your account login (username / login name). Usename [fOO]baR </source>
-        <translation>Wenn du eingeloggt bist, kannst du deinen Account umbenennen.</translation>
-    </message>
-    <message>
         <source>Rename:</source>
         <translation>Umbenennen:</translation>
     </message>
@@ -824,10 +776,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>R&amp;ename</source>
         <translation>Umb&amp;enennen</translation>
-    </message>
-    <message>
-        <source>You must be logged in to rename your account (username).</source>
-        <translation>Du musst eingeloggt sein, um deinen Benutzername umbenennen zu können.</translation>
     </message>
     <message>
         <source>Change password:</source>
@@ -844,10 +792,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>&amp;Change</source>
         <translation>&amp;Ändern</translation>
-    </message>
-    <message>
-        <source>You must be logged in to change your password.</source>
-        <translation>Du musst eingeloggt sein, um dein Passwort zu ändern.</translation>
     </message>
     <message>
         <source>No Profile selected</source>
@@ -911,10 +855,6 @@ p, li { white-space: pre-wrap; }
         <translation>Neu verbinden...</translation>
     </message>
     <message>
-        <source>Nooo!</source>
-        <translation>Neiiiin!</translation>
-    </message>
-    <message>
         <source>New profile</source>
         <extracomment>this</extracomment>
         <translation>Neues Profil</translation>
@@ -934,6 +874,118 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Wait 5 seconds to reconnect</source>
         <translation>5 Sekunden warten für Neuverbindung</translation>
+    </message>
+    <message>
+        <source>Different password</source>
+        <translation>Anderes Passwort</translation>
+    </message>
+    <message>
+        <source>Passwords you entered are different! Try again please.</source>
+        <translation>Die eingegebenen Passwörter sind unterschiedlich! Bitte nochmal versuchen.</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Abbrechen</translation>
+    </message>
+    <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt;&quot;&gt;If you hit connect in the Login tab you will see the client server communication logs here. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt;&quot;&gt;This is handy if something doesn&apos;t work as expected.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt;&quot;&gt;Wenn du im Einloggen-Tab auf verbinden klickst, wirst du hier den Client-Server Kommunikationslog sehen. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:9pt;&quot;&gt;Dies ist geschickt, falls etwas nicht wie erwartet funktioniert.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;; font-size:9pt;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>Login to server for online multiplayer</source>
+        <translation>Verbindung zum Server für Multiplayerspiele</translation>
+    </message>
+    <message>
+        <source>Profiles:</source>
+        <translation>Profile:</translation>
+    </message>
+    <message>
+        <source>Lobby username</source>
+        <translation>Lobby Benutzername</translation>
+    </message>
+    <message>
+        <source>Lobby password</source>
+        <translation>Lobby Passwort</translation>
+    </message>
+    <message>
+        <source>Remember password:</source>
+        <translation>Passwort merken:</translation>
+    </message>
+    <message>
+        <source>Address of the TASServer. Most likely springrts.com</source>
+        <translation>Adresse des TASServers. Meist springrts.com</translation>
+    </message>
+    <message>
+        <source>Auto login:</source>
+        <translation>Autologin:</translation>
+    </message>
+    <message>
+        <source>Autologin:</source>
+        <translation>Autologin:</translation>
+    </message>
+    <message>
+        <source>Log&amp;out</source>
+        <translation>Ausl&amp;oggen</translation>
+    </message>
+    <message>
+        <source>Log&amp;in</source>
+        <translation>E&amp;inloggen</translation>
+    </message>
+    <message>
+        <source>Use this checkbox to toggle between simple and advanced views</source>
+        <translation>Benutze diese Checkbox, um zwischen einfacher- und erweiterter Ansicht zu wechseln</translation>
+    </message>
+    <message>
+        <source>Register a new account, so you can login with it</source>
+        <translation>Registriere einen neuen Account, um dich damit einzuloggen</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;New account:&lt;/b&gt;</source>
+        <translation>&lt;b&gt;Neuer Account:&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Desired username:</source>
+        <translation>Gewünschter Benutzername:</translation>
+    </message>
+    <message>
+        <source>Password:</source>
+        <translation>Passwort:</translation>
+    </message>
+    <message>
+        <source>Retry:</source>
+        <translation>Wiederholen:</translation>
+    </message>
+    <message>
+        <source>Create login profile:</source>
+        <translation>Loginprofil erstellen</translation>
+    </message>
+    <message>
+        <source>Re&amp;gister</source>
+        <translation>Re&amp;gistrieren</translation>
+    </message>
+    <message>
+        <source>Rename your account or change password</source>
+        <translation>Account umbenennen oder Passwort ändern</translation>
+    </message>
+    <message>
+        <source>You must be logged in to modify your account!</source>
+        <translation>Du musst eingeloggt sein, um deinen Account zu ändern!</translation>
+    </message>
+    <message>
+        <source>Retype:</source>
+        <translation>Neues Passwort (Wiederholung):</translation>
     </message>
 </context>
 <context>
@@ -1366,10 +1418,6 @@ p, li { white-space: pre-wrap; }
         <translation># Benutzer</translation>
     </message>
     <message>
-        <source># Users (# 1st Ally: # 2nd Ally:... + # Specs)</source>
-        <translation># Benutzer (# 1te Allianz: 2te Allianz:... + # Zuschauer)</translation>
-    </message>
-    <message>
         <source>Users: 0</source>
         <translation>Benutzer: 0</translation>
     </message>
@@ -1385,6 +1433,10 @@ p, li { white-space: pre-wrap; }
         <source>Battle Info</source>
         <translation>Battleinfo</translation>
     </message>
+    <message>
+        <source># Players + # Specs (# 1st Ally : # 2nd Ally :...)</source>
+        <translation># Spieler + # Zuschauer (# 1. Alli : # 2. Alli :...)</translation>
+    </message>
 </context>
 <context>
     <name>MapOverviewDialog</name>
@@ -1399,6 +1451,29 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Use left mouse button to rotate the map, middle mouse button to move the map and mouse wheel to zoom in and out.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Preference</name>
+    <message>
+        <source>This folder contains the most Spring data for example the directories: AI/, base/, fonts/ and startscripts/.</source>
+        <translation>Dieser Ordner enthält die meisten Spring-Dateien wie z.B. die Verzeichnisse: AI/, base/, fonts/ und startscripts/.</translation>
+    </message>
+    <message>
+        <source>To start Spring we need the location of the Spring binary.</source>
+        <translation>Um Spring zu starten brauchen wir Ort der Spring-Binärdatei.</translation>
+    </message>
+    <message>
+        <source>This library is used to retreive information about maps and mods.</source>
+        <translation>Diese Bibliothek wird verwendet um Informationen über Maps und Mods zu erhalten.</translation>
+    </message>
+    <message>
+        <source>On multi user systems this path is used to store maps, mods and configurations which are user specific since most normal users won&apos;t have write access to the global spring directory.</source>
+        <translation>Bei Mehrbenutzersystemen wird dieser Pfad verwendet, um benutzerspezifische Karten, Mods und Konfigurationen zu speichern, da normale Benutzer normalerweise keinen Schreibzugriff auf das globale Springverzeichnis haben.</translation>
+    </message>
+    <message>
+        <source>Springsettings is a detailed and advanced configuration program. This binary is not in the qtlobby distribution yet so you might have to download it at springlobby.info</source>
+        <translation>Springsettings ist ein externes Konfigurations-Programm, welches nicht Bestandteil von QtLobby ist. Es muss eventuell bei springlobby.info herunter geladen werden</translation>
     </message>
 </context>
 <context>
@@ -1537,7 +1612,80 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>QString</name>
+    <name>ScriptingDialog</name>
+    <message>
+        <source>Scripting</source>
+        <translation>Scripting</translation>
+    </message>
+    <message>
+        <source>Execute</source>
+        <translation>Ausführen</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Schließen</translation>
+    </message>
+</context>
+<context>
+    <name>ServerContextState</name>
+    <message>
+        <source>&gt;&gt; agreement accepted, trying to login now.</source>
+        <translation>&gt;&gt; Vereinbarung akzeptiert, versuche jetzt anzumelden.</translation>
+    </message>
+    <message>
+        <source>&gt;&gt; agreement denied, disconnecting from server.</source>
+        <translation>&gt;&gt; Vereinbarung abgelehnt, trenne Verbindung zum Server.</translation>
+    </message>
+    <message>
+        <source>Could not retreive CPU information.</source>
+        <translation>CPU-Frequenz konnte nicht ausgelesen werden.</translation>
+    </message>
+    <message>
+        <source>Detected cpu frequency is: %1 MHz</source>
+        <translation>Erkannte CPU-Frequenz ist: %1 MHz</translation>
+    </message>
+</context>
+<context>
+    <name>StylesheetDialog</name>
+    <message>
+        <source>Stylesheet editing</source>
+        <translation>Stylesheet bearbeiten</translation>
+    </message>
+    <message>
+        <source>Load</source>
+        <translation>Laden</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Speichern</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation>Anwenden</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Schließen</translation>
+    </message>
+    <message>
+        <source>Seleft file to save stylesheet</source>
+        <translation>Datei auswählen um das Stylesheet zu speichern</translation>
+    </message>
+    <message>
+        <source>Seleft stylesheet to load</source>
+        <translation>Stylesheet zu laden auswählen</translation>
+    </message>
+    <message>
+        <source>Choose color</source>
+        <translation>Wähle eine Farbe</translation>
+    </message>
+    <message>
+        <source>...</source>
+        <translation>...</translation>
+    </message>
+</context>
+<context>
+    <name>TLDList</name>
     <message>
         <source>AC:Ascension Island
 AD:Andorra
@@ -2030,78 +2178,6 @@ ZW:Simbabwe
 XX:?
 </translation>
     </message>
-</context>
-<context>
-    <name>ScriptingDialog</name>
-    <message>
-        <source>Scripting</source>
-        <translation>Scripting</translation>
-    </message>
-    <message>
-        <source>Execute</source>
-        <translation>Ausführen</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation>Schließen</translation>
-    </message>
-</context>
-<context>
-    <name>ServerContextState</name>
-    <message>
-        <source>&gt;&gt; agreement accepted, trying to login now.</source>
-        <translation>&gt;&gt; Vereinbarung akzeptiert, versuche jetzt anzumelden.</translation>
-    </message>
-    <message>
-        <source>&gt;&gt; agreement denied, disconnecting from server.</source>
-        <translation>&gt;&gt; Vereinbarung abgelehnt, trenne Verbindung zum Server.</translation>
-    </message>
-    <message>
-        <source>Could not retreive CPU information.</source>
-        <translation>CPU-Frequenz konnte nicht ausgelesen werden.</translation>
-    </message>
-</context>
-<context>
-    <name>StylesheetDialog</name>
-    <message>
-        <source>Stylesheet editing</source>
-        <translation>Stylesheet bearbeiten</translation>
-    </message>
-    <message>
-        <source>Load</source>
-        <translation>Laden</translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation>Speichern</translation>
-    </message>
-    <message>
-        <source>Apply</source>
-        <translation>Anwenden</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation>Schließen</translation>
-    </message>
-    <message>
-        <source>Seleft file to save stylesheet</source>
-        <translation>Datei auswählen um das Stylesheet zu speichern</translation>
-    </message>
-    <message>
-        <source>Seleft stylesheet to load</source>
-        <translation>Stylesheet zu laden auswählen</translation>
-    </message>
-    <message>
-        <source>Choose color</source>
-        <translation>Wähle eine Farbe</translation>
-    </message>
-    <message>
-        <source>...</source>
-        <translation>...</translation>
-    </message>
-</context>
-<context>
-    <name>TLDList</name>
     <message>
         <source>AC:Ascension Island
 AD:Andorra
@@ -2146,7 +2222,7 @@ CD:Democratic Republic of Congo
 CF:Central African Republic
 CG:Congo
 CH:Switzerland
-CI:Ivory Coast (C&amp;ocirc;te D&apos;Ivoire)
+CI:Ivory Coast
 CK:Cook Islands
 CL:Chile
 CM:Cameroon
@@ -2348,7 +2424,7 @@ ZR:Zaire
 ZW:Zimbabwe
 XX:?
 </source>
-        <translation type="unfinished">AC:Ascension
+        <translation>AC:Ascension
 AD:Andorra
 AE:Vereinigte Arabische Emirate
 AERO:Aircraft-related
@@ -2704,39 +2780,23 @@ XX:?
     <name>UserPreference</name>
     <message>
         <source>To execute spring we need the path to the spring binary.</source>
-        <translation>Um Spring zu starten benötigen wir den Pfad zur Spring-Binärdatei.</translation>
+        <translation type="obsolete">Um Spring zu starten benötigen wir den Pfad zur Spring-Binärdatei.</translation>
     </message>
     <message>
         <source>On multiuser systems this path is used to store maps, mods and configurations which are user specific since most normal users won&apos;t have write-access to the global spring directory.</source>
-        <translation>Bei Mehrbenutzersystemen wird dieser Pfad verwendet, um benutzerspezifische Karten, Mods und Konfigurationen zu speichern, da normale Benutzer normalerweise keinen Schreibzugriff auf das globale Springverzeichnis haben.</translation>
+        <translation type="obsolete">Bei Mehrbenutzersystemen wird dieser Pfad verwendet, um benutzerspezifische Karten, Mods und Konfigurationen zu speichern, da normale Benutzer normalerweise keinen Schreibzugriff auf das globale Springverzeichnis haben.</translation>
     </message>
     <message>
         <source>Springsettings is a detailed and advanced configuration program. This binary is not in the qtlobby distribution yet so you might have to download it at springlobby.info</source>
-        <translation>Springsettings ist ein externes Konfigurations-Programm, welches nicht Bestandteil von QtLobby ist. Es muss eventuell bei springlobby.info herunter geladen werden</translation>
-    </message>
-    <message>
-        <source>This folder usually contains the most spring data for example the directories: AI/, base/, fonts/ and startscripts/.</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Springsettings ist ein externes Konfigurations-Programm, welches nicht Bestandteil von QtLobby ist. Es muss eventuell bei springlobby.info herunter geladen werden</translation>
     </message>
     <message>
         <source>This library is used to retreive information about maps and mods.</source>
-        <translation>Diese Bibliothek wird verwenden um Informationen ueber Maps und Mods zu erhalten.</translation>
+        <translation type="obsolete">Diese Bibliothek wird verwenden um Informationen ueber Maps und Mods zu erhalten.</translation>
     </message>
 </context>
 <context>
     <name>UserTreeModel</name>
-    <message>
-        <source>Bot</source>
-        <translation>Bot</translation>
-    </message>
-    <message>
-        <source>Moderator</source>
-        <translation>Moderator</translation>
-    </message>
-    <message>
-        <source>Player</source>
-        <translation>Spieler</translation>
-    </message>
     <message>
         <source>S</source>
         <translation>S</translation>
@@ -2764,10 +2824,6 @@ XX:?
     <message>
         <source>Player rank</source>
         <translation>Rang</translation>
-    </message>
-    <message>
-        <source>%1 %2</source>
-        <translation>%1 %2</translation>
     </message>
     <message>
         <source>is away</source>
@@ -2816,6 +2872,18 @@ XX:?
     <message>
         <source>no rank set</source>
         <translation>kein Rang</translation>
+    </message>
+    <message>
+        <source>Bot </source>
+        <translation>Bot </translation>
+    </message>
+    <message>
+        <source>Moderator </source>
+        <translation>Moderator </translation>
+    </message>
+    <message>
+        <source>Player </source>
+        <translation>Spieler </translation>
     </message>
 </context>
 <context>
