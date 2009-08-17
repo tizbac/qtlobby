@@ -17,6 +17,7 @@ ServerContextState::ServerContextState( QObject * parent ) : NetworkInterface( p
              this, SLOT( acceptAgreement() ) );
     connect( agreementWidget->denyPushButton, SIGNAL( clicked() ),
              this, SLOT( denyAgreement() ) );
+    registration = false;
 }
 
 ServerContextState::~ServerContextState() {
@@ -98,6 +99,7 @@ void ServerContextState::displayError( QAbstractSocket::SocketError a ) {
 }
 
 void ServerContextState::connectionStateChanged( State state ) {
+    if(registration) return;
     switch ( state ) {
     case ConnectionRefusedError:
     case RemoteHostClosedError:
@@ -142,7 +144,7 @@ void ServerContextState::connectionStateChanged( State state ) {
 
 void ServerContextState::ping() {
     if ( !keepaliveping ) {
-//        qDebug() << "no more sending of keepaliveping";
+        //        qDebug() << "no more sending of keepaliveping";
         return;
     }
     sendMessage( "PING 1" );
@@ -167,8 +169,8 @@ void ServerContextState::authenticate() {
 
     unsigned int cpu = 0;
 #ifdef Q_WS_WIN
-	QSettings settings("HKEY_LOCAL_MACHINE\\HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", QSettings::NativeFormat);
-	cpu = settings.value("~MHz").toUInt();
+    QSettings settings("HKEY_LOCAL_MACHINE\\HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", QSettings::NativeFormat);
+    cpu = settings.value("~MHz").toUInt();
 #endif
 #ifdef Q_WS_MAC
     QProcess *myProcess = new QProcess();
@@ -267,6 +269,12 @@ void ServerContextState::receiveCommand( Command command ) {
             QString u = command.attributes.join( " " );
             emit changePasswordSuccess( u );
         }
+    } else
+        if ( command.name == "REGISTRATIONACCEPTED" ) {
+        emit registrationSuccess(tr("Registration was successful. You can now log in with your account"));
+    } else
+        if ( command.name == "REGISTRATIONDENIED" ) {
+        emit registrationFailure(command.attributes.join( " " ));
     }
 }
 
@@ -286,11 +294,11 @@ void ServerContextState::denyAgreement() {
     emit logWrite( tr( ">> agreement denied, disconnecting from server." ) );
 }
 
-void ServerContextState::registerNewAccount( QString /*user*/ ) {
+void ServerContextState::registerNewAccount( QString user, QString password ) {
+    registration = true;
     establishConnection();
-    //   sendMessage("REGISTER %1 %2")
-    //     .arg(user)
-    //     .arg(password);
+    qDebug() << QString("REGISTER %1 %2").arg(user).arg(password);
+    sendMessage(QString("REGISTER %1 %2").arg(user).arg(password));
 }
 
 QString ServerContextState::encodePassword( QString password ) {

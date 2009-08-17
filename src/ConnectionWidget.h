@@ -46,6 +46,8 @@ public slots:
     void registerNewAccount();
     void renameLoginNameFeedbackSuccess(QString);
     void renameLoginNameFeedbackFailure(QString);
+    void registrationSuccessFeedback(QString);
+    void registrationFailFeedback(QString);
     void changePasswordSuccess( QString );
     void changePasswordFailure( QString );
     void onLogin();
@@ -64,6 +66,7 @@ private slots:
     void connectionStatusChanged(ConnectionState state);
     void renameLoginName();
     void changePassword();
+    void serverContextStateLoopback(QString message);
 private:
     QTimer *countdownTimer;
     QProgressDialog *countdownDialog;
@@ -74,6 +77,9 @@ private:
     bool showSimple;
     bool simpleAutologin;
     QUrl simpleUrl;
+    QUrl configuration;
+    ServerContextState* registrationServerContextState;
+
     void lockInterface();
     void unlockInterface();
     void unlockRenameAndChangePassword();

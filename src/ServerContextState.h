@@ -50,13 +50,14 @@ public:
     ServerContextState( QObject * parent = 0 );
     ~ServerContextState();
     void requestRename( QString newUsername );
-    void registerNewAccount( QString );
+    void registerNewAccount( QString user, QString password );
     QString encodePassword( QString password );
 private:
     QUrl url; // server:port username:password for the TASServer is saved here
     bool keepaliveping;
     AgreementWidget* agreementWidget;
     QString agreement;
+    bool registration;
 
 signals:
     void connectionStateChanged( ConnectionState );
@@ -67,6 +68,8 @@ signals:
     void renameLoginNameFailure( QString );
     void changePasswordSuccess( QString );
     void changePasswordFailure( QString );
+    void registrationSuccess( QString );
+    void registrationFailure( QString );
 public slots:
     void authenticate();
     void sendMessage( QString message );

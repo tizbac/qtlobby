@@ -79,6 +79,12 @@ void ServerProfilesModel::createProfile() {
     save();
 }
 
+void ServerProfilesModel::createProfile(const QUrl& url) {
+    m_profiles << url;
+    reset();
+    save();
+}
+
 void ServerProfilesModel::modifyProfile(const QModelIndex& profile, const QUrl& url) {
     m_profiles[profile.row()] = url;
     emit dataChanged(profile, profile);

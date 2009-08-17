@@ -63,9 +63,6 @@ ConnectionWidget::ConnectionWidget( ServerContextState* serverContextState,
     connect( profilesListView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
              this, SLOT(comboBoxCurrentIndexChanged(QModelIndex,QModelIndex)) );
 
-    connect( saveProfileButton, SIGNAL( clicked() ),
-             this , SLOT( saveModifiedProfile() ) );
-
     connect( registerUserPushButton, SIGNAL( clicked( ) ),
              this, SLOT( registerNewAccount( ) ) );
 
@@ -108,7 +105,7 @@ void ConnectionWidget::establishConnection() {
     QModelIndex index = profilesListView->currentIndex();
 
     if ( !index.isValid() ) {
-        QMessageBox::critical( this, tr("No Profile selected"),
+        QMessageBox::critical( this, tr("toProfile selected"),
                                tr("You have to add a profile first before you can connect to a server.") );
         return;
     }
@@ -238,7 +235,6 @@ void ConnectionWidget::connectionStatusChanged( ConnectionState state ) {
         simpleLogoutButton->setEnabled( false );
         logoutButton->setEnabled( false );
         loginButton->setEnabled( true );
-        registerUserPushButton->setEnabled(false); // change to true when registering is working correctly
         statusLabel->setText( "unconnected" );
         //unlockInterface();
         lockRenameAndChangePassword();
@@ -263,7 +259,6 @@ void ConnectionWidget::connectionStatusChanged( ConnectionState state ) {
         loginButton->setEnabled(true);
         unlockRenameAndChangePassword();
         statusLabel->setText( tr("authenticated (logged in)") );
-        registerUserPushButton->setEnabled(false);
         hide();
         break;
     }
@@ -343,9 +338,35 @@ void ConnectionWidget::toggleAutoLogin(bool checked) {
 }
 
 void ConnectionWidget::registerNewAccount() {
-    QString username = profileUserNameLineEdit->text();
+    QString username = desiredUsernamelineEdit->text();
+    if(username.isEmpty()) {
+        QMessageBox::critical( this, tr("Empty username"), tr("Please enter a username!") );
+        return;
+    }
     //qDebug() << "register new account "<< username;
-    serverContextState->registerNewAccount( username );
+    if(passwordTry1lineEdit->text() != passwordTry2lineEdit->text()) {
+        QMessageBox::critical( this, tr("Different password"), tr("Passwords you entered are different! Try again please.") );
+        return;
+    }
+    if(passwordTry1lineEdit->text().isEmpty()) {
+        QMessageBox::critical( this, tr("Empty password"), tr("Please enter a password!") );
+        return;
+    }
+    registrationServerContextState = new ServerContextState(this);
+    /*registration feedback*/
+    connect( registrationServerContextState, SIGNAL( incommingMessage(QString) ),
+             this, SLOT( serverContextStateLoopback(QString)) );
+    connect( registrationServerContextState, SIGNAL( registrationFailure(QString) ),
+             this, SLOT( registrationFailFeedback(QString)) );
+    connect( registrationServerContextState, SIGNAL( registrationSuccess(QString) ),
+             this, SLOT( registrationSuccessFeedback(QString)) );
+    configuration.setHost(newServerLineEdit->text());
+    configuration.setPort(newPortSpinBox->value());
+    registrationServerContextState->setConfiguration(configuration);
+    registrationServerContextState->registerNewAccount(username, passwordTry1lineEdit->text());
+    configuration.setUserName(username);
+    configuration.setPassword(passwordTry1lineEdit->text());
+    registerUserPushButton->setEnabled(false);
 }
 
 void ConnectionWidget::show_if_wanted() {
@@ -426,4 +447,24 @@ void ConnectionWidget::hideEvent(QHideEvent* /*event*/) {
 
 void ConnectionWidget::on_simpleAutologinChechbox_toggled(bool checked) {
     settings->setValue("simpleAutologin", checked);
+}
+
+void ConnectionWidget::registrationSuccessFeedback(QString info) {
+    QMessageBox::information( this, tr("Registration was successful"), info );
+    registrationServerContextState->deleteLater();
+    registerUserPushButton->setEnabled(true);
+    if(createProfileCheckBox->isChecked()) {
+        ServerProfilesModel::getInstance()->createProfile(configuration);
+    }
+}
+
+void ConnectionWidget::registrationFailFeedback(QString info) {
+    QMessageBox::information( this, tr("Registration failed"), info );
+    registrationServerContextState->deleteLater();
+    registerUserPushButton->setEnabled(true);
+}
+
+
+void ConnectionWidget::serverContextStateLoopback(QString message) {
+    registrationServerContextState->receiveCommand(Command(message));
 }

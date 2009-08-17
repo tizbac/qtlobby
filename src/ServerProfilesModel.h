@@ -20,6 +20,7 @@ public:
     QModelIndex getAutologinIndex() const;
     bool hasAutologin() const;
     void createProfile();
+    void createProfile(const QUrl& url);
     void modifyProfile(const QModelIndex& profile, const QUrl& url);
     void removeProfile(const QModelIndex& profile);
     void setActiveProfile(const QModelIndex& profile);
