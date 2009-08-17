@@ -87,10 +87,10 @@ void MapRendererWidget::paintGL() {
         compileObject = false;
     }
     glRotatef(-90, 0, 0, 1);
-    glTranslatef(-m_heightmap.getHeight()*CELL_SIZE/2., -m_heightmap.getWidth()*CELL_SIZE/2., 0);
     glRotated(xRot / 16.0, 1.0, 0.0, 0.0);
     glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
+    glTranslatef(-m_heightmap.getHeight()*CELL_SIZE/2., -m_heightmap.getWidth()*CELL_SIZE/2., 0);
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
     glEnableClientState( GL_VERTEX_ARRAY );
     glEnableClientState( GL_TEXTURE_COORD_ARRAY );
@@ -412,7 +412,7 @@ Vertex Vertex::getNormal(Vertex& a, Vertex& b, Vertex& c) {
 }
 
 void Vertex::normalize() {
-    float Mn = sqrtf(powf(x, 2) + powf(y, 2) + powf(z, 2));
+    float Mn = sqrtf(x*x + y*y + z*z);
     x /= Mn;
     y /= Mn;
     z /= Mn;
