@@ -7,6 +7,7 @@ ConnectionWidget::ConnectionWidget( ServerContextState* serverContextState,
                                     QWidget *parent ) : QDialog( parent ) {
     setupUi( this );
     profilesListView->setModel(ServerProfilesModel::getInstance());
+    currentProfileGroupBox->setEnabled(ServerProfilesModel::getInstance()->rowCount());
     this->serverContextState = serverContextState;
     connected = false;
 
@@ -221,10 +222,12 @@ void ConnectionWidget::comboBoxCurrentIndexChanged(QModelIndex current, QModelIn
 
 void ConnectionWidget::createNewProfile() {
     ServerProfilesModel::getInstance()->createProfile();
+    currentProfileGroupBox->setEnabled(true);
 }
 
 void ConnectionWidget::delSelectedProfile() {
     ServerProfilesModel::getInstance()->removeProfile(profilesListView->currentIndex());
+    currentProfileGroupBox->setEnabled(ServerProfilesModel::getInstance()->rowCount());
 }
 
 void ConnectionWidget::connectionStatusChanged( ConnectionState state ) {

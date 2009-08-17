@@ -64,7 +64,7 @@ p, li { white-space: pre-wrap; }
       <enum>QTabWidget::North</enum>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="logintab">
       <attribute name="title">
@@ -92,20 +92,11 @@ p, li { white-space: pre-wrap; }
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <layout class="QVBoxLayout" name="verticalLayout_5">
+             <layout class="QVBoxLayout" name="verticalLayout_3">
               <item>
                <widget class="QSplitter" name="splitter">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="handleWidth">
-                 <number>10</number>
                 </property>
                 <widget class="QWidget" name="layoutWidget">
                  <layout class="QGridLayout" name="gridLayout">
@@ -180,22 +171,12 @@ p, li { white-space: pre-wrap; }
                   </item>
                  </layout>
                 </widget>
-                <widget class="QWidget" name="layoutWidget">
+                <widget class="QGroupBox" name="currentProfileGroupBox">
+                 <property name="title">
+                  <string>Current Profile</string>
+                 </property>
                  <layout class="QFormLayout" name="formLayout">
-                  <item row="0" column="0" colspan="2">
-                   <widget class="QLabel" name="label_6">
-                    <property name="font">
-                     <font>
-                      <weight>75</weight>
-                      <bold>true</bold>
-                     </font>
-                    </property>
-                    <property name="text">
-                     <string>Current Profile:</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="0">
+                  <item row="0" column="0">
                    <widget class="QLabel" name="userNameLabel">
                     <property name="text">
                      <string>&amp;User name:</string>
@@ -208,7 +189,7 @@ p, li { white-space: pre-wrap; }
                     </property>
                    </widget>
                   </item>
-                  <item row="1" column="1">
+                  <item row="0" column="1">
                    <widget class="QLineEdit" name="profileUserNameLineEdit">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -220,11 +201,11 @@ p, li { white-space: pre-wrap; }
                      <string>Lobby username</string>
                     </property>
                     <property name="text">
-                     <string>user</string>
+                     <string/>
                     </property>
                    </widget>
                   </item>
-                  <item row="2" column="0">
+                  <item row="1" column="0">
                    <widget class="QLabel" name="passwordLabel">
                     <property name="text">
                      <string>&amp;Password:</string>
@@ -237,7 +218,7 @@ p, li { white-space: pre-wrap; }
                     </property>
                    </widget>
                   </item>
-                  <item row="2" column="1">
+                  <item row="1" column="1">
                    <widget class="QLineEdit" name="passwordLineEdit">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -256,21 +237,21 @@ p, li { white-space: pre-wrap; }
                     </property>
                    </widget>
                   </item>
-                  <item row="3" column="0">
+                  <item row="2" column="0">
                    <widget class="QLabel" name="label_7">
                     <property name="text">
                      <string>Remember password:</string>
                     </property>
                    </widget>
                   </item>
-                  <item row="3" column="1">
+                  <item row="2" column="1">
                    <widget class="QCheckBox" name="rememberPassCheckBox">
                     <property name="text">
                      <string/>
                     </property>
                    </widget>
                   </item>
-                  <item row="4" column="0">
+                  <item row="3" column="0">
                    <widget class="QLabel" name="addressLabel">
                     <property name="text">
                      <string>&amp;Address:</string>
@@ -283,17 +264,17 @@ p, li { white-space: pre-wrap; }
                     </property>
                    </widget>
                   </item>
-                  <item row="4" column="1">
+                  <item row="3" column="1">
                    <widget class="QLineEdit" name="profileServerAddressLineEdit">
                     <property name="toolTip">
                      <string>Address of the TASServer. Most likely springrts.com</string>
                     </property>
                     <property name="text">
-                     <string>taspring.clan-sy.com</string>
+                     <string/>
                     </property>
                    </widget>
                   </item>
-                  <item row="5" column="0">
+                  <item row="4" column="0">
                    <widget class="QLabel" name="portLabel">
                     <property name="text">
                      <string>P&amp;ort:</string>
@@ -306,7 +287,7 @@ p, li { white-space: pre-wrap; }
                     </property>
                    </widget>
                   </item>
-                  <item row="5" column="1">
+                  <item row="4" column="1">
                    <widget class="QSpinBox" name="profilePortSpinBox">
                     <property name="toolTip">
                      <string>TCP port which is used by the TASServer. Most likely 8200.</string>
@@ -318,18 +299,18 @@ p, li { white-space: pre-wrap; }
                      <number>65535</number>
                     </property>
                     <property name="value">
-                     <number>8200</number>
+                     <number>1</number>
                     </property>
                    </widget>
                   </item>
-                  <item row="6" column="0">
+                  <item row="5" column="0">
                    <widget class="QLabel" name="label_9">
                     <property name="text">
                      <string>Auto login:</string>
                     </property>
                    </widget>
                   </item>
-                  <item row="6" column="1">
+                  <item row="5" column="1">
                    <widget class="QCheckBox" name="autoLoginCheckBox">
                     <property name="text">
                      <string/>
