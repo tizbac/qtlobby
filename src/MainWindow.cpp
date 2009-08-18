@@ -504,6 +504,7 @@ void MainWindow::connectionStatusChanged(ConnectionState state) {
 
 void MainWindow::onCurrentTabChanged() {
     onTeamPlayerSpecCountChanged(users->teamPlayerSpecCount());
+    this->inputLineEdit->setFocus();
 }
 
 void MainWindow::onTeamPlayerSpecCountChanged(QString ratio) {
