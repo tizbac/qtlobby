@@ -1,7 +1,6 @@
 // $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "MapOverviewDialog.h"
-#include "ui_MapOverviewDialog.h"
 
 MapOverviewDialog::MapOverviewDialog(QWidget *parent) :
         QDialog(parent),
@@ -24,20 +23,8 @@ void MapOverviewDialog::changeEvent(QEvent *e) {
     }
 }
 
-void MapOverviewDialog::setSource(QString mapName, QString mapDescription, QImage minimap, RawHeightMap heightmap) {
-    m_ui->glWidget->setSource(mapName, minimap, heightmap);
+void MapOverviewDialog::setSource(QString mapName, QString mapDescription, QImage minimap, QImage metalmap, RawHeightMap heightmap) {
+    m_ui->glWidget->setSource(mapName, minimap, metalmap, heightmap);
     setWindowTitle(mapName);
     m_ui->mapDescriptionLabel->setText(mapDescription);
-}
-
-void MapOverviewDialog::addStartRect(int ally, QRect r) {
-    m_ui->glWidget->addStartRect(ally, r);
-}
-
-void MapOverviewDialog::setMyAllyTeam(int n) {
-    m_ui->glWidget->setMyAllyTeam(n);
-}
-
-void MapOverviewDialog::removeStartRect(int ally) {
-    m_ui->glWidget->removeStartRect(ally);
 }

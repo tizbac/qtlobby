@@ -5,6 +5,7 @@
 #include <cmath>
 #include <QDebug>
 #include <QApplication>
+#include "Settings.h"
 
 
 #define RESOLVE_GL_FUNC(f) ok &= bool((f = (_gl##f) context()->getProcAddress(QLatin1String("gl" #f))));
@@ -231,11 +232,13 @@ void MapRendererWidget::computeNormals() {
     }
 }
 
-void MapRendererWidget::setSource(QString mapName, QImage minimap, RawHeightMap heightmap) {
+void MapRendererWidget::setSource(QString mapName, QImage minimap, QImage metalmap, RawHeightMap heightmap) {
     if (currentMap == mapName) return;
     currentMap = mapName;
     m_minimap = minimap;
+    m_metalmap = metalmap;
     m_heightmap.free();
+    heightmap.downscale(Settings::Instance()->value("MapViewing/downscaleHeightmap").toInt());
     m_heightmap = heightmap;
     if (getGLExtensionFunctions().openGL15Supported()) {
         glDeleteBuffers(1, &m_VBOVertices);
@@ -251,10 +254,28 @@ void MapRendererWidget::setSource(QString mapName, QImage minimap, RawHeightMap 
             int offset = i*heightmap.getWidth()+j;
             m_vertexes[offset].x = i * CELL_SIZE;
             m_vertexes[offset].y = j * CELL_SIZE;
-            m_vertexes[offset].z = value/(float)MAX_SHORT*MAX_HEIGHT;
+            m_vertexes[offset].z = value/(float)MAX_SHORT*MAX_HEIGHT*m_heightmap.getRatio();
         }
     }
     compileObject = true;
+    lastZoom *= m_heightmap.getRatio();
+    switch(Settings::Instance()->value("MapViewing/startPos/startRect/brushNumber").toInt()) {
+        case 1:
+        m_brushStyle = Qt::BDiagPattern;
+        break;
+        case 2:
+        m_brushStyle = Qt::FDiagPattern;
+        break;
+        case 3:
+        m_brushStyle = Qt::DiagCrossPattern;
+        break;
+        case 0:
+        default:
+        m_brushStyle = Qt::SolidPattern;
+        break;
+    }
+    m_borderWidth = Settings::Instance()->value("MapViewing/startPos/startRect/borderWidth").toInt();
+    m_alpha = Settings::Instance()->value("MapViewing/startPos/startRect/alpha").toInt();
     if (hasFocus()) updateGL();
 }
 
@@ -291,8 +312,8 @@ void MapRendererWidget::normalizeAngle(int *angle) {
 }
 
 void MapRendererWidget::wheelEvent ( QWheelEvent * event ) {
-    float newZoom = lastZoom - event->delta() * 0.0005;
-    if (newZoom > 1 || newZoom < 0.1) return;
+    float newZoom = lastZoom - event->delta() * 0.0005*m_heightmap.getRatio();
+    if (newZoom > 1*m_heightmap.getRatio() || newZoom < 0.1*m_heightmap.getRatio()) return;
     lastZoom = newZoom;
     resizeGL(width(), height());
     updateGL();
@@ -314,8 +335,8 @@ void MapRendererWidget::mouseMoveEvent(QMouseEvent *event) {
         //setXRotation(xRot + 8 * dy);
         setZRotation(zRot + 8 * dx);
     } else if (event->buttons() & Qt::MidButton) {
-        this->dx += -dx * 0.2;
-        this->dy += dy * 0.2;
+        this->dx += -dx * 0.5 * lastZoom;
+        this->dy += dy * 0.5 * lastZoom;
         resizeGL(width(), height());
         updateGL();
     }
@@ -325,32 +346,32 @@ void MapRendererWidget::mouseMoveEvent(QMouseEvent *event) {
 
 void MapRendererWidget::drawStartRecs() {
     if (m_minimap.isNull() || startRects.isEmpty()) return;
+    if (!m_drawStartPositions) return;
     m_withRects = m_minimap;
     QPainter p(&m_withRects);
+    if(Settings::Instance()->value("MapViewing/metalmapSuperposition").toBool())
+        p.drawImage(m_withRects.rect(), m_metalmap);
     for (QMap<int, QRect>::const_iterator i = startRects.begin(); i != startRects.end(); i++) {
         QRect scaled = i.value();
         scaled.setWidth(scaled.width()/201.*m_withRects.width());
         scaled.setHeight(scaled.height()/201.*m_withRects.height());
         scaled.moveTo(scaled.x()/201.*m_withRects.width(), scaled.y()/201.*m_withRects.height());
-        int alpha = 50;
-        int width = 2;
         QColor red(Qt::red);
         QColor redFill(Qt::red);
-        redFill.setAlpha(alpha);
+        redFill.setAlpha(m_alpha);
         QColor green(Qt::green);
         QColor greenFill(Qt::green);
-        greenFill.setAlpha(alpha);
+        greenFill.setAlpha(m_alpha);
         if (i.key() == myAlly) {
-            p.setBrush(greenFill);
-            p.setPen(QPen(green, width));
+            p.setBrush(QBrush(greenFill, m_brushStyle));
+            p.setPen(QPen(green, m_borderWidth));
         } else {
-            p.setBrush(redFill);
-            p.setPen(QPen(red, width));
+            p.setBrush(QBrush(redFill, m_brushStyle));
+            p.setPen(QPen(red, m_borderWidth));
         }
         p.drawRect(scaled);
     }
     p.end();
-    m_withRects.save("/home/lupus/tmp/texture.png");
     deleteTexture(m_texture);
     m_texture = bindTexture(QPixmap::fromImage(m_withRects), GL_TEXTURE_2D);
     m_redrawStartRects = false;

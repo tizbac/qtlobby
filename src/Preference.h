@@ -36,6 +36,7 @@ private:
     PreferencePathElement* springSettingsFilePathElement;
     void initPathExamples();
     void setUpPathForm();
+    void loadPreferences();
 private slots:
     void onLanguageChanged(QString language);
     void onOk();

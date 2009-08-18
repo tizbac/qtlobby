@@ -17,18 +17,48 @@ Preference::Preference( QDialog* parent ) : QDialog( parent ) {
              this, SLOT( onCancel() ) );
     connect(languageComboBox, SIGNAL(activated(QString)),
             this, SLOT(onLanguageChanged(QString)));
-    if(!settings->contains("Chat/joinMain"))
-        settings->setValue("Chat/joinMain", true);
+    loadPreferences();
+}
+
+#define INIT_PREF(key, value) if(!settings->contains(key)) \
+        settings->setValue(key, value);
+
+//Moved it out from constructor for cake of clarity (ko)
+void Preference::loadPreferences() {
+    /*Chat*/
+    INIT_PREF("Chat/joinMain", true);
     joinMainCheckBox->setChecked(settings->value("Chat/joinMain").toBool());
-    if(!settings->contains("Chat/joinQtlobby"))
-        settings->setValue("Chat/joinQtlobby", true);
+    INIT_PREF("Chat/joinQtlobby", true);
     joinQtlobbyCheckBox->setChecked(settings->value("Chat/joinQtlobby").toBool());
-    if(!settings->contains("Chat/showFlags"))
-        settings->setValue("Chat/showFlags", true);
+    INIT_PREF("Chat/showFlags", true);
     chatShowFlagsCheckBox->setChecked(settings->value("Chat/showFlags").toBool());
-    if(!settings->contains("Chat/highlightUserName"))
-        settings->setValue("Chat/highlightUserName", true);
+    INIT_PREF("Chat/highlightUserName", true);
     chatHighlightUserNameCheckBox->setChecked(settings->value("Chat/highlightUserName").toBool());
+
+    /*Map viewing*/
+    INIT_PREF("MapViewing/colorizedHeightmap", true);
+    colrizedHeightMapCheckBox->setChecked(settings->value("MapViewing/colorizedHeightmap").toBool());
+    grayScaleHeightmapCheckBox->setChecked(!settings->value("MapViewing/colorizedHeightmap").toBool());
+    INIT_PREF("MapViewing/downscaleHeightmap", 1);
+    downscaleHeightmapSpinBox->setValue(settings->value("MapViewing/downscaleHeightmap").toInt());
+    INIT_PREF("MapViewing/metalmapSuperposition", false);
+    metalmapSuperpositionCheckBox->setChecked(settings->value("MapViewing/metalmapSuperposition").toBool());
+
+    /*Start Positions*/
+    INIT_PREF("MapViewing/startPos/showOnMinimapCheckBox", false);
+    startPosShowOnMinimapCheckBox->setChecked(settings->value("MapViewing/startPos/showOnMinimapCheckBox").toBool());
+    INIT_PREF("MapViewing/startPos/showOnHeightmapCheckBox", false);
+    startPosShowOnHeightmapCheckBox->setChecked(settings->value("MapViewing/startPos/showOnHeightmapCheckBox").toBool());
+    INIT_PREF("MapViewing/startPos/showOnMetalmapCheckBox", false);
+    startPosShowOnMetalmapCheckBox->setChecked(settings->value("MapViewing/startPos/showOnMetalmapCheckBox").toBool());
+    INIT_PREF("MapViewing/startPos/showOn3DMapCheckBox", false);
+    startPosShowOn3DMapCheckBox->setChecked(settings->value("MapViewing/startPos/showOn3DMapCheckBox").toBool());
+    INIT_PREF("MapViewing/startPos/startRect/brushNumber", 0);
+    startRectBrushComboBox->setCurrentIndex(settings->value("MapViewing/startPos/startRect/brushNumber").toInt());
+    INIT_PREF("MapViewing/startPos/startRect/borderWidth", 1);
+    startRectBorderWidthSpinBox->setValue(settings->value("MapViewing/startPos/startRect/borderWidth").toInt());
+    INIT_PREF("MapViewing/startPos/startRect/alpha", 100);
+    startRectAlphaSpinBox->setValue(settings->value("MapViewing/startPos/startRect/alpha").toInt());
 }
 
 Preference::~Preference() { }
@@ -43,19 +73,53 @@ void Preference::onApply() {
     for ( int i = 0; i < pathElements.size(); ++i )
         pathElements[i]->saveElement();
     UnitSyncLib::getInstance()->loadLibrary();
+
+    /*Chat*/
     settings->setValue("Chat/joinMain", joinMainCheckBox->isChecked());
     settings->setValue("Chat/joinQtlobby", joinQtlobbyCheckBox->isChecked());
     settings->setValue("Chat/showFlags", chatShowFlagsCheckBox->isChecked());
     settings->setValue("Chat/highlightUserName", chatHighlightUserNameCheckBox->isChecked());
+
+    /*Map viewing*/
+    settings->setValue("MapViewing/colorizedHeightmap", colrizedHeightMapCheckBox->isChecked());
+    settings->setValue("MapViewing/downscaleHeightmap", downscaleHeightmapSpinBox->value());
+    settings->setValue("MapViewing/metalmapSuperposition", metalmapSuperpositionCheckBox->isChecked());
+
+    /*Start Positions*/
+    settings->setValue("MapViewing/startPos/showOnMinimapCheckBox", startPosShowOnMinimapCheckBox->isChecked());
+    settings->setValue("MapViewing/startPos/showOnHeightmapCheckBox", startPosShowOnHeightmapCheckBox->isChecked());
+    settings->setValue("MapViewing/startPos/showOnMetalmapCheckBox", startPosShowOnMetalmapCheckBox->isChecked());
+    settings->setValue("MapViewing/startPos/showOn3DMapCheckBox", startPosShowOn3DMapCheckBox->isChecked());
+    settings->setValue("MapViewing/startPos/startRect/brushNumber", startRectBrushComboBox->currentIndex());
+    settings->setValue("MapViewing/startPos/startRect/borderWidth", startRectBorderWidthSpinBox->value());
+    settings->setValue("MapViewing/startPos/startRect/alpha", startRectAlphaSpinBox->value());
 }
 
 void Preference::onCancel() {
     for ( int i = 0; i < pathElements.size(); ++i )
         pathElements[i]->resetConfiguration();
+
+    /*Chat*/
     joinMainCheckBox->setChecked(settings->value("Chat/joinMain").toBool());
     joinQtlobbyCheckBox->setChecked(settings->value("Chat/joinQtlobby").toBool());
     chatShowFlagsCheckBox->setChecked(settings->value("Chat/showFlags").toBool());
     chatHighlightUserNameCheckBox->setChecked(settings->value("Chat/highlightUserName").toBool());
+
+    /*Map viewing*/
+    colrizedHeightMapCheckBox->setChecked(settings->value("MapViewing/colorizedHeightmap").toBool());
+    grayScaleHeightmapCheckBox->setChecked(!settings->value("MapViewing/colorizedHeightmap").toBool());
+    downscaleHeightmapSpinBox->setValue(settings->value("MapViewing/downscaleHeightmap").toInt());
+    metalmapSuperpositionCheckBox->setChecked(settings->value("MapViewing/metalmapSuperposition").toBool());
+
+    /*Start Positions*/
+    startPosShowOnMinimapCheckBox->setChecked(settings->value("MapViewing/startPos/showOnMinimapCheckBox").toBool());
+    startPosShowOnHeightmapCheckBox->setChecked(settings->value("MapViewing/startPos/showOnHeightmapCheckBox").toBool());
+    startPosShowOnMetalmapCheckBox->setChecked(settings->value("MapViewing/startPos/showOnMetalmapCheckBox").toBool());
+    startPosShowOn3DMapCheckBox->setChecked(settings->value("MapViewing/startPos/showOn3DMapCheckBox").toBool());
+    startRectBrushComboBox->setCurrentIndex(settings->value("MapViewing/startPos/startRect/brushNumber").toInt());
+    startRectBorderWidthSpinBox->setValue(settings->value("MapViewing/startPos/startRect/borderWidth").toInt());
+    startRectAlphaSpinBox->setValue(settings->value("MapViewing/startPos/startRect/alpha").toInt());
+
     hide();
 }
 

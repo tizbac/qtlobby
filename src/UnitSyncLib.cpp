@@ -241,6 +241,34 @@ QImage UnitSyncLib::getHeightMapQImage( const QString mapFileName ) {
     return mapImage.copy();
 }
 
+QImage UnitSyncLib::getGrayscaleHeightMapQImage( const QString mapFileName ) {
+    NON_REENTRANT;
+    if ( !libraryLoaded() )
+        return QImage();
+    int height;
+    int width;
+    int shortMax = 65535;
+    m_GetInfoMapSize(mapFileName.toAscii(), "height", &width, &height);
+    unsigned short *ptr = new unsigned short[width*height];
+    unsigned int *rgb = new unsigned int[width*height];
+    m_GetInfoMap(mapFileName.toAscii(), "height", ptr, 2);
+    for (int i = 0; i < width * height; i++) {
+        quint8 data[4];
+        quint8 value = ptr[i]/(float)shortMax*255;
+        data[0] = value;
+        data[1] = value;
+        data[2] = value;
+        data[3] = 0;
+        memcpy(rgb+i, data, sizeof(int));
+    }
+    QByteArray map((char*)rgb, width*height*4);
+    QImage mapImage(( uchar* ) map.constData(), width, height, QImage::Format_RGB32 );
+    delete[] ptr;
+    delete[] rgb;
+    return mapImage.copy();
+}
+
+
 RawHeightMap UnitSyncLib::getHeightMapRaw( const QString mapFileName ) {
     NON_REENTRANT;
     if ( !libraryLoaded() )
@@ -264,10 +292,12 @@ QImage UnitSyncLib::getMetalMapQImage( const QString mapFileName ) {
     unsigned int *rgb = new unsigned int[width*height];
     m_GetInfoMap(mapFileName.toAscii(), "metal", ptr, 1);
     for (int i = 0; i < width * height; i++) {
-        rgb[i] = QColor::fromHsv(150, 255, ptr[i]).rgb();
+        QColor c = QColor::fromHsv(150, 255, 255);
+        c.setAlpha(ptr[i]);
+        rgb[i] = c.rgba();
     }
     QByteArray map((char*)rgb, width*height*4);
-    QImage mapImage(( uchar* ) map.constData(), width, height, QImage::Format_RGB32 );
+    QImage mapImage(( uchar* ) map.constData(), width, height, QImage::Format_ARGB32 );
     delete[] ptr;
     delete[] rgb;
     return mapImage.copy();

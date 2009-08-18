@@ -18,6 +18,7 @@ public:
     bool mapPresent;
     QImage minimap;
     QImage heightmap;
+    QImage grayscaleHeightmap;
     RawHeightMap rawHeightmap;
     QImage metalmap;
     MapInfo mapinfo;

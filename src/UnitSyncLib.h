@@ -77,6 +77,7 @@ public:
 
     QImage getMinimapQImage( const QString, int miplevel = 0, bool scaled = true );
     QImage getHeightMapQImage( const QString mapFileName );
+    QImage getGrayscaleHeightMapQImage( const QString mapFileName );
     RawHeightMap getHeightMapRaw( const QString mapFileName );
     QImage getMetalMapQImage( const QString mapFileName );
     void getMapInfo(QString mapFileName, MapInfo* info);

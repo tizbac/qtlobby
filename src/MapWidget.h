@@ -16,6 +16,7 @@ public:
     void paintEvent(QPaintEvent * event);
     void setImage(QImage image);
     void setErrorMessage(QString msg);
+    void setDrawStartPositions(bool b);
 public slots:
     void addStartRect(int ally, QRect r);
     void removeStartRect(int ally);
@@ -29,7 +30,20 @@ protected:
     QPixmap m_scaled;
     QPixmap m_withRects;
     QString m_error;
+    bool m_drawStartPositions;
     int myAlly;
+    Qt::BrushStyle m_brushStyle;
+    int m_borderWidth;
+    int m_alpha;
 };
+
+
+inline void MapWidget::setErrorMessage(QString msg) {
+    m_error = msg;
+}
+
+inline void MapWidget::setDrawStartPositions(bool b) {
+    m_drawStartPositions = b;
+}
 
 #endif // MAPWIDGET_H

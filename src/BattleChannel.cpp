@@ -116,6 +116,12 @@ void BattleChannel::setupUi( QWidget * tab ) {
     connect(battles, SIGNAL(removeStartRect(int)), SLOT(onRemoveStartRect(int)));
     connect(battleWindowForm->overviewPushButton, SIGNAL(clicked()), SLOT(openMapOverview()));
 
+    /*set drawing of start positions from preferences*/
+    battleWindowForm->minimapWidget->setDrawStartPositions(settings->value("MapViewing/startPos/showOnMinimapCheckBox").toBool());
+    battleWindowForm->heightmapWidget->setDrawStartPositions(settings->value("MapViewing/startPos/showOnHeightmapCheckBox").toBool());
+    battleWindowForm->metalmapWidget->setDrawStartPositions(settings->value("MapViewing/startPos/showOnMetalmapCheckBox").toBool());
+    mapOverviewDialog->setDrawStartPositions(settings->value("MapViewing/startPos/showOn3DMapCheckBox").toBool());
+
     currentMap = m_battle.mapName;
     requestMapInfo( m_battle.mapName );
     fillSides();
@@ -500,9 +506,12 @@ void BattleChannel::updateMapInfo( QString mapName ) {
         //battleWindowForm->authorLabel->setText(loader->mapinfo.author);
         //battleWindowForm->descriptionLabel->setText();
         battleWindowForm->minimapWidget->setImage(loader->minimap);
-        battleWindowForm->heightmapWidget->setImage(loader->heightmap);
+        if(Settings::Instance()->value("MapViewing/colorizedHeightmap").toBool())
+            battleWindowForm->heightmapWidget->setImage(loader->heightmap);
+        else
+            battleWindowForm->heightmapWidget->setImage(loader->grayscaleHeightmap);
         battleWindowForm->metalmapWidget->setImage(loader->metalmap);
-        mapOverviewDialog->setSource(mapName, loader->mapinfo.description, loader->minimap, loader->rawHeightmap);
+        mapOverviewDialog->setSource(mapName, loader->mapinfo.description, loader->minimap, loader->metalmap, loader->rawHeightmap);
         loader->cleanup();
         loader = 0;
     }

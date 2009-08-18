@@ -34,7 +34,8 @@ class MapRendererWidget : public QGLWidget {
 public:
     MapRendererWidget(QWidget* parent = 0);
     ~MapRendererWidget();
-    void setSource(QString mapName, QImage minimap, RawHeightMap heightmap);
+    void setSource(QString mapName, QImage minimap, QImage metalmap, RawHeightMap heightmap);
+    void setDrawStartPositions(bool b);
 
 public slots:
     void setXRotation(int angle);
@@ -68,6 +69,7 @@ private:
     QPoint lastPos;
     float lastZoom;
     QImage m_minimap;
+    QImage m_metalmap;
     QImage m_withRects;
     RawHeightMap m_heightmap;
     QVector<QVector<Vertex> > vertexes;
@@ -87,6 +89,14 @@ private:
     QMap<int, QRect> startRects;
     int myAlly;
     bool m_redrawStartRects;
+    bool m_drawStartPositions;
+    Qt::BrushStyle m_brushStyle;
+    int m_borderWidth;
+    int m_alpha;
 };
+
+inline void MapRendererWidget::setDrawStartPositions(bool b) {
+    m_drawStartPositions = b;
+}
 
 #endif // MAPRENDERERWIDGET_H

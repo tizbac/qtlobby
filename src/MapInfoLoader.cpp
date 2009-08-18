@@ -9,6 +9,7 @@ QMutex mutex;
 QMutex clean;
 
 #define QMC_MAGIC 0xA0B0C0D0
+#define QMC_VERSION 0x00
 
 static char author[200];
 static char description[255];
@@ -47,6 +48,8 @@ void MapInfoLoader::run() {
             rawHeightmap = unitSyncLib->getHeightMapRaw(m_mapName);
             USELESS_CHECK;
             metalmap = unitSyncLib->getMetalMapQImage(m_mapName);
+            USELESS_CHECK;
+            grayscaleHeightmap = unitSyncLib->getGrayscaleHeightMapQImage(m_mapName);
             USELESS_CHECK;
             unitSyncLib->getMapInfo(m_mapName, &mapinfo);
             mapPresent = true;
@@ -166,9 +169,11 @@ void MapInfoLoader::saveCache() {
     out.setVersion(QDataStream::Qt_4_4);
 
     out << (quint32)QMC_MAGIC;
+    out << (quint32)QMC_VERSION;
 
     out << minimap;
     out << heightmap;
+    out << grayscaleHeightmap;
     out << metalmap;
     out << mapinfo;
     out << rawHeightmap;
@@ -193,13 +198,18 @@ bool MapInfoLoader::loadCache() {
     in.setVersion(QDataStream::Qt_4_4);
 
     quint32 magic;
+    quint32 version;
 
     in >> magic;
     if (magic != QMC_MAGIC)
         return false;
+    in >> version;
+    if (version != QMC_VERSION)
+        return false;
 
     in >> minimap;
     in >> heightmap;
+    in >> grayscaleHeightmap;
     in >> metalmap;
     in >> mapinfo;
     in >> rawHeightmap;
