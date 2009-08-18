@@ -119,6 +119,7 @@ void InputLine::returnPressed() {
     input.replace("\\u",QChar::fromAscii(31));
     input.replace("\\n","[br]");
     input.replace("___###SLASH__PLACEHOLDER###___", "\\");
+    input.replace("\n","[br]");
     emit sendInput( input );
     emit returnPressed();
 }
