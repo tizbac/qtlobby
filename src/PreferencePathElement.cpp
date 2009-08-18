@@ -119,7 +119,7 @@ void PreferencePathElement::openFileBrowser() {
             path = m_baseDirectory;
         else
             path = QDir::homePath();
-        QString filter = m_examples.last().contains(".") ? m_examples.last().split(".").last().prepend("*.") : "*";
+        QString filter = m_examples.last().contains(".") ? m_examples.last().section(".",-1).prepend("*.") : "*";
         fileOrDirName = fileDialog.getOpenFileName( this, tr( "Select File" ) + " " + m_variableName, path, filter );
     }
     if ( fileOrDirName != "" )
