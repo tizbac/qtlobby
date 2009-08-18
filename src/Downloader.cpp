@@ -7,13 +7,15 @@
 #include <QTimer>
 #include "Settings.h"
 
+#define MAX_TRIES 10
+
 //constants
 const QString resolverUrl = "http://134.2.74.148:8080/qfc/%1/%2";
-const QString mirrorListUrl = "http://spring.jobjol.nl/checkmirror.php?q=%1&c=%2";
-const QString mirrorListReferer = "http://spring.jobjol.nl/show_file.php?id=%1";
-const QString jobjol = "http://spring.jobjol.nl/download.php?maincategory=1&subcategory=%1&file=%2";
+const QString mirrorListUrl = "http://springfiles.com/checkmirror.php?q=%1&c=%2";
+const QString mirrorListReferer = "http://springfiles.com/show_file.php?id=%1";
+const QString jobjol = "http://springfiles.com/download.php?maincategory=1&subcategory=%1&file=%2";
 const QString userAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.0; en-US; rv:1.9.1.1) Gecko/20090715 Firefox/3.5.1";
-const QString referrer = "http://spring.jobjol.nl";
+const QString referrer = "http://springfiles.com";
 const int testChunk = 102400; //100 Kb
 const int timerInterval = 500;
 
@@ -52,8 +54,8 @@ void Downloader::start() {
 }
 
 
-//http://spring.jobjol.nl/download.php?maincategory=1&subcategory=2&file=1944_BocageSkirmish.sd7
-//http://spring.jobjol.nl/download.php?maincategory=1&subcategory=5&file=Supreme+Annihilation+U21+V1.0.sd7
+//http://springfiles.com/download.php?maincategory=1&subcategory=2&file=1944_BocageSkirmish.sd7
+//http://springfiles.com/download.php?maincategory=1&subcategory=5&file=Supreme+Annihilation+U21+V1.0.sd7
 
 /**
 Slot for getting resource filename from resource name via Mirko's gateway
@@ -81,7 +83,7 @@ void Downloader::onResolverFinished() {
     m_reply = m_manager->get(m_mirrorList);
     connect(m_reply, SIGNAL(finished()), this, SLOT(onMirrorListFinished()));
     connect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
-        this, SLOT(onError(QNetworkReply::NetworkError)));
+            this, SLOT(onError(QNetworkReply::NetworkError)));
     emit stateChanged(m_resourceName, tr("Retrieving mirror list"));
 }
 
@@ -96,7 +98,7 @@ void Downloader::onMirrorListFinished() {
         QNetworkReply* reply = m_manager->get(request);
         connect(reply, SIGNAL(finished()), this, SLOT(onJobjolSessionFinished()));
         connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
-            this, SLOT(onError(QNetworkReply::NetworkError)));
+                this, SLOT(onError(QNetworkReply::NetworkError)));
     } else {
         m_getFromJobjol = false;
         QNetworkRequest request;
@@ -114,7 +116,7 @@ void Downloader::onMirrorListFinished() {
         QNetworkReply* reply = m_manager->get(request);
         connect(reply, SIGNAL(metaDataChanged()), this, SLOT(onFileSizeFinished()));
         connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
-            this, SLOT(onError(QNetworkReply::NetworkError)));
+                this, SLOT(onError(QNetworkReply::NetworkError)));
         emit stateChanged(m_resourceName, tr("Retrieving file size"));
     }
 }
@@ -129,6 +131,8 @@ void Downloader::onFileSizeFinished() {
     reply->abort();
     foreach(QString mirror, m_mirrors) {
         QNetworkRequest request = QNetworkRequest(mirror);
+        request.setRawHeader("User-Agent", userAgent.toAscii());
+        request.setRawHeader("Referer", referrer.toAscii());
         request.setRawHeader("Range", ("bytes=0-"+QString::number(testChunk)).toAscii());//download testChunk bytes
         m_requests << request;
         m_hostSpeeds << 0;
@@ -139,7 +143,7 @@ void Downloader::onFileSizeFinished() {
         m_times << t;
         connect(reply, SIGNAL(finished()), this, SLOT(onFetchFinished()));
         connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
-            this, SLOT(onError(QNetworkReply::NetworkError)));
+                this, SLOT(onError(QNetworkReply::NetworkError)));
         m_replies << reply;
     }
     QTimer::singleShot(15000, this, SLOT(download())); //start download anyway in 15 seconds if one ore more of mirrors failed
@@ -191,6 +195,8 @@ void Downloader::download() {
         QNetworkRequest& request = m_requests[i];
         if(m_ranges[i][1]) {
             QString range = "bytes=%1-%2";
+            request.setRawHeader("User-Agent", userAgent.toAscii());
+            request.setRawHeader("Referer", referrer.toAscii());
             request.setRawHeader("Range", range.arg(m_ranges[i][0]).arg(m_ranges[i][0]+m_ranges[i][1]).toAscii());
             QNetworkReply* reply = m_manager->get(request);
             connect(reply, SIGNAL(finished()), this, SLOT(onDownloadFinished()));
@@ -329,7 +335,18 @@ void Downloader::timerEvent(QTimerEvent* /*e*/) {
 
 void Downloader::onError(QNetworkReply::NetworkError /*code*/) {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-    qCritical() << tr("Failed to fetch %1. Error: %2").arg(reply->url().toString()).arg(reply->errorString());
+    QString url = reply->url().toString();
+    if(m_retriesPerUrl.contains(url))
+        m_retriesPerUrl[url] = 0;
+    else
+        m_retriesPerUrl[url]++;
+    qCritical() << tr("Failed to fetch %1. Error: %2").arg(url).arg(reply->errorString());
+    if(m_retriesPerUrl[url] < MAX_TRIES) {
+        m_manager->get(reply->request());
+        qCritical() << "Retry #" + QString::number(m_retriesPerUrl[url]);
+    } else {
+        qCritical() << "Max retries reached. Fetch failed completely.";
         emit stateChanged(m_resourceName, tr("Error: ") + reply->errorString());
         emit finished(m_resourceName, false);
+    }
 }

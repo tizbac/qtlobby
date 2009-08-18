@@ -64,6 +64,7 @@ private:
     bool m_getFromJobjol;
     QString m_jobjolUrl;
     QFile m_out;
+    QMap<QString, int> m_retriesPerUrl;
 };
 
 #endif // DOWNLOADER_H
