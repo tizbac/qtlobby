@@ -179,7 +179,7 @@ void LobbyTabs::createLobbyTab( AbstractLobbyTab * lobbyTab ) {
     //save the lobbyTab
     lobbyTabList.append(lobbyTab);
     if (QString(lobbyTab->metaObject()->className()) == "BattleChannel" ||
-        QString(lobbyTab->metaObject()->className()) == "PrivateChannel" && Settings::Instance()->value("Chat/popupNewPrivateChannel").toBool()) {
+        (QString(lobbyTab->metaObject()->className()) == "PrivateChannel" && Settings::Instance()->value("Chat/popupNewPrivateChannel").toBool())) {
         lobbyStackedWidget->setCurrentWidget(widget);
         tabBar->setCurrentIndex(c);
     }
