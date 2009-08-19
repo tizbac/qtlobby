@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>278</width>
-    <height>256</height>
+    <height>295</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,6 +16,12 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::ExpandingFieldsGrow</enum>
+     </property>
+     <property name="labelAlignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
@@ -110,7 +116,7 @@
         </property>
         <property name="icon">
          <iconset resource="../resources.qrc">
-          <normaloff>:/icons/rank0.xpm</normaloff>:/icons/rank0.xpm</iconset>
+          <normaloff>:/icons/rank0-icon.png</normaloff>:/icons/rank0-icon.png</iconset>
         </property>
        </item>
        <item>
@@ -119,7 +125,7 @@
         </property>
         <property name="icon">
          <iconset resource="../resources.qrc">
-          <normaloff>:/icons/rank1.xpm</normaloff>:/icons/rank1.xpm</iconset>
+          <normaloff>:/icons/rank1-icon.png</normaloff>:/icons/rank1-icon.png</iconset>
         </property>
        </item>
        <item>
@@ -128,7 +134,7 @@
         </property>
         <property name="icon">
          <iconset resource="../resources.qrc">
-          <normaloff>:/icons/rank2.xpm</normaloff>:/icons/rank2.xpm</iconset>
+          <normaloff>:/icons/rank2-icon.png</normaloff>:/icons/rank2-icon.png</iconset>
         </property>
        </item>
        <item>
@@ -137,7 +143,7 @@
         </property>
         <property name="icon">
          <iconset resource="../resources.qrc">
-          <normaloff>:/icons/rank3.xpm</normaloff>:/icons/rank3.xpm</iconset>
+          <normaloff>:/icons/rank3-icon.png</normaloff>:/icons/rank3-icon.png</iconset>
         </property>
        </item>
        <item>
@@ -146,7 +152,7 @@
         </property>
         <property name="icon">
          <iconset resource="../resources.qrc">
-          <normaloff>:/icons/rank4.xpm</normaloff>:/icons/rank4.xpm</iconset>
+          <normaloff>:/icons/rank4-icon.png</normaloff>:/icons/rank4-icon.png</iconset>
         </property>
        </item>
        <item>
@@ -155,7 +161,7 @@
         </property>
         <property name="icon">
          <iconset resource="../resources.qrc">
-          <normaloff>:/icons/rank5.xpm</normaloff>:/icons/rank5.xpm</iconset>
+          <normaloff>:/icons/rank5-icon.png</normaloff>:/icons/rank5-icon.png</iconset>
         </property>
        </item>
        <item>
@@ -164,7 +170,7 @@
         </property>
         <property name="icon">
          <iconset resource="../resources.qrc">
-          <normaloff>:/icons/rank6.xpm</normaloff>:/icons/rank6.xpm</iconset>
+          <normaloff>:/icons/rank6-icon.png</normaloff>:/icons/rank6-icon.png</iconset>
         </property>
        </item>
       </widget>
