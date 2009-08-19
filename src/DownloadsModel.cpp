@@ -96,6 +96,14 @@ QVariant DownloadsModel::data(const QModelIndex & index, int role) const {
             t = t.addSecs(eta);
             return t.toString();
         }
+    } else if ( role == Qt::TextAlignmentRole ) {
+        switch( index.column() ) {
+            case 3:
+            case 4:
+                return Qt::AlignRight;
+            default:
+                return Qt::AlignLeft;
+        }
     }
     return QVariant();
 }
