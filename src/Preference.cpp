@@ -34,7 +34,7 @@ void Preference::loadPreferences() {
     chatShowFlagsCheckBox->setChecked(settings->value("Chat/showFlags").toBool());
     INIT_PREF("Chat/highlightUserName", true);
     chatHighlightUserNameCheckBox->setChecked(settings->value("Chat/highlightUserName").toBool());
-    INIT_PREF("Chat/popupNewPrivateChannel", true);
+    INIT_PREF("Chat/popupNewPrivateChannel", false);
     popupNewPrivateChannelCheckBox->setChecked(settings->value("Chat/popupNewPrivateChannel").toBool());
     INIT_PREF("Chat/notifyNewPrivateMessages", true);
     notifyNewPrivateMessagesCheckBox->setChecked(settings->value("Chat/notifyNewPrivateMessages").toBool());

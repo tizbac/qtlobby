@@ -178,10 +178,8 @@ void LobbyTabs::createLobbyTab( AbstractLobbyTab * lobbyTab ) {
              this, SLOT(receiveInput(QString)));
     //save the lobbyTab
     lobbyTabList.append(lobbyTab);
-    //focus the inserted tab
-    //TODO: make an option may be?
-    if ( QString(lobbyTab->metaObject()->className()) == "BattleChannel"  ||
-         QString(lobbyTab->metaObject()->className()) == "PrivateChannel") {
+    if (QString(lobbyTab->metaObject()->className()) == "BattleChannel" ||
+        QString(lobbyTab->metaObject()->className()) == "PrivateChannel" && Settings::Instance()->value("Chat/popupNewPrivateChannel").toBool()) {
         lobbyStackedWidget->setCurrentWidget(widget);
         tabBar->setCurrentIndex(c);
     }
