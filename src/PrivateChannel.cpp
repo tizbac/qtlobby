@@ -20,7 +20,7 @@ void PrivateChannel::receiveCommand( Command command ) {
                     .arg( "&lt;%1&gt; %2" )
                     .arg( objectName() )
                     .arg( processInput(command.attributes.join( " " ))));
-                                if(isActive == false)
+                                if(isActive == false && Settings::Instance()->value("Chat/notifyNewPrivateMessages").toBool())
                                 {
                                     QString title = QString("PM from " + objectName());
                                     QString message = QString(processInput(command.attributes.join( " " )));

@@ -10,40 +10,6 @@ LobbyTabs::LobbyTabs( QObject * parent, Battles* battles, UnitSyncLib* unitSyncL
     this->unitSyncLib = unitSyncLib;
     this->tabBar = tabBar;
     this->lobbyStackedWidget = lobbyStackedWidget;
-    //remove all tabs which we designed with Designer-qt4, they will be dynamically added
-    //lobbyStackedWidget->clear();
-
-    /*// workaround for sgi style
-    QPalette pal = lobbyStackedWidget->palette();
-    pal.setColor( QPalette::Active, QPalette::Button, pal.color( QPalette::Active, QPalette::Window ) );
-    pal.setColor( QPalette::Disabled, QPalette::Button, pal.color( QPalette::Disabled, QPalette::Window ) );
-    pal.setColor( QPalette::Inactive, QPalette::Button, pal.color( QPalette::Inactive, QPalette::Window ) );
-
-    //close tab button
-    QToolButton * closeTabButton = new QToolButton();
-    closeTabButton->setPalette( pal );
-    lobbyStackedWidget->setCornerWidget( closeTabButton, Qt::TopRightCorner );
-    closeTabButton->setCursor( Qt::ArrowCursor );
-    closeTabButton->setAutoRaise( true );
-    #ifdef Q_WS_MAC
-    closeTabButton->setIcon( QIcon( ":/icons/mac_closetab.png" ) );
-    #else
-    closeTabButton->setIcon( QIcon( ":/icons/closetab.png" ) );
-    #endif
-    closeTabButton->setToolTip( tr( "Close tab" ) );
-    closeTabButton->setEnabled( false );
-
-    QStyleOptionTab opt;
-    if ( tabBar ) {
-        opt.init( tabBar );
-        opt.shape = tabBar->shape();
-    }
-    QPalette p = lobbyStackedWidget->palette();
-    p.setColor( QPalette::Inactive, QPalette::Highlight,
-                p.color( QPalette::Active, QPalette::Highlight ) );
-    p.setColor( QPalette::Inactive, QPalette::HighlightedText,
-                p.color( QPalette::Active, QPalette::HighlightedText ) );
-    lobbyStackedWidget->setPalette( p );*/
     lastIndex = -1;
 
     connect( tabBar, SIGNAL(tabCloseRequested(int)),
@@ -303,7 +269,8 @@ void LobbyTabs::privateChannelOpen( QString userName, bool popup ) {
     foreach( AbstractLobbyTab * l, lobbyTabList ) {
         if ( l->objectName() == userName && l->metaObject()->className() == QString( "PrivateChannel" ) ) {
             found = true;
-            if(popup) tabBar->setCurrentIndex(l->currentTabIndex);
+            if(popup && Settings::Instance()->value("Chat/popupNewPrivateChannel").toBool())
+                tabBar->setCurrentIndex(l->currentTabIndex);
             break;
         }
     }

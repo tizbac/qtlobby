@@ -34,6 +34,10 @@ void Preference::loadPreferences() {
     chatShowFlagsCheckBox->setChecked(settings->value("Chat/showFlags").toBool());
     INIT_PREF("Chat/highlightUserName", true);
     chatHighlightUserNameCheckBox->setChecked(settings->value("Chat/highlightUserName").toBool());
+    INIT_PREF("Chat/popupNewPrivateChannel", true);
+    popupNewPrivateChannelCheckBox->setChecked(settings->value("Chat/popupNewPrivateChannel").toBool());
+    INIT_PREF("Chat/notifyNewPrivateMessages", true);
+    notifyNewPrivateMessagesCheckBox->setChecked(settings->value("Chat/notifyNewPrivateMessages").toBool());
 
     /*Map viewing*/
     INIT_PREF("MapViewing/colorizedHeightmap", true);
@@ -79,6 +83,8 @@ void Preference::onApply() {
     settings->setValue("Chat/joinQtlobby", joinQtlobbyCheckBox->isChecked());
     settings->setValue("Chat/showFlags", chatShowFlagsCheckBox->isChecked());
     settings->setValue("Chat/highlightUserName", chatHighlightUserNameCheckBox->isChecked());
+    settings->setValue("Chat/popupNewPrivateChannel", popupNewPrivateChannelCheckBox->isChecked());
+    settings->setValue("Chat/notifyNewPrivateMessages", notifyNewPrivateMessagesCheckBox->isChecked());
 
     /*Map viewing*/
     settings->setValue("MapViewing/colorizedHeightmap", colrizedHeightMapCheckBox->isChecked());
@@ -104,6 +110,8 @@ void Preference::onCancel() {
     joinQtlobbyCheckBox->setChecked(settings->value("Chat/joinQtlobby").toBool());
     chatShowFlagsCheckBox->setChecked(settings->value("Chat/showFlags").toBool());
     chatHighlightUserNameCheckBox->setChecked(settings->value("Chat/highlightUserName").toBool());
+    popupNewPrivateChannelCheckBox->setChecked(settings->value("Chat/popupNewPrivateChannel").toBool());
+    notifyNewPrivateMessagesCheckBox->setChecked(settings->value("Chat/notifyNewPrivateMessages").toBool());
 
     /*Map viewing*/
     colrizedHeightMapCheckBox->setChecked(settings->value("MapViewing/colorizedHeightmap").toBool());
