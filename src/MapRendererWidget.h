@@ -7,6 +7,7 @@
 #include <QMouseEvent>
 #include <QImage>
 #include <QVector>
+#include <QTime>
 #include "RawHeightMap.h"
 #include "glextensions.h"
 
@@ -31,11 +32,15 @@ struct TexCoord {
 };
 
 class MapRendererWidget : public QGLWidget {
+    Q_OBJECT
 public:
     MapRendererWidget(QWidget* parent = 0);
     ~MapRendererWidget();
     void setSource(QString mapName, QImage minimap, QImage metalmap, RawHeightMap heightmap);
     void setDrawStartPositions(bool b);
+
+signals:
+    void updateDebugInfo(const QString& info);
 
 public slots:
     void setXRotation(int angle);
@@ -93,6 +98,8 @@ private:
     Qt::BrushStyle m_brushStyle;
     int m_borderWidth;
     int m_alpha;
+    QTime m_time;
+    QString m_debugInfo;
 };
 
 inline void MapRendererWidget::setDrawStartPositions(bool b) {

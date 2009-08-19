@@ -6,6 +6,7 @@ MapOverviewDialog::MapOverviewDialog(QWidget *parent) :
         QDialog(parent),
         m_ui(new Ui::MapOverviewDialog) {
     m_ui->setupUi(this);
+    connect(m_ui->glWidget, SIGNAL(updateDebugInfo(const QString&)), this, SLOT(onDebugInfoChanged(const QString&)));
 }
 
 MapOverviewDialog::~MapOverviewDialog() {

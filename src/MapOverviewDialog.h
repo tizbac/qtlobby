@@ -22,6 +22,7 @@ public slots:
     void addStartRect(int ally, QRect r);
     void setMyAllyTeam(int n);
     void removeStartRect(int ally);
+    void onDebugInfoChanged(const QString& newInfo);
 
 protected:
     virtual void changeEvent(QEvent *e);
@@ -44,6 +45,10 @@ inline void MapOverviewDialog::removeStartRect(int ally) {
 
 inline void MapOverviewDialog::setDrawStartPositions(bool b) {
     m_ui->glWidget->setDrawStartPositions(b);
+}
+
+inline void MapOverviewDialog::onDebugInfoChanged(const QString& newInfo) {
+    m_ui->debugInfoLabel->setText(newInfo);
 }
 
 #endif // MAPOVERVIEWDIALOG_H

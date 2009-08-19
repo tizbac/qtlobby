@@ -30,6 +30,7 @@ MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
     m_indexes = 0;
     getGLExtensionFunctions().resolve(context());
     m_redrawStartRects = true;
+    setAutoBufferSwap(false);
 }
 
 MapRendererWidget::~MapRendererWidget() {
@@ -80,8 +81,12 @@ void MapRendererWidget::resizeGL(int w, int h) {
 
 void MapRendererWidget::paintGL() {
     if (!m_heightmap.getWidth() || blockRerender) return;
+    m_time.start();
     GLfloat light_position[] = { 5, 5, MAX_HEIGHT*1.3, 0.0 };
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //Weird, but this line doesn't work for my i915 integrated graphics, tho next 2 work fine
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
     if (compileObject) {
         makeObject();
@@ -119,6 +124,9 @@ void MapRendererWidget::paintGL() {
     glDisableClientState( GL_VERTEX_ARRAY );
     //glDisableClientState( GL_NORMAL_ARRAY );
     glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+    swapBuffers();
+    int msecs = m_time.elapsed();
+    emit updateDebugInfo(m_debugInfo.arg(1000/msecs));
 }
 
 void MapRendererWidget::generateTexCoords() {
@@ -244,8 +252,11 @@ void MapRendererWidget::setSource(QString mapName, QImage minimap, QImage metalm
         glDeleteBuffers(1, &m_VBOVertices);
         glDeleteBuffers(1, &m_VBONormals);
         glDeleteBuffers(1, &m_VBOTexCoords);
-    }
+        m_debugInfo = "VBO: <b>" + tr("Enabled");
+    } else
+        m_debugInfo = "VBO: <b>" + tr("Disabled");
     m_vertexNumber = heightmap.getWidth()*(heightmap.getHeight()-1)*2;
+    m_debugInfo += "</b> FPS: <b>%1</b> " + tr("Number of primitives") + ": <b>" + QString::number(heightmap.getWidth()*heightmap.getHeight()*2)+"</b>";
     if (m_vertexes) delete m_vertexes;
     m_vertexes = new Vertex[m_vertexNumber];
     for (int i = 0; i < heightmap.getHeight(); i++) {
@@ -260,17 +271,17 @@ void MapRendererWidget::setSource(QString mapName, QImage minimap, QImage metalm
     compileObject = true;
     lastZoom *= m_heightmap.getRatio();
     switch(Settings::Instance()->value("MapViewing/startPos/startRect/brushNumber").toInt()) {
-        case 1:
+    case 1:
         m_brushStyle = Qt::BDiagPattern;
         break;
-        case 2:
+    case 2:
         m_brushStyle = Qt::FDiagPattern;
         break;
-        case 3:
+    case 3:
         m_brushStyle = Qt::DiagCrossPattern;
         break;
-        case 0:
-        default:
+    case 0:
+    default:
         m_brushStyle = Qt::SolidPattern;
         break;
     }
@@ -345,31 +356,32 @@ void MapRendererWidget::mouseMoveEvent(QMouseEvent *event) {
 
 
 void MapRendererWidget::drawStartRecs() {
-    if (m_minimap.isNull() || startRects.isEmpty()) return;
-    if (!m_drawStartPositions) return;
+    if (m_minimap.isNull()) return;
     m_withRects = m_minimap;
     QPainter p(&m_withRects);
     if(Settings::Instance()->value("MapViewing/metalmapSuperposition").toBool())
         p.drawImage(m_withRects.rect(), m_metalmap);
-    for (QMap<int, QRect>::const_iterator i = startRects.begin(); i != startRects.end(); i++) {
-        QRect scaled = i.value();
-        scaled.setWidth(scaled.width()/201.*m_withRects.width());
-        scaled.setHeight(scaled.height()/201.*m_withRects.height());
-        scaled.moveTo(scaled.x()/201.*m_withRects.width(), scaled.y()/201.*m_withRects.height());
-        QColor red(Qt::red);
-        QColor redFill(Qt::red);
-        redFill.setAlpha(m_alpha);
-        QColor green(Qt::green);
-        QColor greenFill(Qt::green);
-        greenFill.setAlpha(m_alpha);
-        if (i.key() == myAlly) {
-            p.setBrush(QBrush(greenFill, m_brushStyle));
-            p.setPen(QPen(green, m_borderWidth));
-        } else {
-            p.setBrush(QBrush(redFill, m_brushStyle));
-            p.setPen(QPen(red, m_borderWidth));
+    if (m_drawStartPositions && !startRects.isEmpty()) {
+        for (QMap<int, QRect>::const_iterator i = startRects.begin(); i != startRects.end(); i++) {
+            QRect scaled = i.value();
+            scaled.setWidth(scaled.width()/201.*m_withRects.width());
+            scaled.setHeight(scaled.height()/201.*m_withRects.height());
+            scaled.moveTo(scaled.x()/201.*m_withRects.width(), scaled.y()/201.*m_withRects.height());
+            QColor red(Qt::red);
+            QColor redFill(Qt::red);
+            redFill.setAlpha(m_alpha);
+            QColor green(Qt::green);
+            QColor greenFill(Qt::green);
+            greenFill.setAlpha(m_alpha);
+            if (i.key() == myAlly) {
+                p.setBrush(QBrush(greenFill, m_brushStyle));
+                p.setPen(QPen(green, m_borderWidth));
+            } else {
+                p.setBrush(QBrush(redFill, m_brushStyle));
+                p.setPen(QPen(red, m_borderWidth));
+            }
+            p.drawRect(scaled);
         }
-        p.drawRect(scaled);
     }
     p.end();
     deleteTexture(m_texture);
