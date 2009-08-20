@@ -145,6 +145,7 @@ TLDList::TLDList( QObject* parent) : QObject(parent){
                 "MG:Madagascar\n"
                 "MH:Marshall Islands\n"
                 "MIL:US Military\n"
+                "MK:Macedonia\n"
                 "ML:Mali\n"
                 "MM:Myanmar\n"
                 "MN:Mongolia\n"

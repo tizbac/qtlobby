@@ -715,7 +715,7 @@ Bitte Passwort angeben:</translation>
     </message>
     <message>
         <source>user</source>
-        <translation>Benutzer</translation>
+        <translation type="obsolete">Benutzer</translation>
     </message>
     <message>
         <source>&amp;Address:</source>
@@ -723,7 +723,7 @@ Bitte Passwort angeben:</translation>
     </message>
     <message>
         <source>taspring.clan-sy.com</source>
-        <translation>taspring.clan-sy.com</translation>
+        <translation type="obsolete">taspring.clan-sy.com</translation>
     </message>
     <message>
         <source>P&amp;ort:</source>
@@ -739,7 +739,7 @@ Bitte Passwort angeben:</translation>
     </message>
     <message>
         <source>Current Profile:</source>
-        <translation>Aktuelles Profil:</translation>
+        <translation type="obsolete">Aktuelles Profil:</translation>
     </message>
     <message>
         <source>Logout</source>
@@ -1032,6 +1032,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>springrts.com</source>
         <translatorcomment>why does it need to be translated?</translatorcomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current Profile</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1504,11 +1508,30 @@ p, li { white-space: pre-wrap; }
         <translation>Dialog</translation>
     </message>
     <message>
+        <source>Left mouse button rotates the map, middle mouse button moves the map and mouse wheel zooms in and out.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Use left mouse button to rotate the map, middle mouse button to move the map and mouse wheel to zoom in and out.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; color:#000000;&quot;&gt;VBO: &lt;/span&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;Enabled&lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;  FPS: &lt;/span&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;100&lt;/span&gt;&lt;span style=&quot; color:#000000;&quot;&gt;  Number of primitives: &lt;/span&gt;&lt;span style=&quot; font-weight:600; color:#000000;&quot;&gt;6 000 000&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MapRendererWidget</name>
+    <message>
+        <source>Enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number of primitives</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1602,7 +1625,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Application Language</source>
-        <translation>Programmsprache</translation>
+        <translation type="obsolete">Programmsprache</translation>
     </message>
     <message>
         <source>English</source>
@@ -1635,6 +1658,120 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Highlight my username in Chat messages</source>
         <translation>Meinen Benutzernamen in Chat-Nachrichten hervorheben</translation>
+    </message>
+    <message>
+        <source>Map Viewing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Positions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channels autojoining</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chat widget</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Private messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set new private chat tab active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Notify about new private messages</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Application Language:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Heightmap type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Colorized</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Grayscale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3D Preview</source>
+        <translation type="unfinished">3D Vorschau</translation>
+    </message>
+    <message>
+        <source>Downscale:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Each downscaling pass will make heightmap 2 times smaller, thus occupying twice less memory and GPU time for rendering. Adjust this value to fit your video card.
+Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if you card supports VBO, usual memory if not) in full resolution.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>x</source>
+        <extracomment>That&apos;s suffix for downscaling, i.e. 5x = 5 times</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Metalmap superposition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visibility of Start Position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minimap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Heightmap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Metalmap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Rect Appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Brush:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Solid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Backward diagonal lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Forward diagonal lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Crossing diagonal lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Border width:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alpha:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2487,6 +2624,499 @@ ZR:Zaire
 ZW:Zimbabwe
 XX:?
 </source>
+        <translation type="obsolete">AC:Ascension
+AD:Andorra
+AE:Vereinigte Arabische Emirate
+AERO:Aircraft-related
+AF:Afghanistan
+AG:Antigua und Barbuda
+AI:Anguilla
+AL:Albanien
+AM:Armenien
+AN:Niederländische Antillen
+AO:Angola
+AQ:Antarktis
+AR:Argentinien
+ARPA:Address and Routing Parameter Area
+AS:Amerikanisch-Samoa
+AT:Österreich
+AU:Australien
+AW:Aruba
+AZ:Aserbaidschan
+BA:Bosnien und Herzegowina
+BB:Barbados
+BE:Belgien
+BF:Burkina Faso
+BG:Bulgarien
+BH:Bahrain
+BI:Burundi
+BIz:Business
+BJ:Benin
+BM:Bermuda
+BN:Brunei Darussalam
+BO:Bolivien
+BR:Brasilien
+BS:Bahamas
+BT:Bhutan
+BW:Botswana
+BY:Weißrussland
+BZ:Belize
+CA:Kanada
+CC:Kokosinseln
+CD:Demokratische Republik Kongo
+CF:Zentralafrikanische Republik
+CG:Republik Kongo
+CH:Schweiz
+CI:Elfenbeinküste
+CK:Cookinseln
+CL:Chile
+CM:Kamerun
+CN:Volksrepublik China
+CO:Kolumbien
+COM:Commercial
+COOP:Cooperative-related
+CR:Costa Rica
+CU:Kuba
+CV:Kap Verde
+CX:Weihnachtsinseln
+CY:Zypern
+CZ:Tschechien
+DE:Deutschland
+DJ:Dschibuti
+DK:Dänemark
+DM:Dominica
+DO:Dominikanische Republik
+DZ:Algerien
+EC:Ecuador
+EDU:Educational
+EE:Estland
+EG:Ägypten
+ES:Spanien
+ET:Äthiopien
+FI:Finnland
+FJ:Fidschi
+FK:Falklandinseln (Malvinas)
+FM:Föderierte Staaten von Mikronesien
+FO:Färöer
+FR:Frankreich
+GB:Vereinigtes Königreich
+GA:Gabun
+GD:Grenada
+GE:Georgien
+GF:Französisch-Guayana
+GH:Ghana
+GI:Gibraltar
+GL:Grönland
+GM:Gambia
+GN:Guinea
+GOV:Government
+GP:Guadeloupe (Französisch)
+GQ:Äquatorialguinea
+GR:Griechenland
+GT:Guatemala
+GU:Guam (US)
+GY:Guyana
+HK:Hongkong
+HM:Heard und McDonaldislands
+HN:Honduras
+HR:Kroatien
+HU:Ungarn
+ID:Indonesien
+IE:Irland
+IL:Israel
+IN:Indien
+INFO:General-purpose TLD
+INT:International
+IO:Britisches Territorium im Indischen Ozean
+IR:Iran
+IS:Island
+IT:Italien
+JM:Jamaika
+JO:Jordanien
+JP:Japan
+KE:Kenia
+KG:Kirgisistan
+KH:Kambodscha
+KI:Kiribati
+KM:Komoren
+KN:St. Kitts und Nevis
+KR:Südkorea
+KW:Kuwait
+KY:Kaimaninsen
+KZ:Kasachstan
+LA:Laos
+LB:Libanon
+LC:St. Lucia
+LI:Liechtenstein
+LK:Sri Lanka
+LR:Liberia
+LS:Lesotho
+LT:Litauen
+LU:Luxemburg
+LV:Lettland
+LY:Libyen
+MA:Morokko
+MC:Monaco
+MD:Moldavien
+MG:Madagaskar
+MH:Marshallinseln
+MIL:US Military
+ML:Mali
+MM:Myanmar
+MN:Mongolei
+MO:Macao
+MP:Nördliche Marianen
+MQ:Martinique (Französisch)
+MR:Mauretanien
+MS:Montserrat
+MT:Malta
+MU:Mauritius
+MUseum:Museum-related
+MV:Maldiven
+MW:Malawi
+MX:Mexiko
+MY:Malaysia
+MZ:Mosambik
+NA:Namibia
+NAME:Personal name
+NC:Neukaledonien (French)
+NE:Niger
+NET:Network Infrastructure
+NF:Norfolkinseln
+NG:Nigeria
+NI:Nicaragua
+NL:Niederlande
+NO:Norwegen
+NP:Nepal
+NR:Nauru
+NU:Niue
+NZ:Neuseeland
+OM:Oman
+ORG:Nonprofit
+PA:Panama
+PE:Peru
+PF:French Polynesia
+PF:Französisch-Polynesien
+PG:Papua-Neuguinea
+PH:Philippinen
+PK:Pakistan
+PL:Polen
+PM:Saint Pierre und Miquelon
+PN:Pitcairninseln
+PR:Puerto Rico (US)
+PRo:Professional domain
+PS:Palästinensische Autonomiegebiete
+PT:Portugal
+PW:Palau
+PY:Paraguay
+QA:Katar
+RE:Réunion (Französisch)
+RO:Rumänien
+RU:Russland
+RW:Ruanda
+SA:Saudi-Arabien
+SB:Solomonen
+SC:Seychellen
+SE:Schweden
+SG:Singapur
+SH:St. Helena
+SI:Slovenien
+SK:Slowakei
+SL:Sierra Leone
+SM:San Marino
+SN:Senegal
+SO:Somalia
+SR:Suriname
+ST:São Tomé und Príncipe
+SU:Sowjetunion
+SV:El Salvador
+SZ:Swasiland
+TC:Turks- und Caicosinseln
+TD:Tschad
+TF:Französische Süd- und Antarktisgebiete
+TG:Togo
+TH:Thailand
+TJ:Tadschikistan
+TK:Tokelau
+TM:Turkmenistan
+TN:Tunesien
+TO:Tonga
+TP:Osttimor
+TR:Türkei
+TT:Trinidad und Tobago
+TV:Tuvalu
+TW:Taiwan
+TZ:Tansania
+UA:Ukraine
+UG:Uganda
+UK:Vereinigtes Königreich
+US:Vereinigte Staaten (USA)
+UY:Uruguay
+UZ:Usbekistan
+VA:Vatikanstadt
+VC:St. Vincent und die Grenadinen
+VE:Venezuela
+VG:Britische Jungferninseln
+VI:Amerikanische Jungferninseln
+VN:Vietnam
+VU:Vanuatu
+WS:Samoa
+YE:Jemen
+YU:Jugoslawien
+ZA:Südafrika
+ZM:Sambia
+ZR:Zaire
+ZW:Simbabwe
+XX:?
+</translation>
+    </message>
+    <message>
+        <source>AC:Ascension Island
+AD:Andorra
+AE:United Arab Emirates
+AERO:Aircraft-related
+AF:Afghanistan
+AG:Antigua and Barbuda
+AI:Anguilla
+AL:Albania
+AM:Armenia
+AN:Netherland Antilles
+AO:Angola
+AQ:Antarctica
+AR:Argentina
+ARPA:Address and Routing Parameter Area
+AS:American Samoa
+AT:Austria
+AU:Australia
+AW:Aruba
+AZ:Azerbaijan
+BA:Bosnia-Herzegovina
+BB:Barbados
+BE:Belgium
+BF:Burkina Faso
+BG:Bulgaria
+BH:Bahrain
+BI:Burundi
+BIz:Business
+BJ:Benin
+BM:Bermuda
+BN:Brunei Darussalam
+BO:Bolivia
+BR:Brazil
+BS:Bahamas
+BT:Bhutan
+BW:Botswana
+BY:Belarus
+BZ:Belize
+CA:Canada
+CC:Cocos (Keeling) Islands
+CD:Democratic Republic of Congo
+CF:Central African Republic
+CG:Congo
+CH:Switzerland
+CI:Ivory Coast
+CK:Cook Islands
+CL:Chile
+CM:Cameroon
+CN:China
+CO:Colombia
+COM:Commercial
+COOP:Cooperative-related
+CR:Costa Rica
+CU:Cuba
+CV:Cape Verde
+CX:Christmas Island
+CY:Cyprus
+CZ:Czech Republic
+DE:Germany
+DJ:Djibouti
+DK:Denmark
+DM:Dominica
+DO:Dominican Republic
+DZ:Algeria
+EC:Ecuador
+EDU:Educational
+EE:Estonia
+EG:Egypt
+ES:Spain
+ET:Ethiopia
+FI:Finland
+FJ:Fiji
+FK:Falkland Islands (Malvinas)
+FM:Micronesia
+FO:Faroe Islands
+FR:France
+GB:Great Britan
+GA:Gabon
+GD:Grenada
+GE:Georgia
+GF:French Guyana
+GH:Ghana
+GI:Gibraltar
+GL:Greenland
+GM:Gambia
+GN:Guinea
+GOV:Government
+GP:Guadeloupe (French)
+GQ:Equatorial Guinea
+GR:Greece
+GT:Guatemala
+GU:Guam (US)
+GY:Guyana
+HK:Hong Kong
+HM:Heard and McDonald Islands
+HN:Honduras
+HR:Croatia (Hrvatska)
+HU:Hungary
+ID:Indonesia
+IE:Ireland
+IL:Israel
+IN:India
+INFO:General-purpose TLD
+INT:International
+IO:British Indian Ocean Territory
+IR:Islamic Republic of Iran
+IS:Iceland
+IT:Italy
+JM:Jamaica
+JO:Jordan
+JP:Japan
+KE:Kenya
+KG:Kyrgyzstan
+KH:Cambodia
+KI:Kiribati
+KM:Comoros
+KN:Saint Kitts Nevis Anguilla
+KR:South Korea
+KW:Kuwait
+KY:Cayman Islands
+KZ:Kazakhstan
+LA:Laos (People&apos;s Democratic Republic)
+LB:Lebanon
+LC:Saint Lucia
+LI:Liechtenstein
+LK:Sri Lanka
+LR:Liberia
+LS:Lesotho
+LT:Lithuania
+LU:Luxembourg
+LV:Latvia
+LY:Libya (Libyan Arab Jamahiriya)
+MA:Morocco
+MC:Monaco
+MD:Moldavia
+MG:Madagascar
+MH:Marshall Islands
+MIL:US Military
+MK:Macedonia
+ML:Mali
+MM:Myanmar
+MN:Mongolia
+MO:Macau
+MP:Northern Mariana Islands
+MQ:Martinique (French)
+MR:Mauritania
+MS:Montserrat
+MT:Malta
+MU:Mauritius
+MUseum:Museum-related
+MV:Maldives
+MW:Malawi
+MX:Mexico
+MY:Malaysia
+MZ:Mozambique
+NA:Namibia
+NAME:Personal name
+NC:New Caledonia (French)
+NE:Niger
+NET:Network Infrastructure
+NF:Norfolk Island
+NG:Nigeria
+NI:Nicaragua
+NL:Netherlands
+NO:Norway
+NP:Nepal
+NR:Nauru
+NU:Niue
+NZ:New Zealand
+OM:Oman
+ORG:Nonprofit
+PA:Panama
+PE:Peru
+PF:French Polynesia
+PF:Polynesia (French)
+PG:Papua New Guinea
+PH:Philippines
+PK:Pakistan
+PL:Poland
+PM:Saint Pierre and Miquelon
+PN:Pitcairn
+PR:Puerto Rico (US)
+PRo:Professional domain
+PS:Palestina
+PT:Portugal
+PW:Palau
+PY:Paraguay
+QA:Qatar
+RE:Reunion (French)
+RO:Romania
+RU:Russian Federation
+RW:Rwanda
+SA:Saudi Arabia
+SB:Solomon Islands
+SC:Seychelles
+SE:Sweden
+SG:Singapore
+SH:Saint Helena
+SI:Slovenia
+SK:Slovak Republic (Slovakia)
+SL:Sierra Leone
+SM:San Marino
+SN:Senegal
+SO:Somalia
+SR:Surinam
+ST:Saint Tome and Principe
+SU:Soviet Union
+SV:El Salvador
+SZ:Swaziland
+TC:Turks and Caicos Islands
+TD:Chad
+TF:French Southern Territories
+TG:Togo
+TH:Thailand
+TJ:Tajikistan
+TK:Tokelau
+TM:Turkmenistan
+TN:Tunisia
+TO:Tonga
+TP:East Timor
+TR:Turkey
+TT:Trinidad and Tobago
+TV:Tuvalu
+TW:Taiwan
+TZ:Tanzania
+UA:Ukraine
+UG:Uganda
+UK:United Kingdom
+US:United States of America
+UY:Uruguay
+UZ:Uzbekistan
+VA:Vatican City State
+VC:Saint Vincent and the Grenadines
+VE:Venezuela
+VG:Virgin Islands (British)
+VI:Virgin Islands (US)
+VN:Vietnam
+VU:Vanuatu
+WS:Samoa
+YE:Yemen
+YU:Yugoslavia
+ZA:South Africa
+ZM:Zambia
+ZR:Zaire
+ZW:Zimbabwe
+XX:?
+</source>
         <translation>AC:Ascension
 AD:Andorra
 AE:Vereinigte Arabische Emirate
@@ -2624,6 +3254,7 @@ MD:Moldavien
 MG:Madagaskar
 MH:Marshallinseln
 MIL:US Military
+MK:Mazedonien
 ML:Mali
 MM:Myanmar
 MN:Mongolei
