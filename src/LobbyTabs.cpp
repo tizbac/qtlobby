@@ -141,10 +141,10 @@ void LobbyTabs::sendCommandSlot( Command command ) {
     emit sendCommand( command );
 }
 
-void LobbyTabs::receiveInput( QString input ) {
+void LobbyTabs::receiveInput( QString input, bool focus) {
     QString chatCommand = input.section( " ", 0, 0 );
     if ( chatCommand == "/query" || chatCommand == "/msg" )
-        privateChannelOpen( input.section( " ", 1, 1 ) );
+        privateChannelOpen( input.section( " ", 1, 1 ), focus );
     if ( chatCommand == "/leave" || chatCommand == "/quit" || chatCommand == "/wc" )
         closeTab();
     else
@@ -152,14 +152,7 @@ void LobbyTabs::receiveInput( QString input ) {
 }
 
 void LobbyTabs::receiveInputAndFocus( QString input ) {
-    qDebug() << "receiveInputAndFocus ausgefuehrt";
-    QString chatCommand = input.section( " ", 0, 0 );
-    if ( chatCommand == "/query" || chatCommand == "/msg" )
-        privateChannelOpen( input.section( " ", 1, 1 ), true );
-    if ( chatCommand == "/leave" || chatCommand == "/quit" || chatCommand == "/wc" )
-        closeTab();
-    else
-        getActiveLobbyTab()->receiveInput( input );
+    receiveInput ( input, true );
 }
 
 void LobbyTabs::createLobbyTab( AbstractLobbyTab * lobbyTab, bool focus) {

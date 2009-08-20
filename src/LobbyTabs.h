@@ -47,7 +47,7 @@ public slots:
     void receiveCommand( Command command );
     //incoming commands from inputLineEdit
         // this description is not true (jd)
-    void receiveInput( QString input );
+    void receiveInput( QString input, bool focus = false );
     void receiveInputAndFocus( QString input );
     //receives commands to be sent to commandAssigner
     void sendCommandSlot( Command command );
