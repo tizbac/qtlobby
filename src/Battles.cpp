@@ -603,4 +603,5 @@ void Battles::onJoin() {
 void Battles::selectionChanged ( const QItemSelection & selected, const QItemSelection & deselected ) {
     if( ( deselected.indexes().size() > 0 ) != ( selected.indexes().size() > 0 ) )
         emit battleSelected(selected.indexes().size() > 0);
+    QTreeView::selectionChanged( selected, deselected );
 }
