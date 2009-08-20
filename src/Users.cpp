@@ -227,7 +227,7 @@ void Users::modUserInAllManagers( User u ) {
 }
 
 void Users::doubleClickedSlot( const QModelIndex & index ) {
-    emit sendInput( QString( "/query " ) + index.data( Qt::DisplayRole ).toString() );
+    emit sendInputAndFocus( QString( "/query " ) + index.data( Qt::DisplayRole ).toString() );
 }
 
 void Users::joinSameBattle( User u ) {

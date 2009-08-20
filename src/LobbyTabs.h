@@ -21,8 +21,6 @@
 #include "Command.h"
 #include "UnitSyncLib.h"
 
-#include <QDebug>
-
 class MainWindow;
 
 class LobbyTabs : public AbstractStateClient {
@@ -48,7 +46,9 @@ public slots:
     //incoming commands from commandAssigner
     void receiveCommand( Command command );
     //incoming commands from inputLineEdit
+        // this description is not true (jd)
     void receiveInput( QString input );
+    void receiveInputAndFocus( QString input );
     //receives commands to be sent to commandAssigner
     void sendCommandSlot( Command command );
     //sets the tab icon and emits the update signal for the user list
@@ -75,12 +75,12 @@ private:
     QString myUserName;
     QMap<QString, QString> userNameCountryCodeMap;
     //adds a new tab to lobbyTabWidget and lobbyTabList
-    void createLobbyTab( AbstractLobbyTab * lobbyTab );
+    void createLobbyTab( AbstractLobbyTab * lobbyTab, bool focus = false );
     //refreshes the tab icon, needed when the unfocused channels get changed
     void setTabIcon( int index );
     //void updateCloseTabState();
     // opens an empty private channel if not existing
-    void privateChannelOpen( QString userName, bool popup = true );
+    void privateChannelOpen( QString userName, bool popup = false );
     //needed to delegate the input to the active channel
     AbstractLobbyTab * getActiveLobbyTab();
     int mapToLobbyTabs(int index);

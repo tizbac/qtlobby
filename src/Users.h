@@ -38,6 +38,7 @@ public:
 signals:
     void sendCommand( Command command );
     void sendInput( QString input );
+    void sendInputAndFocus( QString input );
     void myStateChanged(User u);
     void openGroupsDialog();
     void statsChange(int userCount, int moderatorCount);

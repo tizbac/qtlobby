@@ -138,6 +138,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     // lobbyTabs to open private channel, when requested in users or battles list
     connect( users, SIGNAL( sendInput( QString ) ),
              lobbyTabs, SLOT( receiveInput( QString ) ) );
+    connect( users, SIGNAL( sendInputAndFocus( QString ) ),
+             lobbyTabs, SLOT( receiveInputAndFocus( QString ) ) );
     connect( battles, SIGNAL( sendInput( QString ) ),
              lobbyTabs, SLOT( receiveInput( QString ) ) );
     connect( users, SIGNAL(teamPlayerSpecCountChanged(QString)),

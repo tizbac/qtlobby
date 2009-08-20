@@ -151,7 +151,18 @@ void LobbyTabs::receiveInput( QString input ) {
         getActiveLobbyTab()->receiveInput( input );
 }
 
-void LobbyTabs::createLobbyTab( AbstractLobbyTab * lobbyTab ) {
+void LobbyTabs::receiveInputAndFocus( QString input ) {
+    qDebug() << "receiveInputAndFocus ausgefuehrt";
+    QString chatCommand = input.section( " ", 0, 0 );
+    if ( chatCommand == "/query" || chatCommand == "/msg" )
+        privateChannelOpen( input.section( " ", 1, 1 ), true );
+    if ( chatCommand == "/leave" || chatCommand == "/quit" || chatCommand == "/wc" )
+        closeTab();
+    else
+        getActiveLobbyTab()->receiveInput( input );
+}
+
+void LobbyTabs::createLobbyTab( AbstractLobbyTab * lobbyTab, bool focus) {
     lobbyTab->myUserName = myUserName;
     lobbyTab->setUserNameCountryCodeMap( &userNameCountryCodeMap );
     if(QString(lobbyTab->metaObject()->className()) == "Channel") {
@@ -178,7 +189,7 @@ void LobbyTabs::createLobbyTab( AbstractLobbyTab * lobbyTab ) {
              this, SLOT(receiveInput(QString)));
     //save the lobbyTab
     lobbyTabList.append(lobbyTab);
-    if (QString(lobbyTab->metaObject()->className()) == "BattleChannel" ||
+    if (focus || QString(lobbyTab->metaObject()->className()) == "BattleChannel" ||
         (QString(lobbyTab->metaObject()->className()) == "PrivateChannel" && Settings::Instance()->value("Chat/popupNewPrivateChannel").toBool())) {
         lobbyStackedWidget->setCurrentWidget(widget);
         tabBar->setCurrentIndex(c);
@@ -267,13 +278,13 @@ void LobbyTabs::privateChannelOpen( QString userName, bool popup ) {
     foreach( AbstractLobbyTab * l, lobbyTabList ) {
         if ( l->objectName() == userName && l->metaObject()->className() == QString( "PrivateChannel" ) ) {
             found = true;
-            if(popup && Settings::Instance()->value("Chat/popupNewPrivateChannel").toBool())
+            if(popup || Settings::Instance()->value("Chat/popupNewPrivateChannel").toBool())
                 tabBar->setCurrentIndex(l->currentTabIndex);
             break;
         }
     }
     if ( !found ) {
-        createLobbyTab( new PrivateChannel( userName, lobbyStackedWidget ) );
+        createLobbyTab( new PrivateChannel( userName, lobbyStackedWidget ), popup );
     }
 }
 
