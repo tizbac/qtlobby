@@ -14,50 +14,6 @@
    <string>QtLobby Preferences</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <spacer>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>261</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="cancelPushButton">
-       <property name="text">
-        <string>&amp;Cancel</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="applyPushButton">
-       <property name="text">
-        <string>&amp;Apply</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="okPushButton">
-       <property name="text">
-        <string>&amp;Ok</string>
-       </property>
-       <property name="autoDefault">
-        <bool>false</bool>
-       </property>
-       <property name="default">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="0" column="0">
     <widget class="QListWidget" name="preferencesListWidget">
      <property name="maximumSize">
@@ -86,7 +42,7 @@
      </item>
      <item>
       <property name="text">
-       <string>Map viewing</string>
+       <string>Map Viewing</string>
       </property>
      </item>
      <item>
@@ -105,7 +61,7 @@
       <enum>QFrame::Raised</enum>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="pathWidget"/>
      <widget class="QWidget" name="chatWidget">
@@ -220,7 +176,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Application Language</string>
+           <string>Application Language:</string>
           </property>
           <property name="buddy">
            <cstring>languageComboBox</cstring>
@@ -275,7 +231,7 @@
       </widget>
      </widget>
      <widget class="QWidget" name="page">
-      <layout class="QGridLayout" name="gridLayout_2">
+      <layout class="QFormLayout" name="formLayout_4">
        <item row="0" column="0">
         <widget class="QGroupBox" name="groupBox">
          <property name="title">
@@ -309,6 +265,9 @@
            <widget class="QLabel" name="label_4">
             <property name="text">
              <string>Downscale:</string>
+            </property>
+            <property name="buddy">
+             <cstring>downscaleHeightmapSpinBox</cstring>
             </property>
            </widget>
           </item>
@@ -352,11 +311,11 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
       </layout>
      </widget>
      <widget class="QWidget" name="page_2">
-      <layout class="QGridLayout" name="gridLayout_4">
+      <layout class="QFormLayout" name="formLayout_5">
        <item row="0" column="0">
         <widget class="QGroupBox" name="groupBox_4">
          <property name="title">
-          <string>Show on:</string>
+          <string>Visibility of Start Position</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
@@ -396,10 +355,16 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
           <string>Start Rect Appearance</string>
          </property>
          <layout class="QFormLayout" name="formLayout_3">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
           <item row="0" column="0">
            <widget class="QLabel" name="label_2">
             <property name="text">
              <string>Brush:</string>
+            </property>
+            <property name="buddy">
+             <cstring>startRectBrushComboBox</cstring>
             </property>
            </widget>
           </item>
@@ -432,6 +397,9 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
             <property name="text">
              <string>Border width:</string>
             </property>
+            <property name="buddy">
+             <cstring>startRectBorderWidthSpinBox</cstring>
+            </property>
            </widget>
           </item>
           <item row="1" column="1">
@@ -449,6 +417,9 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
             <property name="text">
              <string>Alpha:</string>
             </property>
+            <property name="buddy">
+             <cstring>startRectAlphaSpinBox</cstring>
+            </property>
            </widget>
           </item>
           <item row="2" column="1">
@@ -464,6 +435,50 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
       </layout>
      </widget>
     </widget>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>261</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancelPushButton">
+       <property name="text">
+        <string>&amp;Cancel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="applyPushButton">
+       <property name="text">
+        <string>&amp;Apply</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="okPushButton">
+       <property name="text">
+        <string>&amp;Ok</string>
+       </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="default">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

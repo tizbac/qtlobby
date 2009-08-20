@@ -11,6 +11,7 @@
 #include <QMessageBox>
 #include <QMap>
 #include <QFile>
+#include <QKeyEvent>
 
 #include "Battle.h"
 #include "Command.h"
@@ -38,6 +39,7 @@ signals:
     void removeStartRect(int ally);
     void statsChange(int battles);
     void sendInput(QString input);
+    void battleSelected(bool hasSelection);
 
 public slots:
     void setRegExp( QString regExp );
@@ -47,6 +49,7 @@ public slots:
     void setCurrentUsername(QString username);
     void invalidateModel();
     void connectionStateChanged(ConnectionState state);
+    void onJoin();
 
 protected slots:
     void customContextMenuRequested( const QPoint & point );
@@ -60,11 +63,12 @@ protected slots:
     void setFilterWithoutPlayersSlot( bool state );
     void setFilterWithoutFriendsSlot( bool state );
     void onReboot();
-
+    void selectionChanged(const QItemSelection & selected, const QItemSelection & deselected );
 protected:
     int resyncStatus();
     void startGame( Battle b, bool host );
     QString generateScript( Battle b, bool host );
+    bool event(QEvent* event);
     QString currentTabType;
     QString currentTabName;
     QString username;

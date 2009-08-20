@@ -39,6 +39,7 @@ protected:
 private:
     QMap <int, QString> buffers;
     int currentIndex;
+    bool previousWasTab;
     void returnPressed();
     int historyIndex;
     QStringList history;

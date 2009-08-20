@@ -81,6 +81,7 @@ Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
              this, SLOT( setFilterWithoutFriendsSlot( bool ) ) );
     connect (UnitSyncLib::getInstance(), SIGNAL(rebooted()),
              this, SLOT(onReboot()));
+
     battleCount = 0;
     QSettings* s = Settings::Instance();
     if( s->contains("Battles/filterPassworded" ) )
@@ -577,4 +578,29 @@ void Battles::onReboot() {
     User u = users->getUser( url.userName() );
     u.battleState.setSyncState(resyncStatus());
     users->onMyBattleStateChanged( u );
+}
+
+/**
+ * handling enter pressed
+ */
+bool Battles::event(QEvent* event) {
+    if (event->type() == QEvent::KeyPress) {
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        if ( ( keyEvent->key() == Qt::Key_Enter
+               || keyEvent->key() == Qt::Key_Return ) ) {
+            onJoin();
+            return true;
+        }
+    }
+    return QTreeView::event(event);
+}
+
+void Battles::onJoin() {
+    if( selectedIndexes().size() > 0 )
+        doubleClicked(selectedIndexes().first());
+}
+
+void Battles::selectionChanged ( const QItemSelection & selected, const QItemSelection & deselected ) {
+    if( ( deselected.indexes().size() > 0 ) != ( selected.indexes().size() > 0 ) )
+        emit battleSelected(selected.indexes().size() > 0);
 }

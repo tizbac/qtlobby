@@ -9,6 +9,7 @@ InputLine::InputLine( QWidget * parent ) : QLineEdit( parent ), historyIndex( 0 
     history << "" << "";
     users = 0;
     currentIndex = -1;
+    previousWasTab = false;
 }
 InputLine::~InputLine() {
 }
@@ -49,6 +50,9 @@ bool InputLine::event(QEvent* event) {
         QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
         if (keyEvent->key() == Qt::Key_Tab ||
             (keyEvent->key() == Qt::Key_Space && keyEvent->modifiers() == Qt::ControlModifier)) {
+            if (previousWasTab)
+                return QLineEdit::event(event);
+            previousWasTab = true;
             QString str = text();
             int start = cursorPosition();
             QFontMetrics fm(font());
@@ -81,6 +85,7 @@ bool InputLine::event(QEvent* event) {
             }
             return true;
         }
+        previousWasTab = false;
     }
     return QLineEdit::event(event);
 }
@@ -129,6 +134,8 @@ void InputLine::onTabChanged(int index) {
     clear();
     if (buffers.contains(index))
         setText(buffers[index]);
+    if (currentIndex != index)
+        this->setFocus();
     currentIndex = index;
 }
 

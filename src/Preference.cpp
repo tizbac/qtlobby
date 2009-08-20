@@ -178,7 +178,7 @@ void Preference::setUpPathForm() {
     // under windows you hopefully have to specify only springSystemDir
     // TODO need testing, wheter this works as espected:
     // after changing the spring_system_dir all other red marked paths should get green
-    // especially the unitsync should be found.
+    // especially the unitsync should be found. (mw)
 //#ifdef Q_WS_WIN
     connect( springSystemDirPathElement, SIGNAL( pathChanged( QString ) ),
              springExecutableFilePathElement, SLOT( onBaseDirectoryChanged( QString ) ) );

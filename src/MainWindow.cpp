@@ -160,15 +160,19 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
              this, SLOT( onChangedToBattleTab()) );
     connect( lobbyTabs, SIGNAL(changedFromBattleTab()),
              this, SLOT( onChangedFromBattleTab()) );
-    connect (tabBar, SIGNAL(tabMoved(int,int)),
+    connect( tabBar, SIGNAL(tabMoved(int,int)),
              lobbyTabs, SLOT(onTabMoved(int,int)));
-    connect (tabBar, SIGNAL(currentChanged(int)),
+    connect( tabBar, SIGNAL(currentChanged(int)),
              this, SLOT(onCurrentTabChanged()));
     // aboutDialog
     connect( action_About, SIGNAL( triggered() ),
              this, SLOT( about() ) );
     connect( action_Host_a_Battle, SIGNAL( triggered() ),
              this, SLOT( on_hostPushButton_clicked() ) );
+    connect( joinPushButton, SIGNAL( clicked( bool ) ),
+             battles, SLOT( onJoin() ) );
+    connect( battles, SIGNAL( battleSelected( bool ) ),
+             joinPushButton, SLOT( setEnabled( bool ) ) );
     // preferences
     connect( actionPreferences, SIGNAL( triggered() ),
              preference, SLOT( show() ) );
@@ -504,7 +508,6 @@ void MainWindow::connectionStatusChanged(ConnectionState state) {
 
 void MainWindow::onCurrentTabChanged() {
     onTeamPlayerSpecCountChanged(users->teamPlayerSpecCount());
-    this->inputLineEdit->setFocus();
 }
 
 void MainWindow::onTeamPlayerSpecCountChanged(QString ratio) {
