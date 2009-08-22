@@ -126,7 +126,10 @@ void MapRendererWidget::paintGL() {
     glDisableClientState( GL_TEXTURE_COORD_ARRAY );
     swapBuffers();
     int msecs = m_time.elapsed();
-    emit updateDebugInfo(m_debugInfo.arg(1000/msecs));
+    if(msecs)
+        emit updateDebugInfo(m_debugInfo.arg(1000/msecs));
+    else
+        emit updateDebugInfo(m_debugInfo.arg(tr("Inf")));
 }
 
 void MapRendererWidget::generateTexCoords() {
