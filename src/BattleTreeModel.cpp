@@ -23,6 +23,7 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
                 QList<QColor> colors;
                 for (int i = 0; i < users.size(); i++) {
                     QColor c = UserGroupList::getInstance()->getUserColor(users.at(i).name);
+                    if(colors.contains(c)) continue;
                     if (c.isValid())
                         colors << c;
                 }
