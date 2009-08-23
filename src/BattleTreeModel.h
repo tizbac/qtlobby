@@ -40,6 +40,9 @@ public:
 public slots:
     void onGroupChanged();
 private:
+    QString stringifyRank(int rank) const;
+    QString getRankIconFilename(int rank) const;
+
     QList<Battle> m_battleList;
     Users* m_users;
     //   TLDList tldlist;

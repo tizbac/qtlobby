@@ -130,33 +130,17 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
         }
         if ( role == Qt::ToolTipRole ) {
             QString t = m_battleList[index.row()].countryCode;
-                     return tldlist.TLDMap->value( t );
+            return tldlist.TLDMap->value( t );
             return t;
         }
         break;
     case 2: //rank
         if ( role == Qt::DecorationRole ) {
-            QString filename = QString( ":/icons/rank%1-icon.png" ).arg( m_battleList[index.row()].minRank );
+            QString filename = getRankIconFilename( m_battleList[index.row()].minRank );
             return QIcon( filename );
         }
         if ( role == Qt::ToolTipRole ) {
-            switch ( m_battleList[index.row()].minRank ) {
-            case 0:
-                return tr("1/7 Newbie");
-            case 1:
-                return tr("2/7 Beginner");
-            case 2:
-                return tr("3/7 Average");
-            case 3:
-                return tr("4/7 Above average");
-            case 4:
-                return tr("5/7 Experienced");
-            case 5:
-                return tr("6/7 Highly experienced");
-            case 6:
-                return tr("7/7 Veteran");
-            }
-            return tr("no rank");
+            return stringifyRank(m_battleList[index.row()].minRank);
         }
         break;
     case 3: // title
@@ -187,14 +171,54 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
             .arg( m_battleList[index.row()].spectatorCount );
         if ( role == Qt::ToolTipRole ) {
             Battle b = m_battleList[index.row()];
-            return tr("%1 players in battle\n%2 players maximum\n%3 spectators in battle")
-                    .arg( b.playerCount -b.spectatorCount )
-                    .arg( b.maxPlayers )
-                    .arg( b.spectatorCount );
+            QString tip = tr("<b>%1</b> players in battle<br/><b>%2</b> players maximum<br/><b>%3</b> spectators in battle")
+                          .arg( b.playerCount - b.spectatorCount )
+                          .arg( b.maxPlayers )
+                          .arg( b.spectatorCount ) + "<hr/><b>Player list:</b><table>";
+            float averageRank = 0;
+            QList<User> users = m_users->getUserList(b.id);
+            foreach(const User& u, users) {
+                int rank = u.userState.getRank();
+                tip += QString("<tr><td><img width=\"16\" height=\"16\" src=\"%1\"/></td><td>%2</td></tr>")
+                       .arg(getRankIconFilename(rank))
+                       .arg(u.name);
+                averageRank += rank;
+            }
+            averageRank /= users.size();
+            tip +="</table><br/>"
+                  +tr("Average rank:")
+                  +" "
+                  +QString("<img width=\"16\" height=\"16\" src=\"%1\"/>").arg(getRankIconFilename(qRound(averageRank)))
+                  +QString::number(averageRank, 'g', 2);
+            return tip;
         }
         break;
     }
     return QVariant();
+}
+
+QString BattleTreeModel::stringifyRank(int rank) const {
+    switch ( rank ) {
+            case 0:
+        return tr("1/7 Newbie");
+            case 1:
+        return tr("2/7 Beginner");
+            case 2:
+        return tr("3/7 Average");
+            case 3:
+        return tr("4/7 Above average");
+            case 4:
+        return tr("5/7 Experienced");
+            case 5:
+        return tr("6/7 Highly experienced");
+            case 6:
+        return tr("7/7 Veteran");
+    }
+    return tr("no rank");
+}
+
+QString BattleTreeModel::getRankIconFilename(int rank) const {
+    return QString( ":/icons/rank%1-icon.png" ).arg(rank);
 }
 
 bool BattleTreeModel::setData( const QModelIndex index, QVariant v, int /*role*/ ) {
