@@ -282,7 +282,7 @@ void BattleChannel::receiveCommand( Command command ) {
         }
     } else if ( command.name == "BATTLECLOSED" ) {
         if ( command.attributes.takeFirst() == objectName() ) {
-            //nothing to do yet
+            noMapUpdates = true;
         }
     } else if ( command.name == "UPDATEBATTLEINFO" ) {
         if ( command.attributes.takeFirst() == objectName() ) {

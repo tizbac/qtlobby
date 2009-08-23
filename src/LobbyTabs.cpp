@@ -104,11 +104,7 @@ void LobbyTabs::receiveCommand( Command command ) {
             }
         }
         if ( found ) {
-            QWidget * win = lobbyTabList[index]->currentWidget;
-            lobbyStackedWidget->removeWidget(win);
-            tabBar->removeTab(lobbyTabList[index]->currentTabIndex);
-            QTimer::singleShot( 0, win, SLOT( deleteLater() ) );
-            lobbyTabList.removeAt(index);
+            closeTab(lobbyTabList[index]->currentTabIndex);
         }
     } else if ( command.name == "SAIDPRIVATE" ) {
         if( !UserGroupList::getInstance()->getIgnore(command.attributes.first()) )
