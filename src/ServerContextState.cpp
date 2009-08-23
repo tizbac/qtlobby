@@ -297,8 +297,8 @@ void ServerContextState::denyAgreement() {
 void ServerContextState::registerNewAccount( QString user, QString password ) {
     registration = true;
     establishConnection();
-    qDebug() << QString("REGISTER %1 %2").arg(user).arg(password);
-    sendMessage(QString("REGISTER %1 %2").arg(user).arg(password));
+    qDebug() << QString("REGISTER %1 %2").arg(user).arg(encodePassword(password));
+    sendMessage(QString("REGISTER %1 %2").arg(user).arg(encodePassword(password)));
 }
 
 QString ServerContextState::encodePassword( QString password ) {
