@@ -21,7 +21,10 @@ target.path += $$INSTALL_ROOT/bin
 INSTALLS += target
 desktop.files = src/qtlobby.desktop
 desktop.path = $$INSTALL_ROOT/share/applications
+desktopicon.files = qtlobby-logo.svg
+desktopicon.path = $$INSTALL_ROOT/share/applications
 INSTALLS += desktop
+INSTALLS += desktopicon
 contains( CONFIG, buildbot ) { 
     QMAKE_LFLAGS += -static-libgcc \
         -Wl,-subsystem,windows
