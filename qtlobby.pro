@@ -19,12 +19,15 @@ else:DEFINES += 'SVN_REV=\\"$$system(svnversion -n .)\\"'
 DEFINES += RPM_OPT_FLAGS
 target.path += $$INSTALL_ROOT/bin
 INSTALLS += target
+
 desktop.files = src/qtlobby.desktop
 desktop.path = $$INSTALL_ROOT/share/applications
-desktopicon.files = qtlobby-logo.svg
-desktopicon.path = $$INSTALL_ROOT/share/applications
 INSTALLS += desktop
+
+desktopicon.files = icons/qtlobby-logo.svg
+desktopicon.path = $$INSTALL_ROOT/share/pixmaps
 INSTALLS += desktopicon
+
 contains( CONFIG, buildbot ) { 
     QMAKE_LFLAGS += -static-libgcc \
         -Wl,-subsystem,windows
