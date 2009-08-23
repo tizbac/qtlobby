@@ -140,13 +140,12 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
              lobbyTabs, SLOT( receiveInput( QString ) ) );
     connect( users, SIGNAL( sendInputAndFocus( QString ) ),
              lobbyTabs, SLOT( receiveInputAndFocus( QString ) ) );
+    connect( battleInfoTreeView, SIGNAL( sendInputAndFocus( QString ) ),
+             lobbyTabs, SLOT( receiveInputAndFocus( QString ) ) );
     connect( battles, SIGNAL( sendInput( QString ) ),
              lobbyTabs, SLOT( receiveInput( QString ) ) );
     connect( users, SIGNAL(teamPlayerSpecCountChanged(QString)),
              this, SLOT(onTeamPlayerSpecCountChanged(QString)));
-    //Group action in users
-    connect( users, SIGNAL(openGroupsDialog()),
-             userGroupsDialog, SLOT(show()));
     //Stats updates for status bar
     connect( users, SIGNAL(statsChange(int,int)),
              this, SLOT(onStatsChange(int,int)));
@@ -223,6 +222,15 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     //input blocking signal
     connect(lobbyTabs, SIGNAL(blockInput(bool)),
             this, SLOT(onBlockInput(bool)));
+
+    //user menu builder stuff
+    UserMenuBuilder* b = UserMenuBuilder::getInstance();
+    connect(b, SIGNAL(joinSameBattle(User)), users, SLOT(joinSameBattle(User)));
+    connect(b, SIGNAL(sendInput(QString)), lobbyTabs, SLOT(receiveInput(QString)));
+    connect(b, SIGNAL(invalidateModel()), users, SLOT(invalidateModel()));
+    connect(b, SIGNAL(openGroupsDialog()), userGroupsDialog, SLOT(show()));
+    connect(b, SIGNAL(sendCommand(Command)), commandAssigner, SLOT(sendCommand(Command)));
+
 
     //Spring stopped signal
     connect(&qpSpring, SIGNAL(finished (int, QProcess::ExitStatus)),

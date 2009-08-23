@@ -2,12 +2,13 @@
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "Users.h"
 #include "UserGroup.h"
+#include "UserMenuBuilder.h"
 #include <QInputDialog>
 #include <QColorDialog>
 
 Users* Users::lastThis = 0;
 
-Users::Users( QWidget* parent ) : QTreeView( parent ) {
+Users::Users( QWidget* parent ) : UsersTreeView( parent ) {
     infoChannelUserManager = new UserManager( this );
 
     setModel( infoChannelUserManager->proxyModel() );
@@ -21,28 +22,6 @@ Users::Users( QWidget* parent ) : QTreeView( parent ) {
     joinSameBattleAction = new QAction( tr("Join same battle"), this );
     ignoreAction = new QAction( tr("Toggle ignore"), this );
 
-    userMenu = new QMenu( "userListContextMenu", this );
-    userMenu->addAction( openPrivateChannelAction );
-    userMenu->addAction( slapAction );
-    userMenu->addAction( joinSameBattleAction );
-    userMenu->addAction( ignoreAction );
-    userMenu->addSeparator();
-    groupsMenu = new QMenu(tr("Add to group"), this);
-    removeFromGroupAction = new QAction(tr("Remove from group"), userMenu);
-    clanGroupsMenu = new QMenu(tr("Add clan to group"), this);
-    removeClanFromGroupAction = new QAction(tr("Remove clan from group"), userMenu);
-    forceMenu   = new QMenu(tr("Force"), this);
-    forceTeam   = forceMenu->addAction(tr("Team"));
-    forceAlly   = forceMenu->addAction(tr("Ally"));
-    forceColor  = forceMenu->addAction(tr("Color"));
-    forceSpec   = forceMenu->addAction(tr("Spec"));
-    kick        = new QAction(tr("Kick"), userMenu);
-
-    connect( this, SIGNAL( customContextMenuRequested( const QPoint & ) ),
-             this, SLOT( customContextMenuRequestedSlot( const QPoint & ) ) );
-    connect( this, SIGNAL( doubleClicked( const QModelIndex & ) ),
-             this, SLOT( doubleClickedSlot( const QModelIndex & ) ) );
-    clanRegexp.setPattern(".*(\\[.*\\]).*");
     lastThis = this;
     userCount = 0;
     moderatorCount = 0;
@@ -226,10 +205,6 @@ void Users::modUserInAllManagers( User u ) {
     infoChannelUserManager->modUser( u );
 }
 
-void Users::doubleClickedSlot( const QModelIndex & index ) {
-    emit sendInputAndFocus( QString( "/query " ) + index.data( Qt::DisplayRole ).toString() );
-}
-
 void Users::joinSameBattle( User u ) {
     if ( !u.userState.isIngame() && u.joinedBattleId >= 0 ) {
         Command command( "JOINBATTLE" );
@@ -243,122 +218,11 @@ void Users::customContextMenuRequestedSlot( const QPoint & point ) {
     QModelIndex index = selectedIndexes().first();
     if ( !index.isValid() ) return;
     User u = index.data( Qt::UserRole ).value<User>();
-    QColor c = index.data( Qt::BackgroundRole ).value<QColor>();
-    QString clan;
-    if (clanRegexp.indexIn(u.name) >= 0) {
-        clan = clanRegexp.capturedTexts().at(1);
-    }
-    userMenu->removeAction(groupsMenu->menuAction());
-    userMenu->removeAction(removeFromGroupAction);
-    userMenu->removeAction(clanGroupsMenu->menuAction());
-    userMenu->removeAction(removeClanFromGroupAction);
-    UserGroupList* list = UserGroupList::getInstance();
-    if (c.isValid()) {
-        userMenu->addAction(removeFromGroupAction);
-        if (!clan.isEmpty())
-            userMenu->addAction(removeClanFromGroupAction);
-    } else {
-        groupsMenu->clear();
-        QAction* newGroup = groupsMenu->addAction(tr("New Group"));
-        newGroup->setObjectName("create_new_group");
-        groupsMenu->addSeparator();
-        if (!clan.isEmpty()) {
-            clanGroupsMenu->clear();
-            clanGroupsMenu->addAction(newGroup);
-            clanGroupsMenu->addSeparator();
-        }
-        QStringList groups = list->getGroupNames();
-        for (int i = 0; i < groups.size(); i++) {
-            QAction* a = groupsMenu->addAction(groups.at(i));
-            a->setObjectName("add_to_group");
-            if (!clan.isEmpty()) {
-                a = clanGroupsMenu->addAction(groups.at(i));
-                a->setObjectName("add_clan_to_group");
-            }
-        }
-        userMenu->addMenu(groupsMenu);
-        if (!clan.isEmpty())
-            userMenu->addMenu(clanGroupsMenu);
-    }
-    if(currentTabType == "BattleChannel") {
-        userMenu->addSeparator();
-        userMenu->addMenu(forceMenu);
-        userMenu->addAction(kick);
-    }
-
-    QAction *action = userMenu->exec( this->viewport()->mapToGlobal( point ) );
-    if ( action ) {
-        if ( action == openPrivateChannelAction ) {
-            emit sendInput( u.name.prepend( "/query " ) );
-        } else if ( action == slapAction ) {
-            emit sendInput( u.name.prepend( "/slap " ) );
-        } else if ( action == joinSameBattleAction ) {
-            joinSameBattle( u );
-        } else if ( action == ignoreAction ) {
-            toggleIgnoreUser( u );
-        } else if ( action == removeFromGroupAction ) {
-            removeUserFromGroup(u.name);
-        } else if ( action == removeClanFromGroupAction ) {
-            removeUserFromGroup(clan);
-        } else if ( action->objectName() == "add_to_group") {
-            addUserToGroup(u.name, action->text());
-        } else if ( action->objectName() == "add_clan_to_group") {
-            addUserToGroup(clan, action->text());
-        } else if (action->objectName() == "create_new_group") {
-            emit openGroupsDialog();
-        } else if ( action == forceTeam ) {
-            int newTeam = QInputDialog::getInt(this,
-                                               tr("Select team"),
-                                               tr("Select a team to force player to"),
-                                               u.battleState.getTeamNo()+1, 1, 16, 1);
-            sendCommand(Command("SAYBATTLE !force " + u.name + " team " + QString::number(newTeam)));
-        } else if ( action == forceAlly ) {
-            int newAlly = QInputDialog::getInt(this,
-                                               tr("Select ally team"),
-                                               tr("Select an ally team to force player to"),
-                                               u.battleState.getAllyTeamNo()+1, 1, 16, 1);
-            sendCommand(Command("SAYBATTLE !force " + u.name + " ally " + QString::number(newAlly)));
-        } else if ( action == forceColor ) {
-            QColor newColor = QColorDialog::getColor(u.m_color, this, tr("Select user color"));
-            sendCommand(Command("SAYBATTLE !force " + u.name + " color " + newColor.name()));
-        } else if ( action == forceSpec ) {
-            sendCommand(Command("SAYBATTLE !force " + u.name + " spec"));
-        } else if ( action == kick ) {
-            sendCommand(Command("SAYBATTLE !kick " + u.name));
-        }
-    }
-}
-
-void Users::addUserToGroup(QString user, QString group) {
-    UserGroupList* list = UserGroupList::getInstance();
-    UserGroup* g = list->findGroup(group);
-    if (!g->members.contains(user)) {
-        g->members.append(user);
-        list->updateMappings();
-        invalidateModel();
-    }
-    list->save();
-}
-
-void Users::removeUserFromGroup(QString user) {
-    UserGroupList* list = UserGroupList::getInstance();
-    for (int i = 0; i < list->size(); i++) {
-        UserGroup* g = list->at(i);
-        int index = g->members.indexOf(user);
-        if (index >= 0)
-            g->members.removeAt(index);
-    }
-    list->updateMappings();
-    invalidateModel();
-    list->save();
-}
-
-void Users::toggleIgnoreUser( User u ) {
-    UserGroupList* list = UserGroupList::getInstance();
-    list->toggleIgnore( u.name );
-
-    invalidateModel();
-    list->save();
+    UserMenuBuilder* b = UserMenuBuilder::getInstance();
+    b->setBattle(currentTabType == "BattleChannel");
+    QMenu* menu = b->buildMenu(u);
+    QAction *action = menu->exec( this->viewport()->mapToGlobal( point ) );
+    b->processMenuAction(action);
 }
 
 void Users::inv() {

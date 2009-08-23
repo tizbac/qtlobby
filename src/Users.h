@@ -9,17 +9,17 @@
 #include <QMap>
 #include <QUrl>
 #include <QItemSelectionModel>
-#include <QTreeView>
 #include <QMenu>
 #include <QMessageBox>
 #include <QTreeWidgetItem>
 
+#include "UsersTreeView.h"
 #include "User.h"
 #include "Command.h"
 #include "UserManager.h"
 #include "AbstractStateClient.h"
 
-class Users : public QTreeView {
+class Users : public UsersTreeView {
     Q_OBJECT
 public:
     Users( QWidget * parent = 0 );
@@ -38,7 +38,6 @@ public:
 signals:
     void sendCommand( Command command );
     void sendInput( QString input );
-    void sendInputAndFocus( QString input );
     void myStateChanged(User u);
     void openGroupsDialog();
     void statsChange(int userCount, int moderatorCount);
@@ -63,11 +62,7 @@ public slots:
     void onSpringStopped();
 protected slots:
     void customContextMenuRequestedSlot( const QPoint & point );
-    void doubleClickedSlot( const QModelIndex & index );
     void joinSameBattle( User u );
-    void toggleIgnoreUser( User u );
-    void addUserToGroup(QString user, QString group);
-    void removeUserFromGroup(QString user);
 
 protected:
     QString currentTabType;

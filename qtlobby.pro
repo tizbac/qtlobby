@@ -100,7 +100,9 @@ HEADERS += src/MainWindow.h \
     src/DownloadsDialog.h \
     src/DownloadsModel.h \
     src/ToolBarWidget.h \
-    src/ServerProfilesModel.h
+    src/ServerProfilesModel.h \
+    src/UserMenuBuilder.h \
+    src/UsersTreeView.h
 
 # src/MapSelector.h \ # not used
 # src/MapElementWidget.h \ # not used
@@ -165,7 +167,9 @@ SOURCES += src/main.cpp \
     src/DownloadsDialog.cpp \
     src/DownloadsModel.cpp \
     src/ToolBarWidget.cpp \
-    src/ServerProfilesModel.cpp
+    src/ServerProfilesModel.cpp \
+    src/UserMenuBuilder.cpp \
+    src/UsersTreeView.cpp
 
 # src/MapSelector.cpp \ # not used
 # src/MapElementWidget.cpp \ # not used

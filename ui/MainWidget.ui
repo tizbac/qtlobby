@@ -38,7 +38,7 @@
      <x>0</x>
      <y>0</y>
      <width>795</width>
-     <height>24</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Program">
@@ -339,7 +339,10 @@
    <widget class="QWidget" name="dockWidgetContents_4">
     <layout class="QGridLayout" name="gridLayout_3">
      <item row="0" column="0">
-      <widget class="QTreeView" name="battleInfoTreeView">
+      <widget class="UsersTreeView" name="battleInfoTreeView">
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
        <property name="verticalScrollBarPolicy">
         <enum>Qt::ScrollBarAlwaysOn</enum>
        </property>
@@ -616,6 +619,11 @@
    <class>Battles</class>
    <extends>QTreeView</extends>
    <header>Battles.h</header>
+  </customwidget>
+  <customwidget>
+   <class>UsersTreeView</class>
+   <extends>QTreeView</extends>
+   <header>UsersTreeView.h</header>
   </customwidget>
  </customwidgets>
  <resources>

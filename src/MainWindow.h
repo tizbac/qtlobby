@@ -30,6 +30,7 @@
 #include "BattleHost.h"
 #include "BattleHostingDialog.h"
 #include "DownloadsDialog.h"
+#include "UserMenuBuilder.h"
 #include "Notification.h"
 #ifdef Q_WS_X11
     #include "DBusVisualNotificationBackend.h"
