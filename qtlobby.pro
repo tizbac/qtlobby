@@ -211,13 +211,13 @@ contains( CONFIG, vc ) {
     SOURCES += src/MiniDumper.cpp
     LIBS += QScintilla2.lib
 }
+else:LIBS += -lqscintilla2
 
 contains( CONFIG, unitsync_winapi ) {
 #([]lennart)sets preprocessor switch to use direct winapi calls instead of qt
 #           to load unitsync library
     DEFINES += PURE_WINAPI_UNITSYNC_LOADER
 }
-else:LIBS += -lqscintilla2
 unix:!contains( CONFIG, buildbot ) { 
     HEADERS += src/DBusVisualNotificationBackend.h
     SOURCES += src/DBusVisualNotificationBackend.cpp
