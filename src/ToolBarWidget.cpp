@@ -5,6 +5,14 @@ ToolBarWidget::ToolBarWidget(QWidget *parent) :
     ui(new Ui::ToolBarWidget) {
     ui->setupUi(this);
     ui->tabBar->setTabsClosable(true);
+
+    //FIXME: it still fucks things up :(
+    ui->tabBar->setMovable(false);
+
+    ui->tabBar->setExpanding(true);
+    ui->tabBar->setUsesScrollButtons(true);
+    ui->tabBar->setDrawBase(false);
+    ui->tabBar->setMaximumWidth(parent->width()-ui->joinToolButton->width()*2);
 }
 
 ToolBarWidget::~ToolBarWidget() {
@@ -32,4 +40,8 @@ void ToolBarWidget::onPreviousTab() {
 
 void ToolBarWidget::onCloseTab() {
     ui->tabBar->removeTab(ui->tabBar->currentIndex());
+}
+
+void ToolBarWidget::resizeEvent ( QResizeEvent * /*event*/ ) {
+    ui->tabBar->setMaximumWidth(((QWidget*)parent())->width()-ui->joinToolButton->width()*2);
 }

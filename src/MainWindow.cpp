@@ -25,7 +25,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     lobbyTabs           = new LobbyTabs( this, battles, UnitSyncLib::getInstance(), tabBar, lobbyStackedWidget );
     commandAssigner     = new CommandAssigner( this );
     //statusTracker       = new StatusTracker( statusbar );
-//    mapSelector         = new MapSelector();
+    //    mapSelector         = new MapSelector();
     stylesheetDialog    = new StylesheetDialog();
     stylesheetDialog->setWindowFlags(Qt::Window);
     userGroupsDialog    = new UserGroupsDialog();
@@ -178,8 +178,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     connect( actionPreferences, SIGNAL( triggered() ),
              preference, SLOT( show() ) );
     // maplist
-//    connect( actionMap_list, SIGNAL( triggered() ),
-//             mapSelector, SLOT( show() ) );
+    //    connect( actionMap_list, SIGNAL( triggered() ),
+    //             mapSelector, SLOT( show() ) );
 
     // inputLine
     inputLineEdit->setUsers(users);
@@ -239,33 +239,34 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     QTimer::singleShot( 0, connectionWidget, SLOT( show_if_wanted() ) );
     //   qDebug() << timer->msec() << "ms elapsed";
     QSettings* s = Settings::Instance();
-    if (s->contains("mainwindow/geometry")) {
-        restoreGeometry(s->value("mainwindow/geometry").toByteArray());
-        lastState = s->value("mainwindow/state").toByteArray();
-        lastBattleState = s->value("mainwindow/battlestate").toByteArray();
-        restoreState(lastState);
+    if (!s->contains("mainwindow/geometry")) {
+        s->setValue("mainwindow/geometry", QVariant("\\x1\\xd9\\xd0\\xcb\\0\\x1\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\x4\\xff\\0\\0\\x3\\xd6\\0\\0\\0\\0\\0\\0\\0\\0\\xff\\xff\\xff\\xfe\\xff\\xff\\xff\\xfe\\0\\0\\0\\0\\x2\\0"));
+        s->setValue("mainwindow/state", QVariant("\\0\\0\\0\\xff\\0\\0\\0\\0\\xfd\\0\\0\\0\\x3\\0\\0\\0\\x1\\0\\0\\x1\\v\\0\\0\\x2T\\xfc\\x2\\0\\0\\0\\x1\\xfb\\0\\0\\0$\\0u\\0s\\0\\x65\\0r\\0L\\0i\\0s\\0t\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0H\\0\\0\\x2T\\0\\0\\0\\x96\\x1\\0\\0\\x2\\0\\0\\0\\x2\\0\\0\\x5\\0\\0\\0\\0+\\xfc\\x1\\0\\0\\0\\x2\\xfb\\0\\0\\0\\x1c\\0t\\0\\x61\\0\\x62\\0s\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\0\\0\\0\\x5\\0\\0\\0\\x4\\x3\\x1\\0\\0\\x5\\xfb\\0\\0\\0\\x14\\0\\x64\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\0\\0\\0\\x3p\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\x3\\0\\0\\x5\\0\\0\\0\\x1\\v\\xfc\\x1\\0\\0\\0\\x2\\xfb\\0\\0\\0(\\0\\x62\\0\\x61\\0t\\0t\\0l\\0\\x65\\0L\\0i\\0s\\0t\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\0\\0\\0\\x3\\xf6\\0\\0\\x1v\\x1\\0\\0\\x5\\xfb\\0\\0\\0(\\0\\x62\\0\\x61\\0t\\0t\\0l\\0\\x65\\0I\\0n\\0\\x66\\0o\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\x3\\xf9\\0\\0\\x1\\a\\0\\0\\0N\\x1\\0\\0\\x5\\0\\0\\x3\\xf2\\0\\0\\x2T\\0\\0\\0\\x4\\0\\0\\0\\x4\\0\\0\\0\\b\\0\\0\\0\\b\\xfc\\0\\0\\0\\x1\\0\\0\\0\\x2\\0\\0\\0\\0"));
+        s->setValue("mainwindow/battlestate", QVariant("\\0\\0\\0\\xff\\0\\0\\0\\0\\xfd\\0\\0\\0\\x3\\0\\0\\0\\0\\0\\0\\x1\\xd2\\0\\0\\x2?\\xfc\\x2\\0\\0\\0\\x1\\xfb\\0\\0\\0$\\0u\\0s\\0\\x65\\0r\\0L\\0i\\0s\\0t\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\x38\\0\\0\\x2?\\0\\0\\0\\x96\\x1\\0\\0\\x2\\0\\0\\0\\x2\\0\\0\\x5\\0\\0\\0\\0\\xa6\\xfc\\x1\\0\\0\\0\\x1\\xfb\\0\\0\\0\\x14\\0\\x64\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\0\\0\\0\\x3p\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\x3\\0\\0\\x5\\0\\0\\0\\x1\\x30\\xfc\\x1\\0\\0\\0\\x2\\xfb\\0\\0\\0(\\0\\x62\\0\\x61\\0t\\0t\\0l\\0\\x65\\0L\\0i\\0s\\0t\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\0\\0\\0\\x3\\x93\\0\\0\\x1v\\x1\\0\\0\\x5\\xfb\\0\\0\\0(\\0\\x62\\0\\x61\\0t\\0t\\0l\\0\\x65\\0I\\0n\\0\\x66\\0o\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\x3\\x96\\0\\0\\x1j\\0\\0\\0N\\x1\\0\\0\\x5\\0\\0\\x3+\\0\\0\\x2?\\0\\0\\0\\x4\\0\\0\\0\\x4\\0\\0\\0\\b\\0\\0\\0\\b\\xfc\\0\\0\\0\\x1\\0\\0\\0\\x2\\0\\0\\0\\x1\\0\\0\\0\\x16\\0t\\0\\x61\\0\\x62\\0s\\0T\\0o\\0o\\0l\\0\\x42\\0\\x61\\0r\\x1\\0\\0\\0\\0\\xff\\xff\\xff\\xff\\0\\0\\0\\0\\0\\0\\0\\0"));
+        move(100,50);
     }
+    restoreGeometry(s->value("mainwindow/geometry").toByteArray());
+    lastState = s->value("mainwindow/state").toByteArray();
+    lastBattleState = s->value("mainwindow/battlestate").toByteArray();
+    restoreState(lastState);
     for (int i = 0; i < 4; i++)
         users->resizeColumnToContents(i);
     inBattle = false;
 }
 
 void MainWindow::setupToolbar() {
-    ToolBarWidget* toolBarWidget = new ToolBarWidget(this);
     tabBar = toolBarWidget->ui->tabBar;
     newTabButton = toolBarWidget->ui->joinToolButton;
     connect(newTabButton, SIGNAL(clicked()), this, SLOT(onJoinRequested()));
-    QAction* a = tabsToolBar->addWidget(toolBarWidget);
-    a->setVisible(true);
     nextTab = new QShortcut(QKeySequence(QKeySequence::NextChild), this);
     connect( nextTab, SIGNAL( activated() ),
-            toolBarWidget, SLOT( onNextTab() ) );
+             toolBarWidget, SLOT( onNextTab() ) );
     previousTab = new QShortcut(QKeySequence(QKeySequence::PreviousChild), this);
     connect( previousTab, SIGNAL( activated() ),
-            toolBarWidget, SLOT( onPreviousTab() ) );
+             toolBarWidget, SLOT( onPreviousTab() ) );
     closeTab = new QShortcut(QKeySequence(QKeySequence::Close), this);
     connect( closeTab, SIGNAL( activated() ),
-            toolBarWidget, SLOT( onCloseTab() ) );
+             toolBarWidget, SLOT( onCloseTab() ) );
     openNewTab = new QShortcut(QKeySequence(QKeySequence::Open), this);
     connect( openNewTab, SIGNAL( activated() ),
              this, SLOT( onJoinRequested() ) );
@@ -284,7 +285,7 @@ MainWindow::~MainWindow() {
     delete commandAssigner;
     delete serverContextState;
     delete preference;
-//    delete mapSelector;
+    //    delete mapSelector;
 }
 
 void MainWindow::newUserTextInput() {
@@ -380,8 +381,8 @@ void MainWindow::startSpring() {
     qpSpring.setWorkingDirectory( settings->value( "spring_user_dir" ).toString() );
     qpSpring.start( settings->value( "spring_executable_with_abs_path_to_it" ).toString(),
                     QStringList( QDir::toNativeSeparators(QString( "%1/%2" )
-                                 .arg( settings->value( "spring_user_dir" ).toString() )
-                                 .arg( "script_qtlobby.txt" ) ) ) );
+                                                          .arg( settings->value( "spring_user_dir" ).toString() )
+                                                          .arg( "script_qtlobby.txt" ) ) ) );
 }
 
 void MainWindow::sendTrayMessage( QString message, int milliseconds ) {
@@ -529,9 +530,9 @@ void MainWindow::onTeamPlayerSpecCountChanged(QString ratio) {
         usersInCurrentChannel->setText(ratio);
         usersInCurrentChannel->setToolTip(tr("# Players + # Specs (# 1st Ally : # 2nd Ally :...)"));
         availableSlots->setText( tr("free slot(s): %1")
-            .arg(QString::number(battles->battleManager->getBattle(users->getUser(
-                    users->getCurrentUsername()).joinedBattleId).maxPlayers
-                    - users->usersInChanCount())));
+                                 .arg(QString::number(battles->battleManager->getBattle(users->getUser(
+                                         users->getCurrentUsername()).joinedBattleId).maxPlayers
+                                                      - users->usersInChanCount())));
         availableSlots->setToolTip( tr("# free slots in the current battle"));
     }
 }

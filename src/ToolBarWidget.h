@@ -2,6 +2,7 @@
 #define TOOLBARWIDGET_H
 
 #include <QtGui/QWidget>
+#include <QResizeEvent>
 #include "ui_ToolBarWidget.h"
 
 class ToolBarWidget : public QWidget {
@@ -19,6 +20,7 @@ public slots:
     void onCloseTab();
 protected:
     virtual void changeEvent(QEvent *e);
+    virtual void resizeEvent(QResizeEvent * event);
 };
 
 #endif // TOOLBARWIDGET_H
