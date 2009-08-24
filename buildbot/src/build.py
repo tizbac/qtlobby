@@ -46,6 +46,7 @@ class QtLobbyBuilder(Thread):
                         self.onMessage("Building revision "+rev+"...")
        	                self.runCommand("qmake -spec win32-x-g++ CONFIG+=buildbot CONFIG+="+self.config)
 			self.runCommand("touch src/MainWindow.cpp")
+			self.runCommand("touch src/LobbyTabs.cpp")
                	        self.runCommand("make")
                        	os.chdir(self.config)
                         self.runCommand("objcopy --only-keep-debug qtlobby.exe qtlobby.dbg")
