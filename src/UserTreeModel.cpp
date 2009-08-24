@@ -107,6 +107,8 @@ QVariant UserTreeModel::data( const QModelIndex& index, int role ) const {
     case 3: //username
         if ( role == Qt::DisplayRole )
             return m_userList[index.row()].name;
+        if ( role == Qt::DecorationRole && m_userList[index.row()].founder)
+            return QIcon(":/icons/host.xpm");
         break;
     }
     return QVariant();

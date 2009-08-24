@@ -5,6 +5,7 @@
 User::User() {
     joinedBattleId = -1; // -1 == not in a battle
     m_color = QColor( "red" );
+    founder = false;
 }
 User::~User() { }
 

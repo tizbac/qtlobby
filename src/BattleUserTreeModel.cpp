@@ -50,7 +50,7 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
     case 1: //flags
     case 2: //rank
     case 3: //username
-        return UserTreeModel::data(index, role);
+            return UserTreeModel::data(index, role);
     case 4: //ready/spec
         if ( role == Qt::DecorationRole || role == Qt::ToolTipRole) {
             User u = m_userList[index.row()];
@@ -163,13 +163,13 @@ QVariant BattleUserTreeModel::headerData( int col, Qt::Orientation o, int role )
     if (col <= 3) return UserTreeModel::headerData(col, o, role);
     QString ret;
     switch ( col ) {
-        case 4: ret = tr("State"); break;
-        case 5: ret = tr("Faction"); break;
-        case 6: ret = tr("Team Number"); break;
-        case 7: ret = tr("Ally Team Number"); break;
-        case 8: ret = tr("Color"); break;
-        case 9: ret = tr("Handicap"); break;
-        default: break;
+    case 4: ret = tr("State"); break;
+    case 5: ret = tr("Faction"); break;
+    case 6: ret = tr("Team Number"); break;
+    case 7: ret = tr("Ally Team Number"); break;
+    case 8: ret = tr("Color"); break;
+    case 9: ret = tr("Handicap"); break;
+    default: break;
     }
     if ( role == Qt::ToolTipRole ) {
         return ret;

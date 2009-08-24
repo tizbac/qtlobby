@@ -123,12 +123,14 @@ void Users::receiveCommand( Command command ) {
         battleIdUserManagerMap[id] = new UserManager( this, true );
         User u = infoChannelUserManager->getUser( command.attributes.first() );
         u.joinedBattleId = id;
+        u.founder = true;
         modUserInAllManagers( u );
         battleIdUserManagerMap[id]->addUser( u );
     } else if ( command.name == "LEFTBATTLE" ) {
         battleIdUserManagerMap[command.attributes[0].toInt()]->delUser( command.attributes[1] );
         User u = infoChannelUserManager->getUser( command.attributes[1] );
         u.joinedBattleId = -1;
+        u.founder = false;
         u.userState.setIngame(false);
         modUserInAllManagers( u );
         if ( currentTabType == "BattleChannel" && currentTabName.toInt() == u.joinedBattleId )

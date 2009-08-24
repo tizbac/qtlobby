@@ -159,6 +159,7 @@ public:
     BattleState battleState; //!< like 0 to 2^32-1
     UserState userState;     //!< like 0 to 2^7-1 = 127
     QColor m_color;          //!< the in game color for the units
+    bool founder;
 };
 Q_DECLARE_METATYPE( User );
 #endif
