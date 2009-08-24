@@ -53,8 +53,8 @@ class Main:
         self.reportToChannel = ""
         
     def onsaidprivate(self,user,message):
-        if not user in self.operator:
-            return
+        #if not user in self.operator:
+        #    return
         if message.startswith("!translate"):
             try:
                 opts, args = getopt.gnu_getopt(message.split(), "u:r:h", ["url=", "revision=", "help"])
