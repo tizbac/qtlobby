@@ -137,6 +137,8 @@ bool UnitSyncLib::loadLibrary() {
     m_GetMinimap  = ( GetMinimap ) GetUnitsyncFunction( "GetMinimap" );
     m_GetInfoMapSize = ( GetInfoMapSize ) GetUnitsyncFunction( "GetInfoMapSize" );
     m_GetInfoMap = ( GetInfoMap ) GetUnitsyncFunction( "GetInfoMap" );
+    m_GetMapMinHeight  = ( GetMapMinHeight ) GetUnitsyncFunction( "GetMapMinHeight" );
+    m_GetMapMaxHeight = ( GetMapMaxHeight ) GetUnitsyncFunction( "GetMapMaxHeight" );
     m_GetPrimaryModCount  = ( GetPrimaryModCount ) GetUnitsyncFunction( "GetPrimaryModCount" );
     m_GetPrimaryModName  = ( GetPrimaryModName ) GetUnitsyncFunction( "GetPrimaryModName" );
     m_GetPrimaryModShortName  = ( GetPrimaryModShortName ) GetUnitsyncFunction( "GetPrimaryModShortName" );
@@ -299,13 +301,15 @@ QImage UnitSyncLib::getGrayscaleHeightMapQImage( const QString mapFileName ) {
 RawHeightMap UnitSyncLib::getHeightMapRaw( const QString mapFileName ) {
     NON_REENTRANT;
     if ( !libraryLoaded() )
-        return RawHeightMap(0,0,0);
+        return RawHeightMap();
     int height;
     int width;
     m_GetInfoMapSize(mapFileName.toAscii(), "height", &width, &height);
     unsigned short *ptr = new unsigned short[width*height];
     m_GetInfoMap(mapFileName.toAscii(), "height", ptr, 2);
-    return RawHeightMap(width,height,ptr);
+    float min = m_GetMapMinHeight(mapFileName.toAscii());
+    float max = m_GetMapMaxHeight(mapFileName.toAscii());
+    return RawHeightMap(width,height,min,max,ptr);
 }
 
 QImage UnitSyncLib::getMetalMapQImage( const QString mapFileName ) {

@@ -167,6 +167,8 @@ private:
     typedef void* (CONV * GetMinimap )( const char* filename, int miplevel );
     typedef int (CONV * GetInfoMapSize )( const char * filename, const char * name, int * width, int * height);
     typedef int (CONV * GetInfoMap )( const char * filename, const char * name, void * data, int typeHint);
+    typedef float (CONV * GetMapMinHeight)(const char* name);
+    typedef float (CONV * GetMapMaxHeight)(const char* name);
     typedef int (CONV * GetPrimaryModCount )();
     typedef const char*(CONV * GetPrimaryModName )( int index );
     typedef const char*(CONV * GetPrimaryModShortName )( int index );
@@ -259,6 +261,8 @@ private:
     GetMinimap m_GetMinimap;
     GetInfoMapSize m_GetInfoMapSize;
     GetInfoMap m_GetInfoMap;
+    GetMapMinHeight m_GetMapMinHeight;
+    GetMapMaxHeight m_GetMapMaxHeight;
     GetPrimaryModCount m_GetPrimaryModCount;
     GetPrimaryModName m_GetPrimaryModName;
     GetPrimaryModShortName m_GetPrimaryModShortName;

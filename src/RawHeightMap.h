@@ -5,13 +5,15 @@
 
 class RawHeightMap {
 public:
-    RawHeightMap(int width, int height, unsigned short* ptr);
+    RawHeightMap(int width, int height, float min, float max, unsigned short* ptr);
     RawHeightMap();
     //~RawHeightMap();
     void free();
     const unsigned short* getData() const;
     int getWidth() const;
     int getHeight() const;
+    int getMinHeight() const;
+    int getMaxHeight() const;
     void downscale(unsigned int x);
     float getRatio();
 private:
@@ -20,6 +22,8 @@ private:
     unsigned short* m_ptr;
     int m_width;
     int m_height;
+    float m_min;
+    float m_max;
     float m_ratio;
 };
 
@@ -33,6 +37,14 @@ inline int RawHeightMap::getWidth() const {
 
 inline int RawHeightMap::getHeight() const {
     return m_height;
+}
+
+inline int RawHeightMap::getMinHeight() const {
+    return m_min;
+}
+
+inline int RawHeightMap::getMaxHeight() const {
+    return m_max;
 }
 
 inline float RawHeightMap::getRatio() {

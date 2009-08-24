@@ -9,7 +9,7 @@ QMutex mutex;
 QMutex clean;
 
 #define QMC_MAGIC 0xA0B0C0D0
-#define QMC_VERSION 0x00
+#define QMC_VERSION 0x01
 
 static char author[200];
 static char description[255];
@@ -135,12 +135,14 @@ QDataStream & operator<< (QDataStream& stream, const MapInfo& info) {
 }
 
 QDataStream & operator>> (QDataStream& stream, RawHeightMap& rawhm) {
-    int w,h;
+    int w,h,maxh,minh;
     stream >> h;
     stream >> w;
+    stream >> maxh;
+    stream >> minh;
     unsigned short *ptr = new unsigned short[w*h];
     stream.readRawData((char*)ptr,(w*h*sizeof(unsigned short)));
-    RawHeightMap res(w,h,ptr);
+    RawHeightMap res(w,h,minh,maxh,ptr);
     rawhm = res;
     return stream;
 
@@ -149,7 +151,9 @@ QDataStream & operator>> (QDataStream& stream, RawHeightMap& rawhm) {
 QDataStream & operator<< (QDataStream& stream, const RawHeightMap& rawhm) {
     int w = rawhm.getWidth();
     int h = rawhm.getHeight();
-    stream << h << w;
+    int minh = rawhm.getMinHeight();
+    int maxh = rawhm.getMaxHeight();
+    stream << h << w << maxh << minh;
     stream.writeRawData((char *)rawhm.getData(), (w*h*sizeof(unsigned short)));
     return stream;
 }

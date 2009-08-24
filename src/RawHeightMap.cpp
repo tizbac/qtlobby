@@ -2,9 +2,11 @@
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "RawHeightMap.h"
 
-RawHeightMap::RawHeightMap(int width, int height, unsigned short* ptr) {
+RawHeightMap::RawHeightMap(int width, int height, float min, float max, unsigned short* ptr) {
     m_width = width;
     m_height = height;
+    m_min = min;
+    m_max = max;
     m_ptr = ptr;
     m_ratio = 1.0;
 }
@@ -13,6 +15,8 @@ RawHeightMap::RawHeightMap() {
     m_width = 0;
     m_height = 0;
     m_ptr = 0;
+    m_min = 0;
+    m_max = 0;
     m_ratio = 1.0;
 }
 

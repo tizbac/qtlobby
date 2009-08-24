@@ -10,8 +10,8 @@
 
 #define RESOLVE_GL_FUNC(f) ok &= bool((f = (_gl##f) context()->getProcAddress(QLatin1String("gl" #f))));
 
-#define CELL_SIZE 0.1
-#define MAX_HEIGHT 12
+#define SCALE_HEIGHTMAP 0.01
+#define CELL_SIZE 8*SCALE_HEIGHTMAP
 #define MAX_SHORT 65535
 
 MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
@@ -61,6 +61,9 @@ void MapRendererWidget::initializeGL() {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    //glBlendFunc(GL_ONE,GL_ONE);
+    //glEnable(GL_ALPHA_TEST);
+    //glDepthMask(GL_FALSE);
 }
 
 void MapRendererWidget::resizeGL(int w, int h) {
@@ -82,7 +85,7 @@ void MapRendererWidget::resizeGL(int w, int h) {
 void MapRendererWidget::paintGL() {
     if (!m_heightmap.getWidth() || blockRerender) return;
     m_time.start();
-    GLfloat light_position[] = { 5, 5, MAX_HEIGHT*1.3, 0.0 };
+    //GLfloat light_position[] = { 5, 5, MAX_HEIGHT*1.3, 0.0 };
     //Weird, but this line doesn't work for my i915 integrated graphics, tho next 2 work fine
     //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -97,7 +100,18 @@ void MapRendererWidget::paintGL() {
     glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
     glTranslatef(-m_heightmap.getHeight()*CELL_SIZE/2., -m_heightmap.getWidth()*CELL_SIZE/2., 0);
-    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+    //glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+    //Water rendering
+    glBegin(GL_QUADS);
+    glColor4f(0, 0, 1, 0.7);
+    glVertex3f(0,0,0);
+    glVertex3f(0, m_heightmap.getWidth()*CELL_SIZE,0);
+    glVertex3f(m_heightmap.getHeight() * CELL_SIZE, m_heightmap.getWidth()*CELL_SIZE,0);
+    glVertex3f(m_heightmap.getHeight() * CELL_SIZE, 0,0);
+    glEnd();
+
+    glColor4f(1, 1, 1, 1);
     glEnableClientState( GL_VERTEX_ARRAY );
     glEnableClientState( GL_TEXTURE_COORD_ARRAY );
     //glEnableClientState( GL_NORMAL_ARRAY );
@@ -262,13 +276,15 @@ void MapRendererWidget::setSource(QString mapName, QImage minimap, QImage metalm
     m_debugInfo += "</b> FPS: <b>%1</b> " + tr("Number of primitives") + ": <b>" + QString::number(heightmap.getWidth()*heightmap.getHeight()*2)+"</b>";
     if (m_vertexes) delete m_vertexes;
     m_vertexes = new Vertex[m_vertexNumber];
+    float range = m_heightmap.getMaxHeight() - m_heightmap.getMinHeight();
     for (int i = 0; i < heightmap.getHeight(); i++) {
         for (int j = 0; j < heightmap.getWidth(); j++) {
             unsigned short int value = heightmap.getData()[i*heightmap.getWidth()+j];
             int offset = i*heightmap.getWidth()+j;
             m_vertexes[offset].x = i * CELL_SIZE;
             m_vertexes[offset].y = j * CELL_SIZE;
-            m_vertexes[offset].z = value/(float)MAX_SHORT*MAX_HEIGHT*m_heightmap.getRatio();
+            //m_vertexes[offset].z = value/(float)MAX_SHORT*MAX_HEIGHT*m_heightmap.getRatio();
+            m_vertexes[offset].z = (m_heightmap.getMinHeight()+value*range/MAX_SHORT)*m_heightmap.getRatio()*SCALE_HEIGHTMAP;
         }
     }
     compileObject = true;
