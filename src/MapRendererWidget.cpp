@@ -70,14 +70,16 @@ void MapRendererWidget::resizeGL(int w, int h) {
     glViewport(0, 0, (GLint)w, (GLint)h);
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity();
-    if (w <= h)
-        glOrtho (dx+lastZoom*-100, dx+lastZoom*100,/*left,right*/
-                 dy+lastZoom*-100*(GLfloat)h/(GLfloat)w, dy+lastZoom*100*(GLfloat)h/(GLfloat)w,/*top,bottom*/
-                 -2000.0, 2000.0);/*near,far*/
-    else
-        glOrtho (dx+lastZoom*-100*(GLfloat)w/(GLfloat)h, dx+lastZoom*100*(GLfloat)w/(GLfloat)h,/*left,right*/
-                 dy+lastZoom*-100, dy+lastZoom*100,/*top,bottom*/
-                 -2000.0, 2000.0);/*near,far*/
+    const float angle=90;
+    gluPerspective(angle,w/h,1,2000);
+    //if (w <= h)
+    //    glOrtho (dx+lastZoom*-100, dx+lastZoom*100,/*left,right*/
+    //             dy+lastZoom*-100*(GLfloat)h/(GLfloat)w, dy+lastZoom*100*(GLfloat)h/(GLfloat)w,/*top,bottom*/
+    //             -2000.0, 2000.0);/*near,far*/
+    //else
+    //    glOrtho (dx+lastZoom*-100*(GLfloat)w/(GLfloat)h, dx+lastZoom*100*(GLfloat)w/(GLfloat)h,/*left,right*/
+    //             dy+lastZoom*-100, dy+lastZoom*100,/*top,bottom*/
+    //             -2000.0, 2000.0);/*near,far*/
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
@@ -95,6 +97,7 @@ void MapRendererWidget::paintGL() {
         makeObject();
         compileObject = false;
     }
+    glTranslatef(0,0,-(lastZoom*30)-((m_heightmap.getHeight()+m_heightmap.getWidth())*CELL_SIZE/4));
     glRotatef(-90, 0, 0, 1);
     glRotated(xRot / 16.0, 1.0, 0.0, 0.0);
     glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
