@@ -207,6 +207,9 @@ contains( CONFIG, vc ) {
     SOURCES += src/MiniDumper.cpp
     LIBS += QScintilla2.lib
 }
+contains( CONFIG, unitsync_winapi ) {
+    DEFINES += PURE_WINAPI_UNITSYNC_LOADER
+}
 else:LIBS += -lqscintilla2
 unix:!contains( CONFIG, buildbot ) { 
     HEADERS += src/DBusVisualNotificationBackend.h

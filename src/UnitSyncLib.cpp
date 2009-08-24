@@ -5,6 +5,10 @@
 #include <QMutex>
 #include <QMutexLocker>
 
+#ifdef PURE_WINAPI_UNITSYNC_LOADER
+#include <windows.h>
+#endif
+
 QMutex unitsync_mutex;
 
 //for locking debugging:
@@ -61,6 +65,7 @@ bool UnitSyncLib::loadLibrary() {
     QApplication::instance()->addLibraryPath(fi.absolutePath());
     QApplication::instance()->addLibraryPath(".");
 
+
     //   QMessageBox::information( NULL, "unitSyncLib", QString("%1")
     //       .arg(fi.absolutePath()));
 
@@ -70,6 +75,22 @@ bool UnitSyncLib::loadLibrary() {
         return false;
     }
     unitsynclib->setFileName( lib_with_path );
+
+#ifdef PURE_WINAPI_UNITSYNC_LOADER
+    typedef bool (CALLBACK* SETDLLDIRECTORYA)(LPCSTR);
+    HMODULE kernel32 = GetModuleHandleA("kernel32.dll");
+    SETDLLDIRECTORYA setDllDirectory = (SETDLLDIRECTORYA)GetProcAddress(kernel32, "SetDllDirectoryA");
+
+    setDllDirectory(fi.absolutePath().toAscii().constData());
+    
+    HMODULE unitsynclibHandle;
+    if(!(unitsynclibHandle=LoadLibraryA((char*)(fi.filePath().toAscii().constData())))){
+        QMessageBox::information( NULL, tr("unitSyncLib - library not loaded"),
+                                  QString( "could not load unitsync using winapi." ));
+        return false;
+    }
+#define GetUnitsyncFunction(x) GetSpringVersion(GetProcAddress(unitsynclibHandle,x))
+#else
     //   unitsynclib->setLoadHints(QLibrary::ExportExternalSymbolsHint|QLibrary::LoadArchiveMemberHint);
     unitsynclib->load();
 
@@ -80,99 +101,101 @@ bool UnitSyncLib::loadLibrary() {
                                   .arg( lib_with_path ) );
         return false;
     }
+#define GetUnitsyncFunction(x) unitsynclib->resolve(x)
+#endif
 
-    m_GetSpringVersion  = ( GetSpringVersion ) unitsynclib->resolve( "GetSpringVersion" );
-    m_Message  = ( Message ) unitsynclib->resolve( "Message" );
-    m_UnInit  = ( UnInit ) unitsynclib->resolve( "UnInit" );
-    m_Init  = ( Init ) unitsynclib->resolve( "Init" );
-    m_InitArchiveScanner  = ( InitArchiveScanner ) unitsynclib->resolve( "InitArchiveScanner" );
-    m_ProcessUnits  = ( ProcessUnits ) unitsynclib->resolve( "ProcessUnits" );
-    m_ProcessUnitsNoChecksum  = ( ProcessUnitsNoChecksum ) unitsynclib->resolve( "ProcessUnitsNoChecksum" );
-    m_GetCurrentList  = ( GetCurrentList ) unitsynclib->resolve( "GetCurrentList" );
-    m_AddClient  = ( AddClient ) unitsynclib->resolve( "AddClient" );
-    m_RemoveClient  = ( RemoveClient ) unitsynclib->resolve( "RemoveClient" );
-    m_GetClientDiff  = ( GetClientDiff ) unitsynclib->resolve( "GetClientDiff" );
-    m_InstallClientDiff  = ( InstallClientDiff ) unitsynclib->resolve( "InstallClientDiff" );
-    m_GetUnitCount  = ( GetUnitCount ) unitsynclib->resolve( "GetUnitCount" );
-    m_GetUnitName  = ( GetUnitName ) unitsynclib->resolve( "GetUnitName" );
-    m_GetFullUnitName  = ( GetFullUnitName ) unitsynclib->resolve( "GetFullUnitName" );
-    m_IsUnitDisabled  = ( IsUnitDisabled ) unitsynclib->resolve( "IsUnitDisabled" );
-    m_IsUnitDisabledByClient  = ( IsUnitDisabledByClient ) unitsynclib->resolve( "IsUnitDisabledByClient" );
-    m_AddArchive  = ( AddArchive ) unitsynclib->resolve( "AddArchive" );
-    m_AddAllArchives  = ( AddAllArchives ) unitsynclib->resolve( "AddAllArchives" );
-    m_RemoveAllArchives  = ( RemoveAllArchives ) unitsynclib->resolve( "RemoveAllArchives" );
-    m_GetArchiveChecksum  = ( GetArchiveChecksum ) unitsynclib->resolve( "GetArchiveChecksum" );
-    m_GetArchivePath  = ( GetArchivePath ) unitsynclib->resolve( "GetArchivePath" );
-    m_GetMapCount  = ( GetMapCount ) unitsynclib->resolve( "GetMapCount" );
-    m_GetMapName  = ( GetMapName ) unitsynclib->resolve( "GetMapName" );
-    m_GetMapInfoEx  = ( GetMapInfoEx ) unitsynclib->resolve( "GetMapInfoEx" );
-    m_GetMapInfo  = ( GetMapInfo ) unitsynclib->resolve( "GetMapInfo" );
-    m_GetMapArchiveCount  = ( GetMapArchiveCount ) unitsynclib->resolve( "GetMapArchiveCount" );
-    m_GetMapArchiveName  = ( GetMapArchiveName ) unitsynclib->resolve( "GetMapArchiveName" );
-    m_GetMapChecksum  = ( GetMapChecksum ) unitsynclib->resolve( "GetMapChecksum" );
-    m_GetMapChecksumFromName  = ( GetMapChecksumFromName ) unitsynclib->resolve( "GetMapChecksumFromName" );
-    m_GetMinimap  = ( GetMinimap ) unitsynclib->resolve( "GetMinimap" );
-    m_GetInfoMapSize = ( GetInfoMapSize ) unitsynclib->resolve( "GetInfoMapSize" );
-    m_GetInfoMap = ( GetInfoMap ) unitsynclib->resolve( "GetInfoMap" );
-    m_GetPrimaryModCount  = ( GetPrimaryModCount ) unitsynclib->resolve( "GetPrimaryModCount" );
-    m_GetPrimaryModName  = ( GetPrimaryModName ) unitsynclib->resolve( "GetPrimaryModName" );
-    m_GetPrimaryModShortName  = ( GetPrimaryModShortName ) unitsynclib->resolve( "GetPrimaryModShortName" );
-    m_GetPrimaryModVersion  = ( GetPrimaryModVersion ) unitsynclib->resolve( "GetPrimaryModVersion" );
-    m_GetPrimaryModMutator  = ( GetPrimaryModMutator ) unitsynclib->resolve( "GetPrimaryModMutator" );
-    m_GetPrimaryModGame  = ( GetPrimaryModGame ) unitsynclib->resolve( "GetPrimaryModGame" );
-    m_GetPrimaryModShortGame  = ( GetPrimaryModShortGame ) unitsynclib->resolve( "GetPrimaryModShortGame" );
-    m_GetPrimaryModDescription  = ( GetPrimaryModDescription ) unitsynclib->resolve( "GetPrimaryModDescription" );
-    m_GetPrimaryModArchive  = ( GetPrimaryModArchive ) unitsynclib->resolve( "GetPrimaryModArchive" );
-    m_GetPrimaryModArchiveCount  = ( GetPrimaryModArchiveCount ) unitsynclib->resolve( "GetPrimaryModArchiveCount" );
-    m_GetPrimaryModArchiveList  = ( GetPrimaryModArchiveList ) unitsynclib->resolve( "GetPrimaryModArchiveList" );
-    m_GetPrimaryModIndex  = ( GetPrimaryModIndex ) unitsynclib->resolve( "GetPrimaryModIndex" );
-    m_GetPrimaryModChecksum  = ( GetPrimaryModChecksum ) unitsynclib->resolve( "GetPrimaryModChecksum" );
-    m_GetPrimaryModChecksumFromName  = ( GetPrimaryModChecksumFromName ) unitsynclib->resolve( "GetPrimaryModChecksumFromName" );
-    m_GetSideCount  = ( GetSideCount ) unitsynclib->resolve( "GetSideCount" );
-    m_GetSideName  = ( GetSideName ) unitsynclib->resolve( "GetSideName" );
-    m_GetLuaAICount  = ( GetLuaAICount ) unitsynclib->resolve( "GetLuaAICount" );
-    m_GetLuaAIName  = ( GetLuaAIName ) unitsynclib->resolve( "GetLuaAIName" );
-    m_GetLuaAIDesc  = ( GetLuaAIDesc ) unitsynclib->resolve( "GetLuaAIDesc" );
-    m_GetMapOptionCount  = ( GetMapOptionCount ) unitsynclib->resolve( "GetMapOptionCount" );
-    m_GetModOptionCount  = ( GetModOptionCount ) unitsynclib->resolve( "GetModOptionCount" );
-    m_GetOptionKey  = ( GetOptionKey ) unitsynclib->resolve( "GetOptionKey" );
-    m_GetOptionName  = ( GetOptionName ) unitsynclib->resolve( "GetOptionName" );
-    m_GetOptionDesc  = ( GetOptionDesc ) unitsynclib->resolve( "GetOptionDesc" );
-    m_GetOptionType  = ( GetOptionType ) unitsynclib->resolve( "GetOptionType" );
-    m_GetOptionBoolDef  = ( GetOptionBoolDef ) unitsynclib->resolve( "GetOptionBoolDef" );
-    m_GetOptionNumberDef  = ( GetOptionNumberDef ) unitsynclib->resolve( "GetOptionNumberDef" );
-    m_GetOptionNumberMin  = ( GetOptionNumberMin ) unitsynclib->resolve( "GetOptionNumberMin" );
-    m_GetOptionNumberMax  = ( GetOptionNumberMax ) unitsynclib->resolve( "GetOptionNumberMax" );
-    m_GetOptionNumberStep  = ( GetOptionNumberStep ) unitsynclib->resolve( "GetOptionNumberStep" );
-    m_GetOptionSection = ( GetOptionSection ) unitsynclib->resolve( "GetOptionSection" );
-    m_GetOptionStringDef  = ( GetOptionStringDef ) unitsynclib->resolve( "GetOptionStringDef" );
-    m_GetOptionStringMaxLen  = ( GetOptionStringMaxLen ) unitsynclib->resolve( "GetOptionStringMaxLen" );
-    m_GetOptionListCount  = ( GetOptionListCount ) unitsynclib->resolve( "GetOptionListCount" );
-    m_GetOptionListDef  = ( GetOptionListDef ) unitsynclib->resolve( "GetOptionListDef" );
-    m_GetOptionListItemKey  = ( GetOptionListItemKey ) unitsynclib->resolve( "GetOptionListItemKey" );
-    m_GetOptionListItemName  = ( GetOptionListItemName ) unitsynclib->resolve( "GetOptionListItemName" );
-    m_GetOptionListItemDesc  = ( GetOptionListItemDesc ) unitsynclib->resolve( "GetOptionListItemDesc" );
-    m_GetModValidMapCount  = ( GetModValidMapCount ) unitsynclib->resolve( "GetModValidMapCount" );
-    m_GetModValidMap  = ( GetModValidMap ) unitsynclib->resolve( "GetModValidMap" );
-    m_OpenFileVFS  = ( OpenFileVFS ) unitsynclib->resolve( "OpenFileVFS" );
-    m_CloseFileVFS  = ( CloseFileVFS ) unitsynclib->resolve( "CloseFileVFS" );
-    m_ReadFileVFS  = ( ReadFileVFS ) unitsynclib->resolve( "ReadFileVFS" );
-    m_FileSizeVFS  = ( FileSizeVFS ) unitsynclib->resolve( "FileSizeVFS" );
-    m_InitFindVFS  = ( InitFindVFS ) unitsynclib->resolve( "InitFindVFS" );
-    m_FindFilesVFS  = ( FindFilesVFS ) unitsynclib->resolve( "FindFilesVFS" );
-    m_OpenArchive  = ( OpenArchive ) unitsynclib->resolve( "OpenArchive" );
-    m_CloseArchive  = ( CloseArchive ) unitsynclib->resolve( "CloseArchive" );
-    m_FindFilesArchive  = ( FindFilesArchive ) unitsynclib->resolve( "FindFilesArchive" );
-    m_OpenArchiveFile  = ( OpenArchiveFile ) unitsynclib->resolve( "OpenArchiveFile" );
-    m_ReadArchiveFile  = ( ReadArchiveFile ) unitsynclib->resolve( "ReadArchiveFile" );
-    m_CloseArchiveFile  = ( CloseArchiveFile ) unitsynclib->resolve( "CloseArchiveFile" );
-    m_SizeArchiveFile  = ( SizeArchiveFile ) unitsynclib->resolve( "SizeArchiveFile" );
-    m_GetSpringConfigString  = ( GetSpringConfigString ) unitsynclib->resolve( "GetSpringConfigString" );
-    m_GetSpringConfigInt  = ( GetSpringConfigInt ) unitsynclib->resolve( "GetSpringConfigInt" );
-    m_GetSpringConfigFloat  = ( GetSpringConfigFloat ) unitsynclib->resolve( "GetSpringConfigFloat" );
-    m_SetSpringConfigString  = ( SetSpringConfigString ) unitsynclib->resolve( "SetSpringConfigString" );
-    m_SetSpringConfigInt  = ( SetSpringConfigInt ) unitsynclib->resolve( "SetSpringConfigInt" );
-    m_SetSpringConfigFloat  = ( SetSpringConfigFloat ) unitsynclib->resolve( "SetSpringConfigFloat" );
+    m_GetSpringVersion  = ( GetSpringVersion ) GetUnitsyncFunction( "GetSpringVersion" );
+    m_Message  = ( Message ) GetUnitsyncFunction( "Message" );
+    m_UnInit  = ( UnInit ) GetUnitsyncFunction( "UnInit" );
+    m_Init  = ( Init ) GetUnitsyncFunction( "Init" );
+    m_InitArchiveScanner  = ( InitArchiveScanner ) GetUnitsyncFunction( "InitArchiveScanner" );
+    m_ProcessUnits  = ( ProcessUnits ) GetUnitsyncFunction( "ProcessUnits" );
+    m_ProcessUnitsNoChecksum  = ( ProcessUnitsNoChecksum ) GetUnitsyncFunction( "ProcessUnitsNoChecksum" );
+    m_GetCurrentList  = ( GetCurrentList ) GetUnitsyncFunction( "GetCurrentList" );
+    m_AddClient  = ( AddClient ) GetUnitsyncFunction( "AddClient" );
+    m_RemoveClient  = ( RemoveClient ) GetUnitsyncFunction( "RemoveClient" );
+    m_GetClientDiff  = ( GetClientDiff ) GetUnitsyncFunction( "GetClientDiff" );
+    m_InstallClientDiff  = ( InstallClientDiff ) GetUnitsyncFunction( "InstallClientDiff" );
+    m_GetUnitCount  = ( GetUnitCount ) GetUnitsyncFunction( "GetUnitCount" );
+    m_GetUnitName  = ( GetUnitName ) GetUnitsyncFunction( "GetUnitName" );
+    m_GetFullUnitName  = ( GetFullUnitName ) GetUnitsyncFunction( "GetFullUnitName" );
+    m_IsUnitDisabled  = ( IsUnitDisabled ) GetUnitsyncFunction( "IsUnitDisabled" );
+    m_IsUnitDisabledByClient  = ( IsUnitDisabledByClient ) GetUnitsyncFunction( "IsUnitDisabledByClient" );
+    m_AddArchive  = ( AddArchive ) GetUnitsyncFunction( "AddArchive" );
+    m_AddAllArchives  = ( AddAllArchives ) GetUnitsyncFunction( "AddAllArchives" );
+    m_RemoveAllArchives  = ( RemoveAllArchives ) GetUnitsyncFunction( "RemoveAllArchives" );
+    m_GetArchiveChecksum  = ( GetArchiveChecksum ) GetUnitsyncFunction( "GetArchiveChecksum" );
+    m_GetArchivePath  = ( GetArchivePath ) GetUnitsyncFunction( "GetArchivePath" );
+    m_GetMapCount  = ( GetMapCount ) GetUnitsyncFunction( "GetMapCount" );
+    m_GetMapName  = ( GetMapName ) GetUnitsyncFunction( "GetMapName" );
+    m_GetMapInfoEx  = ( GetMapInfoEx ) GetUnitsyncFunction( "GetMapInfoEx" );
+    m_GetMapInfo  = ( GetMapInfo ) GetUnitsyncFunction( "GetMapInfo" );
+    m_GetMapArchiveCount  = ( GetMapArchiveCount ) GetUnitsyncFunction( "GetMapArchiveCount" );
+    m_GetMapArchiveName  = ( GetMapArchiveName ) GetUnitsyncFunction( "GetMapArchiveName" );
+    m_GetMapChecksum  = ( GetMapChecksum ) GetUnitsyncFunction( "GetMapChecksum" );
+    m_GetMapChecksumFromName  = ( GetMapChecksumFromName ) GetUnitsyncFunction( "GetMapChecksumFromName" );
+    m_GetMinimap  = ( GetMinimap ) GetUnitsyncFunction( "GetMinimap" );
+    m_GetInfoMapSize = ( GetInfoMapSize ) GetUnitsyncFunction( "GetInfoMapSize" );
+    m_GetInfoMap = ( GetInfoMap ) GetUnitsyncFunction( "GetInfoMap" );
+    m_GetPrimaryModCount  = ( GetPrimaryModCount ) GetUnitsyncFunction( "GetPrimaryModCount" );
+    m_GetPrimaryModName  = ( GetPrimaryModName ) GetUnitsyncFunction( "GetPrimaryModName" );
+    m_GetPrimaryModShortName  = ( GetPrimaryModShortName ) GetUnitsyncFunction( "GetPrimaryModShortName" );
+    m_GetPrimaryModVersion  = ( GetPrimaryModVersion ) GetUnitsyncFunction( "GetPrimaryModVersion" );
+    m_GetPrimaryModMutator  = ( GetPrimaryModMutator ) GetUnitsyncFunction( "GetPrimaryModMutator" );
+    m_GetPrimaryModGame  = ( GetPrimaryModGame ) GetUnitsyncFunction( "GetPrimaryModGame" );
+    m_GetPrimaryModShortGame  = ( GetPrimaryModShortGame ) GetUnitsyncFunction( "GetPrimaryModShortGame" );
+    m_GetPrimaryModDescription  = ( GetPrimaryModDescription ) GetUnitsyncFunction( "GetPrimaryModDescription" );
+    m_GetPrimaryModArchive  = ( GetPrimaryModArchive ) GetUnitsyncFunction( "GetPrimaryModArchive" );
+    m_GetPrimaryModArchiveCount  = ( GetPrimaryModArchiveCount ) GetUnitsyncFunction( "GetPrimaryModArchiveCount" );
+    m_GetPrimaryModArchiveList  = ( GetPrimaryModArchiveList ) GetUnitsyncFunction( "GetPrimaryModArchiveList" );
+    m_GetPrimaryModIndex  = ( GetPrimaryModIndex ) GetUnitsyncFunction( "GetPrimaryModIndex" );
+    m_GetPrimaryModChecksum  = ( GetPrimaryModChecksum ) GetUnitsyncFunction( "GetPrimaryModChecksum" );
+    m_GetPrimaryModChecksumFromName  = ( GetPrimaryModChecksumFromName ) GetUnitsyncFunction( "GetPrimaryModChecksumFromName" );
+    m_GetSideCount  = ( GetSideCount ) GetUnitsyncFunction( "GetSideCount" );
+    m_GetSideName  = ( GetSideName ) GetUnitsyncFunction( "GetSideName" );
+    m_GetLuaAICount  = ( GetLuaAICount ) GetUnitsyncFunction( "GetLuaAICount" );
+    m_GetLuaAIName  = ( GetLuaAIName ) GetUnitsyncFunction( "GetLuaAIName" );
+    m_GetLuaAIDesc  = ( GetLuaAIDesc ) GetUnitsyncFunction( "GetLuaAIDesc" );
+    m_GetMapOptionCount  = ( GetMapOptionCount ) GetUnitsyncFunction( "GetMapOptionCount" );
+    m_GetModOptionCount  = ( GetModOptionCount ) GetUnitsyncFunction( "GetModOptionCount" );
+    m_GetOptionKey  = ( GetOptionKey ) GetUnitsyncFunction( "GetOptionKey" );
+    m_GetOptionName  = ( GetOptionName ) GetUnitsyncFunction( "GetOptionName" );
+    m_GetOptionDesc  = ( GetOptionDesc ) GetUnitsyncFunction( "GetOptionDesc" );
+    m_GetOptionType  = ( GetOptionType ) GetUnitsyncFunction( "GetOptionType" );
+    m_GetOptionBoolDef  = ( GetOptionBoolDef ) GetUnitsyncFunction( "GetOptionBoolDef" );
+    m_GetOptionNumberDef  = ( GetOptionNumberDef ) GetUnitsyncFunction( "GetOptionNumberDef" );
+    m_GetOptionNumberMin  = ( GetOptionNumberMin ) GetUnitsyncFunction( "GetOptionNumberMin" );
+    m_GetOptionNumberMax  = ( GetOptionNumberMax ) GetUnitsyncFunction( "GetOptionNumberMax" );
+    m_GetOptionNumberStep  = ( GetOptionNumberStep ) GetUnitsyncFunction( "GetOptionNumberStep" );
+    m_GetOptionSection = ( GetOptionSection ) GetUnitsyncFunction( "GetOptionSection" );
+    m_GetOptionStringDef  = ( GetOptionStringDef ) GetUnitsyncFunction( "GetOptionStringDef" );
+    m_GetOptionStringMaxLen  = ( GetOptionStringMaxLen ) GetUnitsyncFunction( "GetOptionStringMaxLen" );
+    m_GetOptionListCount  = ( GetOptionListCount ) GetUnitsyncFunction( "GetOptionListCount" );
+    m_GetOptionListDef  = ( GetOptionListDef ) GetUnitsyncFunction( "GetOptionListDef" );
+    m_GetOptionListItemKey  = ( GetOptionListItemKey ) GetUnitsyncFunction( "GetOptionListItemKey" );
+    m_GetOptionListItemName  = ( GetOptionListItemName ) GetUnitsyncFunction( "GetOptionListItemName" );
+    m_GetOptionListItemDesc  = ( GetOptionListItemDesc ) GetUnitsyncFunction( "GetOptionListItemDesc" );
+    m_GetModValidMapCount  = ( GetModValidMapCount ) GetUnitsyncFunction( "GetModValidMapCount" );
+    m_GetModValidMap  = ( GetModValidMap ) GetUnitsyncFunction( "GetModValidMap" );
+    m_OpenFileVFS  = ( OpenFileVFS ) GetUnitsyncFunction( "OpenFileVFS" );
+    m_CloseFileVFS  = ( CloseFileVFS ) GetUnitsyncFunction( "CloseFileVFS" );
+    m_ReadFileVFS  = ( ReadFileVFS ) GetUnitsyncFunction( "ReadFileVFS" );
+    m_FileSizeVFS  = ( FileSizeVFS ) GetUnitsyncFunction( "FileSizeVFS" );
+    m_InitFindVFS  = ( InitFindVFS ) GetUnitsyncFunction( "InitFindVFS" );
+    m_FindFilesVFS  = ( FindFilesVFS ) GetUnitsyncFunction( "FindFilesVFS" );
+    m_OpenArchive  = ( OpenArchive ) GetUnitsyncFunction( "OpenArchive" );
+    m_CloseArchive  = ( CloseArchive ) GetUnitsyncFunction( "CloseArchive" );
+    m_FindFilesArchive  = ( FindFilesArchive ) GetUnitsyncFunction( "FindFilesArchive" );
+    m_OpenArchiveFile  = ( OpenArchiveFile ) GetUnitsyncFunction( "OpenArchiveFile" );
+    m_ReadArchiveFile  = ( ReadArchiveFile ) GetUnitsyncFunction( "ReadArchiveFile" );
+    m_CloseArchiveFile  = ( CloseArchiveFile ) GetUnitsyncFunction( "CloseArchiveFile" );
+    m_SizeArchiveFile  = ( SizeArchiveFile ) GetUnitsyncFunction( "SizeArchiveFile" );
+    m_GetSpringConfigString  = ( GetSpringConfigString ) GetUnitsyncFunction( "GetSpringConfigString" );
+    m_GetSpringConfigInt  = ( GetSpringConfigInt ) GetUnitsyncFunction( "GetSpringConfigInt" );
+    m_GetSpringConfigFloat  = ( GetSpringConfigFloat ) GetUnitsyncFunction( "GetSpringConfigFloat" );
+    m_SetSpringConfigString  = ( SetSpringConfigString ) GetUnitsyncFunction( "SetSpringConfigString" );
+    m_SetSpringConfigInt  = ( SetSpringConfigInt ) GetUnitsyncFunction( "SetSpringConfigInt" );
+    m_SetSpringConfigFloat  = ( SetSpringConfigFloat ) GetUnitsyncFunction( "SetSpringConfigFloat" );
 
     m_Init( 0, 0 );
     library_loaded = true;
