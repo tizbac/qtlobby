@@ -44,6 +44,7 @@ void UserGroupsDialog::onNewClicked() {
     g->name = tr("New group")+QString::number(n);
     g->description = tr("New Descriptioin");
     g->members << tr("Player1") << tr("Player2");
+    g->color = QColor::fromHsv(qrand() % 360, 255, 255);
     groups->append(g);
     m_ui->groupsListWidget->clear();
     m_ui->groupsListWidget->addItems(groups->getGroupNames());
