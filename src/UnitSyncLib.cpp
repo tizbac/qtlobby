@@ -42,7 +42,11 @@ UnitSyncLib::UnitSyncLib( QObject *parent ) : QObject( parent ) {
 }
 
 bool UnitSyncLib::loadLibrary() {
-    NON_REENTRANT;
+	//FIXME: removed locking because of reboot that already locks.
+	//Probably this function will be not thread safe and if omeone
+	//will be genious enough to call loadLibrary() from a thread
+	//it might crash
+    //NON_REENTRANT;
     QString lib_with_path = settings->value("unitsync").toString();
     QFileInfo fi( lib_with_path );
 
@@ -535,8 +539,9 @@ void UnitSyncLib::reboot() {
         m_RemoveAllArchives();
         //qDebug() << "UNITSYNC_DUMP: " << "RemoveAllArchives";
         m_UnInit();
-        //qDebug() << "UNITSYNC_DUMP: " << "Init";
-        m_Init(0,0);
+		unitsynclib->unload();
+		library_loaded = false;
+		loadLibrary();
         //qDebug() << "UNITSYNC_DUMP: " << "GetPrimaryModIndex";
         int index = m_GetPrimaryModIndex(m_currentModName.toAscii());
         if (index >= 0) {
