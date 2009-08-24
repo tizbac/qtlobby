@@ -32,6 +32,10 @@ contains( CONFIG, buildbot ) {
     QMAKE_LFLAGS += -static-libgcc \
         -Wl,-subsystem,windows
     QMAKE_CXXFLAGS += -g
+
+#([]lennart) for testing the bug when trying to load unitsync library with qt.
+#            this sets workaround (use of winapi) as default for buildbot.
+    win32: CONFIG += unitsync_winapi
 }
 
 # SVNDEF := -DSVN_REV=444
@@ -207,10 +211,6 @@ contains( CONFIG, vc ) {
     SOURCES += src/MiniDumper.cpp
     LIBS += QScintilla2.lib
 }
-
-#([]lennart) for testing the bug when trying to load unitsync library with qt.
-#            this sets workaround (use of winapi) as default for win32.
-win32: CONFIG += unitsync_winapi
 
 contains( CONFIG, unitsync_winapi ) {
 #([]lennart)sets preprocessor switch to use direct winapi calls instead of qt
