@@ -118,6 +118,7 @@ class Main:
                 return
             else:
                 try:
+                    self.builder = build.QtLobbyBuilder(self.config['buildbot'][self.profile]['builddir'], self.onMessage, self.onCompleted)
                     self.employer = user
                     self.builder.dir = self.config['buildbot'][self.profile]['builddir']
                     self.builder.revision = self.revision
