@@ -15,6 +15,8 @@ BattleTreeModel::~BattleTreeModel() {
 
 QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
     TLDList tldlist;
+    UnitSyncLib* us = UnitSyncLib::getInstance();
+    Battle b = m_battleList[index.row()];
     if (index.row() >= m_battleList.size() || index.row() < 0) return QVariant();
     if (role == Qt::BackgroundRole && m_users) {
         QList<User> users = m_users->getUserList(m_battleList[index.row()].id);
@@ -48,7 +50,6 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
         return a;
     }
     if ( role == Qt::UserRole+1 ) {
-        Battle b = m_battleList[index.row()];
         switch ( index.column() ) {
         case 0: //status
             if ( b.isStarted && b.isPasswordProtected ) return 5;
@@ -58,12 +59,10 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
             if ( b.isPasswordProtected ) return 1;
             return 0;
         case 7: // player count
-            Battle b = m_battleList[index.row()];
             return QString::number(b.playerCount - b.spectatorCount).rightJustified(5,'0');
         }
     }
     if ( role == Qt::UserRole+2 ) { // for battle list filter
-        Battle b = m_battleList[index.row()];
         unsigned int ret = 0;
         if( b.isPasswordProtected )
             ret += 1;
@@ -71,7 +70,6 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
             ret += 2;
         if( b.isLocked )
             ret += 4;
-        UnitSyncLib* us = UnitSyncLib::getInstance();
         if( !us->getModNames().contains( b.modName ) )
             ret += 8;
         if( !us->getMapNames().contains( b.mapName ) )
@@ -96,7 +94,6 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
     switch ( index.column() ) {
     case 0: //status
         if ( role == Qt::DecorationRole ) {
-            Battle b = m_battleList[index.row()];
             if ( b.isStarted )
                 return QIcon( ":/icons/ingame.xpm" );
             if ( b.isLocked && b.isPasswordProtected )
@@ -111,7 +108,6 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
                 return QIcon( ":/icons/open_game.xpm" );
         }
         if ( role == Qt::ToolTipRole ) {
-            Battle b = m_battleList[index.row()];
             if ( b.isStarted )
                 return tr( "Battle is started" );
             if ( b.isLocked && b.isPasswordProtected )
@@ -150,12 +146,26 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
     case 4: // map
         if ( role == Qt::DisplayRole )
             return m_battleList[index.row()].shortMapName();
+        if ( role == Qt::DecorationRole ) {
+            if(us->getMapNames().contains(b.mapName)) {
+                return QIcon(":/icons/exists.xpm");
+            } else {
+                return QIcon(":/icons/nexists.xpm");
+            }
+        }
         if ( role == Qt::ToolTipRole )
             return m_battleList[index.row()].mapName;
         break;
     case 5: // mod
         if ( role == Qt::DisplayRole )
             return m_battleList[index.row()].shortModName();
+        if( role == Qt::DecorationRole ) {
+            if(us->getModNames().contains(b.modName)) {
+                return QIcon(":/icons/exists.xpm");
+            } else {
+                return QIcon(":/icons/nexists.xpm");
+            }
+        }
         if ( role == Qt::ToolTipRole )
             return m_battleList[index.row()].modName;
         break;
@@ -170,7 +180,6 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
             .arg( m_battleList[index.row()].maxPlayers )
             .arg( m_battleList[index.row()].spectatorCount );
         if ( role == Qt::ToolTipRole ) {
-            Battle b = m_battleList[index.row()];
             QString tip = tr("<b>%1</b> players in battle<br/><b>%2</b> players maximum<br/><b>%3</b> spectators in battle")
                           .arg( b.playerCount - b.spectatorCount )
                           .arg( b.maxPlayers )
@@ -199,19 +208,19 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
 
 QString BattleTreeModel::stringifyRank(int rank) const {
     switch ( rank ) {
-            case 0:
+    case 0:
         return tr("1/7 Newbie");
-            case 1:
+    case 1:
         return tr("2/7 Beginner");
-            case 2:
+    case 2:
         return tr("3/7 Average");
-            case 3:
+    case 3:
         return tr("4/7 Above average");
-            case 4:
+    case 4:
         return tr("5/7 Experienced");
-            case 5:
+    case 5:
         return tr("6/7 Highly experienced");
-            case 6:
+    case 6:
         return tr("7/7 Veteran");
     }
     return tr("no rank");
