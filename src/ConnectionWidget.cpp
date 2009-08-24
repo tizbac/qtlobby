@@ -64,6 +64,9 @@ ConnectionWidget::ConnectionWidget( ServerContextState* serverContextState,
     connect( profilesListView->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
              this, SLOT(comboBoxCurrentIndexChanged(QModelIndex,QModelIndex)) );
 
+    connect( profilesListView, SIGNAL( doubleClicked( const QModelIndex & )),
+             this, SLOT( onLogin() ) );
+
     connect( registerUserPushButton, SIGNAL( clicked( ) ),
              this, SLOT( registerNewAccount( ) ) );
 

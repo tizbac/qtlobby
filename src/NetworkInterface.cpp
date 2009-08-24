@@ -17,7 +17,7 @@ void NetworkInterface::socketInit( QUrl url ) {
 }
 
 /**
- * This method called when new data is available on the socket.
+ * This method is called when new data is available on the socket.
  * If there is at least one whole line in the buffer we read
  * all lines and send them out.
  */
@@ -26,9 +26,10 @@ void NetworkInterface::socketRead() {
 #ifdef NETWORKDEBUG
     { QString msg = QString::fromUtf8( tcpSocket->readLine() );
         qDebug() << " << " << msg.trimmed();
-        emit incommingMessage( msg );
+        emit incommingMessage( QString::fromUtf8( tcpSocket->readLine() ).replace(QChar(0x202E),""));
     }
 #else
+    // Emit messages from the socket and remove utf8 right-to-left mark so text doesnt get messed up (QChar(0x202E))
     emit incommingMessage( QString::fromUtf8( tcpSocket->readLine() ).replace(QChar(0x202E),""));
 #endif
     

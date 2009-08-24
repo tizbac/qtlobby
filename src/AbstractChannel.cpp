@@ -293,7 +293,6 @@ QString AbstractChannel::processBBCodes(QString in) {
 
 QString AbstractChannel::processInput(QString input, bool formatting) {
     input.replace( "<", "&lt;" ).replace( ">", "&gt;" );
-    // Remove Right to Left mark so text doesnt get messed up
     input = highlightUserName( input );
     if(formatting) {
         input.replace("\n","[br]");
