@@ -183,6 +183,8 @@ void LobbyTabs::createLobbyTab( AbstractLobbyTab * lobbyTab, bool focus) {
         lobbyStackedWidget->setCurrentWidget(widget);
         tabBar->setCurrentIndex(c);
     }
+    if(lobbyTab->objectName() == "qtlobby")
+        lobbyTab->receiveInput("/sayver");
 }
 
 AbstractLobbyTab * LobbyTabs::getActiveLobbyTab() {

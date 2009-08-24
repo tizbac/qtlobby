@@ -17,7 +17,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
         preference->exec();
     setupUi( this );
     battles->setUsers( users );
-    setWindowTitle(QString( "QtLobby 0.0.%1-svn" ).arg( SVN_REV ));
+    setWindowTitle(QString( "QtLobby v%1" ).arg( QTLOBBY_VERSION ));
     serverContextState  = new ServerContextState( this );
     connectionWidget    = new ConnectionWidget( serverContextState );
     connectionWidget->setWindowFlags(Qt::Window);
@@ -322,7 +322,7 @@ void MainWindow::about() {
     QDialog* a = new QDialog(this);
     Ui::AboutWidget* about = new Ui::AboutWidget();
     about->setupUi( a );
-    about->label->setText(about->label->text().replace("#version#", QString(SVN_REV)));
+    about->label->setText(about->label->text().replace("#version#", QString(QTLOBBY_VERSION)).replace("#revision#", QString(SVN_REV)));
     a->show();
 }
 

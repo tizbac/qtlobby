@@ -123,6 +123,9 @@ void Channel::receiveInput( QString input ) {
     } else if ( QString( "/leave" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
         ret.name = "LEAVE";
         ret.attributes << objectName() << ( inputList.empty() ? ( inputList << QString( "Quit" ) ) : inputList );
+    } else if ( QString( "/sayver" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
+        ret.name = "SAYEX";
+        ret.attributes << objectName() << QString("is using QtLobby v%1 rev %2").arg(QTLOBBY_VERSION).arg(SVN_REV);
     } else {
         ret.name = "SAY";
         ret.attributes << objectName() << input;

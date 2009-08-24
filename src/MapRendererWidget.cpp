@@ -70,7 +70,7 @@ void MapRendererWidget::resizeGL(int w, int h) {
     glViewport(0, 0, (GLint)w, (GLint)h);
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity();
-    const float angle=90;
+    const float angle=30;
     gluPerspective(angle,w/h,1,2000);
     //if (w <= h)
     //    glOrtho (dx+lastZoom*-100, dx+lastZoom*100,/*left,right*/

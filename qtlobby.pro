@@ -20,6 +20,10 @@ DEFINES += RPM_OPT_FLAGS
 target.path += $$INSTALL_ROOT/bin
 INSTALLS += target
 
+#QtLobby version
+DEFINES += 'QTLOBBY_VERSION=\\"1.0alpha\\"'
+
+
 desktop.files = src/qtlobby.desktop
 desktop.path = $$INSTALL_ROOT/share/applications
 INSTALLS += desktop
