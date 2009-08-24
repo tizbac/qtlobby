@@ -29,7 +29,7 @@ void NetworkInterface::socketRead() {
         emit incommingMessage( msg );
     }
 #else
-    emit incommingMessage( QString::fromUtf8( tcpSocket->readLine() ) );
+    emit incommingMessage( QString::fromUtf8( tcpSocket->readLine() ).replace(QChar(0x202E),""));
 #endif
     
 }
