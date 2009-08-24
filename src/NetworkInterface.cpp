@@ -24,9 +24,9 @@ void NetworkInterface::socketInit( QUrl url ) {
 void NetworkInterface::socketRead() {
     while ( tcpSocket->canReadLine() )
 #ifdef NETWORKDEBUG
-    { QString msg = QString::fromUtf8( tcpSocket->readLine() );
+    { QString msg = QString::fromUtf8( tcpSocket->readLine() ).replace(QChar(0x202E),"");
         qDebug() << " << " << msg.trimmed();
-        emit incommingMessage( QString::fromUtf8( tcpSocket->readLine() ).replace(QChar(0x202E),""));
+        emit incommingMessage( msg );
     }
 #else
     // Emit messages from the socket and remove utf8 right-to-left mark so text doesnt get messed up (QChar(0x202E))

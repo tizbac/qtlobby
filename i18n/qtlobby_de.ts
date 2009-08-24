@@ -15,30 +15,30 @@
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/icons/qtlobby-logo-64x64.png&quot; /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;QtLobby 0.0.svn-#version#&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://code.google.com/p/qtlobby/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://code.google.com/p/qtlobby&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-weight:600;&quot;&gt;Contributors&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://code.google.com/u/ajaakkola/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Antti Jaakkola (aweres, ajaakkola)&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://lastlog.de&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Joachim Schiele&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://jakob.dettner.de&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Jakob Dettner&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://code.google.com/u/cavernxxx/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Konstantin Olkhovskij (Lupus, cavernxxx)&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://code.google.com/u/marcel.hauf/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Marcel Hauf&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://mirko.windhoff.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Mirko Windhoff&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-weight:600;&quot;&gt;License&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;This program is free software: you can redistribute it and/or modify it &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;under the terms of the GNU General Public License as published by the &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;Free Software Foundation, either version 3 of the License, or (at your &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;option) any later version.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;&lt;br /&gt;This program is distributed in the hope that it will be useful, but WITHOUT &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;ANY WARRANTY; without even the implied warranty of MERCHANTABILITY &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;License for more details.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;&lt;br /&gt;You should have received a copy of the GNU General Public License along &lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;with this program. If not, see &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.gnu.org/licenses/&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:12pt; font-weight:600;&quot;&gt;QtLobby v#version# revision #revision#&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://code.google.com/p/qtlobby/&quot;&gt;&lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:10pt; text-decoration: underline; color:#0057ae;&quot;&gt;http://code.google.com/p/qtlobby&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:600;&quot;&gt;Contributors&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://code.google.com/u/ajaakkola/&quot;&gt;&lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:10pt; text-decoration: underline; color:#0057ae;&quot;&gt;Antti Jaakkola (aweres, ajaakkola)&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://lastlog.de&quot;&gt;&lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:10pt; text-decoration: underline; color:#0057ae;&quot;&gt;Joachim Schiele&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://jakob.dettner.de&quot;&gt;&lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:10pt; text-decoration: underline; color:#0057ae;&quot;&gt;Jakob Dettner&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://code.google.com/u/cavernxxx/&quot;&gt;&lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:10pt; text-decoration: underline; color:#0057ae;&quot;&gt;Konstantin Olkhovskij (Lupus, cavernxxx)&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://code.google.com/u/marcel.hauf/&quot;&gt;&lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:10pt; text-decoration: underline; color:#0057ae;&quot;&gt;Marcel Hauf&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://mirko.windhoff.net&quot;&gt;&lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:10pt; text-decoration: underline; color:#0057ae;&quot;&gt;Mirko Windhoff&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:600;&quot;&gt;License&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;This program is free software: you can redistribute it and/or modify it &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;under the terms of the GNU General Public License as published by the &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;Free Software Foundation, either version 3 of the License, or (at your &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;option) any later version.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;This program is distributed in the hope that it will be useful, but WITHOUT &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;ANY WARRANTY; without even the implied warranty of MERCHANTABILITY &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;License for more details.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;You should have received a copy of the GNU General Public License along &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;with this program. If not, see &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:10pt; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.gnu.org/licenses/&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -399,9 +399,17 @@ Bitte Passwort angeben:</translation>
         <source>%1 players in battle
 %2 players maximum
 %3 spectators in battle</source>
-        <translation>%1 Spieler im Battle
+        <translation type="obsolete">%1 Spieler im Battle
 %2 maximale Spieler
 %3 Zuschauer im Battle</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;%1&lt;/b&gt; players in battle&lt;br/&gt;&lt;b&gt;%2&lt;/b&gt; players maximum&lt;br/&gt;&lt;b&gt;%3&lt;/b&gt; spectators in battle</source>
+        <translation>&lt;b&gt;%1&lt;/b&gt; Spieler im Battle&lt;br/&gt;&lt;b&gt;%2&lt;/b&gt; Spieler maximal&lt;br/&gt;&lt;b&gt;%3&lt;/b&gt; Zuschauer im Battle</translation>
+    </message>
+    <message>
+        <source>Average rank:</source>
+        <translation>Durchschnittlicher Rang:</translation>
     </message>
 </context>
 <context>
@@ -1036,7 +1044,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Current Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktuelles Profil</translation>
     </message>
 </context>
 <context>
@@ -1326,7 +1334,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>toolBar</source>
-        <translation>Werkzeugleiste</translation>
+        <translation type="obsolete">Werkzeugleiste</translation>
     </message>
     <message>
         <source>&amp;Exit</source>
@@ -1500,6 +1508,10 @@ p, li { white-space: pre-wrap; }
         <source>available Slots: 0</source>
         <translation>freie Slots: 0</translation>
     </message>
+    <message>
+        <source>Tabs</source>
+        <translation>Tabs</translation>
+    </message>
 </context>
 <context>
     <name>MapOverviewDialog</name>
@@ -1509,7 +1521,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Left mouse button rotates the map, middle mouse button moves the map and mouse wheel zooms in and out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Linke Maustaste rotiert die Karte, mittlere Maustaste bewegt die sie und Mausrad zoomt hinein und hinaus.</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1524,14 +1536,18 @@ p, li { white-space: pre-wrap; }
     <name>MapRendererWidget</name>
     <message>
         <source>Enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktiviert</translation>
     </message>
     <message>
         <source>Disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Deaktiviert</translation>
     </message>
     <message>
         <source>Number of primitives</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inf</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1661,55 +1677,55 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Map Viewing</source>
-        <translation type="unfinished"></translation>
+        <translation>Karten Ansicht</translation>
     </message>
     <message>
         <source>Start Positions</source>
-        <translation type="unfinished"></translation>
+        <translation>Start Positionen</translation>
     </message>
     <message>
         <source>Channels autojoining</source>
-        <translation type="unfinished"></translation>
+        <translation>Channel Autojoin</translation>
     </message>
     <message>
         <source>Chat widget</source>
-        <translation type="unfinished"></translation>
+        <translation>Chatfenster</translation>
     </message>
     <message>
         <source>Private messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Private Nachrichten</translation>
     </message>
     <message>
         <source>Set new private chat tab active</source>
-        <translation type="unfinished"></translation>
+        <translation>Bringe neue Chatnachrichten in den Focus</translation>
     </message>
     <message>
         <source>Notify about new private messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Über neue Privatnachrichten informieren</translation>
     </message>
     <message>
         <source>Application Language:</source>
-        <translation type="unfinished"></translation>
+        <translation>Anwendungssprache:</translation>
     </message>
     <message>
         <source>Heightmap type</source>
-        <translation type="unfinished"></translation>
+        <translation>Art der Höhenkarte</translation>
     </message>
     <message>
         <source>Colorized</source>
-        <translation type="unfinished"></translation>
+        <translation>Farbe</translation>
     </message>
     <message>
         <source>Grayscale</source>
-        <translation type="unfinished"></translation>
+        <translation>Graustufen</translation>
     </message>
     <message>
         <source>3D Preview</source>
-        <translation type="unfinished">3D Vorschau</translation>
+        <translation>3D Vorschau</translation>
     </message>
     <message>
         <source>Downscale:</source>
-        <translation type="unfinished"></translation>
+        <translation>Herunterskalieren:</translation>
     </message>
     <message>
         <source>Each downscaling pass will make heightmap 2 times smaller, thus occupying twice less memory and GPU time for rendering. Adjust this value to fit your video card.
@@ -1727,23 +1743,23 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
     </message>
     <message>
         <source>Visibility of Start Position</source>
-        <translation type="unfinished"></translation>
+        <translation>Startpositionen anzeigen</translation>
     </message>
     <message>
         <source>Minimap</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimap</translation>
     </message>
     <message>
         <source>Heightmap</source>
-        <translation type="unfinished"></translation>
+        <translation>Höhenkarte</translation>
     </message>
     <message>
         <source>Metalmap</source>
-        <translation type="unfinished"></translation>
+        <translation>Metallkarte</translation>
     </message>
     <message>
         <source>Start Rect Appearance</source>
-        <translation type="unfinished"></translation>
+        <translation>Startboxen anzeigen</translation>
     </message>
     <message>
         <source>Brush:</source>
@@ -1767,11 +1783,11 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
     </message>
     <message>
         <source>Border width:</source>
-        <translation type="unfinished"></translation>
+        <translation>Randdicke:</translation>
     </message>
     <message>
         <source>Alpha:</source>
-        <translation type="unfinished"></translation>
+        <translation>Alpha:</translation>
     </message>
 </context>
 <context>
@@ -3471,6 +3487,89 @@ XX:?
     </message>
 </context>
 <context>
+    <name>UserMenuBuilder</name>
+    <message>
+        <source>Start private chat</source>
+        <translation>Öffne privaten Chat</translation>
+    </message>
+    <message>
+        <source>Slap around</source>
+        <translation>Ohrfeigen</translation>
+    </message>
+    <message>
+        <source>Join same battle</source>
+        <translation>Gleiches Spiel betreten</translation>
+    </message>
+    <message>
+        <source>Toggle ignore</source>
+        <translation>Ignorieren umschalten</translation>
+    </message>
+    <message>
+        <source>Add to group</source>
+        <translation>Zu Gruppe hinzufügen</translation>
+    </message>
+    <message>
+        <source>Remove from group</source>
+        <translation>Von Gruppe entfernen</translation>
+    </message>
+    <message>
+        <source>Add clan to group</source>
+        <translation>Clan zu Gruppe hinzufügen</translation>
+    </message>
+    <message>
+        <source>Remove clan from group</source>
+        <translation>Clan von Gruppe entfernen</translation>
+    </message>
+    <message>
+        <source>Force</source>
+        <translation>Erzwingen</translation>
+    </message>
+    <message>
+        <source>Team</source>
+        <translation>Team</translation>
+    </message>
+    <message>
+        <source>Ally</source>
+        <translation>Allianz</translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation>Farbe</translation>
+    </message>
+    <message>
+        <source>Spec</source>
+        <translation>Zuschauer</translation>
+    </message>
+    <message>
+        <source>Kick</source>
+        <translation>Kicken</translation>
+    </message>
+    <message>
+        <source>New Group</source>
+        <translation>Neue Gruppe</translation>
+    </message>
+    <message>
+        <source>Select team</source>
+        <translation>Wähle Team</translation>
+    </message>
+    <message>
+        <source>Select a team to force player to</source>
+        <translation>Ein Team wählen, in das der Spieler gezwungen werden soll</translation>
+    </message>
+    <message>
+        <source>Select ally team</source>
+        <translation>Allianzteam auswählen</translation>
+    </message>
+    <message>
+        <source>Select an ally team to force player to</source>
+        <translation>Eine Allianz wählen, in die der Spieler gezwungen werden soll</translation>
+    </message>
+    <message>
+        <source>Select user color</source>
+        <translation>Wähle Benutzerfarbe</translation>
+    </message>
+</context>
+<context>
     <name>UserPreference</name>
     <message>
         <source>To execute spring we need the path to the spring binary.</source>
@@ -3600,67 +3699,67 @@ XX:?
     </message>
     <message>
         <source>Add to group</source>
-        <translation>Zu Gruppe hinzufügen</translation>
+        <translation type="obsolete">Zu Gruppe hinzufügen</translation>
     </message>
     <message>
         <source>Remove from group</source>
-        <translation>Von Gruppe entfernen</translation>
+        <translation type="obsolete">Von Gruppe entfernen</translation>
     </message>
     <message>
         <source>Add clan to group</source>
-        <translation>Clan zu Gruppe hinzufügen</translation>
+        <translation type="obsolete">Clan zu Gruppe hinzufügen</translation>
     </message>
     <message>
         <source>Remove clan from group</source>
-        <translation>Clan von Gruppe entfernen</translation>
+        <translation type="obsolete">Clan von Gruppe entfernen</translation>
     </message>
     <message>
         <source>Force</source>
-        <translation>Erzwingen</translation>
+        <translation type="obsolete">Erzwingen</translation>
     </message>
     <message>
         <source>Team</source>
-        <translation>Team</translation>
+        <translation type="obsolete">Team</translation>
     </message>
     <message>
         <source>Ally</source>
-        <translation>Allianz</translation>
+        <translation type="obsolete">Allianz</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation>Farbe</translation>
+        <translation type="obsolete">Farbe</translation>
     </message>
     <message>
         <source>Spec</source>
-        <translation>Zuschauer</translation>
+        <translation type="obsolete">Zuschauer</translation>
     </message>
     <message>
         <source>Kick</source>
-        <translation>Kicken</translation>
+        <translation type="obsolete">Kicken</translation>
     </message>
     <message>
         <source>New Group</source>
-        <translation>Neue Gruppe</translation>
+        <translation type="obsolete">Neue Gruppe</translation>
     </message>
     <message>
         <source>Select team</source>
-        <translation>Wähle Team</translation>
+        <translation type="obsolete">Wähle Team</translation>
     </message>
     <message>
         <source>Select a team to force player to</source>
-        <translation>Ein Team wählen, in das der Spieler gezwungen werden soll</translation>
+        <translation type="obsolete">Ein Team wählen, in das der Spieler gezwungen werden soll</translation>
     </message>
     <message>
         <source>Select ally team</source>
-        <translation>Allianzteam auswählen</translation>
+        <translation type="obsolete">Allianzteam auswählen</translation>
     </message>
     <message>
         <source>Select an ally team to force player to</source>
-        <translation>Eine Allianz wählen, in die der Spieler gezwungen werden soll</translation>
+        <translation type="obsolete">Eine Allianz wählen, in die der Spieler gezwungen werden soll</translation>
     </message>
     <message>
         <source>Select user color</source>
-        <translation>Wähle Benutzerfarbe</translation>
+        <translation type="obsolete">Wähle Benutzerfarbe</translation>
     </message>
 </context>
 </TS>
