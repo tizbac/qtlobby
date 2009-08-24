@@ -35,7 +35,7 @@ contains( CONFIG, buildbot ) {
 
 #([]lennart) for testing the bug when trying to load unitsync library with qt.
 #            this sets workaround (use of winapi) as default for buildbot.
-    win32: CONFIG += unitsync_winapi
+    CONFIG += unitsync_winapi
 }
 
 # SVNDEF := -DSVN_REV=444
