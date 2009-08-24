@@ -207,7 +207,14 @@ contains( CONFIG, vc ) {
     SOURCES += src/MiniDumper.cpp
     LIBS += QScintilla2.lib
 }
+
+#([]lennart) for testing the bug when trying to load unitsync library with qt.
+#            this sets workaround (use of winapi) as default for win32.
+win32: CONFIG += unitsync_winapi
+
 contains( CONFIG, unitsync_winapi ) {
+#([]lennart)sets preprocessor switch to use direct winapi calls instead of qt
+#           to load unitsync library
     DEFINES += PURE_WINAPI_UNITSYNC_LOADER
 }
 else:LIBS += -lqscintilla2
