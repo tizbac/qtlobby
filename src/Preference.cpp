@@ -18,6 +18,8 @@ Preference::Preference( QDialog* parent ) : QDialog( parent ) {
     connect(languageComboBox, SIGNAL(activated(QString)),
             this, SLOT(onLanguageChanged(QString)));
     loadPreferences();
+    preferencesListWidget->setCurrentRow(0);
+    stackedWidget->setCurrentIndex(0);
 }
 
 #define INIT_PREF(key, value) if(!settings->contains(key)) \
