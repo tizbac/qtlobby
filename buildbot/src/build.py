@@ -45,6 +45,7 @@ class QtLobbyBuilder(Thread):
                	        rev = self.runCommand("svn up | perl -e '<> =~ /At revision (\d+)./; print $1;'")
                         self.onMessage("Building revision "+rev+"...")
        	                self.runCommand("qmake -spec win32-x-g++ CONFIG+=buildbot CONFIG+="+self.config)
+			self.runCommand("touch src/MainWindow.cpp")
                	        self.runCommand("make")
                        	os.chdir(self.config)
                         self.runCommand("objcopy --only-keep-debug qtlobby.exe qtlobby.dbg")
