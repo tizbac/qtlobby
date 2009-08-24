@@ -49,13 +49,13 @@ void Preference::loadPreferences() {
     metalmapSuperpositionCheckBox->setChecked(settings->value("MapViewing/metalmapSuperposition").toBool());
 
     /*Start Positions*/
-    INIT_PREF("MapViewing/startPos/showOnMinimapCheckBox", false);
+    INIT_PREF("MapViewing/startPos/showOnMinimapCheckBox", true);
     startPosShowOnMinimapCheckBox->setChecked(settings->value("MapViewing/startPos/showOnMinimapCheckBox").toBool());
-    INIT_PREF("MapViewing/startPos/showOnHeightmapCheckBox", false);
+    INIT_PREF("MapViewing/startPos/showOnHeightmapCheckBox", true);
     startPosShowOnHeightmapCheckBox->setChecked(settings->value("MapViewing/startPos/showOnHeightmapCheckBox").toBool());
-    INIT_PREF("MapViewing/startPos/showOnMetalmapCheckBox", false);
+    INIT_PREF("MapViewing/startPos/showOnMetalmapCheckBox", true);
     startPosShowOnMetalmapCheckBox->setChecked(settings->value("MapViewing/startPos/showOnMetalmapCheckBox").toBool());
-    INIT_PREF("MapViewing/startPos/showOn3DMapCheckBox", false);
+    INIT_PREF("MapViewing/startPos/showOn3DMapCheckBox", true);
     startPosShowOn3DMapCheckBox->setChecked(settings->value("MapViewing/startPos/showOn3DMapCheckBox").toBool());
     INIT_PREF("MapViewing/startPos/startRect/brushNumber", 0);
     startRectBrushComboBox->setCurrentIndex(settings->value("MapViewing/startPos/startRect/brushNumber").toInt());
