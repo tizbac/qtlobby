@@ -379,9 +379,9 @@ void MainWindow::startSpring() {
     //emit newTrayMessage( "spring instance started" );
     qpSpring.setWorkingDirectory( settings->value( "spring_user_dir" ).toString() );
     qpSpring.start( settings->value( "spring_executable_with_abs_path_to_it" ).toString(),
-                    QStringList( QString( "%1/%2" )
+                    QStringList( QDir::toNativeSeparators(QString( "%1/%2" )
                                  .arg( settings->value( "spring_user_dir" ).toString() )
-                                 .arg( "script_qtlobby.txt" ) ) );
+                                 .arg( "script_qtlobby.txt" ) ) ) );
 }
 
 void MainWindow::sendTrayMessage( QString message, int milliseconds ) {
