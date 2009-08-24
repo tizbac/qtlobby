@@ -30,9 +30,6 @@ void BattleHost::setHostingParams(quint8 type, quint8 natType, QString password,
     m_engine.setDefaultPrototype(qMetaTypeId<SqadsUserListPtr>(), m_engine.newQObject(&sqadsUserList));
     m_engine.setDefaultPrototype(qMetaTypeId<SqadsUserPtr>(), m_engine.newQObject(&sqadsUser));
     qRegisterMetaType<Command>("Command");
-    if(QMessageBox::information(0, "TEST CRASH", "Do you want me to crash right here? :)", QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
-        *((int*)0) = 1234567890;
-    }
 }
 
 
