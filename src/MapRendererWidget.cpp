@@ -70,8 +70,14 @@ void MapRendererWidget::resizeGL(int w, int h) {
     glViewport(0, 0, (GLint)w, (GLint)h);
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity();
+<<<<<<< .mine
+    const float angle=30;
+    gluPerspective(angle,double(w)/double(h),1,1000);
+//    glScalef(1,1,1);
+=======
     const float angle=30;
     gluPerspective(angle,w/h,1,2000);
+>>>>>>> .r460
     //if (w <= h)
     //    glOrtho (dx+lastZoom*-100, dx+lastZoom*100,/*left,right*/
     //             dy+lastZoom*-100*(GLfloat)h/(GLfloat)w, dy+lastZoom*100*(GLfloat)h/(GLfloat)w,/*top,bottom*/
@@ -97,11 +103,13 @@ void MapRendererWidget::paintGL() {
         makeObject();
         compileObject = false;
     }
-    glTranslatef(0,0,-(lastZoom*30)-((m_heightmap.getHeight()+m_heightmap.getWidth())*CELL_SIZE/4));
     glRotatef(-90, 0, 0, 1);
-    glRotated(xRot / 16.0, 1.0, 0.0, 0.0);
+    glTranslatef(0,0,-(lastZoom*100));
+    glTranslatef(dy,-dx,0);
     glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
+    glRotated(xRot / 16.0, 1.0, 0.0, 0.0);
     glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
+
     glTranslatef(-m_heightmap.getHeight()*CELL_SIZE/2., -m_heightmap.getWidth()*CELL_SIZE/2., 0);
     //glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
@@ -368,9 +376,9 @@ void MapRendererWidget::mouseMoveEvent(QMouseEvent *event) {
         //setXRotation(xRot + 8 * dy);
         setZRotation(zRot + 8 * dx);
     } else if (event->buttons() & Qt::MidButton) {
-        this->dx += -dx * 0.5 * lastZoom;
-        this->dy += dy * 0.5 * lastZoom;
-        resizeGL(width(), height());
+        this->dx += -dx * 0.1 * lastZoom;
+        this->dy += dy * 0.1 * lastZoom;
+//        resizeGL(width(), height());
         updateGL();
     }
     lastPos = event->pos();
