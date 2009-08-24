@@ -11,7 +11,7 @@ UsersTreeView::UsersTreeView(QWidget * parent) : QTreeView(parent) {
 UsersTreeView::~UsersTreeView() {}
 
 void UsersTreeView::doubleClickedSlot( const QModelIndex & index ) {
-    emit sendInputAndFocus( QString( "/query " ) + index.data( Qt::DisplayRole ).toString() );
+    emit sendInputAndFocus( QString( "/query " ) + index.model()->data(index.model()->index(index.row(), 3), Qt::DisplayRole ).toString() );
 }
 
 void UsersTreeView::customContextMenuRequestedSlot( const QPoint & point ) {
