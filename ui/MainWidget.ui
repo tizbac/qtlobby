@@ -531,7 +531,7 @@
   </action>
   <action name="actionStart_Spring">
    <property name="text">
-    <string>&amp;Start Spring</string>
+    <string>Try to &amp;reconnect</string>
    </property>
   </action>
   <action name="actionPreferences">
