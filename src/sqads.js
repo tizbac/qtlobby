@@ -218,6 +218,7 @@ Sqads.prototype.cmdClearBox = function(caller, ally) {
 };
 
 Sqads.prototype.cmdSplit = function(caller, mode, percent) {
+    this.bh.clearStartRects();
     if(percent > 0 && percent <= 100) {
         percent = percent / 100;
         switch(mode) {
