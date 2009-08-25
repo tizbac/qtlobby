@@ -179,8 +179,9 @@ Sqads.prototype.cmdBSet = function(caller, setting, value) {
 };
 
 Sqads.prototype.cmdMap = function(caller, map) {
-    if(this.bh.hasMap(map)) {
-        this.bh.setMap(map);
+    var fullMapName = this.bh.findMap(map);
+    if(fullMapName) {
+        this.bh.setMap(fullMapName);
     } else {
         this.bh.sayBattleEx("* No such map.");
     }

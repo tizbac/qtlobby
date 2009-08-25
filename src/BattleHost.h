@@ -49,7 +49,7 @@ public slots:
 
     //For scripting
     void closeBattle();
-    bool hasMap(QString mapname);
+    QString findMap(QString partMapName);
     void setMap(QString mapname);
     void setLocked(bool b);
     void broadcastBattleInfo();

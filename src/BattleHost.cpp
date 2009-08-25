@@ -140,8 +140,17 @@ void BattleHost::receiveCommand( Command command ) {
     }
 }
 
-bool BattleHost::hasMap(QString mapname) {
-    return UnitSyncLib::getInstance()->mapChecksum(mapname);
+QString BattleHost::findMap(QString partMapName) {
+    UnitSyncLib* inst = UnitSyncLib::getInstance();
+    QList<QString> names = inst->getMapNames().toList();
+    QRegExp re(partMapName);
+    re.setCaseSensitivity(Qt::CaseInsensitive);
+    for(int i = 0; i < names.size(); i++) {
+        if(re.indexIn(names.at(i)) > -1) {
+            return names.at(i);
+        }
+    }
+    return QString();
 }
 
 void BattleHost::setMap(QString mapname) {
