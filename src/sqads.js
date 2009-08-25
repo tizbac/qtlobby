@@ -11,7 +11,11 @@ function Sqads(battleHost) {
             {name: "addbox", admin: false, description: "Add start box for ally team", argc: 5, opt: 0, callback: this.cmdAddBox},
             {name: "clearbox", admin: false, description: "Clears start box for ally team", argc: 1, opt: 1, callback: this.cmdClearBox},
             {name: "split", admin: false, description: "Splits map with start boxes", argc: 2, opt: 0, callback: this.cmdSplit},
-            {name: "ring", admin: false, description: "Rings some player", argc: 1, opt: 1, callback: this.cmdRing}
+            {name: "ring", admin: false, description: "Rings some player", argc: 1, opt: 1, callback: this.cmdRing},
+            {name: "lock", admin: false, description: "Locks the room", argc: 0, opt: 0, callback: this.cmdLock},
+            {name: "unlock", admin: false, description: "Unlocks the room", argc: 0, opt: 0, callback: this.cmdUnlock},
+            {name: "autolock", admin: false, description: "Sets number of players which should be reached for locking", argc: 1, opt: 1, callback: this.cmdAutolock},
+            {name: "teamsize", admin: false, description: "Sets team size", argc: 1, opt: 0, callback: this.cmdTeamSize}
     ];
 
     this.bh = battleHost;
@@ -25,13 +29,39 @@ function Sqads(battleHost) {
     }
     this.admins = [this.users.at(0).name];
     this.host = this.users.at(0).name;
+    this.teamSize = 0;
+    this.nbTeams = 2;
 }
+
+Sqads.prototype.getPlayersCount = function() {
+    var number = 0;
+    for(var i = 0; i < this.users.length; i++) {
+        var user = this.users.at(i);
+        if(user.player) number++;
+    }
+    return number;
+};
+
+Sqads.prototype.updateAutolock = function() {
+    userCount = this.getPlayersCount();
+    if(this.teamSize  && userCount >= this.teamSize*this.nbTeams) {
+        this.bh.setLocked(true);
+        return;
+    }
+    if(this.teamSize  && userCount < this.teamSize*this.nbTeams) {
+        this.bh.setLocked(false);
+        return;
+    }
+    this.bh.setLocked(false);
+};
 
 Sqads.prototype.onUserJoined = function(user) {
     this.bh.sayBattleEx("* Hi, " + user + "! You have joined SQADS integrated autohost. For help type !help.");
+    this.updateAutolock();
 };
 
 Sqads.prototype.onUserLeft = function(user) {
+    this.updateAutolock();
 };
 
 Sqads.prototype.isAdmin = function(user) {
@@ -75,7 +105,8 @@ Sqads.prototype.onChatCommand = function(command, user) {
 };
 
 Sqads.prototype.onClientStatusChanged = function(username) {
-    var u = this.bh.users.at(username);
+    //var u = this.bh.users.at(username);
+    this.updateAutolock();
 };
 
 Sqads.prototype.onServerStopped = function() {
@@ -94,8 +125,6 @@ Sqads.prototype.cmdHelp = function(caller) {
         var command = this.commands[i];
         this.bh.sayUser(caller, " !" + command.name + " - " + command.description);
     }
-    var u = this.bh.users.at(caller);
-    this.bh.sayBattleEx("test=" + u.data.test);
 };
 
 Sqads.prototype.cmdKick = function(caller, user) {
@@ -284,3 +313,43 @@ Sqads.prototype.cmdRing = function(caller, user) {
     }
 };
 
+Sqads.prototype.cmdLock = function(caller) {
+    if(this.teamSize > 0) {
+        this.bh.sayBattleEx("* Cannot lock battle, autoLock is enabled");
+        return;
+    }
+    this.bh.setLocked(true);
+};
+
+Sqads.prototype.cmdUnlock = function(caller) {
+    if(this.teamSize > 0) {
+        this.bh.sayBattleEx("* Cannot unlock battle, autoLock is enabled");
+        return;
+    }
+    this.bh.setLocked(false);
+};
+
+Sqads.prototype.cmdAutolock = function(caller, number) {
+    if(number) {
+        if(number < 0) {
+            this.bh.sayBattleEx("* autolock argument must be a positive number");
+            return;
+        }
+        this.bh.sayBattleEx("* Global setting changed by " + caller + "(teamSize=" + number + ")");
+        this.teamSize = number/this.nbTeams;
+    } else {
+        this.bh.sayBattleEx("* Autolock disabled by by " + caller);
+        this.teamSize = 0;
+    }
+    this.updateAutolock();
+};
+
+Sqads.prototype.cmdTeamSize = function(caller, number) {
+    if(number < 0) {
+        this.bh.sayBattleEx("* teamSize argument must be a positive number");
+        return;
+    }
+    this.bh.sayBattleEx("* Global setting changed by " + caller + "(teamSize=" + number + ")");
+    this.teamSize = number/this.nbTeams;
+    this.updateAutolock();
+};

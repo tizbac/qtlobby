@@ -39,8 +39,8 @@ signals:
     void closed();
 
     //For scripting
-    void userJoined(User u);
-    void userLeft(User u);
+    void userJoined(QString name);
+    void userLeft(QString name);
     void chatCommand(QString command, QString user);
     void clientStatusChanged(QString user);
     void stopped();

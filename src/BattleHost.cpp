@@ -100,6 +100,7 @@ void BattleHost::receiveCommand( Command command ) {
             u.name = user;
             u.battleState = 0;
             m_users.append(u);
+            emit userJoined(u.name);
         }
     } else if ( command.name == "LEFTBATTLE" ) {
         int id = command.attributes[0].toInt();
@@ -107,6 +108,7 @@ void BattleHost::receiveCommand( Command command ) {
             QString user = command.attributes[1];
             for(int i = 0; i < m_users.size(); i++) {
                 if(m_users[i].name == user) {
+                    emit userLeft(m_users[i].name);
                     m_users.removeAt(i);
                     break;
                 }
@@ -158,7 +160,6 @@ void BattleHost::setMap(QString mapname) {
     m_hash = unitSyncLib->mapChecksum(m_map);
     if(!m_hash) {
         emit errorMessage(tr("Map not found"));
-        qDebug() << tr("Map not found");
         return;
     }
     m_map = mapname;
