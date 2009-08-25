@@ -113,14 +113,7 @@ void MapRendererWidget::paintGL() {
     glTranslatef(-m_heightmap.getHeight()*CELL_SIZE/2., -m_heightmap.getWidth()*CELL_SIZE/2., 0);
     //glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
-    //Water rendering
-    glBegin(GL_QUADS);
-    glColor4f(0, 0, 1, 0.7);
-    glVertex3f(0,0,0);
-    glVertex3f(0, m_heightmap.getWidth()*CELL_SIZE,0);
-    glVertex3f(m_heightmap.getHeight() * CELL_SIZE, m_heightmap.getWidth()*CELL_SIZE,0);
-    glVertex3f(m_heightmap.getHeight() * CELL_SIZE, 0,0);
-    glEnd();
+
 
     glColor4f(1, 1, 1, 1);
     glEnableClientState( GL_VERTEX_ARRAY );
@@ -149,6 +142,19 @@ void MapRendererWidget::paintGL() {
     glDisableClientState( GL_VERTEX_ARRAY );
     //glDisableClientState( GL_NORMAL_ARRAY );
     glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+
+    //Water rendering
+    glColor4f(0, 0, 1, 0.7);
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+    glBegin(GL_QUADS);
+    glVertex3f(0,0,0);
+    glVertex3f(0, m_heightmap.getWidth()*CELL_SIZE,0);
+    glVertex3f(m_heightmap.getHeight() * CELL_SIZE, m_heightmap.getWidth()*CELL_SIZE,0);
+    glVertex3f(m_heightmap.getHeight() * CELL_SIZE, 0,0);
+    glEnd();
+    glDisable(GL_BLEND);
+
     swapBuffers();
     int msecs = m_time.elapsed();
     if(msecs)
