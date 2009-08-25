@@ -14,8 +14,15 @@ INCLUDEPATH += . \
 RESOURCES = resources.qrc
 UI_HEADERS_DIR = src
 SVN_REVISION = $$(SVN_REVISION)
-!isEmpty(SVN_REVISION):DEFINES += 'SVN_REV=\\"$$(SVN_REVISION)\\"'
-else:DEFINES += 'SVN_REV=\\"$$system(svnversion -n .)\\"'
+!isEmpty(SVN_REVISION) {
+    DEFINES += 'SVN_REV=\\"$$(SVN_REVISION)\\"'
+} else {
+    unix {
+        DEFINES += 'SVN_REV=\\"$(shell svnversion -n .)\\"'
+    } else {
+        DEFINES += 'SVN_REV=\\"$$system(svnversion -n .)\\"'
+    }
+}
 DEFINES += RPM_OPT_FLAGS
 target.path += $$INSTALL_ROOT/bin
 INSTALLS += target

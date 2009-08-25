@@ -10,7 +10,7 @@
 #define MAX_TRIES 10
 
 //constants
-const QString resolverUrl = "http://134.2.74.148:8080/qfc/%1/%2";
+const QString resolverUrl = "http://windhoff.net/qfc/%1/%2";
 const QString mirrorListUrl = "http://springfiles.com/checkmirror.php?q=%1&c=%2";
 const QString mirrorListReferer = "http://springfiles.com/show_file.php?id=%1";
 const QString jobjol = "http://springfiles.com/download.php?maincategory=1&subcategory=%1&file=%2";
