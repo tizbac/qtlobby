@@ -52,7 +52,6 @@ Sqads.prototype.updateAutolock = function() {
         this.bh.setLocked(false);
         return;
     }
-    this.bh.setLocked(false);
 };
 
 Sqads.prototype.onUserJoined = function(user) {
@@ -337,11 +336,12 @@ Sqads.prototype.cmdAutolock = function(caller, number) {
         }
         this.bh.sayBattleEx("* Global setting changed by " + caller + "(teamSize=" + number + ")");
         this.teamSize = number/this.nbTeams;
+        this.updateAutolock();
     } else {
         this.bh.sayBattleEx("* Autolock disabled by by " + caller);
         this.teamSize = 0;
+        this.bh.setLocked(false);
     }
-    this.updateAutolock();
 };
 
 Sqads.prototype.cmdTeamSize = function(caller, number) {
