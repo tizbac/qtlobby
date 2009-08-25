@@ -295,6 +295,11 @@ void BattleChannel::receiveCommand( Command command ) {
                             .arg( "<span style=\"color:blue;\">** %1</span>" )
                             .arg( locked ? tr( "Battle locked." ) : tr( "Battle unlocked." ) ) );
                 this->locked = locked;
+                QString table="<table><tr><td><img src=\"%1\"</td><td>%2</td></tr></table>";
+                if(locked)
+                    battleWindowForm->battleStatusLabel->setText(table.arg(":/icons/closed_game.xpm").arg(tr("Locked")));
+                else
+                    battleWindowForm->battleStatusLabel->setText(table.arg(":/icons/open_game.xpm").arg(tr("Unlocked")));
             }
             if (currentMap != mapName) requestMapInfo( mapName );
             currentMap = mapName;
