@@ -353,8 +353,8 @@ void MapRendererWidget::normalizeAngle(int *angle) {
 }
 
 void MapRendererWidget::wheelEvent ( QWheelEvent * event ) {
-    float newZoom = lastZoom - event->delta() * 0.0005*m_heightmap.getRatio();
-    if (newZoom > 1*m_heightmap.getRatio() || newZoom < 0.1*m_heightmap.getRatio()) return;
+    float newZoom = lastZoom - event->delta() * 0.001*m_heightmap.getRatio();
+    if (newZoom > 4*m_heightmap.getRatio() || newZoom < 0.05*m_heightmap.getRatio()) return;
     lastZoom = newZoom;
     resizeGL(width(), height());
     updateGL();
