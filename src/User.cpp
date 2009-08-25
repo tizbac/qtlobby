@@ -33,7 +33,7 @@ int User::color() {
 
 QString User::colorForScript() {
     return QString( "%1 %2 %3" )
-            .arg( m_color.redF()   / 255.0, 0, 'f', 5 )
-            .arg( m_color.greenF() / 255.0, 0, 'f', 5 )
-            .arg( m_color.blueF()  / 255.0, 0, 'f', 5 );
+            .arg( m_color.redF(), 0, 'f', 5 )
+            .arg( m_color.greenF(), 0, 'f', 5 )
+            .arg( m_color.blueF(), 0, 'f', 5 );
 }
