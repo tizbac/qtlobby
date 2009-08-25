@@ -23,8 +23,9 @@ ConnectionWidget::ConnectionWidget( ServerContextState* serverContextState,
     QTextDocument * connectionLogTextDocument = new QTextDocument( this );
     connectionLogTextDocument->setMaximumBlockCount( 500 );
     connectionLogTextBrowser->setDocument( connectionLogTextDocument );
-
-    showSimple = settings->value("simpleloginform", 0).toBool();
+    if(!settings->contains("simpleloginform"))
+        settings->setValue("simpleloginform", true);
+    showSimple = settings->value("simpleloginform").toBool();
     if(showSimple)
         simpleViewStackedWidget->setCurrentIndex(1);
     else
