@@ -61,7 +61,7 @@
       <enum>QFrame::Raised</enum>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="pathWidget"/>
      <widget class="QWidget" name="chatWidget">
@@ -168,7 +168,7 @@
         <rect>
          <x>5</x>
          <y>5</y>
-         <width>258</width>
+         <width>263</width>
          <height>33</height>
         </rect>
        </property>
@@ -231,7 +231,7 @@
       </widget>
      </widget>
      <widget class="QWidget" name="page">
-      <layout class="QFormLayout" name="formLayout_4">
+      <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
         <widget class="QGroupBox" name="groupBox">
          <property name="title">
@@ -296,6 +296,29 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
         </widget>
        </item>
        <item row="1" column="0" colspan="2">
+        <widget class="QGroupBox" name="groupBox_8">
+         <property name="title">
+          <string>3D Projection type</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_7">
+          <item>
+           <widget class="QRadioButton" name="projectionPerspectiveRadioButton">
+            <property name="text">
+             <string>Perspective</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="projectionOrghogonalRadioButton">
+            <property name="text">
+             <string>Orthogonal</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>

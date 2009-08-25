@@ -31,6 +31,7 @@ MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
     getGLExtensionFunctions().resolve(context());
     m_redrawStartRects = true;
     setAutoBufferSwap(false);
+    m_perspective = Settings::Instance()->value("MapViewing/perspectiveProjectionType").toBool();
 }
 
 MapRendererWidget::~MapRendererWidget() {
@@ -71,17 +72,20 @@ void MapRendererWidget::resizeGL(int w, int h) {
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity();
 
-    const float angle=30;
-    gluPerspective(angle,double(w)/double(h),1,1000);
+    if(m_perspective) {
+        const float angle=30;
+        gluPerspective(angle,double(w)/double(h),1,1000);
+    } else {
 
-    //if (w <= h)
-    //    glOrtho (dx+lastZoom*-100, dx+lastZoom*100,/*left,right*/
-    //             dy+lastZoom*-100*(GLfloat)h/(GLfloat)w, dy+lastZoom*100*(GLfloat)h/(GLfloat)w,/*top,bottom*/
-    //             -2000.0, 2000.0);/*near,far*/
-    //else
-    //    glOrtho (dx+lastZoom*-100*(GLfloat)w/(GLfloat)h, dx+lastZoom*100*(GLfloat)w/(GLfloat)h,/*left,right*/
-    //             dy+lastZoom*-100, dy+lastZoom*100,/*top,bottom*/
-    //             -2000.0, 2000.0);/*near,far*/
+        if (w <= h)
+            glOrtho (dx+lastZoom*-100, dx+lastZoom*100,/*left,right*/
+                     dy+lastZoom*-100*(GLfloat)h/(GLfloat)w, dy+lastZoom*100*(GLfloat)h/(GLfloat)w,/*top,bottom*/
+                     -2000.0, 2000.0);/*near,far*/
+        else
+            glOrtho (dx+lastZoom*-100*(GLfloat)w/(GLfloat)h, dx+lastZoom*100*(GLfloat)w/(GLfloat)h,/*left,right*/
+                     dy+lastZoom*-100, dy+lastZoom*100,/*top,bottom*/
+                     -2000.0, 2000.0);/*near,far*/
+    }
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
@@ -374,7 +378,7 @@ void MapRendererWidget::mouseMoveEvent(QMouseEvent *event) {
     } else if (event->buttons() & Qt::MidButton) {
         this->dx += -dx * 0.1 * lastZoom;
         this->dy += dy * 0.1 * lastZoom;
-//        resizeGL(width(), height());
+        //        resizeGL(width(), height());
         updateGL();
     }
     lastPos = event->pos();

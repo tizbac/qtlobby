@@ -100,6 +100,7 @@ private:
     int m_alpha;
     QTime m_time;
     QString m_debugInfo;
+    bool m_perspective;
 };
 
 inline void MapRendererWidget::setDrawStartPositions(bool b) {
