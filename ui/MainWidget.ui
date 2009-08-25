@@ -362,13 +362,25 @@
   </widget>
   <widget class="QDockWidget" name="tabsDockWidget">
    <property name="sizePolicy">
-    <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
+   <property name="maximumSize">
+    <size>
+     <width>524287</width>
+     <height>41</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
    <property name="features">
-    <set>QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetVerticalTitleBar</set>
+    <set>QDockWidget::DockWidgetVerticalTitleBar</set>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::TopDockWidgetArea</set>
    </property>
    <property name="windowTitle">
     <string>Tabs</string>
@@ -394,7 +406,7 @@
        </property>
       </spacer>
      </item>
-     <item row="1" column="0" colspan="2">
+     <item row="1" column="1">
       <spacer name="verticalSpacer">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
@@ -528,7 +540,7 @@
   </action>
   <action name="actionStart_Spring">
    <property name="text">
-    <string>&amp;Start Spring</string>
+    <string>Try to re&amp;join</string>
    </property>
   </action>
   <action name="actionPreferences">
