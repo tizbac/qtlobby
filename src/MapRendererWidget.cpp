@@ -46,15 +46,15 @@ MapRendererWidget::~MapRendererWidget() {
 }
 
 void MapRendererWidget::initializeGL() {
-    //GLfloat mat_ambient[] = { 0.8, 0.2, 0.2, 1.0 };
-    //GLfloat mat_specular[] = { 1.0, 0.8, 0.8, 0.0 };
-    //GLfloat mat_shininess[] = { 100.0 };
+    GLfloat mat_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
+    GLfloat mat_specular[] = { 1.0, 0.8, 0.8, 1.0 };
+    GLfloat mat_shininess[] = { 100.0 };
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glShadeModel (GL_SMOOTH);
 
-    //glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_ambient);
-    //glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-    //glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_ambient);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 
     //glEnable(GL_LIGHTING);
     //glEnable(GL_LIGHT0);
@@ -65,6 +65,24 @@ void MapRendererWidget::initializeGL() {
     //glBlendFunc(GL_ONE,GL_ONE);
     //glEnable(GL_ALPHA_TEST);
     //glDepthMask(GL_FALSE);
+
+    		
+
+    GLfloat LightAmbient[]= { 0.0f, 0.0f, 0.0f, 1.0f };
+    GLfloat LightDiffuse[]= { 1.0f, 1.0f, 1.0f, 1.0f };
+    GLfloat LightSpecular[]= { 1.0f, 0.0f, 0.0f, 0.0f };
+
+    glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);	
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);	
+    glLightfv(GL_LIGHT1, GL_SPECULAR, LightSpecular);	
+//    glLightfv(GL_LIGHT1, GL_POSITION,LightPosition);
+    glEnable(GL_LIGHT1);
+
+    glColorMaterial ( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE ) ;
+
+    glEnable(GL_COLOR_MATERIAL);
+
+
 }
 
 void MapRendererWidget::resizeGL(int w, int h) {
@@ -88,6 +106,8 @@ void MapRendererWidget::resizeGL(int w, int h) {
     }
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_LIGHT1);
 }
 
 void MapRendererWidget::paintGL() {
@@ -98,40 +118,54 @@ void MapRendererWidget::paintGL() {
     //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
+
+//    glEnable(GL_LIGHT1);
+
     glLoadIdentity();
+
     if (compileObject) {
         makeObject();
         compileObject = false;
     }
+
     glRotatef(-90, 0, 0, 1);
-    glTranslatef(0,0,-(lastZoom*100));
+    if(m_perspective) {
+      glTranslatef(0,0,-(lastZoom*100));
+    }
     glTranslatef(dy,-dx,0);
     glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotated(xRot / 16.0, 1.0, 0.0, 0.0);
     glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
 
+    //get some system timestep in milisecs for light movement
+    //although screen will only get updated on movement
+    QTime curTime = QTime::currentTime();
+    int curMSecs = curTime.msecsTo(QTime());
+
+    GLfloat LightPosition[]= { 10*sin(curMSecs/300.0), 10*cos(curMSecs/300.0), 5, 1.0f };
+    glLightfv(GL_LIGHT1, GL_POSITION, LightPosition);
+
     glTranslatef(-m_heightmap.getHeight()*CELL_SIZE/2., -m_heightmap.getWidth()*CELL_SIZE/2., 0);
-    //glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
-
+    glEnable(GL_LIGHTING);
 
     glColor4f(1, 1, 1, 1);
     glEnableClientState( GL_VERTEX_ARRAY );
     glEnableClientState( GL_TEXTURE_COORD_ARRAY );
-    //glEnableClientState( GL_NORMAL_ARRAY );
+    glEnableClientState( GL_NORMAL_ARRAY );
 
     if (getGLExtensionFunctions().openGL15Supported()) {
         glBindBuffer(GL_ARRAY_BUFFER, m_VBOVertices);
         glVertexPointer( 3, GL_FLOAT, 0, (char *) NULL );
 
-        //glBindBuffer(GL_ARRAY_BUFFER, m_VBONormals);
-        //glNormalPointer(GL_FLOAT, 0, (char *) NULL );
+        glBindBuffer(GL_ARRAY_BUFFER, m_VBONormals);
+        glNormalPointer(GL_FLOAT, 0, (char *) NULL );
 
         glBindBuffer( GL_ARRAY_BUFFER, m_VBOTexCoords );
         glTexCoordPointer( 2, GL_FLOAT, 0, (char *) NULL );
     } else {
         glVertexPointer( 3, GL_FLOAT, 0, m_vertexes );
-        //glNormalPointer(GL_FLOAT, 0, m_normals );
+        glNormalPointer(GL_FLOAT, 0, m_normals );
         glTexCoordPointer( 2, GL_FLOAT, 0, m_texCoords );
     }
 
@@ -139,13 +173,14 @@ void MapRendererWidget::paintGL() {
     glBindTexture(GL_TEXTURE_2D, m_texture);
     glDrawElements(GL_TRIANGLE_STRIP, m_numIndexes, GL_UNSIGNED_INT, m_indexes);
 
-    glDisableClientState( GL_VERTEX_ARRAY );
-    //glDisableClientState( GL_NORMAL_ARRAY );
+    glDisableClientState( GL_NORMAL_ARRAY );
     glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+    glDisableClientState( GL_VERTEX_ARRAY );
+
+    glDisable(GL_LIGHTING);
 
     //Water rendering
     glColor4f(0, 0, 1, 0.7);
-    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
     glBegin(GL_QUADS);
     glVertex3f(0,0,0);
@@ -222,12 +257,12 @@ void MapRendererWidget::makeObject() {
         glBindBuffer( GL_ARRAY_BUFFER, m_VBOVertices );
         glBufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(Vertex), m_vertexes, GL_STATIC_DRAW );
     }
-    //computeNormals();
-    //if(getGLExtensionFunctions().openGL15Supported()) {
-    //GenBuffers( 1, &m_VBONormals );
-    //BindBuffer( GL_ARRAY_BUFFER, m_VBONormals );
-    //BufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(Vertex), m_normals, GL_STATIC_DRAW );
-    //}
+    computeNormals();
+    if(getGLExtensionFunctions().openGL15Supported()) {
+    glGenBuffers( 1, &m_VBONormals );
+    glBindBuffer( GL_ARRAY_BUFFER, m_VBONormals );
+    glBufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(Vertex), m_normals, GL_STATIC_DRAW );
+    }
     generateTexCoords();
     if (getGLExtensionFunctions().openGL15Supported()) {
         glGenBuffers( 1, &m_VBOTexCoords );
@@ -255,7 +290,7 @@ void MapRendererWidget::makeObject() {
 
 void MapRendererWidget::computeNormals() {
     if (m_normals) delete m_normals;
-    Vertex* m_normals = new Vertex[m_vertexNumber];
+    m_normals = new Vertex[m_vertexNumber];
     memset(m_normals, 0, m_vertexNumber*sizeof(Vertex));
     for (int i = 0; i < m_heightmap.getHeight(); i++) {
         for (int j = 0; j < m_heightmap.getWidth(); j++) {
@@ -266,9 +301,9 @@ void MapRendererWidget::computeNormals() {
             if (i < m_heightmap.getHeight() - 1) right = V(i+1,j);
             if (j < m_heightmap.getWidth() - 1) bottom = V(i,j+1);
             N(i,j).add(Vertex::getNormal(current, left, top));
-            N(i,j).add(Vertex::getNormal(current, left, bottom));
-            N(i,j).add(Vertex::getNormal(current, right, top));
+            N(i,j).add(Vertex::getNormal(current, top, right));
             N(i,j).add(Vertex::getNormal(current, right, bottom));
+            N(i,j).add(Vertex::getNormal(current, bottom, left));
             N(i,j).normalize();
         }
     }
@@ -362,7 +397,9 @@ void MapRendererWidget::wheelEvent ( QWheelEvent * event ) {
     float newZoom = lastZoom - event->delta() * 0.001*m_heightmap.getRatio();
     if (newZoom > 4*m_heightmap.getRatio() || newZoom < 0.05*m_heightmap.getRatio()) return;
     lastZoom = newZoom;
-    resizeGL(width(), height());
+    if(!m_perspective) {
+      resizeGL(width(), height());
+    }
     updateGL();
 }
 
