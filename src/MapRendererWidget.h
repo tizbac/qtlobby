@@ -99,6 +99,8 @@ private:
     int m_borderWidth;
     int m_alpha;
     QTime m_time;
+    QTimer m_timer;
+    QTime m_lightTime;
     QString m_debugInfo;
     bool m_perspective;
 };

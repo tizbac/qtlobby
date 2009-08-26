@@ -82,7 +82,7 @@ void MapRendererWidget::initializeGL() {
 
     glEnable(GL_COLOR_MATERIAL);
 
-
+    connect(&m_timer, SIGNAL(timeout()), this, SLOT(updateGL()));
 }
 
 void MapRendererWidget::resizeGL(int w, int h) {
@@ -108,11 +108,16 @@ void MapRendererWidget::resizeGL(int w, int h) {
     glLoadIdentity();
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_LIGHT1);
+
+    m_timer.start(25);
+    m_lightTime.start();
 }
 
 void MapRendererWidget::paintGL() {
     if (!m_heightmap.getWidth() || blockRerender) return;
+
     m_time.start();
+
     //GLfloat light_position[] = { 5, 5, MAX_HEIGHT*1.3, 0.0 };
     //Weird, but this line doesn't work for my i915 integrated graphics, tho next 2 work fine
     //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -139,10 +144,12 @@ void MapRendererWidget::paintGL() {
 
     //get some system timestep in milisecs for light movement
     //although screen will only get updated on movement
-    QTime curTime = QTime::currentTime();
-    int curMSecs = curTime.msecsTo(QTime());
+//    QTime curTime = QTime::currentTime();
+//    int curMSecs = curTime.msecsTo(QTime());
+    int curMSecs = m_lightTime.elapsed();
 
-    GLfloat LightPosition[]= { 10*sin(curMSecs/300.0), 10*cos(curMSecs/300.0), 5, 1.0f };
+
+    GLfloat LightPosition[]= { (m_heightmap.getHeight()*CELL_SIZE/3) *sin(curMSecs/1000.0), (m_heightmap.getWidth()*CELL_SIZE/3) *cos(curMSecs/1000.0), 6, 1.0f };
     glLightfv(GL_LIGHT1, GL_POSITION, LightPosition);
 
     glTranslatef(-m_heightmap.getHeight()*CELL_SIZE/2., -m_heightmap.getWidth()*CELL_SIZE/2., 0);
@@ -180,7 +187,7 @@ void MapRendererWidget::paintGL() {
     glDisable(GL_LIGHTING);
 
     //Water rendering
-    glColor4f(0, 0, 1, 0.7);
+    glColor4f(0, 0, 1, 0.5);
     glEnable(GL_BLEND);
     glBegin(GL_QUADS);
     glVertex3f(0,0,0);
