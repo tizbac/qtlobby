@@ -362,19 +362,22 @@ void BattleChannel::receiveInput( QString input ) {
     QStringList inputList = input.split( " " );
     QString firstWord = inputList.takeFirst();
     Command ret;
-    if ( "/me" == firstWord ) {
+    if ( firstWord.toLower() == "/me" ) {
         ret.name = "SAYBATTLEEX";
         ret.attributes << inputList;
-    } else if ( "/slap" == firstWord ) {
+    } else if ( firstWord.toLower() == "/slap" ) {
         ret.name = "SAYBATTLEEX";
         ret.attributes << QString( "slaps %1 around a bit with a large trout" ).arg( inputList.join( " " ) );
-    } else if ( QString( "/leave" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
+    } else if ( firstWord.toLower() == "/leave" ) {
         ret.name = "LEAVEBATTLE";
         disconnect(battles, SIGNAL(addStartRect(int,QRect)), this, SLOT(onAddStartRect(int,QRect)));
         disconnect(battles, SIGNAL(removeStartRect(int)), this, SLOT(onRemoveStartRect(int)));
         Settings::Instance()->setValue("mainwindow/chatsplitter", splitterState);
         noMapUpdates = true;
         if(wasKicked) return;
+    } else if ( firstWord.toLower() == "/sayver" ) {
+        ret.name = "SAYBATTLEEX";
+        ret.attributes << QString("is using QtLobby v%1 rev %2").arg(QTLOBBY_VERSION).arg(SVN_REV);
     } else {
         ret.name = "SAYBATTLE";
         ret.attributes << input;

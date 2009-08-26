@@ -117,13 +117,13 @@ void Channel::receiveInput( QString input ) {
     if ( "/me" == firstWord ) {
         ret.name = "SAYEX";
         ret.attributes << objectName() << inputList;
-    } else if ( "/slap" == firstWord ) {
+    } else if ( firstWord.toLower() == "/slap" ) {
         ret.name = "SAYEX";
         ret.attributes << objectName() << QString( "slaps %1 around a bit with a large trout" ).arg( inputList.join( " " ) );
-    } else if ( QString( "/leave" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
+    } else if ( firstWord.toLower() == "/leave" ) {
         ret.name = "LEAVE";
         ret.attributes << objectName() << ( inputList.empty() ? ( inputList << QString( "Quit" ) ) : inputList );
-    } else if ( QString( "/sayver" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
+    } else if ( firstWord.toLower() == "/sayver" ) {
         ret.name = "SAYEX";
         ret.attributes << objectName() << QString("is using QtLobby v%1 rev %2").arg(QTLOBBY_VERSION).arg(SVN_REV);
     } else {

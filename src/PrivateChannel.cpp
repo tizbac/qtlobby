@@ -56,11 +56,15 @@ void PrivateChannel::receiveInput( QString input ) {
         return;
     QStringList inputList = input.split( " " );
     QString firstWord = inputList.takeFirst();
-    if ( firstWord == "/leave" )
-        return;
     Command ret;
     ret.name = "SAYPRIVATE";
-    ret.attributes << objectName() << input;
+    if ( firstWord == "/leave" )
+        return;
+    else if ( firstWord.toLower() == "/sayver" ) {
+        ret.attributes << objectName() << QString("i am using QtLobby v%1 rev %2").arg(QTLOBBY_VERSION).arg(SVN_REV);
+    } else {
+        ret.attributes << objectName() << input;
+    }
     emit sendCommand( ret );
 }
 
