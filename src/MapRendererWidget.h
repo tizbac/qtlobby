@@ -43,9 +43,7 @@ signals:
     void updateDebugInfo(const QString& info);
 
 public slots:
-    void setXRotation(int angle);
-    void setYRotation(int angle);
-    void setZRotation(int angle);
+    void setRotation(int xAngle, int yAngle, int zAngle);
     void addStartRect(int ally, QRect r);
     void setMyAllyTeam(int n);
     void removeStartRect(int ally);

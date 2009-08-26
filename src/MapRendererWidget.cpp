@@ -373,28 +373,24 @@ void MapRendererWidget::setSource(QString mapName, QImage minimap, QImage metalm
 }
 
 
-void MapRendererWidget::setXRotation(int angle) {
-    normalizeAngle(&angle);
-    if (angle != xRot) {
-        xRot = angle;
-        updateGL();
+void MapRendererWidget::setRotation(int xAngle, int yAngle, int zAngle) {
+	int update=0;
+    normalizeAngle(&xAngle);
+	normalizeAngle(&yAngle);
+	normalizeAngle(&zAngle);
+    if (xAngle != xRot) {
+        xRot = xAngle;
+        update=1;
     }
-}
-
-void MapRendererWidget::setYRotation(int angle) {
-    normalizeAngle(&angle);
-    if (angle != yRot) {
-        yRot = angle;
-        updateGL();
+	if (yAngle != yRot) {
+        yRot = yAngle;
+        update=1;
     }
-}
-
-void MapRendererWidget::setZRotation(int angle) {
-    normalizeAngle(&angle);
-    if (angle != zRot) {
-        zRot = angle;
-        updateGL();
+	if (zAngle != zRot) {
+        zRot = zAngle;
+        update=1;
     }
+	if (update==1) updateGL();
 }
 
 void MapRendererWidget::normalizeAngle(int *angle) {
@@ -424,11 +420,10 @@ void MapRendererWidget::mouseMoveEvent(QMouseEvent *event) {
 
     if (event->buttons() & Qt::LeftButton) {
         //setXRotation(xRot + 8 * dy);
-        setYRotation(yRot + 8 * dy);
-        setZRotation(zRot + 8 * dx);
+        setRotation(xRot, yRot + 8 * dy, zRot + 8 * dx);
     } else if (event->buttons() & Qt::RightButton) {
         //setXRotation(xRot + 8 * dy);
-        setZRotation(zRot + 8 * dx);
+        setRotation(xRot, yRot, zRot + 8 * dx);
     } else if (event->buttons() & Qt::MidButton) {
         this->dx += -dx * 0.1 * lastZoom;
         this->dy += dy * 0.1 * lastZoom;
