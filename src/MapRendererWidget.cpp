@@ -46,9 +46,9 @@ MapRendererWidget::~MapRendererWidget() {
 }
 
 void MapRendererWidget::initializeGL() {
-    GLfloat mat_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
+    GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
     GLfloat mat_specular[] = { 1.0, 0.8, 0.8, 1.0 };
-    GLfloat mat_shininess[] = { 100.0 };
+    GLfloat mat_shininess[] = { 80.0 };
     glClearColor (0.0, 0.0, 0.0, 0.0);
     glShadeModel (GL_SMOOTH);
 
@@ -68,7 +68,7 @@ void MapRendererWidget::initializeGL() {
 
     		
 
-    GLfloat LightAmbient[]= { 0.0f, 0.0f, 0.0f, 1.0f };
+    GLfloat LightAmbient[]= { 0.2f, 0.2f, 0.2f, 1.0f };
     GLfloat LightDiffuse[]= { 1.0f, 1.0f, 1.0f, 1.0f };
     GLfloat LightSpecular[]= { 1.0f, 0.0f, 0.0f, 0.0f };
 
@@ -78,11 +78,15 @@ void MapRendererWidget::initializeGL() {
 //    glLightfv(GL_LIGHT1, GL_POSITION,LightPosition);
     glEnable(GL_LIGHT1);
 
-    glColorMaterial ( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE ) ;
+    glColorMaterial ( GL_FRONT_AND_BACK, GL_DIFFUSE ) ;
 
     glEnable(GL_COLOR_MATERIAL);
 
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(updateGL()));
+}
+
+void MapRendererWidget::hideEvent(QHideEvent* event){
+    m_timer.stop();
 }
 
 void MapRendererWidget::resizeGL(int w, int h) {
@@ -149,7 +153,7 @@ void MapRendererWidget::paintGL() {
     int curMSecs = m_lightTime.elapsed();
 
 
-    GLfloat LightPosition[]= { (m_heightmap.getHeight()*CELL_SIZE/3) *sin(curMSecs/1000.0), (m_heightmap.getWidth()*CELL_SIZE/3) *cos(curMSecs/1000.0), 6, 1.0f };
+    GLfloat LightPosition[]= { (m_heightmap.getHeight()*CELL_SIZE/3) *sin(curMSecs/2000.0), (m_heightmap.getWidth()*CELL_SIZE/3) *cos(curMSecs/2000.0), 6, 1.0f };
     glLightfv(GL_LIGHT1, GL_POSITION, LightPosition);
 
     glTranslatef(-m_heightmap.getHeight()*CELL_SIZE/2., -m_heightmap.getWidth()*CELL_SIZE/2., 0);

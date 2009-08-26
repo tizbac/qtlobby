@@ -57,6 +57,7 @@ protected:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent * event);
+    void hideEvent(QHideEvent * event);
 private:
     void normalizeAngle(int *angle);
     void makeObject();
