@@ -77,9 +77,11 @@ bool AbstractChannel::executeChannelInput( QString input ) {
                         row.arg( "/j &lt;channel&gt; &lt;password&gt;", tr( "Join password protected channel" ) ) +
                         row.arg( "/j &lt;channel1&gt; &lt;password1&gt;, &lt;channel2&gt; ...  ", tr( "Join multiple channels" ) ) +
                         row.arg( "/me &lt;text&gt;", tr( "Say highlighted" ) ) +
+                        row.arg( "/sayver", tr( "Say /me is using QtLobby vXXX revYYY" ) ) +
                         row.arg( "/slap &lt;user&gt;", tr( "Say the mIRC slap sentence" ) ) +
                         row.arg( "/query, /msg &lt;user&gt;", tr( "Open private chat" ) ) +
-                        row.arg( "/leave, /wc", tr( "Leave the channel" ) ) );
+                        row.arg( "/leave, /wc", tr( "Leave the channel" ) )
+                        );
         receiveCommand( ret );
         return true;
     } else if ( QString( "/ingame" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {

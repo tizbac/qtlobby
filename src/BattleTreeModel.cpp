@@ -14,33 +14,34 @@ BattleTreeModel::~BattleTreeModel() {
 }
 
 QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
+    if (index.row() >= m_battleList.size() || index.row() < 0)
+        return QVariant();
     TLDList tldlist;
     UnitSyncLib* us = UnitSyncLib::getInstance();
     Battle b = m_battleList[index.row()];
-    if (index.row() >= m_battleList.size() || index.row() < 0) return QVariant();
-    if (role == Qt::BackgroundRole && m_users) {
-        QList<User> users = m_users->getUserList(m_battleList[index.row()].id);
-        if (users.size() > 0) {
-            if (users.size() > 1) {
-                QList<QColor> colors;
-                for (int i = 0; i < users.size(); i++) {
-                    QColor c = UserGroupList::getInstance()->getUserColor(users.at(i).name);
-                    if(colors.contains(c)) continue;
-                    if (c.isValid())
-                        colors << c;
-                }
-                QFontMetrics fm(m_users->font());
-                if (!colors.size()) return QVariant();
-                QLinearGradient linearGrad(QPointF(0, 3), QPointF(0,fm.height()));
-                float step = 1./colors.size();
-                float x = 0;
-                for (int i = 0; i < colors.size(); i++, x+= step) {
-                    linearGrad.setColorAt(x, colors.at(i));
-                }
-                return QBrush(linearGrad);
+    if ( role == Qt::BackgroundRole && m_users ) {
+        QList<User> users = m_users->getUserList( m_battleList[index.row()].id );
+        unsigned int usersSize = users.size();
+        if ( usersSize > 0 ) {
+            UserGroupList* ugl = UserGroupList::getInstance();
+            QList<QColor> colors;
+            for ( unsigned int i = 0; i < usersSize; i++ ) {
+                QColor c = ugl->getUserColor( users.at( i ).name );
+                if( !colors.contains( c ) && c.isValid() )
+                    colors << c;
             }
-            QColor c = UserGroupList::getInstance()->getUserColor(users.at(0).name);
-            if (c.isValid()) return c;
+            if ( !colors.size() )
+                return QVariant();
+            if ( colors.size() == 1 && colors.at( 0 ).isValid() )
+                return colors.at( 0 );
+            QFontMetrics fm( m_users->font() );
+            QLinearGradient linearGrad( QPointF( 0, 3 ), QPointF( 0, fm.height() ) );
+            float step = 1.0 / colors.size();
+            float x = 0;
+            for (int i = 0; i < colors.size(); i++, x += step) {
+                linearGrad.setColorAt( x, colors.at( i ) );
+            }
+            return QBrush( linearGrad );
         }
         return QVariant();
     }
@@ -79,9 +80,9 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
         bool containsGroupUser = false;
         if ( m_users ) {
             QList<User> users = m_users->getUserList(m_battleList[index.row()].id);
-            UserGroupList* ul = UserGroupList::getInstance();
+            UserGroupList* ugl = UserGroupList::getInstance();
             foreach( User u, users ) {
-                if( ul->containsUserName( u.name ) ) {
+                if( ugl->containsUserName( u.name ) ) {
                     containsGroupUser = true;
                     break;
                 }
@@ -102,10 +103,9 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
                 return QIcon( ":/icons/closed_game.xpm" );
             if ( b.isPasswordProtected )
                 return QIcon( ":/icons/open_pw_game.xpm" );
-            if(b.playerCount - b.spectatorCount == 0)
+            if ( b.playerCount - b.spectatorCount == 0 )
                 return QIcon( ":/icons/open_game_empty.xpm" );
-            else
-                return QIcon( ":/icons/open_game.xpm" );
+            return QIcon( ":/icons/open_game.xpm" );
         }
         if ( role == Qt::ToolTipRole ) {
             if ( b.isStarted )
@@ -147,11 +147,9 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
         if ( role == Qt::DisplayRole )
             return m_battleList[index.row()].shortMapName();
         if ( role == Qt::DecorationRole ) {
-            if(us->getMapNames().contains(b.mapName)) {
+            if(us->getMapNames().contains(b.mapName))
                 return QIcon(":/icons/exists.xpm");
-            } else {
-                return QIcon(":/icons/nexists.xpm");
-            }
+            return QIcon(":/icons/nexists.xpm");
         }
         if ( role == Qt::ToolTipRole )
             return m_battleList[index.row()].mapName;
@@ -160,11 +158,9 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
         if ( role == Qt::DisplayRole )
             return m_battleList[index.row()].shortModName();
         if( role == Qt::DecorationRole ) {
-            if(us->getModNames().contains(b.modName)) {
+            if(us->getModNames().contains(b.modName))
                 return QIcon(":/icons/exists.xpm");
-            } else {
-                return QIcon(":/icons/nexists.xpm");
-            }
+            return QIcon(":/icons/nexists.xpm");
         }
         if ( role == Qt::ToolTipRole )
             return m_battleList[index.row()].modName;
@@ -296,18 +292,15 @@ int BattleTreeModel::rowCount( const QModelIndex& parent ) const {
 
 int BattleTreeModel::rowPositionForBattle( int battleId ) {
     for ( int i = 0; i < rowCount( QModelIndex() ); ++i )
-        if ( battleId == m_battleList[i].id ) {
-        //       qDebug() << i << ": " << m_battleList[i].id;
-        return i;
-    }
+        if ( battleId == m_battleList[i].id )
+            return i;
     return -1;
 }
 
 Battle BattleTreeModel::battleForRowPosition( int row ) {
     if (( row < 0 || row > rowCount( QModelIndex() ) ) )
         return Battle();
-    else
-        return m_battleList[row];
+    return m_battleList[row];
 }
 
 void BattleTreeModel::setUsers(Users* users) {
@@ -318,7 +311,6 @@ void BattleTreeModel::onGroupChanged() {
     reset();
 }
 
-
 QList<Battle>& BattleTreeModel::battleList() {
     return m_battleList;
 }
@@ -327,5 +319,3 @@ void BattleTreeModel::clear() {
     m_battleList.clear();
     reset();
 }
-
-
