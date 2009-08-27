@@ -86,6 +86,10 @@ bool InputLine::event(QEvent* event) {
             return true;
         }
         previousWasTab = false;
+        if ( keyEvent->key() == Qt::Key_Escape ) {
+            setText("");
+            return true;
+        }
     }
     return QLineEdit::event(event);
 }
