@@ -71,6 +71,7 @@ protected:
     void startGame( Battle b, bool host );
     QString generateScript( Battle b, bool host );
     bool event(QEvent* event);
+    void retranslateUi();
     QString currentTabType;
     QString currentTabName;
     QString username;

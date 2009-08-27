@@ -16,6 +16,11 @@ Preference::Preference( QDialog* parent ) : QDialog( parent ) {
     // show first page by default
     preferencesListWidget->setCurrentRow(0);
     stackedWidget->setCurrentIndex(0);
+    languageNameLocaleMap["Deutsch"] = "de";
+    languageNameLocaleMap["English"] = "en";
+    languageNameLocaleMap[QString::fromUtf8( "Español" )] = "es";
+    languageNameLocaleMap[QString::fromUtf8( "Русский" )] = "ru";
+    languageNameLocaleMap["Suomi"] = "fi";
 }
 
 #define INIT_PREF(key, value) if(!settings->contains(key)) \
@@ -68,6 +73,7 @@ void Preference::loadPreferences() {
     /*General*/
     INIT_PREF("Battle/autoCloseFirst", false);
     battleAutoCloseFirstCheckBox->setChecked( settings->value("Battle/autoCloseFirst").toBool() );
+    INIT_PREF("locale", "en");
 }
 
 Preference::~Preference() { }
@@ -150,18 +156,22 @@ void Preference::onResetFormToSettings() {
 
 void Preference::onLanguageChanged(QString language) {
     //FIXME language switch does not work yet
-    //need to update the languageComboBox state for current locale in constructor (mw)
-    QString locale;
-    QTranslator translator;
-    translator.load(QString(":/i18n/qtlobby_de"));
-    if( language == "Deutsch" )
-        locale = "de";
-    else if( language == "English" ) {
-        QCoreApplication::instance()->removeTranslator(&translator);
-        qDebug() << "removing translator";
+    if( languageNameLocaleMap.contains( language ) ) {
+        QString currentLocale = settings->value("locale", "en").toString(); // get the current locale setting
+        if( languageNameLocaleMap[language] != currentLocale ) {
+            QTranslator translator;
+            translator.load( QString(":/i18n/qtlobby_" + currentLocale) );
+            qDebug() << "Removing translator for locale: " + currentLocale;
+            QCoreApplication::instance()->removeTranslator( &translator );
+            QString newLocale = languageNameLocaleMap[language];
+            translator.load( QString(":/i18n/qtlobby_" +  newLocale ) );
+            qDebug() << "Installing translator for locale: " + newLocale;
+            QCoreApplication::instance()->installTranslator( &translator );
+            settings->setValue( "locale", newLocale );
+        }
         return;
-    } else return;
-    QCoreApplication::instance()->installTranslator(&translator);
+    }
+    qDebug() << QString("Error: Locale for language %1 not found.").arg(language);
 }
 
 void Preference::setUpPathForm() {

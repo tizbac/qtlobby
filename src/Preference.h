@@ -37,6 +37,7 @@ private:
     void initPathExamples();
     void setUpPathForm();
     void loadPreferences();
+    QMap<QString, QString> languageNameLocaleMap;
 public slots:
     void onResetFormToSettings();
 private slots:

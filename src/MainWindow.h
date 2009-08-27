@@ -123,6 +123,7 @@ private slots:
     void onChangedToBattleTab();
     void onChangedFromBattleTab();
 public slots:
+    void changeEvent(QEvent *e);
     void playSample( SampleCollection sample );
     void sendTrayMessage( QString message, int milliseconds = 2000);
 };

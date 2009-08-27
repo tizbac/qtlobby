@@ -603,16 +603,24 @@ void Battles::onReboot() {
 }
 
 /**
- * handling enter pressed
+ * handling enter pressed and translation
  */
 bool Battles::event(QEvent* event) {
-    if (event->type() == QEvent::KeyPress) {
-        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-        if ( ( keyEvent->key() == Qt::Key_Enter
-               || keyEvent->key() == Qt::Key_Return ) ) {
+    QKeyEvent* keyEvent;
+    switch(event->type()) {
+    case QEvent::KeyPress:
+        keyEvent = static_cast<QKeyEvent*>(event);
+        if ( ( keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return ) ) {
             onJoin();
             return true;
         }
+        break;
+    case QEvent::LanguageChange:
+        qDebug() << "Battles QEvent::LanguageChange entered";
+        this->retranslateUi();
+        break;
+    default:
+        break;
     }
     return QTreeView::event(event);
 }
@@ -626,4 +634,8 @@ void Battles::selectionChanged ( const QItemSelection & selected, const QItemSel
     if( ( deselected.indexes().size() > 0 ) != ( selected.indexes().size() > 0 ) )
         emit battleSelected(selected.indexes().size() > 0);
     QTreeView::selectionChanged( selected, deselected );
+}
+
+void Battles::retranslateUi() {
+    this->battleManager->model()->retranslateUi();
 }
