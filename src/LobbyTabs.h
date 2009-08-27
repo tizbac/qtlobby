@@ -56,6 +56,7 @@ public slots:
     //close tab
     void closeTab(int i);
     void closeTab();
+    void onCloseBattleChannel();
     void onTabMoved( int from, int to );
     void onEnableJoinLeaveDefault(bool b);
     void onMapsModsReload();

@@ -11,10 +11,10 @@ BattlePasswordWidget::BattlePasswordWidget( QDialog *parent ) : QDialog( parent 
 
 BattlePasswordWidget::~BattlePasswordWidget() { }
 
-void BattlePasswordWidget::acceptThis( ) {
+void BattlePasswordWidget::acceptThis() {
     QString pw = battlePasswordLineEdit->text();
     hide();
-    emit wantJoinBattle( id, pw );
+    emit wantJoinBattle( id, pw, false );
 }
 
 void BattlePasswordWidget::setBattleId( int id ) {

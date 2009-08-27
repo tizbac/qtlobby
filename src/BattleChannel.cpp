@@ -44,8 +44,6 @@ BattleChannel::BattleChannel( QString id, Battles* battles, QObject * parent ) :
     activeIcon = QIcon( ":/icons/battle.xpm" );
     mapOverviewDialog = new MapOverviewDialog();
     loader = new MapInfoLoader(this);
-    connect(loader, SIGNAL(loadCompleted(QString)), SLOT(updateMapInfo(QString)));
-    connect(battles, SIGNAL(addStartRect(int,QRect)), SLOT(onAddStartRect(int,QRect)));
     noMapUpdates = false;
     locked = false;
     wasKicked = false;
@@ -70,51 +68,52 @@ void BattleChannel::setupUi( QWidget * tab ) {
         s->restoreState(settings->value("mainwindow/chatsplitter").toByteArray());
     connect(s, SIGNAL(splitterMoved(int,int)), SLOT(onChatSplitterMoved(int,int)));
     gridLayout->addWidget( s, 0, 0, 1, 1 );
-    connect(battleWindowForm->specCheckBox, SIGNAL( stateChanged ( int ) ),
+    connect( battleWindowForm->specCheckBox, SIGNAL( stateChanged ( int ) ),
             this,SLOT(onSpecCheckBoxChanged(int))); // NEW
     connect( battleWindowForm->readyCheckBox, SIGNAL( stateChanged ( int ) ),
              Users::getCurrentUsers(), SLOT( onReadyStateChanged( int ) ));
-    connect(battleWindowForm->specCheckBox, SIGNAL( stateChanged ( int ) ),
+    connect( battleWindowForm->specCheckBox, SIGNAL( stateChanged ( int ) ),
             Users::getCurrentUsers(),SLOT(onSpecStateChanged( int ))); // NEW
-    connect(battleWindowForm->factionsComboBox, SIGNAL( activated( int)),
+    connect( battleWindowForm->factionsComboBox, SIGNAL( activated( int)),
             this,SLOT(onSideComboBoxChanged( int )));
-    connect(battleWindowForm->factionsComboBox, SIGNAL( activated( int)),
+    connect( battleWindowForm->factionsComboBox, SIGNAL( activated( int)),
             Users::getCurrentUsers(),SLOT(onSideComboBoxChanged( int )));
-    connect(battleWindowForm->colorToolButton, SIGNAL(clicked()),
+    connect( battleWindowForm->colorToolButton, SIGNAL(clicked()),
             this, SLOT(onColorClicked()));
-    connect(this, SIGNAL( colorChanged(QColor)),
+    connect( this, SIGNAL( colorChanged(QColor)),
             Users::getCurrentUsers(),SLOT(onColorChanged(QColor)));
-    connect(battleWindowForm->teamNoSpinBox, SIGNAL(valueChanged(int)),
+    connect( battleWindowForm->teamNoSpinBox, SIGNAL(valueChanged(int)),
             Users::getCurrentUsers(), SLOT(onTeamNumberChanged(int)));
-    connect(battleWindowForm->teamAllyNoSpinBox, SIGNAL(valueChanged(int)),
+    connect( battleWindowForm->teamAllyNoSpinBox, SIGNAL(valueChanged(int)),
             Users::getCurrentUsers(), SLOT(onAllyTeamNumberChanged(int)));
-    connect(Users::getCurrentUsers(), SIGNAL(myStateChanged(User)),
+    connect( Users::getCurrentUsers(), SIGNAL(myStateChanged(User)),
             this, SLOT(onMyStateChanged(User)));
-    connect(battleWindowForm->teamAllyNoSpinBox, SIGNAL(valueChanged(int)),
+    connect( battleWindowForm->teamAllyNoSpinBox, SIGNAL(valueChanged(int)),
             battleWindowForm->minimapWidget, SLOT(setMyAllyTeam(int)));
-    connect(battleWindowForm->teamAllyNoSpinBox, SIGNAL(valueChanged(int)),
+    connect( battleWindowForm->teamAllyNoSpinBox, SIGNAL(valueChanged(int)),
             battleWindowForm->heightmapWidget, SLOT(setMyAllyTeam(int)));
-    connect(battleWindowForm->teamAllyNoSpinBox, SIGNAL(valueChanged(int)),
+    connect( battleWindowForm->teamAllyNoSpinBox, SIGNAL(valueChanged(int)),
             battleWindowForm->metalmapWidget, SLOT(setMyAllyTeam(int)));
-    connect(battleWindowForm->teamAllyNoSpinBox, SIGNAL(valueChanged(int)),
+    connect( battleWindowForm->teamAllyNoSpinBox, SIGNAL(valueChanged(int)),
             mapOverviewDialog, SLOT(setMyAllyTeam(int)));
-    connect(battleWindowForm->undeformableMapSpeedCheckBox, SIGNAL(toggled(bool)),
+    connect( battleWindowForm->undeformableMapSpeedCheckBox, SIGNAL(toggled(bool)),
             this, SLOT(onUndeformableMapSpeedCheckBoxToggled(bool)));
-    connect(battleWindowForm->diminishingMetalMakersCheckBox, SIGNAL(toggled(bool)),
+    connect( battleWindowForm->diminishingMetalMakersCheckBox, SIGNAL(toggled(bool)),
             this, SLOT(onDiminishingMetalMakersCheckBoxToggled(bool)));
-    connect(battleWindowForm->ghostedBuildingsCheckBox, SIGNAL(toggled(bool)),
+    connect( battleWindowForm->ghostedBuildingsCheckBox, SIGNAL(toggled(bool)),
             this, SLOT(onGhostedBuildingsCheckBoxToggled(bool)));
-    connect(battleWindowForm->limitDGunCheckBox, SIGNAL(toggled(bool)),
+    connect( battleWindowForm->limitDGunCheckBox, SIGNAL(toggled(bool)),
             this, SLOT(onLimitDGunCheckBoxToggled(bool)));
-    connect(battleWindowForm->gameEndComboBox, SIGNAL(currentIndexChanged(int)),
+    connect( battleWindowForm->gameEndComboBox, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onGameEndComboBoxChanged(int)));
-    connect(battleWindowForm->startPositionComboBox, SIGNAL(currentIndexChanged(int)),
+    connect( battleWindowForm->startPositionComboBox, SIGNAL(currentIndexChanged(int)),
             this, SLOT(onStartPositionComboBoxChanged(int)));
-    connect(battleWindowForm->modOptions, SIGNAL(anchorClicked(QUrl)),
+    connect( battleWindowForm->modOptions, SIGNAL(anchorClicked(QUrl)),
             this, SLOT(onModOptionsAnchorClicked(QUrl)));
-    connect(battles, SIGNAL(addStartRect(int,QRect)), SLOT(onAddStartRect(int,QRect)));
-    connect(battles, SIGNAL(removeStartRect(int)), SLOT(onRemoveStartRect(int)));
-    connect(battleWindowForm->overviewPushButton, SIGNAL(clicked()), SLOT(openMapOverview()));
+    connect( loader, SIGNAL( loadCompleted( QString ) ), SLOT( updateMapInfo( QString ) ) );
+    connect( battles, SIGNAL( addStartRect( int, QRect ) ), SLOT( onAddStartRect( int, QRect ) ) );
+    connect( battles, SIGNAL( removeStartRect( int ) ), SLOT( onRemoveStartRect( int ) ) );
+    connect( battleWindowForm->overviewPushButton, SIGNAL(clicked()), SLOT(openMapOverview()));
 
     /*set drawing of start positions from preferences*/
     battleWindowForm->minimapWidget->setDrawStartPositions(settings->value("MapViewing/startPos/showOnMinimapCheckBox").toBool());

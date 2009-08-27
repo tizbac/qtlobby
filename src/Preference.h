@@ -37,6 +37,8 @@ private:
     void initPathExamples();
     void setUpPathForm();
     void loadPreferences();
+public slots:
+    void onResetFormToSettings();
 private slots:
     void onLanguageChanged(QString language);
     void onOk();

@@ -23,7 +23,7 @@
       </size>
      </property>
      <property name="currentRow">
-      <number>0</number>
+      <number>-1</number>
      </property>
      <item>
       <property name="text">
@@ -50,6 +50,11 @@
        <string>Start Positions</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>General</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item row="0" column="1">
@@ -61,7 +66,7 @@
       <enum>QFrame::Raised</enum>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="pathWidget"/>
      <widget class="QWidget" name="chatWidget">
@@ -230,7 +235,7 @@
        </layout>
       </widget>
      </widget>
-     <widget class="QWidget" name="page">
+     <widget class="QWidget" name="mapViewingWidget">
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0">
         <widget class="QGroupBox" name="groupBox">
@@ -333,7 +338,7 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page_2">
+     <widget class="QWidget" name="startPositionsWidget">
       <layout class="QFormLayout" name="formLayout_5">
        <item row="0" column="0">
         <widget class="QGroupBox" name="groupBox_4">
@@ -449,6 +454,26 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
            <widget class="QSpinBox" name="startRectAlphaSpinBox">
             <property name="maximum">
              <number>255</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="generalWidget">
+      <layout class="QGridLayout" name="gridLayout_4">
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox_9">
+         <property name="title">
+          <string>General</string>
+         </property>
+         <layout class="QFormLayout" name="formLayout_2">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="battleAutoCloseFirstCheckBox">
+            <property name="text">
+             <string>Always close the battle before opening new</string>
             </property>
            </widget>
           </item>

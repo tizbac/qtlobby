@@ -8,16 +8,12 @@ Preference::Preference( QDialog* parent ) : QDialog( parent ) {
     setupUi( this );
     setUpPathForm();
     settings = Settings::Instance();
-
-    connect( okPushButton, SIGNAL( clicked() ),
-             this, SLOT( onOk() ) );
-    connect( applyPushButton, SIGNAL( clicked() ),
-             this, SLOT( onApply() ) );
-    connect( cancelPushButton, SIGNAL( clicked() ),
-             this, SLOT( onCancel() ) );
-    connect(languageComboBox, SIGNAL(activated(QString)),
-            this, SLOT(onLanguageChanged(QString)));
+    connect( okPushButton, SIGNAL( clicked() ), SLOT( onOk() ) );
+    connect( applyPushButton, SIGNAL( clicked() ), SLOT( onApply() ) );
+    connect( cancelPushButton, SIGNAL( clicked() ), SLOT( onCancel() ) );
+    connect( languageComboBox, SIGNAL( activated( QString ) ), SLOT( onLanguageChanged( QString ) ) );
     loadPreferences();
+    // show first page by default
     preferencesListWidget->setCurrentRow(0);
     stackedWidget->setCurrentIndex(0);
 }
@@ -25,7 +21,7 @@ Preference::Preference( QDialog* parent ) : QDialog( parent ) {
 #define INIT_PREF(key, value) if(!settings->contains(key)) \
         settings->setValue(key, value);
 
-//Moved it out from constructor for cake of clarity (ko)
+//Moved it out from constructor for sake of clarity (ko)
 void Preference::loadPreferences() {
     /*Chat*/
     INIT_PREF("Chat/joinMain", true);
@@ -53,7 +49,6 @@ void Preference::loadPreferences() {
     projectionPerspectiveRadioButton->setChecked(settings->value("MapViewing/perspectiveProjectionType").toBool());
     projectionOrghogonalRadioButton->setChecked(!settings->value("MapViewing/perspectiveProjectionType").toBool());
 
-
     /*Start Positions*/
     INIT_PREF("MapViewing/startPos/showOnMinimapCheckBox", true);
     startPosShowOnMinimapCheckBox->setChecked(settings->value("MapViewing/startPos/showOnMinimapCheckBox").toBool());
@@ -69,6 +64,10 @@ void Preference::loadPreferences() {
     startRectBorderWidthSpinBox->setValue(settings->value("MapViewing/startPos/startRect/borderWidth").toInt());
     INIT_PREF("MapViewing/startPos/startRect/alpha", 100);
     startRectAlphaSpinBox->setValue(settings->value("MapViewing/startPos/startRect/alpha").toInt());
+
+    /*General*/
+    INIT_PREF("Battle/autoCloseFirst", false);
+    battleAutoCloseFirstCheckBox->setChecked( settings->value("Battle/autoCloseFirst").toBool() );
 }
 
 Preference::~Preference() { }
@@ -106,9 +105,17 @@ void Preference::onApply() {
     settings->setValue("MapViewing/startPos/startRect/brushNumber", startRectBrushComboBox->currentIndex());
     settings->setValue("MapViewing/startPos/startRect/borderWidth", startRectBorderWidthSpinBox->value());
     settings->setValue("MapViewing/startPos/startRect/alpha", startRectAlphaSpinBox->value());
+
+    /*General*/
+    settings->setValue( "Battle/autoCloseFirst", battleAutoCloseFirstCheckBox->isChecked() );
 }
 
 void Preference::onCancel() {
+    onResetFormToSettings();
+    hide();
+}
+
+void Preference::onResetFormToSettings() {
     for ( int i = 0; i < pathElements.size(); ++i )
         pathElements[i]->resetConfiguration();
 
@@ -137,7 +144,8 @@ void Preference::onCancel() {
     startRectBorderWidthSpinBox->setValue(settings->value("MapViewing/startPos/startRect/borderWidth").toInt());
     startRectAlphaSpinBox->setValue(settings->value("MapViewing/startPos/startRect/alpha").toInt());
 
-    hide();
+    /*General*/
+    battleAutoCloseFirstCheckBox->setChecked( settings->value( "Battle/autoCloseFirst" ).toBool() );
 }
 
 void Preference::onLanguageChanged(QString language) {

@@ -19,6 +19,7 @@
 #include "BattleManager.h"
 #include "Users.h"
 #include "BattlePasswordWidget.h"
+#include "BattleCloseFirstWidget.h"
 #include "TreeSortFilterProxyModel.h"
 #include "UnitSyncLib.h"
 #include "Settings.h"
@@ -33,22 +34,23 @@ public:
     void wipeModels();
 signals:
     void sendCommand( Command command );
-    void wantJoinBattle(unsigned int,QString);
+    void wantJoinBattle( unsigned int battleId, QString password, bool closeFirst );
     void start();
-    void addStartRect(int ally, QRect r);
-    void removeStartRect(int ally);
-    void statsChange(int battles);
-    void sendInput(QString input);
-    void battleSelected(bool hasSelection);
+    void addStartRect( int ally, QRect r );
+    void removeStartRect( int ally );
+    void statsChange( int battles );
+    void sendInput( QString input );
+    void battleSelected( bool hasSelection );
+    void closeBattleChannel();
 
 public slots:
     void setRegExp( QString regExp );
     void receiveCommand( Command command );
     void setConfiguration( QUrl url );
-    void joinBattleCommand(unsigned int id, QString password);
-    void setCurrentUsername(QString username);
+    void joinBattleCommand( unsigned int id, QString password, bool firstClose );
+    void setCurrentUsername( QString username );
     void invalidateModel();
-    void connectionStateChanged(ConnectionState state);
+    void connectionStateChanged( ConnectionState state );
     void onJoin();
 
 protected slots:
@@ -75,6 +77,7 @@ protected:
     Users* users;
     QUrl url;
     BattlePasswordWidget* battlePasswordWidget;
+    BattleCloseFirstWidget* battleCloseFirstWidget;
     QSettings* settings;
     int battleCount;
     QMenu* m_menu;

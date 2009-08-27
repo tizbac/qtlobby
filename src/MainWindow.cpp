@@ -177,6 +177,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     // preferences
     connect( actionPreferences, SIGNAL( triggered() ),
              preference, SLOT( show() ) );
+    connect( actionPreferences, SIGNAL( triggered() ),
+             preference, SLOT( onResetFormToSettings() ) );
     // maplist
     //    connect( actionMap_list, SIGNAL( triggered() ),
     //             mapSelector, SLOT( show() ) );

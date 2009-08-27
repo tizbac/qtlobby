@@ -17,7 +17,8 @@ LobbyTabs::LobbyTabs( QObject * parent, Battles* battles, UnitSyncLib* unitSyncL
     //change the icon for unfocused channels with changed contents / restore when focused
     connect( tabBar, SIGNAL( currentChanged(int)),
              this, SLOT( currentTabChangedSlot( int ) ) );
-    connect (UnitSyncLib::getInstance(), SIGNAL(rebooted()), SLOT(onMapsModsReload()));
+    connect( UnitSyncLib::getInstance(), SIGNAL(rebooted()), SLOT(onMapsModsReload()));
+    connect( battles, SIGNAL( closeBattleChannel() ), SLOT( onCloseBattleChannel() ) );
     //first we need an InfoChannel to display different status messages, this will not close with the close tab
     createLobbyTab( new InfoChannel( "info", lobbyStackedWidget ) );
     currentTabChangedSlot(0);
@@ -91,20 +92,14 @@ void LobbyTabs::receiveCommand( Command command ) {
                      parent(), SLOT( playSample( SampleCollection ) ) );
         }
     } else if ( command.name == "BATTLECLOSED" /*|| command.name == "FORCEQUITBATTLE"*/ ) {
-        bool found = false;
-        int index = 0;
         for ( int i = 0; i < lobbyTabList.count(); ++i ) {
-            if (( lobbyTabList[i]->objectName() == command.attributes.first()
-                //             || command.name == "FORCEQUITBATTLE"
+            if ( ( lobbyTabList[i]->objectName() == command.attributes.first()
+                 // || command.name == "FORCEQUITBATTLE"
                 ) && lobbyTabList[i]->metaObject()->className() == QString( "BattleChannel" )
                 ) {
-                found = true;
-                index = i;
+                closeTab(lobbyTabList[i]->currentTabIndex);
                 break;
             }
-        }
-        if ( found ) {
-            closeTab(lobbyTabList[index]->currentTabIndex);
         }
     } else if ( command.name == "SAIDPRIVATE" ) {
         if( !UserGroupList::getInstance()->getIgnore(command.attributes.first()) )
@@ -262,6 +257,15 @@ void LobbyTabs::closeTab(int i) {
                             lobbyTabList[mapToLobbyTabs(tabBar->currentIndex())]->metaObject()->className() );
     lobbyTabList[index]->deleteLater();
     lobbyTabList.removeAt( index );
+}
+
+void LobbyTabs::onCloseBattleChannel() {
+    for ( int i = 0; i < lobbyTabList.count(); ++i ) {
+        if ( lobbyTabList[i]->metaObject()->className() == QString( "BattleChannel" ) ) {
+            closeTab(lobbyTabList[i]->currentTabIndex);
+            break;
+        }
+    }
 }
 
 void LobbyTabs::privateChannelOpen( QString userName, bool popup ) {

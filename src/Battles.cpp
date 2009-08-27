@@ -10,6 +10,7 @@ using namespace std;
 Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
     battleManager = new BattleManager( this );
     battlePasswordWidget = new BattlePasswordWidget();
+    battleCloseFirstWidget = new BattleCloseFirstWidget();
 
     settings = Settings::Instance();
 
@@ -61,10 +62,12 @@ Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
              this, SLOT( customContextMenuRequested( const QPoint & ) ) );
     connect( this, SIGNAL( doubleClicked( const QModelIndex & ) ),
              this, SLOT( doubleClicked( const QModelIndex & ) ) );
-    connect( this, SIGNAL( wantJoinBattle( unsigned int, QString ) ),
-             this, SLOT( joinBattleCommand( unsigned int, QString ) ) );
-    connect( battlePasswordWidget, SIGNAL( wantJoinBattle( unsigned int, QString ) ),
-             this, SLOT( joinBattleCommand( unsigned int, QString ) ) );
+    connect( this, SIGNAL( wantJoinBattle( unsigned int, QString, bool ) ),
+             this, SLOT( joinBattleCommand( unsigned int, QString, bool ) ) );
+    connect( battlePasswordWidget, SIGNAL( wantJoinBattle( unsigned int, QString, bool ) ),
+             this, SLOT( joinBattleCommand( unsigned int, QString, bool ) ) );
+    connect( battleCloseFirstWidget, SIGNAL( wantJoinBattle( unsigned int, QString, bool ) ),
+             this, SLOT( joinBattleCommand( unsigned int, QString, bool ) ) );
     connect( filterPasswordedAction, SIGNAL( toggled( bool ) ),
              this, SLOT( setFilterPasswordedSlot( bool ) ) );
     connect( filterInGameAction, SIGNAL( toggled( bool ) ),
@@ -273,16 +276,35 @@ void Battles::setRegExp( QString regExp ) {
 void Battles::doubleClicked( const QModelIndex & index ) {
     Battle b = battleManager->model()-> data(
             battleManager->proxyModel()->mapToSource( index ), Qt::UserRole ).value<Battle>();
-    if ( !b.isLocked && b.isPasswordProtected ) {
-        battlePasswordWidget->setBattleId( b.id );
-        battlePasswordWidget->resetPassword();
-        battlePasswordWidget->show();
-    } else {
-        emit wantJoinBattle( b.id, "" );
+    if ( !b.isLocked ) {
+        User me = this->users->getUser( url.userName() );
+        if ( me.joinedBattleId == b.id ) // don't rejoin same
+            return;
+        if ( b.isPasswordProtected ) {
+            battlePasswordWidget->setBattleId( b.id );
+            battlePasswordWidget->resetPassword();
+            battlePasswordWidget->show();
+            return;
+        }
     }
+    emit wantJoinBattle( b.id, "", false );
 }
 
-void Battles::joinBattleCommand( unsigned int id, QString password ) {
+void Battles::joinBattleCommand( unsigned int id, QString password, bool firstClose ) {
+    if ( firstClose ) {
+        emit closeBattleChannel();
+    } else {
+        User me = this->users->getUser( url.userName() );
+        if ( me.joinedBattleId >= 0 ) { // in battle
+            if ( !Settings::Instance()->value( "Battle/autoCloseFirst", false ).toBool() ) {
+                battleCloseFirstWidget->setPassword( password );
+                battleCloseFirstWidget->setBattleId( id );
+                battleCloseFirstWidget->show();
+                return;
+            }
+            emit closeBattleChannel();
+        }
+    }
     Command command( "JOINBATTLE" );
     command.attributes << QString( "%1 %2" ).arg( id ).arg( password );
     emit sendCommand( command );

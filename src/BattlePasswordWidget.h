@@ -11,14 +11,14 @@
 class BattlePasswordWidget : public QDialog, private Ui::BattlePasswordWidget {
     Q_OBJECT
 public:
-    BattlePasswordWidget(QDialog *parent = 0);
+    BattlePasswordWidget( QDialog *parent = 0 );
     ~BattlePasswordWidget();
-    void setBattleId(int);
+    void setBattleId( int );
     void resetPassword();
 private:
     unsigned int id;
 signals:
-    void wantJoinBattle(unsigned int,QString);
+    void wantJoinBattle( unsigned int battleId, QString password, bool closeFirst );
 private slots:
     void acceptThis();
 };

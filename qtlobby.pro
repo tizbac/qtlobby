@@ -86,6 +86,7 @@ HEADERS += src/MainWindow.h \
     src/AudioBackend.h \
     src/Preference.h \
     src/BattlePasswordWidget.h \
+    src/BattleCloseFirstWidget.h \
     src/BattleUserTreeModel.h \
     src/TreeSortFilterProxyModel.h \
     src/PreferencePathElement.h \
@@ -154,6 +155,7 @@ SOURCES += src/main.cpp \
     src/AudioBackend.cpp \
     src/Preference.cpp \
     src/BattlePasswordWidget.cpp \
+    src/BattleCloseFirstWidget.cpp \
     src/BattleUserTreeModel.cpp \
     src/TreeSortFilterProxyModel.cpp \
     src/PreferencePathElement.cpp \
@@ -198,6 +200,7 @@ FORMS += ui/MainWidget.ui \
     ui/ConnectionWidget.ui \
     ui/BattleWindowForm.ui \
     ui/BattlePasswordWidget.ui \
+    ui/BattleCloseFirstWidget.ui \
     ui/AboutWidget.ui \
     ui/AgreementWidget.ui \
     ui/PreferenceWidget.ui \
