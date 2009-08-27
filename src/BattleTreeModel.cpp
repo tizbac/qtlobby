@@ -146,7 +146,7 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
     case 4: // map
         if ( role == Qt::DisplayRole )
             return m_battleList[index.row()].shortMapName();
-        if ( role == Qt::DecorationRole ) {
+        if ( role == Qt::DecorationRole && !Settings::Instance()->value("Battles/filterUnavailableMaps").toBool() ) {
             if(us->getMapNames().contains(b.mapName))
                 return QIcon(":/icons/exists.xpm");
             return QIcon(":/icons/nexists.xpm");
@@ -157,7 +157,7 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
     case 5: // mod
         if ( role == Qt::DisplayRole )
             return m_battleList[index.row()].shortModName();
-        if( role == Qt::DecorationRole ) {
+        if( role == Qt::DecorationRole && !Settings::Instance()->value("Battles/filterUnavailableMods").toBool() ) {
             if(us->getModNames().contains(b.modName))
                 return QIcon(":/icons/exists.xpm");
             return QIcon(":/icons/nexists.xpm");
