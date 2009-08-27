@@ -1,4 +1,4 @@
-// $Id: BattleCloseFirstWidget.cpp 334 2009-08-09 00:42:38Z jakobdettner $
+// $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "BattleCloseFirstWidget.h"
 

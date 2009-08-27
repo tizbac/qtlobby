@@ -165,6 +165,10 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
              lobbyTabs, SLOT(onTabMoved(int,int)));
     connect( tabBar, SIGNAL(currentChanged(int)),
              this, SLOT(onCurrentTabChanged()));
+    closeTab = new QShortcut(QKeySequence(QKeySequence::Close), this);
+    connect( closeTab, SIGNAL( activated() ),
+             lobbyTabs, SLOT( closeTab() ) );
+
     // aboutDialog
     connect( action_About, SIGNAL( triggered() ),
              this, SLOT( about() ) );
@@ -266,9 +270,6 @@ void MainWindow::setupToolbar() {
     previousTab = new QShortcut(QKeySequence(QKeySequence::PreviousChild), this);
     connect( previousTab, SIGNAL( activated() ),
              toolBarWidget, SLOT( onPreviousTab() ) );
-    closeTab = new QShortcut(QKeySequence(QKeySequence::Close), this);
-    connect( closeTab, SIGNAL( activated() ),
-             toolBarWidget, SLOT( onCloseTab() ) );
     openNewTab = new QShortcut(QKeySequence(QKeySequence::Open), this);
     connect( openNewTab, SIGNAL( activated() ),
              this, SLOT( onJoinRequested() ) );
