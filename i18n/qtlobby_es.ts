@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="es_ES">
 <context>
     <name>AboutWidget</name>
     <message>
         <source>About QTLobby</source>
-        <translation type="unfinished"></translation>
+        <translation>A cerca de QTLobby</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -39,34 +39,34 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>cerrar</translation>
     </message>
 </context>
 <context>
     <name>AbstractChannel</name>
     <message>
         <source>Chat Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Ayuda Chat</translation>
     </message>
     <message>
         <source>Display this help</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar ayuda</translation>
     </message>
     <message>
         <source>Display channel list</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar Channellist</translation>
     </message>
     <message>
         <source>Join channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Unir canal</translation>
     </message>
     <message>
         <source>Join password protected channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Unir canal protegido por clave</translation>
     </message>
     <message>
         <source>Join multiple channels</source>
-        <translation type="unfinished"></translation>
+        <translation>Unir multiples canales</translation>
     </message>
     <message>
         <source>Say highlighted</source>
@@ -74,7 +74,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Say /me is using QtLobby vXXX revYYY</source>
-        <translation type="unfinished"></translation>
+        <translation>Decir /me is using QtLobby vXXX revYYY</translation>
     </message>
     <message>
         <source>Say the mIRC slap sentence</source>
@@ -2256,83 +2256,83 @@ XX:?
     <name>UserMenuBuilder</name>
     <message>
         <source>Start private chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Iniciar chat privado</translation>
     </message>
     <message>
         <source>Slap around</source>
-        <translation type="unfinished"></translation>
+        <translation>Pegar hostias</translation>
     </message>
     <message>
         <source>Join same battle</source>
-        <translation type="unfinished"></translation>
+        <translation>Unir a la misma batalla</translation>
     </message>
     <message>
         <source>Toggle ignore</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambiar ignorar</translation>
     </message>
     <message>
         <source>Add to group</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir al grupo</translation>
     </message>
     <message>
         <source>Remove from group</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar del grupo</translation>
     </message>
     <message>
         <source>Add clan to group</source>
-        <translation type="unfinished"></translation>
+        <translation>Añadir al grupo clan</translation>
     </message>
     <message>
         <source>Remove clan from group</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar clan del grupo</translation>
     </message>
     <message>
         <source>Force</source>
-        <translation type="unfinished"></translation>
+        <translation>Forzar</translation>
     </message>
     <message>
         <source>Team</source>
-        <translation type="unfinished"></translation>
+        <translation>Equipo</translation>
     </message>
     <message>
         <source>Ally</source>
-        <translation type="unfinished"></translation>
+        <translation>Alianza</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Color</translation>
     </message>
     <message>
         <source>Spec</source>
-        <translation type="unfinished"></translation>
+        <translation>Spectator</translation>
     </message>
     <message>
         <source>Kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Echarle</translation>
     </message>
     <message>
         <source>New Group</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuevo grupo</translation>
     </message>
     <message>
         <source>Select team</source>
-        <translation type="unfinished"></translation>
+        <translation>Eligir equipo</translation>
     </message>
     <message>
         <source>Select a team to force player to</source>
-        <translation type="unfinished"></translation>
+        <translation>Eligir equipo al que meter el jugador forzado</translation>
     </message>
     <message>
         <source>Select ally team</source>
-        <translation type="unfinished"></translation>
+        <translation>Eligir equipo-alianza</translation>
     </message>
     <message>
         <source>Select an ally team to force player to</source>
-        <translation type="unfinished"></translation>
+        <translation>Eligir equipo-alianza al que meter el jugador forzado</translation>
     </message>
     <message>
         <source>Select user color</source>
-        <translation type="unfinished"></translation>
+        <translation>Eligir color de usario</translation>
     </message>
 </context>
 <context>
