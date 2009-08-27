@@ -373,6 +373,7 @@
         <file>icons/logos/jobjol/logo24.xpm</file>
         <file>icons/logos/jobjol/logo25.xpm</file>
         <file>i18n/qtlobby_de.qm</file>
+	<file>i18n/qtlobby_es.qm</file>
         <file>icons/color-picker-black.png</file>
         <file>icons/open_game_empty.xpm</file>
     </qresource>
