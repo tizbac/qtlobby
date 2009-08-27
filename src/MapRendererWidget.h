@@ -110,6 +110,7 @@ private:
     GLint m_waterTimeLoc;
     GLint m_waterpermTextureLoc;
     GLint m_lightSourceLoc;
+    bool m_glslSupported;
 };
 
 inline void MapRendererWidget::setDrawStartPositions(bool b) {

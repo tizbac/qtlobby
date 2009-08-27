@@ -48,19 +48,22 @@ MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
     m_computedNormals = false;
     m_indexes = 0;
     getGLExtensionFunctions().resolve(context());
+    m_glslSupported = getGLExtensionFunctions().glslSupported();
     m_redrawStartRects = true;
     setAutoBufferSwap(false);
     m_perspective = Settings::Instance()->value("MapViewing/perspectiveProjectionType").toBool();
-    makeCurrent();
-    if(m_waterShaderSet.loadShaders(":/src/shaders/water.glsl")) {
-        m_waterTimeLoc = m_waterShaderSet.getUniformLocation("time");
-        m_waterpermTextureLoc = m_waterShaderSet.getUniformLocation("permTexture");
-        m_lightSourceLoc = m_waterShaderSet.getUniformLocation("lightSource");
-        initPermTexture();
-        glUniform1fARB(m_waterTimeLoc, 0.0f);
-        glUniform1iARB(m_waterpermTextureLoc, GL_TEXTURE0);
-    } else {
-        qDebug() << m_waterShaderSet.getErrorMessage();
+    if(m_glslSupported) {
+        makeCurrent();
+        if(m_waterShaderSet.loadShaders(":/src/shaders/water.glsl")) {
+            m_waterTimeLoc = m_waterShaderSet.getUniformLocation("time");
+            m_waterpermTextureLoc = m_waterShaderSet.getUniformLocation("permTexture");
+            m_lightSourceLoc = m_waterShaderSet.getUniformLocation("lightSource");
+            initPermTexture();
+            glUniform1fARB(m_waterTimeLoc, 0.0f);
+            glUniform1iARB(m_waterpermTextureLoc, GL_TEXTURE0);
+        } else {
+            qDebug() << m_waterShaderSet.getErrorMessage();
+        }
     }
 }
 
@@ -224,13 +227,16 @@ void MapRendererWidget::paintGL() {
     glDisable(GL_LIGHTING);
 
     //Water rendering
-    glBindTexture(GL_TEXTURE_2D, m_permTexture);
-    m_waterShaderSet.use();
-    glUniform1fARB(m_waterTimeLoc, curMSecs/200.0);
-    glUniform1iARB(m_waterpermTextureLoc, GL_TEXTURE0);
-    glUniform1iARB(m_lightSourceLoc, GL_LIGHT0);
-    glColor4f(0, 0, 1, 0.5);
     glEnable(GL_BLEND);
+    if(m_glslSupported) {
+        glBindTexture(GL_TEXTURE_2D, m_permTexture);
+        m_waterShaderSet.use();
+        glUniform1fARB(m_waterTimeLoc, curMSecs/100.0);
+        glUniform1iARB(m_waterpermTextureLoc, GL_TEXTURE0);
+        glUniform1iARB(m_lightSourceLoc, GL_LIGHT0);
+    }
+    glColor4f(0, 0, 1, 0.5);
+
     glBegin(GL_QUADS);
     glNormal3i(0, 0, 1);
     glVertex3f(0,0,0);
@@ -239,7 +245,8 @@ void MapRendererWidget::paintGL() {
     glVertex3f(m_heightmap.getHeight() * CELL_SIZE, 0,0);
     glEnd();
     glDisable(GL_BLEND);
-    m_waterShaderSet.stop();
+    if(m_glslSupported)
+        m_waterShaderSet.stop();
 
     swapBuffers();
     int msecs = m_time.elapsed();
