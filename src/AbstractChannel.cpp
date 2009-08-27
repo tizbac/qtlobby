@@ -25,6 +25,7 @@ void AbstractChannel::setupUi( QWidget * channelTabWidget ) {
     channelTextDocument->setMaximumBlockCount( 500 );
     channelTextBrowser->setDocument( channelTextDocument );
     gridLayout = new QGridLayout( channelTabWidget );
+    gridLayout->setContentsMargins(0,0,0,0);
     gridLayout->setObjectName( QString::fromUtf8( "channelGridLayout" ) + objectName() );
     gridLayout->addWidget( channelTextBrowser, 1, 0, 1, 1 );
     connect(channelTextBrowser, SIGNAL(anchorClicked(QUrl)),
