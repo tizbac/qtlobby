@@ -119,6 +119,10 @@ void MapRendererWidget::hideEvent(QHideEvent* /*event*/){
     m_timer.stop();
 }
 
+void MapRendererWidget::showEvent(QShowEvent * /*event*/) {
+    m_timer.start();
+}
+
 void MapRendererWidget::resizeGL(int w, int h) {
     glViewport(0, 0, (GLint)w, (GLint)h);
     glMatrixMode (GL_PROJECTION);
