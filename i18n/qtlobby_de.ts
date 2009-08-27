@@ -54,7 +54,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Join channel</source>
-        <translation type="unfinished">Betrete Channel</translation>
+        <translation>Betrete Channel</translation>
     </message>
     <message>
         <source>Join password protected channel</source>
