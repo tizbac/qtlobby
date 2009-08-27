@@ -14,6 +14,25 @@
 #define CELL_SIZE 8*SCALE_HEIGHTMAP
 #define MAX_SHORT 65535
 
+int perm[256]= {151,160,137,91,90,15,
+                131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,
+                190, 6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,
+                88,237,149,56,87,174,20,125,136,171,168, 68,175,74,165,71,134,139,48,27,166,
+                77,146,158,231,83,111,229,122,60,211,133,230,220,105,92,41,55,46,245,40,244,
+                102,143,54, 65,25,63,161, 1,216,80,73,209,76,132,187,208, 89,18,169,200,196,
+                135,130,116,188,159,86,164,100,109,198,173,186, 3,64,52,217,226,250,124,123,
+                5,202,38,147,118,126,255,82,85,212,207,206,59,227,47,16,58,17,182,189,28,42,
+                223,183,170,213,119,248,152, 2,44,154,163, 70,221,153,101,155,167, 43,172,9,
+                129,22,39,253, 19,98,108,110,79,113,224,232,178,185, 112,104,218,246,97,228,
+                251,34,242,193,238,210,144,12,191,179,162,241, 81,51,145,235,249,14,239,107,
+                49,192,214, 31,181,199,106,157,184, 84,204,176,115,121,50,45,127, 4,150,254,
+                138,236,205,93,222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180};
+
+int grad3[16][3] = {{0,1,1},{0,1,-1},{0,-1,1},{0,-1,-1},
+                    {1,0,1},{1,0,-1},{-1,0,1},{-1,0,-1},
+                    {1,1,0},{1,-1,0},{-1,1,0},{-1,-1,0}, // 12 cube edges
+                    {1,0,-1},{-1,0,-1},{0,-1,1},{0,1,1}}; // 4 more to make 16
+
 MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
     xRot = 0;
     yRot = 0;
@@ -32,6 +51,17 @@ MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
     m_redrawStartRects = true;
     setAutoBufferSwap(false);
     m_perspective = Settings::Instance()->value("MapViewing/perspectiveProjectionType").toBool();
+    makeCurrent();
+    if(m_waterShaderSet.loadShaders(":/src/shaders/water.glsl")) {
+        m_waterTimeLoc = m_waterShaderSet.getUniformLocation("time");
+        m_waterpermTextureLoc = m_waterShaderSet.getUniformLocation("permTexture");
+        m_lightSourceLoc = m_waterShaderSet.getUniformLocation("lightSource");
+        initPermTexture();
+        glUniform1fARB(m_waterTimeLoc, 0.0f);
+        glUniform1iARB(m_waterpermTextureLoc, GL_TEXTURE0);
+    } else {
+        qDebug() << m_waterShaderSet.getErrorMessage();
+    }
 }
 
 MapRendererWidget::~MapRendererWidget() {
@@ -66,7 +96,7 @@ void MapRendererWidget::initializeGL() {
     //glEnable(GL_ALPHA_TEST);
     //glDepthMask(GL_FALSE);
 
-    		
+
 
     GLfloat LightAmbient[]= { 0.2f, 0.2f, 0.2f, 1.0f };
     GLfloat LightDiffuse[]= { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -75,7 +105,7 @@ void MapRendererWidget::initializeGL() {
     glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);	
     glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);	
     glLightfv(GL_LIGHT1, GL_SPECULAR, LightSpecular);	
-//    glLightfv(GL_LIGHT1, GL_POSITION,LightPosition);
+    //    glLightfv(GL_LIGHT1, GL_POSITION,LightPosition);
     glEnable(GL_LIGHT1);
 
     glColorMaterial ( GL_FRONT_AND_BACK, GL_DIFFUSE ) ;
@@ -85,7 +115,7 @@ void MapRendererWidget::initializeGL() {
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(updateGL()));
 }
 
-void MapRendererWidget::hideEvent(QHideEvent* event){
+void MapRendererWidget::hideEvent(QHideEvent* /*event*/){
     m_timer.stop();
 }
 
@@ -128,7 +158,7 @@ void MapRendererWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
 
-//    glEnable(GL_LIGHT1);
+    //    glEnable(GL_LIGHT1);
 
     glLoadIdentity();
 
@@ -139,7 +169,7 @@ void MapRendererWidget::paintGL() {
 
     glRotatef(-90, 0, 0, 1);
     if(m_perspective) {
-      glTranslatef(0,0,-(lastZoom*100));
+        glTranslatef(0,0,-(lastZoom*100));
     }
     glTranslatef(dy,-dx,0);
     glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
@@ -148,10 +178,9 @@ void MapRendererWidget::paintGL() {
 
     //get some system timestep in milisecs for light movement
     //although screen will only get updated on movement
-//    QTime curTime = QTime::currentTime();
-//    int curMSecs = curTime.msecsTo(QTime());
+    //    QTime curTime = QTime::currentTime();
+    //    int curMSecs = curTime.msecsTo(QTime());
     int curMSecs = m_lightTime.elapsed();
-
 
     GLfloat LightPosition[]= { (m_heightmap.getHeight()*CELL_SIZE/3) *sin(curMSecs/2000.0), (m_heightmap.getWidth()*CELL_SIZE/3) *cos(curMSecs/2000.0), 6, 1.0f };
     glLightfv(GL_LIGHT1, GL_POSITION, LightPosition);
@@ -191,15 +220,22 @@ void MapRendererWidget::paintGL() {
     glDisable(GL_LIGHTING);
 
     //Water rendering
+    glBindTexture(GL_TEXTURE_2D, m_permTexture);
+    m_waterShaderSet.use();
+    glUniform1fARB(m_waterTimeLoc, curMSecs/200.0);
+    glUniform1iARB(m_waterpermTextureLoc, GL_TEXTURE0);
+    glUniform1iARB(m_lightSourceLoc, GL_LIGHT0);
     glColor4f(0, 0, 1, 0.5);
     glEnable(GL_BLEND);
     glBegin(GL_QUADS);
+    glNormal3i(0, 0, 1);
     glVertex3f(0,0,0);
     glVertex3f(0, m_heightmap.getWidth()*CELL_SIZE,0);
     glVertex3f(m_heightmap.getHeight() * CELL_SIZE, m_heightmap.getWidth()*CELL_SIZE,0);
     glVertex3f(m_heightmap.getHeight() * CELL_SIZE, 0,0);
     glEnd();
     glDisable(GL_BLEND);
+    m_waterShaderSet.stop();
 
     swapBuffers();
     int msecs = m_time.elapsed();
@@ -270,9 +306,9 @@ void MapRendererWidget::makeObject() {
     }
     computeNormals();
     if(getGLExtensionFunctions().openGL15Supported()) {
-    glGenBuffers( 1, &m_VBONormals );
-    glBindBuffer( GL_ARRAY_BUFFER, m_VBONormals );
-    glBufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(Vertex), m_normals, GL_STATIC_DRAW );
+        glGenBuffers( 1, &m_VBONormals );
+        glBindBuffer( GL_ARRAY_BUFFER, m_VBONormals );
+        glBufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(Vertex), m_normals, GL_STATIC_DRAW );
     }
     generateTexCoords();
     if (getGLExtensionFunctions().openGL15Supported()) {
@@ -374,23 +410,23 @@ void MapRendererWidget::setSource(QString mapName, QImage minimap, QImage metalm
 
 
 void MapRendererWidget::setRotation(int xAngle, int yAngle, int zAngle) {
-	int update=0;
+    int update=0;
     normalizeAngle(&xAngle);
-	normalizeAngle(&yAngle);
-	normalizeAngle(&zAngle);
+    normalizeAngle(&yAngle);
+    normalizeAngle(&zAngle);
     if (xAngle != xRot) {
         xRot = xAngle;
         update=1;
     }
-	if (yAngle != yRot) {
+    if (yAngle != yRot) {
         yRot = yAngle;
         update=1;
     }
-	if (zAngle != zRot) {
+    if (zAngle != zRot) {
         zRot = zAngle;
         update=1;
     }
-	if (update==1) updateGL();
+    if (update==1) updateGL();
 }
 
 void MapRendererWidget::normalizeAngle(int *angle) {
@@ -405,7 +441,7 @@ void MapRendererWidget::wheelEvent ( QWheelEvent * event ) {
     if (newZoom > 4*m_heightmap.getRatio() || newZoom < 0.05*m_heightmap.getRatio()) return;
     lastZoom = newZoom;
     if(!m_perspective) {
-      resizeGL(width(), height());
+        resizeGL(width(), height());
     }
     updateGL();
 }
@@ -483,6 +519,30 @@ void MapRendererWidget::setMyAllyTeam(int n) {
 void MapRendererWidget::removeStartRect(int ally) {
     startRects.remove(ally);
     m_redrawStartRects = true;
+}
+
+
+void MapRendererWidget::initPermTexture() {
+    char *pixels;
+    int i,j;
+
+    glGenTextures(1, &m_permTexture); // Generate a unique texture ID
+    glBindTexture(GL_TEXTURE_2D, m_permTexture); // Bind the texture to texture unit 0
+
+    pixels = (char*)malloc( 256*256*4 );
+    for(i = 0; i<256; i++)
+        for(j = 0; j<256; j++) {
+        int offset = (i*256+j)*4;
+        char value = perm[(j+perm[i]) & 0xFF];
+        pixels[offset] = grad3[value & 0x0F][0] * 64 + 64;   // Gradient x
+        pixels[offset+1] = grad3[value & 0x0F][1] * 64 + 64; // Gradient y
+        pixels[offset+2] = grad3[value & 0x0F][2] * 64 + 64; // Gradient z
+        pixels[offset+3] = value;                     // Permuted index
+    }
+    // GLFW texture loading functions won't work here - we need GL_NEAREST lookup.
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, 256, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+    glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 }
 
 

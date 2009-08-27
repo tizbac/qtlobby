@@ -376,5 +376,6 @@
 	<file>i18n/qtlobby_es.qm</file>
         <file>icons/color-picker-black.png</file>
         <file>icons/open_game_empty.xpm</file>
+        <file>src/shaders/water.glsl</file>
     </qresource>
 </RCC>

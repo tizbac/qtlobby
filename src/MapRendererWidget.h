@@ -10,6 +10,7 @@
 #include <QTime>
 #include "RawHeightMap.h"
 #include "glextensions.h"
+#include "ShaderSet.h"
 
 class Vertex {
 public:
@@ -63,12 +64,14 @@ private:
     void generateIndexes();
     void generateTexCoords();
     void drawStartRecs();
+    void initPermTexture();
 private:
     bool m_computedNormals;
     QString currentMap;
     unsigned int* m_indexes;
     int m_numIndexes;
     GLuint m_texture;
+    GLuint m_permTexture;
     bool compileObject;
     QPoint lastPos;
     float lastZoom;
@@ -102,10 +105,29 @@ private:
     QTime m_lightTime;
     QString m_debugInfo;
     bool m_perspective;
+    ShaderSet m_waterShaderSet;
+    GLint m_waterTimeLoc;
+    GLint m_waterpermTextureLoc;
+    GLint m_lightSourceLoc;
 };
 
 inline void MapRendererWidget::setDrawStartPositions(bool b) {
     m_drawStartPositions = b;
 }
+
+/*inline double findnoise2(double x,double y) {
+    int n=(int)x+(int)y*57;
+    n=(n<<13)^n;
+    int nn=(n*(n*n*60493+19990303)+1376312589)&0x7fffffff;
+    return 1.0-((double)nn/1073741824.0);
+}
+
+inline double interpolate(double a,double b,double x) {
+    double ft=x * 3.1415927;
+    double f=(1.0-cos(ft))* 0.5;
+    return a*(1.0-f)+b*f;
+}
+*/
+
 
 #endif // MAPRENDERERWIDGET_H

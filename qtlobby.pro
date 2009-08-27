@@ -14,38 +14,30 @@ INCLUDEPATH += . \
 RESOURCES = resources.qrc
 UI_HEADERS_DIR = src
 SVN_REVISION = $$(SVN_REVISION)
-!isEmpty(SVN_REVISION) {
-    DEFINES += 'SVN_REV=\\"$$(SVN_REVISION)\\"'
-} else {
-    unix {
-        DEFINES += 'SVN_REV=\\"$(shell svnversion -n .)\\"'
-    } else {
-        DEFINES += 'SVN_REV=\\"$$system(svnversion -n .)\\"'
-    }
+!isEmpty(SVN_REVISION):DEFINES += 'SVN_REV=\\"$$(SVN_REVISION)\\"'
+else { 
+    unix:DEFINES += 'SVN_REV=\\"$(shell svnversion -n .)\\"'
+    else:DEFINES += 'SVN_REV=\\"$$system(svnversion -n .)\\"'
 }
 DEFINES += RPM_OPT_FLAGS
 target.path += $$INSTALL_ROOT/bin
 INSTALLS += target
 
-#QtLobby version
+# QtLobby version
 DEFINES += 'QTLOBBY_VERSION=\\"1.0alpha\\"'
-
-
 desktop.files = src/qtlobby.desktop
 desktop.path = $$INSTALL_ROOT/share/applications
 INSTALLS += desktop
-
 desktopicon.files = icons/qtlobby-logo.svg
 desktopicon.path = $$INSTALL_ROOT/share/pixmaps
 INSTALLS += desktopicon
-
 contains( CONFIG, buildbot ) { 
     QMAKE_LFLAGS += -static-libgcc \
         -Wl,-subsystem,windows
     QMAKE_CXXFLAGS += -g
-
-#([]lennart) for testing the bug when trying to load unitsync library with qt.
-#            this sets workaround (use of winapi) as default for buildbot.
+    
+    # ([]lennart) for testing the bug when trying to load unitsync library with qt.
+    # this sets workaround (use of winapi) as default for buildbot.
     CONFIG += unitsync_winapi
 }
 
@@ -118,7 +110,8 @@ HEADERS += src/MainWindow.h \
     src/ToolBarWidget.h \
     src/ServerProfilesModel.h \
     src/UserMenuBuilder.h \
-    src/UsersTreeView.h
+    src/UsersTreeView.h \
+    src/ShaderSet.h
 
 # src/MapSelector.h \ # not used
 # src/MapElementWidget.h \ # not used
@@ -186,7 +179,8 @@ SOURCES += src/main.cpp \
     src/ToolBarWidget.cpp \
     src/ServerProfilesModel.cpp \
     src/UserMenuBuilder.cpp \
-    src/UsersTreeView.cpp
+    src/UsersTreeView.cpp \
+    src/ShaderSet.cpp
 
 # src/MapSelector.cpp \ # not used
 # src/MapElementWidget.cpp \ # not used
@@ -226,11 +220,10 @@ contains( CONFIG, vc ) {
     LIBS += QScintilla2.lib
 }
 else:LIBS += -lqscintilla2
-
 contains( CONFIG, unitsync_winapi ) {
-#([]lennart)sets preprocessor switch to use direct winapi calls instead of qt
-#           to load unitsync library
-    DEFINES += PURE_WINAPI_UNITSYNC_LOADER
+# ([]lennart)sets preprocessor switch to use direct winapi calls instead of qt
+# to load unitsync library
+DEFINES += PURE_WINAPI_UNITSYNC_LOADER
 }
 unix:!contains( CONFIG, buildbot ) { 
     HEADERS += src/DBusVisualNotificationBackend.h
