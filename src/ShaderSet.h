@@ -31,10 +31,12 @@ inline QString ShaderSet::getErrorMessage() {
 }
 
 inline void ShaderSet::use() {
+    if(!getGLExtensionFunctions().glslSupported()) return;
     glUseProgramObjectARB(m_program);
 }
 
 inline void ShaderSet::stop() {
+    if(!getGLExtensionFunctions().glslSupported()) return;
     glUseProgramObjectARB(0);
 }
 

@@ -5,6 +5,7 @@ ShaderSet::ShaderSet() {
 }
 
 bool ShaderSet::loadShaders(QString filename) {
+    if(!getGLExtensionFunctions().glslSupported()) return true;
     QFile f(filename);
     if(!f.exists()) {
         m_error = tr("Requested shader file does not exists") + ": " + filename;
