@@ -84,6 +84,10 @@ p, li { white-space: pre-wrap; }
         <source>Chat Help</source>
         <translation>Chat Hilfe</translation>
     </message>
+    <message>
+        <source>Say /me is using QtLobby vXXX revYYY</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AgreementWidget</name>
@@ -186,6 +190,29 @@ Möchtest du ihn runterladen?</translation>
 Do you want to download it?</source>
         <translation>Entweder fehlt die Karte oder du hast eine fehlerhafte Version.
 Möchtest du sie runterladen?</translation>
+    </message>
+    <message>
+        <source>Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlocked</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BattleCloseFirstWidget</name>
+    <message>
+        <source>Battle Password</source>
+        <translation type="unfinished">Battle Passwort</translation>
+    </message>
+    <message>
+        <source>Always close the battle first</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are already in a battle. Do you want to close it first?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -616,6 +643,18 @@ Bitte Passwort angeben:</translation>
     <message>
         <source>Your ID number</source>
         <translation>Deine ID-Nummer</translation>
+    </message>
+    <message>
+        <source>Battle status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;&lt;img src=&quot;:/icons/open_game.xpm&quot; /&gt;&lt;/td&gt;&lt;td&gt;Unlocked&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1386,7 +1425,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>&amp;Start Spring</source>
-        <translation>&amp;Spring starten</translation>
+        <translation type="obsolete">&amp;Spring starten</translation>
     </message>
     <message>
         <source>&amp;Preferences</source>
@@ -1511,6 +1550,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Tabs</source>
         <translation>Tabs</translation>
+    </message>
+    <message>
+        <source>Try to &amp;reconnect</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1788,6 +1831,26 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
     <message>
         <source>Alpha:</source>
         <translation>Alpha:</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3D Projection type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Orthogonal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always close the battle before opening new</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -239,4 +239,5 @@ unix:!contains( CONFIG, buildbot ) {
 }
 RC_FILE += src/qtlobby.rc
 OTHER_FILES += src/sqads.js
-TRANSLATIONS = i18n/qtlobby_de.ts
+TRANSLATIONS = i18n/qtlobby_de.ts \
+	i18n/qtlobby_es.ts
