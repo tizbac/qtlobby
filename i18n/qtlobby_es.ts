@@ -1860,39 +1860,39 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
     <name>StylesheetDialog</name>
     <message>
         <source>Seleft file to save stylesheet</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleccionar archivo para guardar el Stylesheet</translation>
     </message>
     <message>
         <source>Seleft stylesheet to load</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleccionar Stylesheet para cargar</translation>
     </message>
     <message>
         <source>Stylesheet editing</source>
-        <translation type="unfinished"></translation>
+        <translation>Editar Stylesheet</translation>
     </message>
     <message>
         <source>Choose color</source>
-        <translation type="unfinished"></translation>
+        <translation>Elegir color</translation>
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
     <message>
         <source>Load</source>
-        <translation type="unfinished"></translation>
+        <translation>Cargar</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Guardar</translation>
     </message>
     <message>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>Aplicar</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerrar</translation>
     </message>
 </context>
 <context>
@@ -2144,112 +2144,357 @@ ZR:Zaire
 ZW:Zimbabwe
 XX:?
 </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">AC:Ascension Island
+AD:Andorra
+AE:United Arab Emirates
+AERO:Aircraft-related
+AF:Afghanistan
+AG:Antigua and Barbuda
+AI:Anguilla
+AL:Albania
+AM:Armenia
+AN:Netherland Antilles
+AO:Angola
+AQ:Antarctica
+AR:Argentina
+ARPA:Address and Routing Parameter Area
+AS:American Samoa
+AT:Austria
+AU:Australia
+AW:Aruba
+AZ:Azerbaijan
+BA:Bosnia-Herzegovina
+BB:Barbados
+BE:Belgium
+BF:Burkina Faso
+BG:Bulgaria
+BH:Bahrain
+BI:Burundi
+BIz:Business
+BJ:Benin
+BM:Bermuda
+BN:Brunei Darussalam
+BO:Bolivia
+BR:Brazil
+BS:Bahamas
+BT:Bhutan
+BW:Botswana
+BY:Belarus
+BZ:Belize
+CA:Canada
+CC:Cocos (Keeling) Islands
+CD:Democratic Republic of Congo
+CF:Central African Republic
+CG:Congo
+CH:Switzerland
+CI:Ivory Coast
+CK:Cook Islands
+CL:Chile
+CM:Cameroon
+CN:China
+CO:Colombia
+COM:Commercial
+COOP:Cooperative-related
+CR:Costa Rica
+CU:Cuba
+CV:Cape Verde
+CX:Christmas Island
+CY:Cyprus
+CZ:Czech Republic
+DE:Germany
+DJ:Djibouti
+DK:Denmark
+DM:Dominica
+DO:Dominican Republic
+DZ:Algeria
+EC:Ecuador
+EDU:Educational
+EE:Estonia
+EG:Egypt
+ES:Spain
+ET:Ethiopia
+FI:Finland
+FJ:Fiji
+FK:Falkland Islands (Malvinas)
+FM:Micronesia
+FO:Faroe Islands
+FR:France
+GB:Great Britan
+GA:Gabon
+GD:Grenada
+GE:Georgia
+GF:French Guyana
+GH:Ghana
+GI:Gibraltar
+GL:Greenland
+GM:Gambia
+GN:Guinea
+GOV:Government
+GP:Guadeloupe (French)
+GQ:Equatorial Guinea
+GR:Greece
+GT:Guatemala
+GU:Guam (US)
+GY:Guyana
+HK:Hong Kong
+HM:Heard and McDonald Islands
+HN:Honduras
+HR:Croatia (Hrvatska)
+HU:Hungary
+ID:Indonesia
+IE:Ireland
+IL:Israel
+IN:India
+INFO:General-purpose TLD
+INT:International
+IO:British Indian Ocean Territory
+IR:Islamic Republic of Iran
+IS:Iceland
+IT:Italy
+JM:Jamaica
+JO:Jordan
+JP:Japan
+KE:Kenya
+KG:Kyrgyzstan
+KH:Cambodia
+KI:Kiribati
+KM:Comoros
+KN:Saint Kitts Nevis Anguilla
+KR:South Korea
+KW:Kuwait
+KY:Cayman Islands
+KZ:Kazakhstan
+LA:Laos (People&apos;s Democratic Republic)
+LB:Lebanon
+LC:Saint Lucia
+LI:Liechtenstein
+LK:Sri Lanka
+LR:Liberia
+LS:Lesotho
+LT:Lithuania
+LU:Luxembourg
+LV:Latvia
+LY:Libya (Libyan Arab Jamahiriya)
+MA:Morocco
+MC:Monaco
+MD:Moldavia
+MG:Madagascar
+MH:Marshall Islands
+MIL:US Military
+MK:Macedonia
+ML:Mali
+MM:Myanmar
+MN:Mongolia
+MO:Macau
+MP:Northern Mariana Islands
+MQ:Martinique (French)
+MR:Mauritania
+MS:Montserrat
+MT:Malta
+MU:Mauritius
+MUseum:Museum-related
+MV:Maldives
+MW:Malawi
+MX:Mexico
+MY:Malaysia
+MZ:Mozambique
+NA:Namibia
+NAME:Personal name
+NC:New Caledonia (French)
+NE:Niger
+NET:Network Infrastructure
+NF:Norfolk Island
+NG:Nigeria
+NI:Nicaragua
+NL:Netherlands
+NO:Norway
+NP:Nepal
+NR:Nauru
+NU:Niue
+NZ:New Zealand
+OM:Oman
+ORG:Nonprofit
+PA:Panama
+PE:Peru
+PF:French Polynesia
+PF:Polynesia (French)
+PG:Papua New Guinea
+PH:Philippines
+PK:Pakistan
+PL:Poland
+PM:Saint Pierre and Miquelon
+PN:Pitcairn
+PR:Puerto Rico (US)
+PRo:Professional domain
+PS:Palestina
+PT:Portugal
+PW:Palau
+PY:Paraguay
+QA:Qatar
+RE:Reunion (French)
+RO:Romania
+RU:Russian Federation
+RW:Rwanda
+SA:Saudi Arabia
+SB:Solomon Islands
+SC:Seychelles
+SE:Sweden
+SG:Singapore
+SH:Saint Helena
+SI:Slovenia
+SK:Slovak Republic (Slovakia)
+SL:Sierra Leone
+SM:San Marino
+SN:Senegal
+SO:Somalia
+SR:Surinam
+ST:Saint Tome and Principe
+SU:Soviet Union
+SV:El Salvador
+SZ:Swaziland
+TC:Turks and Caicos Islands
+TD:Chad
+TF:French Southern Territories
+TG:Togo
+TH:Thailand
+TJ:Tajikistan
+TK:Tokelau
+TM:Turkmenistan
+TN:Tunisia
+TO:Tonga
+TP:East Timor
+TR:Turkey
+TT:Trinidad and Tobago
+TV:Tuvalu
+TW:Taiwan
+TZ:Tanzania
+UA:Ukraine
+UG:Uganda
+UK:United Kingdom
+US:United States of America
+UY:Uruguay
+UZ:Uzbekistan
+VA:Vatican City State
+VC:Saint Vincent and the Grenadines
+VE:Venezuela
+VG:Virgin Islands (British)
+VI:Virgin Islands (US)
+VN:Vietnam
+VU:Vanuatu
+WS:Samoa
+YE:Yemen
+YU:Yugoslavia
+ZA:South Africa
+ZM:Zambia
+ZR:Zaire
+ZW:Zimbabwe
+XX:?
+</translation>
     </message>
 </context>
 <context>
     <name>ToolBarWidget</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Foro</translation>
     </message>
     <message>
         <source>Join a channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Unir a canal</translation>
     </message>
 </context>
 <context>
     <name>UnitSyncLib</name>
     <message>
         <source>UnitSyncLibrary is not usable!</source>
-        <translation type="unfinished"></translation>
+        <translation>UnitSyncLibrary no aplicable!</translation>
     </message>
     <message>
         <source>unitSyncLib - library not found</source>
-        <translation type="unfinished"></translation>
+        <translation>unitSyncLib - Librería no encontrada</translation>
     </message>
     <message>
         <source>Unitsync library was not found or is unusable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Unitsync library no  encontrado o no aplicable.</translation>
     </message>
     <message>
         <source>unitSyncLib - library not loaded</source>
-        <translation type="unfinished"></translation>
+        <translation>unitSyncLib - librería sin cargar</translation>
     </message>
     <message>
         <source>UnitSyncLib was compiled against Spring version: </source>
-        <translation type="unfinished"></translation>
+        <translation>UnitSyncLib ha sido compilado por la versión de Spring: </translation>
     </message>
     <message>
         <source>Found %1 maps and %2 mods.</source>
-        <translation type="unfinished"></translation>
+        <translation>Encontrado %1 mapas y %2 mods.</translation>
     </message>
     <message>
         <source>Your library is not loaded, you can&apos;t use it!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tu libraría no ha sido cargado, no podrás usarla!</translation>
     </message>
 </context>
 <context>
     <name>UserGroupsDialog</name>
     <message>
         <source>New group</source>
-        <translation type="unfinished"></translation>
+        <translation>Grupo nuevo</translation>
     </message>
     <message>
         <source>New Descriptioin</source>
-        <translation type="unfinished"></translation>
+        <translation>Descripción nueva</translation>
     </message>
     <message>
         <source>Player1</source>
-        <translation type="unfinished"></translation>
+        <translation>Jugador1</translation>
     </message>
     <message>
         <source>Player2</source>
-        <translation type="unfinished"></translation>
+        <translation>Jugador2</translation>
     </message>
     <message>
         <source>Select color for group</source>
-        <translation type="unfinished"></translation>
+        <translation>Elegir color del grupo</translation>
     </message>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Diálogo</translation>
     </message>
     <message>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre:</translation>
     </message>
     <message>
         <source>Description:</source>
-        <translation type="unfinished"></translation>
+        <translation>Descripción:</translation>
     </message>
     <message>
         <source>Color:</source>
-        <translation type="unfinished"></translation>
+        <translation>Color:</translation>
     </message>
     <message>
         <source>#000000</source>
-        <translation type="unfinished"></translation>
+        <translation>#000000</translation>
     </message>
     <message>
         <source>Members:</source>
-        <translation type="unfinished"></translation>
+        <translation>Miembros:</translation>
     </message>
     <message>
         <source>New</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuevo</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Guardar</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerrar</translation>
     </message>
 </context>
 <context>
@@ -2339,110 +2584,110 @@ XX:?
     <name>UserTreeModel</name>
     <message>
         <source>Bot </source>
-        <translation type="unfinished"></translation>
+        <translation>Bot </translation>
     </message>
     <message>
         <source>Moderator </source>
-        <translation type="unfinished"></translation>
+        <translation>Moderator </translation>
     </message>
     <message>
         <source>Player </source>
-        <translation type="unfinished"></translation>
+        <translation>Jugador</translation>
     </message>
     <message>
         <source>is away</source>
-        <translation type="unfinished"></translation>
+        <translation>no está disponible</translation>
     </message>
     <message>
         <source>is in game</source>
-        <translation type="unfinished"></translation>
+        <translation>está en juego</translation>
     </message>
     <message>
         <source>is in battle room</source>
-        <translation type="unfinished"></translation>
+        <translation>está en área de batalla</translation>
     </message>
     <message>
         <source>is available</source>
-        <translation type="unfinished"></translation>
+        <translation>está disponible</translation>
     </message>
     <message>
         <source>1/7 Newbie</source>
-        <translation type="unfinished"></translation>
+        <translation>1/7 yogurin</translation>
     </message>
     <message>
         <source>2/7 Beginner</source>
-        <translation type="unfinished"></translation>
+        <translation>2/7 principiante</translation>
     </message>
     <message>
         <source>3/7 Average</source>
-        <translation type="unfinished"></translation>
+        <translation>3/7 Nivel medio</translation>
     </message>
     <message>
         <source>4/7 Above average</source>
-        <translation type="unfinished"></translation>
+        <translation>4/7 Nivel avanzado</translation>
     </message>
     <message>
         <source>5/7 Experienced</source>
-        <translation type="unfinished"></translation>
+        <translation>5/7 con experiencia</translation>
     </message>
     <message>
         <source>6/7 Highly experienced</source>
-        <translation type="unfinished"></translation>
+        <translation>6/7 alta experiencia</translation>
     </message>
     <message>
         <source>7/7 Veteran</source>
-        <translation type="unfinished"></translation>
+        <translation>7/7 Veterano</translation>
     </message>
     <message>
         <source>no rank set</source>
-        <translation type="unfinished"></translation>
+        <translation>sin rango </translation>
     </message>
     <message>
         <source>S</source>
-        <translation type="unfinished"></translation>
+        <translation>S</translation>
     </message>
     <message>
         <source>L</source>
-        <translation type="unfinished"></translation>
+        <translation>L</translation>
     </message>
     <message>
         <source>R</source>
-        <translation type="unfinished"></translation>
+        <translation>R</translation>
     </message>
     <message>
         <source>Player Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre del jugador</translation>
     </message>
     <message>
         <source>Player status</source>
-        <translation type="unfinished"></translation>
+        <translation>estado del jugador</translation>
     </message>
     <message>
         <source>Player location (guess)</source>
-        <translation type="unfinished"></translation>
+        <translation>Localodad (estimado)</translation>
     </message>
     <message>
         <source>Player rank</source>
-        <translation type="unfinished"></translation>
+        <translation>Rango del jugador</translation>
     </message>
 </context>
 <context>
     <name>Users</name>
     <message>
         <source>Start private chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Comnenzar chat privado</translation>
     </message>
     <message>
         <source>Slap around</source>
-        <translation type="unfinished"></translation>
+        <translation>Meterle hostias</translation>
     </message>
     <message>
         <source>Join same battle</source>
-        <translation type="unfinished"></translation>
+        <translation>Unir a misma batalla</translation>
     </message>
     <message>
         <source>Toggle ignore</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambiar ignorar</translation>
     </message>
 </context>
 </TS>
