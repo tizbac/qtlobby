@@ -41,8 +41,8 @@ int main( int argc, char *argv[] ) {
     QString locale = QLocale::system().name();
     qDebug() << "Your locale is: " << locale;
     QTranslator translator;
-    translator.load(QString(":/i18n/qtlobby_") + locale );
-    app.installTranslator(&translator);
+    translator.load( "qtlobby_" + locale, "../i18n/" );
+//    app.installTranslator(&translator);
 
     QStringList args = app.arguments();
     for(int i = 1; i < args.size(); i++) {

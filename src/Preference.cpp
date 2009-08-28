@@ -16,7 +16,7 @@ Preference::Preference( QDialog* parent ) : QDialog( parent ) {
     // show first page by default
     preferencesListWidget->setCurrentRow(0);
     stackedWidget->setCurrentIndex(0);
-    languageNameLocaleMap["Deutsch"] = "de";
+    languageNameLocaleMap["Deutsch"] = "de_DE";
     languageNameLocaleMap["English"] = "en";
     languageNameLocaleMap[QString::fromUtf8( "Español" )] = "es";
     languageNameLocaleMap[QString::fromUtf8( "Русский" )] = "ru";
@@ -160,13 +160,16 @@ void Preference::onLanguageChanged(QString language) {
         QString currentLocale = settings->value("locale", "en").toString(); // get the current locale setting
         if( languageNameLocaleMap[language] != currentLocale ) {
             QTranslator translator;
-            translator.load( QString(":/i18n/qtlobby_" + currentLocale) );
-            qDebug() << "Removing translator for locale: " + currentLocale;
-            QCoreApplication::instance()->removeTranslator( &translator );
+//            translator.load( "qtlobby_" + currentLocale, ":/i18n/" );
+//            qDebug() << "Removing translator for locale: " + currentLocale;
+//            qApp()->removeTranslator( &translator );
             QString newLocale = languageNameLocaleMap[language];
-            translator.load( QString(":/i18n/qtlobby_" +  newLocale ) );
-            qDebug() << "Installing translator for locale: " + newLocale;
-            QCoreApplication::instance()->installTranslator( &translator );
+            if( translator.load( "qtlobby_" +  newLocale, ":/i18n/" ) ) {
+                qDebug() << "Installing translator for locale: " + newLocale;
+                qApp->installTranslator( &translator );
+            }
+            // shouldn't this work immediately?
+            qDebug() << tr( "Cancel" );
             settings->setValue( "locale", newLocale );
         }
         return;
@@ -321,4 +324,25 @@ void Preference::initPathExamples() {
             "/usr/games/springsettings;"
             "/usr/bin/springsettings";
 #endif
+}
+
+QStringList Preference::findQmFiles() {
+     QDir dir(":/i18n");
+     QStringList fileNames = dir.entryList(QStringList("*.qm"), QDir::Files,
+                                           QDir::Name);
+     QMutableStringListIterator i(fileNames);
+     while (i.hasNext()) {
+         i.next();
+         i.setValue(dir.filePath(i.value()));
+     }
+     return fileNames;
+}
+
+
+void Preference::changeEvent( QEvent* event ) {
+    if( event->type() == QEvent::LanguageChange ) {
+        this->retranslateUi(this);
+        qDebug() << "Preference::restranslateUi() called";
+    }
+    QDialog::changeEvent( event );
 }
