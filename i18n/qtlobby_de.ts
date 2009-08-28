@@ -136,7 +136,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>You have been kicked from the battle!</source>
-        <translation>Du wurdest aus dem Spiel gekickt!</translation>
+        <translation type="unfinished">Du wurdest aus dem Spiel gekickt!</translation>
     </message>
     <message>
         <source>You have been kicked from the battle!

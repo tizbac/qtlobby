@@ -82,11 +82,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Open private chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Abrir chat privado</translation>
     </message>
     <message>
         <source>Leave the channel</source>
-        <translation type="unfinished"></translation>
+        <translation>Salir del canal </translation>
     </message>
 </context>
 <context>
@@ -108,94 +108,96 @@ p, li { white-space: pre-wrap; }
     <name>BattleChannel</name>
     <message>
         <source>Ring!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ring!</translation>
     </message>
     <message>
         <source>%1 wants attention!</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 pide atención!</translation>
     </message>
     <message>
         <source>Kicked from battle</source>
-        <translation type="unfinished"></translation>
+        <translation>Expulsado de la batalla</translation>
     </message>
     <message>
         <source>You have been kicked from the battle!</source>
-        <translation type="unfinished"></translation>
+        <translation>Has sido expulsado de la batalla!</translation>
     </message>
     <message>
         <source>You have been kicked from the battle!
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Has sido expulsado de la batalla!</translation>
     </message>
     <message>
         <source>%2 joined the battle.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 se ha unido a la batalla.</translation>
     </message>
     <message>
         <source>%1 left the battle.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ha abandonado la batalla.</translation>
     </message>
     <message>
         <source>Battle locked.</source>
-        <translation type="unfinished"></translation>
+        <translation>Batalla terminada.</translation>
     </message>
     <message>
         <source>Battle unlocked.</source>
-        <translation type="unfinished"></translation>
+        <translation>Batalla comenzó.</translation>
     </message>
     <message>
         <source>Locked</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerrado</translation>
     </message>
     <message>
         <source>Unlocked</source>
-        <translation type="unfinished"></translation>
+        <translation>Abierto</translation>
     </message>
     <message>
         <source>Please, download %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor, bajarse %1</translation>
     </message>
     <message>
         <source>Missing content</source>
-        <translation type="unfinished"></translation>
+        <translation>Contenido no encontrado</translation>
     </message>
     <message>
         <source>You don&apos;t have the mod or you have a broken version.
 Do you want to download it?</source>
-        <translation type="unfinished"></translation>
+        <translation>Tienes una version corrupta o no tienes el Mod.
+¿Quieres bajarle ahora?</translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation type="unfinished"></translation>
+        <translation>Si</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation>No</translation>
     </message>
     <message>
         <source>Loading %1...</source>
-        <translation type="unfinished"></translation>
+        <translation>Cargando %1...</translation>
     </message>
     <message>
         <source>Map %1 not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Mapa %1 no encontrado</translation>
     </message>
     <message>
         <source>You don&apos;t have the map or you have a broken version.
 Do you want to download it?</source>
-        <translation type="unfinished"></translation>
+        <translation>Tienes una version corrupta o no tienes el Mod.
+¿Quieres bajarle ahora?</translation>
     </message>
     <message>
         <source>Select color for group</source>
-        <translation type="unfinished">Elegir color del grupo</translation>
+        <translation>Elegir color del grupo</translation>
     </message>
     <message>
         <source>Select value</source>
-        <translation type="unfinished"></translation>
+        <translation>Elegir valor</translation>
     </message>
     <message>
         <source>Select value for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Elegir valor para %1</translation>
     </message>
 </context>
 <context>
@@ -217,19 +219,19 @@ Do you want to download it?</source>
     <name>BattleHost</name>
     <message>
         <source>Map not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Mapa no encontrado</translation>
     </message>
     <message>
         <source>Mod not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Mod no encontrado</translation>
     </message>
     <message>
         <source>Battle hosting failed: </source>
-        <translation type="unfinished"></translation>
+        <translation>Error en administrar la batalla:</translation>
     </message>
     <message>
         <source>Failed to load </source>
-        <translation type="unfinished"></translation>
+        <translation>Error en cargar</translation>
     </message>
 </context>
 <context>
