@@ -66,7 +66,7 @@
       <enum>QFrame::Raised</enum>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="pathWidget"/>
      <widget class="QWidget" name="chatWidget">
@@ -168,72 +168,75 @@
       </layout>
      </widget>
      <widget class="QWidget" name="languageWidget">
-      <widget class="QWidget" name="layoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>5</x>
-         <y>5</y>
-         <width>263</width>
-         <height>33</height>
-        </rect>
-       </property>
-       <layout class="QFormLayout" name="formLayout">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Application Language:</string>
-          </property>
-          <property name="buddy">
-           <cstring>languageComboBox</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QComboBox" name="languageComboBox">
-          <item>
+      <layout class="QFormLayout" name="formLayout">
+       <item row="0" column="0">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="label">
            <property name="text">
-            <string>Deutsch</string>
+            <string>Application Language:</string>
            </property>
-           <property name="icon">
-            <iconset>
-             <normalon>:/flags/DE.xpm</normalon>
-            </iconset>
+           <property name="buddy">
+            <cstring>languageComboBox</cstring>
            </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>English</string>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normalon>:/flags/GB.xpm</normalon>
-            </iconset>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Русский</string>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normalon>:/flags/RU.xpm</normalon>
-            </iconset>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Suomi</string>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normalon>:/flags/FI.xpm</normalon>
-            </iconset>
-           </property>
-          </item>
-         </widget>
-        </item>
-       </layout>
-      </widget>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="languageComboBox">
+           <item>
+            <property name="text">
+             <string>Deutsch</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normalon>:/flags/DE.xpm</normalon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>English</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normalon>:/flags/GB.xpm</normalon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Espagñol</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../resources.qrc">
+              <normaloff>:/flags/ES.xpm</normaloff>:/flags/ES.xpm</iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Русский</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normalon>:/flags/RU.xpm</normalon>
+             </iconset>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Suomi</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normalon>:/flags/FI.xpm</normalon>
+             </iconset>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="mapViewingWidget">
       <layout class="QGridLayout" name="gridLayout_2">
@@ -530,7 +533,9 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>preferencesListWidget</sender>

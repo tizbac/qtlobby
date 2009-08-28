@@ -39,6 +39,7 @@ private:
     void loadPreferences();
     QStringList findQmFiles();
     QMap<QString, QString> languageNameLocaleMap;
+    QTranslator* translator;
 public slots:
     void onResetFormToSettings();
     void changeEvent( QEvent* event );

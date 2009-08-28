@@ -615,10 +615,6 @@ bool Battles::event(QEvent* event) {
             return true;
         }
         break;
-    case QEvent::LanguageChange:
-        qDebug() << "Battles QEvent::LanguageChange entered";
-        this->retranslateUi();
-        break;
     default:
         break;
     }
@@ -634,8 +630,4 @@ void Battles::selectionChanged ( const QItemSelection & selected, const QItemSel
     if( ( deselected.indexes().size() > 0 ) != ( selected.indexes().size() > 0 ) )
         emit battleSelected(selected.indexes().size() > 0);
     QTreeView::selectionChanged( selected, deselected );
-}
-
-void Battles::retranslateUi() {
-    this->battleManager->model()->retranslateUi();
 }

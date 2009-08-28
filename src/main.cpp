@@ -38,12 +38,6 @@ int main( int argc, char *argv[] ) {
     #endif
     #endif
     QApplication app( argc, argv );
-    QString locale = QLocale::system().name();
-    qDebug() << "Your locale is: " << locale;
-    QTranslator translator;
-    translator.load( "qtlobby_" + locale, "../i18n/" );
-//    app.installTranslator(&translator);
-
     QStringList args = app.arguments();
     for(int i = 1; i < args.size(); i++) {
         if(args.at(i) == "--3dpreview" || args.at(i) == "-3d") {

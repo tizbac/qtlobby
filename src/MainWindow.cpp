@@ -574,7 +574,6 @@ void MainWindow::changeEvent(QEvent *e) {
     QMainWindow::changeEvent(e);
     switch (e->type()) {
     case QEvent::LanguageChange:
-        qDebug() << "case QEvent::LanguageChange entered";
         this->retranslateUi(this);
         break;
     default:

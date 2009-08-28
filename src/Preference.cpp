@@ -21,6 +21,7 @@ Preference::Preference( QDialog* parent ) : QDialog( parent ) {
     languageNameLocaleMap[QString::fromUtf8( "Español" )] = "es";
     languageNameLocaleMap[QString::fromUtf8( "Русский" )] = "ru";
     languageNameLocaleMap["Suomi"] = "fi";
+    translator = new QTranslator(this);
 }
 
 #define INIT_PREF(key, value) if(!settings->contains(key)) \
@@ -73,7 +74,16 @@ void Preference::loadPreferences() {
     /*General*/
     INIT_PREF("Battle/autoCloseFirst", false);
     battleAutoCloseFirstCheckBox->setChecked( settings->value("Battle/autoCloseFirst").toBool() );
-    INIT_PREF("locale", "en");
+    QString locale = QLocale::system().name();
+    qDebug() << "Your locale is: " << locale;
+    INIT_PREF( "locale", locale );
+    locale = settings->value( "locale" ).toString();
+    for( int i = 0; i < languageComboBox->count(); i++ ) {
+        if( languageNameLocaleMap[languageComboBox->itemText(i)] == locale ) {
+            languageComboBox->setCurrentIndex(i);
+            break;
+        }
+    }
 }
 
 Preference::~Preference() { }
@@ -152,24 +162,24 @@ void Preference::onResetFormToSettings() {
 
     /*General*/
     battleAutoCloseFirstCheckBox->setChecked( settings->value( "Battle/autoCloseFirst" ).toBool() );
+    QString locale = settings->value( "locale" ).toString();
+    for( int i = 0; i < languageComboBox->count(); i++ ) {
+        if( languageNameLocaleMap[languageComboBox->itemText(i)] == locale ) {
+            languageComboBox->setCurrentIndex(i);
+            break;
+        }
+    }
 }
 
 void Preference::onLanguageChanged(QString language) {
-    //FIXME language switch does not work yet
     if( languageNameLocaleMap.contains( language ) ) {
         QString currentLocale = settings->value("locale", "en").toString(); // get the current locale setting
         if( languageNameLocaleMap[language] != currentLocale ) {
-            QTranslator translator;
-//            translator.load( "qtlobby_" + currentLocale, ":/i18n/" );
-//            qDebug() << "Removing translator for locale: " + currentLocale;
-//            qApp()->removeTranslator( &translator );
             QString newLocale = languageNameLocaleMap[language];
-            if( translator.load( "qtlobby_" +  newLocale, ":/i18n/" ) ) {
+            if( translator->load( "qtlobby_" +  newLocale, ":/i18n/" ) ) {
                 qDebug() << "Installing translator for locale: " + newLocale;
-                qApp->installTranslator( &translator );
+                qApp->installTranslator( translator );
             }
-            // shouldn't this work immediately?
-            qDebug() << tr( "Cancel" );
             settings->setValue( "locale", newLocale );
         }
         return;
@@ -338,11 +348,8 @@ QStringList Preference::findQmFiles() {
      return fileNames;
 }
 
-
 void Preference::changeEvent( QEvent* event ) {
-    if( event->type() == QEvent::LanguageChange ) {
-        this->retranslateUi(this);
-        qDebug() << "Preference::restranslateUi() called";
-    }
+    if( event->type() == QEvent::LanguageChange )
+        retranslateUi(this);
     QDialog::changeEvent( event );
 }
