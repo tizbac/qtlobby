@@ -187,7 +187,7 @@ Do you want to download it?</source>
     </message>
     <message>
         <source>Select color for group</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Elegir color del grupo</translation>
     </message>
     <message>
         <source>Select value</source>
@@ -245,7 +245,7 @@ Close it first!</source>
     </message>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Diálogo</translation>
     </message>
     <message>
         <source>&amp;Description:</source>
@@ -348,31 +348,31 @@ Please enter the Password:</source>
     </message>
     <message>
         <source>1/7 Newbie</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">1/7 yogurin</translation>
     </message>
     <message>
         <source>2/7 Beginner</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">2/7 principiante</translation>
     </message>
     <message>
         <source>3/7 Average</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">3/7 Nivel medio</translation>
     </message>
     <message>
         <source>4/7 Above average</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">4/7 Nivel avanzado</translation>
     </message>
     <message>
         <source>5/7 Experienced</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">5/7 con experiencia</translation>
     </message>
     <message>
         <source>6/7 Highly experienced</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">6/7 alta experiencia</translation>
     </message>
     <message>
         <source>7/7 Veteran</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">7/7 Veterano</translation>
     </message>
     <message>
         <source>no rank</source>
@@ -384,7 +384,7 @@ Please enter the Password:</source>
     </message>
     <message>
         <source>S</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">S</translation>
     </message>
     <message>
         <source>Country</source>
@@ -400,7 +400,7 @@ Please enter the Password:</source>
     </message>
     <message>
         <source>R</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">R</translation>
     </message>
     <message>
         <source>Title</source>
@@ -475,7 +475,7 @@ Please enter the Password:</source>
     </message>
     <message>
         <source>Color</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Color</translation>
     </message>
     <message>
         <source>Handicap</source>
@@ -486,7 +486,7 @@ Please enter the Password:</source>
     <name>BattleWindowForm</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Foro</translation>
     </message>
     <message>
         <source>Map</source>
@@ -582,7 +582,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Color:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Color:</translation>
     </message>
     <message>
         <source>Id:</source>
@@ -1167,7 +1167,7 @@ p, li { white-space: pre-wrap; }
     <name>GLProgressDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Diálogo</translation>
     </message>
     <message>
         <source>Compiling GL display list, please wait...</source>
@@ -1178,7 +1178,7 @@ p, li { white-space: pre-wrap; }
     <name>LoginDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Diálogo</translation>
     </message>
     <message>
         <source>Profiles</source>
@@ -1325,7 +1325,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Join channel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unir canal</translation>
     </message>
     <message>
         <source>Specify a channel you want to join</source>
@@ -1365,7 +1365,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">...</translation>
     </message>
     <message>
         <source>This userlist filter string is used to match playernames</source>
@@ -1500,7 +1500,7 @@ p, li { white-space: pre-wrap; }
     <name>MapOverviewDialog</name>
     <message>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Diálogo</translation>
     </message>
     <message>
         <source>Left mouse button rotates the map, middle mouse button moves the map and mouse wheel zooms in and out.</source>
@@ -1569,7 +1569,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Foro</translation>
     </message>
     <message>
         <source>TextLabel</source>
@@ -1577,7 +1577,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">...</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1784,6 +1784,10 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
         <source>&amp;Ok</source>
         <translation type="unfinished"></translation>
     </message>
+    <message utf8="true">
+        <source>Espagñol</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PrivateChannel</name>
@@ -1830,7 +1834,7 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">cerrar</translation>
     </message>
 </context>
 <context>
@@ -1853,6 +1857,32 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
     </message>
     <message>
         <source>&gt;&gt; agreement denied, disconnecting from server.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ShaderSet</name>
+    <message>
+        <source>Requested shader file does not exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open requested shader file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error compiling vertex shader:
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error compiling fragment shader:
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error linking program:
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

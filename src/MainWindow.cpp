@@ -207,9 +207,10 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     battleListLineEdit->setText(settings->value("battleListFilterString").toString());
     userListLineEdit->setText(settings->value("userListFilterString").toString());
     // tray icon stuff
+#ifndef Q_WS_MAC
     connect( trayIcon, SIGNAL( activated( QSystemTrayIcon::ActivationReason ) ),
              this, SLOT( toggleShowHideMainWindow( QSystemTrayIcon::ActivationReason ) ) );
-
+#endif
     connect( this, SIGNAL( newTrayMessage( QString ) ),
              this, SLOT( sendTrayMessage( QString ) ) );
     connect( battles, SIGNAL( start() ),

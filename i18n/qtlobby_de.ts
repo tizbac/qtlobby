@@ -1852,6 +1852,10 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
         <source>Always close the battle before opening new</source>
         <translation type="unfinished"></translation>
     </message>
+    <message utf8="true">
+        <source>Espagñol</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PrivateChannel</name>
@@ -1922,6 +1926,32 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
     <message>
         <source>Registration was successful. You can now log in with your account</source>
         <translation>Die Registrierung war erfolgreich. Du kannst dich jetzt mit deinem Account einloggen</translation>
+    </message>
+</context>
+<context>
+    <name>ShaderSet</name>
+    <message>
+        <source>Requested shader file does not exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open requested shader file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error compiling vertex shader:
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error compiling fragment shader:
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error linking program:
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
