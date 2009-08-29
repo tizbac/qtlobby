@@ -228,10 +228,10 @@ contains( CONFIG, vc ) {
     LIBS += QScintilla2.lib
 }
 else:LIBS += -lqscintilla2
-contains( CONFIG, unitsync_winapi ):# ([]lennart)sets preprocessor switch to use direct winapi calls instead of qt
 
+# ([]lennart)sets preprocessor switch to use direct winapi calls instead of qt
 # to load unitsync library
-DEFINES += PURE_WINAPI_UNITSYNC_LOADER
+contains( CONFIG, unitsync_winapi ): DEFINES += PURE_WINAPI_UNITSYNC_LOADER
 unix:!contains( CONFIG, buildbot ) { 
     HEADERS += src/DBusVisualNotificationBackend.h
     SOURCES += src/DBusVisualNotificationBackend.cpp
