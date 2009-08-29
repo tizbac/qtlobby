@@ -224,7 +224,7 @@ float F(vec3 v) {
                     u.x*u.z*(1.0-c)-u.y*s, u.y*u.z*(1.0-c)+u.x*s, u.z*u.z+(1.0-u.z*u.z)*c);*/
 	float d = 0.3*t;
 	v += vec3(d,-d,d);
-	return (noise(v*2))/2.5;
+	return (noise(v))/1.5;
 }
 
 
@@ -236,7 +236,7 @@ void main() {
 		
 	n = normalize(normal);
 	float F0, Fx, Fy, Fz;
-	float e = 10.0;
+	float e = 5.0;
 	F0 = F(v_texCoord3D.xyz);
 	Fx = F(vec3(v_texCoord3D.x+e,v_texCoord3D.y,v_texCoord3D.z));
 	Fy = F(vec3(v_texCoord3D.x,v_texCoord3D.y+e,v_texCoord3D.z));
