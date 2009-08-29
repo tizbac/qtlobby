@@ -111,7 +111,11 @@ HEADERS += src/MainWindow.h \
     src/ServerProfilesModel.h \
     src/UserMenuBuilder.h \
     src/UsersTreeView.h \
-    src/ShaderSet.h
+    src/ShaderSet.h \
+    src/GLMaterial.h \
+    src/GLObject.h \
+    src/GLHeightMap.h \
+    src/GLWaterPlane.h
 
 # src/MapSelector.h \ # not used
 # src/MapElementWidget.h \ # not used
@@ -180,7 +184,11 @@ SOURCES += src/main.cpp \
     src/ServerProfilesModel.cpp \
     src/UserMenuBuilder.cpp \
     src/UsersTreeView.cpp \
-    src/ShaderSet.cpp
+    src/ShaderSet.cpp \
+    src/GLMaterial.cpp \
+    src/GLObject.cpp \
+    src/GLHeightMap.cpp \
+    src/GLWaterPlane.cpp
 
 # src/MapSelector.cpp \ # not used
 # src/MapElementWidget.cpp \ # not used
@@ -220,11 +228,10 @@ contains( CONFIG, vc ) {
     LIBS += QScintilla2.lib
 }
 else:LIBS += -lqscintilla2
-contains( CONFIG, unitsync_winapi ) {
-# ([]lennart)sets preprocessor switch to use direct winapi calls instead of qt
+contains( CONFIG, unitsync_winapi ):# ([]lennart)sets preprocessor switch to use direct winapi calls instead of qt
+
 # to load unitsync library
 DEFINES += PURE_WINAPI_UNITSYNC_LOADER
-}
 unix:!contains( CONFIG, buildbot ) { 
     HEADERS += src/DBusVisualNotificationBackend.h
     SOURCES += src/DBusVisualNotificationBackend.cpp
@@ -233,4 +240,4 @@ unix:!contains( CONFIG, buildbot ) {
 RC_FILE += src/qtlobby.rc
 OTHER_FILES += src/sqads.js
 TRANSLATIONS = i18n/qtlobby_de.ts \
-	i18n/qtlobby_es.ts
+    i18n/qtlobby_es.ts

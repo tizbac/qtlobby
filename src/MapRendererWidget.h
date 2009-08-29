@@ -11,26 +11,9 @@
 #include "RawHeightMap.h"
 #include "glextensions.h"
 #include "ShaderSet.h"
-
-class Vertex {
-public:
-    float x;
-    float y;
-    float z;
-    Vertex();
-    Vertex(float x, float y, float z);
-    void setXYZ(float x, float y, float z);
-    void add(Vertex v2);
-    void sub(Vertex v2);
-    static Vertex getNormal(Vertex& v1, Vertex& v2);
-    static Vertex getNormal(Vertex& a, Vertex& b, Vertex& c);
-    void normalize();
-};
-
-struct TexCoord {
-    float u;
-    float v;
-};
+#include "GLMaterial.h"
+#include "GLHeightMap.h"
+#include "GLWaterPlane.h"
 
 class MapRendererWidget : public QGLWidget {
     Q_OBJECT
@@ -61,39 +44,24 @@ protected:
 private:
     void normalizeAngle(int *angle);
     void makeObject();
-    void computeNormals();
-    void generateIndexes();
-    void generateTexCoords();
     void drawStartRecs();
     void initPermTexture();
 private:
-    bool m_computedNormals;
     QString currentMap;
-    unsigned int* m_indexes;
-    int m_numIndexes;
     GLuint m_texture;
     GLuint m_permTexture;
-    bool compileObject;
     QPoint lastPos;
     float lastZoom;
     QImage m_minimap;
     QImage m_metalmap;
     QImage m_withRects;
-    RawHeightMap m_heightmap;
-    QVector<QVector<Vertex> > vertexes;
-    unsigned int m_vertexNumber;
-    Vertex* m_vertexes;
-    Vertex* m_normals;
-    TexCoord* m_texCoords;
-    unsigned int m_VBOVertices;
-    unsigned int m_VBOTexCoords;
-    unsigned int m_VBONormals;
     bool blockRerender;
     int xRot;
     int yRot;
     int zRot;
     float dx;
     float dy;
+    float dz;
     QMap<int, QRect> startRects;
     int myAlly;
     bool m_redrawStartRects;
@@ -110,7 +78,13 @@ private:
     GLint m_waterTimeLoc;
     GLint m_waterpermTextureLoc;
     GLint m_lightSourceLoc;
+    GLMaterial m_landMaterial;
+    GLMaterial m_waterMaterial;
     bool m_glslSupported;
+    GLHeightMap m_heightmap;
+    bool m_compileObjects;
+    float m_ratio;
+    GLWaterPlane m_waterPlane;
 };
 
 inline void MapRendererWidget::setDrawStartPositions(bool b) {

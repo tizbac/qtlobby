@@ -1,18 +1,11 @@
 // $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "MapRendererWidget.h"
-#include "GLProgressDialog.h"
 #include <cmath>
 #include <QDebug>
 #include <QApplication>
 #include "Settings.h"
 
-
-#define RESOLVE_GL_FUNC(f) ok &= bool((f = (_gl##f) context()->getProcAddress(QLatin1String("gl" #f))));
-
-#define SCALE_HEIGHTMAP 0.01
-#define CELL_SIZE 8*SCALE_HEIGHTMAP
-#define MAX_SHORT 65535
 
 int perm[256]= {151,160,137,91,90,15,
                 131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,
@@ -39,19 +32,16 @@ MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
     zRot = 0;
     dx = 0;
     dy = 0;
+    dz = 0;
     lastZoom = 1.0;
-    compileObject = false;
+    m_compileObjects = false;
     blockRerender = false;
-    m_vertexes = 0;
-    m_normals = 0;
-    m_texCoords = 0;
-    m_computedNormals = false;
-    m_indexes = 0;
     getGLExtensionFunctions().resolve(context());
     m_glslSupported = getGLExtensionFunctions().glslSupported();
     m_redrawStartRects = true;
     setAutoBufferSwap(false);
     m_perspective = Settings::Instance()->value("MapViewing/perspectiveProjectionType").toBool();
+    //m_glslSupported = false;
     if(m_glslSupported) {
         makeCurrent();
         if(m_waterShaderSet.loadShaders(":/src/shaders/water.glsl")) {
@@ -68,52 +58,61 @@ MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
 }
 
 MapRendererWidget::~MapRendererWidget() {
-    if (getGLExtensionFunctions().openGL15Supported()) {
-        glDeleteBuffers(1, &m_VBOVertices);
-        glDeleteBuffers(1, &m_VBONormals);
-        glDeleteBuffers(1, &m_VBOTexCoords);
-    }
-    if (m_vertexes) delete m_vertexes;
-    if (m_texCoords) delete m_texCoords;
-    if (m_indexes) delete m_indexes;
+    m_heightmap.free();
+    m_waterPlane.free();
 }
 
 void MapRendererWidget::initializeGL() {
-    GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
-    GLfloat mat_specular[] = { 1.0, 0.8, 0.8, 1.0 };
-    GLfloat mat_shininess[] = { 80.0 };
-    glClearColor (0.0, 0.0, 0.0, 0.0);
-    glShadeModel (GL_SMOOTH);
+    //Land material
+    m_landMaterial.setAmbient(1.0, 1.0, 1.0, 1.0);
+    m_landMaterial.setDiffuse(1.0, 1.0, 1.0, 1.0);
+    m_landMaterial.setSpecular(1.0, 0.8, 0.8, 1.0);
+    m_landMaterial.setShininess(80.0);
 
-    glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, mat_ambient);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+    //Water material
+    m_waterMaterial.setAmbient(0.0, 0.0, 0.2, 1.0);
+    m_waterMaterial.setDiffuse(0.0, 0.0, 0.8, 1.0);
+    m_waterMaterial.setSpecular(1.0, 1.0, 1.0, 1.0);
+    m_waterMaterial.setShininess(80.0);
+
+    glClearColor (0.0, 0.0, 0.4, 0.0);
+    glShadeModel (GL_SMOOTH);
 
     //glEnable(GL_LIGHTING);
     //glEnable(GL_LIGHT0);
     //glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     //glBlendFunc(GL_ONE,GL_ONE);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     //glEnable(GL_ALPHA_TEST);
     //glDepthMask(GL_FALSE);
 
+    //    glLightfv(GL_LIGHT0, GL_POSITION,LightPosition);
+    glEnable(GL_LIGHT0);
+    GLfloat ambientLight[]={0.1,0.1,0.1,1.0};    	             // set ambient light parameters
+    glLightfv(GL_LIGHT0,GL_AMBIENT,ambientLight);
 
+    GLfloat diffuseLight[]={0.8,0.8,0.8,1.0};    	             // set diffuse light parameters
+    glLightfv(GL_LIGHT0,GL_DIFFUSE,diffuseLight);
 
-    GLfloat LightAmbient[]= { 0.2f, 0.2f, 0.2f, 1.0f };
-    GLfloat LightDiffuse[]= { 1.0f, 1.0f, 1.0f, 1.0f };
-    GLfloat LightSpecular[]= { 1.0f, 0.0f, 0.0f, 0.0f };
+    GLfloat specularLight[]={0.5,0.5,0.5,1.0};  	               // set specular light parameters
+    glLightfv(GL_LIGHT0,GL_SPECULAR,specularLight);
 
-    glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);	
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, LightDiffuse);	
-    glLightfv(GL_LIGHT1, GL_SPECULAR, LightSpecular);	
-    //    glLightfv(GL_LIGHT1, GL_POSITION,LightPosition);
-    glEnable(GL_LIGHT1);
+    /*glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0);
+    glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, 0.0);
+    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 30.0);
+    glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 15.0f);
+    glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.0f);
+    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.0f);
+    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.0f);*/
 
-    glColorMaterial ( GL_FRONT_AND_BACK, GL_DIFFUSE ) ;
+    //glColorMaterial ( GL_FRONT_AND_BACK, GL_DIFFUSE ) ;
 
-    glEnable(GL_COLOR_MATERIAL);
+    //glEnable(GL_COLOR_MATERIAL);
 
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(updateGL()));
 }
@@ -135,7 +134,6 @@ void MapRendererWidget::resizeGL(int w, int h) {
         const float angle=30;
         gluPerspective(angle,double(w)/double(h),1,1000);
     } else {
-
         if (w <= h)
             glOrtho (dx+lastZoom*-100, dx+lastZoom*100,/*left,right*/
                      dy+lastZoom*-100*(GLfloat)h/(GLfloat)w, dy+lastZoom*100*(GLfloat)h/(GLfloat)w,/*top,bottom*/
@@ -148,6 +146,7 @@ void MapRendererWidget::resizeGL(int w, int h) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_LIGHT0);
     glEnable(GL_LIGHT1);
 
     m_timer.start(25);
@@ -165,66 +164,58 @@ void MapRendererWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
 
-    //    glEnable(GL_LIGHT1);
+    //    glEnable(GL_LIGHT0);
 
     glLoadIdentity();
 
-    if (compileObject) {
+    if (m_compileObjects) {
         makeObject();
-        compileObject = false;
+        m_compileObjects = false;
     }
 
-    glRotatef(-90, 0, 0, 1);
     if(m_perspective) {
-        glTranslatef(0,0,-(lastZoom*100));
+        glTranslatef(0,-(lastZoom*100),0);
     }
-    glTranslatef(dy,-dx,0);
-    glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
-    glRotated(xRot / 16.0, 1.0, 0.0, 0.0);
-    glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
 
-    //get some system timestep in milisecs for light movement
-    //although screen will only get updated on movement
-    //    QTime curTime = QTime::currentTime();
-    //    int curMSecs = curTime.msecsTo(QTime());
+    glTranslatef(dx, dy, dz);
+    glRotated(xRot / 16.0, 1.0, 0.0, 0.0);
+    glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
+    glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
+    glTranslatef(-m_heightmap.getWidth()/2, 0, -m_heightmap.getHeight()/2);
+
     int curMSecs = m_lightTime.elapsed();
 
-    GLfloat LightPosition[]= { (m_heightmap.getHeight()*CELL_SIZE/3) *sin(curMSecs/2000.0), (m_heightmap.getWidth()*CELL_SIZE/3) *cos(curMSecs/2000.0), 6, 1.0f };
-    glLightfv(GL_LIGHT1, GL_POSITION, LightPosition);
-
-    glTranslatef(-m_heightmap.getHeight()*CELL_SIZE/2., -m_heightmap.getWidth()*CELL_SIZE/2., 0);
-
     glEnable(GL_LIGHTING);
+
+    //GLfloat LightPosition[]= { (m_heightmap.getHeight()/3) *sin(curMSecs/2000.0), 5, (m_heightmap.getWidth()/3) *cos(curMSecs/2000.0), 1.0f };
+    /*GLfloat LightPosition[]= {
+        2*m_heightmap.getHeight()*sin(curMSecs/2000.0),
+        -5,
+        2*m_heightmap.getWidth()*cos(curMSecs/2000.0),
+        1.0f
+    };*/
+    //GLfloat LightPosition[]= {m_heightmap.getHeight()/2, 40, m_heightmap.getWidth()/2, 0 };
+    GLfloat LightPosition[]= {10, 20, 10, 0 };
+    //GLfloat LightDirection[]= {m_heightmap.getHeight()/2, 0, m_heightmap.getWidth()/2, 0 };
+    glLightfv(GL_LIGHT0, GL_POSITION, LightPosition);
+    //glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, LightDirection);
+
 
     glColor4f(1, 1, 1, 1);
     glEnableClientState( GL_VERTEX_ARRAY );
     glEnableClientState( GL_TEXTURE_COORD_ARRAY );
     glEnableClientState( GL_NORMAL_ARRAY );
 
-    if (getGLExtensionFunctions().openGL15Supported()) {
-        glBindBuffer(GL_ARRAY_BUFFER, m_VBOVertices);
-        glVertexPointer( 3, GL_FLOAT, 0, (char *) NULL );
-
-        glBindBuffer(GL_ARRAY_BUFFER, m_VBONormals);
-        glNormalPointer(GL_FLOAT, 0, (char *) NULL );
-
-        glBindBuffer( GL_ARRAY_BUFFER, m_VBOTexCoords );
-        glTexCoordPointer( 2, GL_FLOAT, 0, (char *) NULL );
-    } else {
-        glVertexPointer( 3, GL_FLOAT, 0, m_vertexes );
-        glNormalPointer(GL_FLOAT, 0, m_normals );
-        glTexCoordPointer( 2, GL_FLOAT, 0, m_texCoords );
-    }
-
     if(m_redrawStartRects) drawStartRecs();
     glBindTexture(GL_TEXTURE_2D, m_texture);
-    glDrawElements(GL_TRIANGLE_STRIP, m_numIndexes, GL_UNSIGNED_INT, m_indexes);
+
+    m_landMaterial.apply();
+    m_heightmap.draw();
+
 
     glDisableClientState( GL_NORMAL_ARRAY );
-    glDisableClientState( GL_TEXTURE_COORD_ARRAY );
-    glDisableClientState( GL_VERTEX_ARRAY );
 
-    glDisable(GL_LIGHTING);
+    //glDisable(GL_LIGHTING);
 
     //Water rendering
     glEnable(GL_BLEND);
@@ -233,20 +224,18 @@ void MapRendererWidget::paintGL() {
         m_waterShaderSet.use();
         glUniform1fARB(m_waterTimeLoc, curMSecs/100.0);
         glUniform1iARB(m_waterpermTextureLoc, GL_TEXTURE0);
-        glUniform1iARB(m_lightSourceLoc, GL_LIGHT0);
+        glUniform1iARB(m_lightSourceLoc, 0);
     }
-    glColor4f(0, 0, 1, 0.5);
+    glColor4f(0, 0, 1, 1.0);
+    m_waterMaterial.apply();
 
-    glBegin(GL_QUADS);
-    glNormal3i(0, 0, 1);
-    glVertex3f(0,0,0);
-    glVertex3f(0, m_heightmap.getWidth()*CELL_SIZE,0);
-    glVertex3f(m_heightmap.getHeight() * CELL_SIZE, m_heightmap.getWidth()*CELL_SIZE,0);
-    glVertex3f(m_heightmap.getHeight() * CELL_SIZE, 0,0);
-    glEnd();
-    glDisable(GL_BLEND);
+    glNormal3f(0, 1.0, 0);
+    m_waterPlane.draw();
     if(m_glslSupported)
         m_waterShaderSet.stop();
+    glDisable(GL_BLEND);
+    glDisableClientState( GL_TEXTURE_COORD_ARRAY );
+    glDisableClientState( GL_VERTEX_ARRAY );
 
     swapBuffers();
     int msecs = m_time.elapsed();
@@ -256,149 +245,33 @@ void MapRendererWidget::paintGL() {
         emit updateDebugInfo(m_debugInfo.arg(tr("Inf")));
 }
 
-void MapRendererWidget::generateTexCoords() {
-    if (m_texCoords) delete m_texCoords;
-    m_texCoords = new TexCoord[m_vertexNumber];
-    for (int i = 0; i < m_heightmap.getHeight(); i++) {
-        for (int j = 0; j < m_heightmap.getWidth(); j++) {
-            m_texCoords[i*m_heightmap.getWidth()+j].u = (float)j/m_heightmap.getWidth();
-            m_texCoords[i*m_heightmap.getWidth()+j].v = m_heightmap.getHeight() - (float)i/m_heightmap.getHeight();
-        }
-    }
-}
-
-void MapRendererWidget::generateIndexes() {
-    m_numIndexes = (m_heightmap.getWidth() * 2) * (m_heightmap.getHeight() - 1) + (m_heightmap.getHeight() - 2);
-
-    if (m_indexes) delete m_indexes;
-    m_indexes = new unsigned int[m_numIndexes];
-
-    int index = 0;
-    for ( int z = 0; z < m_heightmap.getHeight() - 1; z++ ) {
-        // Even rows move left to right, odd rows move right to left.
-        if ( z % 2 == 0 ) {
-            // Even row
-            int x;
-            for ( x = 0; x < m_heightmap.getWidth(); x++ ) {
-                m_indexes[index++] = x + (z * m_heightmap.getWidth());
-                m_indexes[index++] = x + (z * m_heightmap.getWidth()) + m_heightmap.getWidth();
-            }
-            // Insert degenerate vertex if this isn't the last row
-            if ( z != m_heightmap.getHeight() - 2) {
-                m_indexes[index++] = --x + (z * m_heightmap.getWidth());
-            }
-        } else {
-            // Odd row
-            int x;
-            for ( x = m_heightmap.getWidth() - 1; x >= 0; x-- ) {
-                m_indexes[index++] = x + (z * m_heightmap.getWidth());
-                m_indexes[index++] = x + (z * m_heightmap.getWidth()) + m_heightmap.getWidth();
-            }
-            // Insert degenerate vertex if this isn't the last row
-            if ( z != m_heightmap.getHeight() - 2) {
-                m_indexes[index++] = ++x + (z * m_heightmap.getWidth());
-            }
-        }
-    }
-}
-
 void MapRendererWidget::makeObject() {
     blockRerender = true;
-    /*GLProgressDialog* progress = new GLProgressDialog(this);
-    progress->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
-    progress->setMax(m_heightmap.getHeight());
-    progress->updateProgress(0);
-    progress->show();
-    QApplication::processEvents();*/
-    if (getGLExtensionFunctions().openGL15Supported()) {
-        glGenBuffers( 1, &m_VBOVertices );
-        glBindBuffer( GL_ARRAY_BUFFER, m_VBOVertices );
-        glBufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(Vertex), m_vertexes, GL_STATIC_DRAW );
-    }
-    computeNormals();
-    if(getGLExtensionFunctions().openGL15Supported()) {
-        glGenBuffers( 1, &m_VBONormals );
-        glBindBuffer( GL_ARRAY_BUFFER, m_VBONormals );
-        glBufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(Vertex), m_normals, GL_STATIC_DRAW );
-    }
-    generateTexCoords();
-    if (getGLExtensionFunctions().openGL15Supported()) {
-        glGenBuffers( 1, &m_VBOTexCoords );
-        glBindBuffer( GL_ARRAY_BUFFER, m_VBOTexCoords );
-        glBufferData( GL_ARRAY_BUFFER, m_vertexNumber*sizeof(TexCoord), m_texCoords, GL_STATIC_DRAW );
-    }
-    m_texture = bindTexture(QPixmap::fromImage(m_minimap), GL_TEXTURE_2D);
-    generateIndexes();
-    //QApplication::processEvents();
-    //progress->hide();
-    //delete progress;
-    m_heightmap.free();
-    if (getGLExtensionFunctions().openGL15Supported()) {
-        delete m_vertexes;
-        m_vertexes = 0;
-        delete m_texCoords;
-        m_texCoords = 0;
-    }
+    m_heightmap.compile();
+    m_heightmap.freeUnusedData();
+    m_waterPlane.compile();
+    m_waterPlane.freeUnusedData();
     blockRerender = false;
 }
 
-
-#define V(i,j) m_vertexes[(i)*m_heightmap.getWidth()+(j)]
-#define N(i,j) m_normals[(i)*m_heightmap.getWidth()+(j)]
-
-void MapRendererWidget::computeNormals() {
-    if (m_normals) delete m_normals;
-    m_normals = new Vertex[m_vertexNumber];
-    memset(m_normals, 0, m_vertexNumber*sizeof(Vertex));
-    for (int i = 0; i < m_heightmap.getHeight(); i++) {
-        for (int j = 0; j < m_heightmap.getWidth(); j++) {
-            Vertex left, right, top, bottom, current;
-            current = V(i,j);
-            if (i > 0) left = V(i-1,j);
-            if (j > 0) top = V(i,j-1);
-            if (i < m_heightmap.getHeight() - 1) right = V(i+1,j);
-            if (j < m_heightmap.getWidth() - 1) bottom = V(i,j+1);
-            N(i,j).add(Vertex::getNormal(current, left, top));
-            N(i,j).add(Vertex::getNormal(current, top, right));
-            N(i,j).add(Vertex::getNormal(current, right, bottom));
-            N(i,j).add(Vertex::getNormal(current, bottom, left));
-            N(i,j).normalize();
-        }
-    }
-}
 
 void MapRendererWidget::setSource(QString mapName, QImage minimap, QImage metalmap, RawHeightMap heightmap) {
     if (currentMap == mapName) return;
     currentMap = mapName;
     m_minimap = minimap;
     m_metalmap = metalmap;
-    m_heightmap.free();
     heightmap.downscale(Settings::Instance()->value("MapViewing/downscaleHeightmap").toInt());
-    m_heightmap = heightmap;
-    if (getGLExtensionFunctions().openGL15Supported()) {
-        glDeleteBuffers(1, &m_VBOVertices);
-        glDeleteBuffers(1, &m_VBONormals);
-        glDeleteBuffers(1, &m_VBOTexCoords);
+    m_heightmap.build(heightmap);
+    m_waterPlane.build(heightmap, 0, 10);
+    heightmap.free();
+    if (getGLExtensionFunctions().openGL15Supported())
         m_debugInfo = "VBO: <b>" + tr("Enabled");
-    } else
+    else
         m_debugInfo = "VBO: <b>" + tr("Disabled");
-    m_vertexNumber = heightmap.getWidth()*(heightmap.getHeight()-1)*2;
     m_debugInfo += "</b> FPS: <b>%1</b> " + tr("Number of primitives") + ": <b>" + QString::number(heightmap.getWidth()*heightmap.getHeight()*2)+"</b>";
-    if (m_vertexes) delete m_vertexes;
-    m_vertexes = new Vertex[m_vertexNumber];
-    float range = m_heightmap.getMaxHeight() - m_heightmap.getMinHeight();
-    for (int i = 0; i < heightmap.getHeight(); i++) {
-        for (int j = 0; j < heightmap.getWidth(); j++) {
-            unsigned short int value = heightmap.getData()[i*heightmap.getWidth()+j];
-            int offset = i*heightmap.getWidth()+j;
-            m_vertexes[offset].x = i * CELL_SIZE;
-            m_vertexes[offset].y = j * CELL_SIZE;
-            //m_vertexes[offset].z = value/(float)MAX_SHORT*MAX_HEIGHT*m_heightmap.getRatio();
-            m_vertexes[offset].z = (m_heightmap.getMinHeight()+value*range/MAX_SHORT)*m_heightmap.getRatio()*SCALE_HEIGHTMAP;
-        }
-    }
-    compileObject = true;
-    lastZoom *= m_heightmap.getRatio();
+    m_compileObjects = true;
+    m_ratio = heightmap.getRatio();
+    lastZoom *= m_ratio;
     switch(Settings::Instance()->value("MapViewing/startPos/startRect/brushNumber").toInt()) {
     case 1:
         m_brushStyle = Qt::BDiagPattern;
@@ -448,8 +321,8 @@ void MapRendererWidget::normalizeAngle(int *angle) {
 }
 
 void MapRendererWidget::wheelEvent ( QWheelEvent * event ) {
-    float newZoom = lastZoom - event->delta() * 0.001*m_heightmap.getRatio();
-    if (newZoom > 4*m_heightmap.getRatio() || newZoom < 0.05*m_heightmap.getRatio()) return;
+    float newZoom = lastZoom - event->delta() * 0.001*m_ratio;
+    if (newZoom > 4*m_ratio || newZoom < 0.05*m_ratio) return;
     lastZoom = newZoom;
     if(!m_perspective) {
         resizeGL(width(), height());
@@ -467,13 +340,10 @@ void MapRendererWidget::mouseMoveEvent(QMouseEvent *event) {
 
     if (event->buttons() & Qt::LeftButton) {
         //setXRotation(xRot + 8 * dy);
-        setRotation(xRot, yRot + 8 * dy, zRot + 8 * dx);
-    } else if (event->buttons() & Qt::RightButton) {
-        //setXRotation(xRot + 8 * dy);
-        setRotation(xRot, yRot, zRot + 8 * dx);
-    } else if (event->buttons() & Qt::MidButton) {
-        this->dx += -dx * 0.1 * lastZoom;
-        this->dy += dy * 0.1 * lastZoom;
+        setRotation(xRot+ 8 * dy, yRot + 8 * dx, zRot);
+    } else if (event->buttons() & Qt::MidButton || event->buttons() & Qt::RightButton) {
+        this->dx += dx * 0.1 * lastZoom;
+        this->dy += -dy * 0.1 * lastZoom;
         //        resizeGL(width(), height());
         updateGL();
     }
@@ -555,61 +425,3 @@ void MapRendererWidget::initPermTexture() {
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 }
-
-
-// Vertex
-
-Vertex::Vertex() {
-    this->x = x;
-    this->y = y;
-    this->z = z;
-}
-
-Vertex::Vertex(float x, float y, float z) {
-    this->x = x;
-    this->y = y;
-    this->z = z;
-}
-
-void Vertex::setXYZ(float x, float y, float z) {
-    this->x = x;
-    this->y = y;
-    this->z = z;
-}
-
-Vertex Vertex::getNormal(Vertex& v1, Vertex& v2) {
-    Vertex n(v1.y*v2.z - v2.y*v1.z, v1.z*v2.x - v2.z*v1.x, v1.x*v2.y - v2.x*v1.y);
-    n.normalize();
-    return n;
-
-}
-
-Vertex Vertex::getNormal(Vertex& a, Vertex& b, Vertex& c) {
-    Vertex n;
-    Vertex v1, v2;
-    v1.setXYZ(b.x - a.x, b.y - a.y, b.z - a.z);
-    v2.setXYZ(c.x - a.x, c.y - a.y, c.z - a.z);
-    n.setXYZ(v1.y*v2.z - v2.y*v1.z, v1.z*v2.x - v2.z*v1.x, v1.x*v2.y - v2.x*v1.y);
-    n.normalize();
-    return n;
-}
-
-void Vertex::normalize() {
-    float Mn = sqrtf(x*x + y*y + z*z);
-    x /= Mn;
-    y /= Mn;
-    z /= Mn;
-}
-
-void Vertex::add(Vertex v2) {
-    x += v2.x;
-    y += v2.y;
-    z += v2.z;
-}
-
-void Vertex::sub(Vertex v2) {
-    x -= v2.x;
-    y -= v2.y;
-    z -= v2.z;
-}
-
