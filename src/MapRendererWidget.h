@@ -82,6 +82,7 @@ private:
     GLMaterial m_waterMaterial;
     bool m_glslSupported;
     GLHeightMap m_heightmap;
+    GLHeightMap m_lowResHeightmap;
     bool m_compileObjects;
     float m_ratio;
     GLWaterPlane m_waterPlane;

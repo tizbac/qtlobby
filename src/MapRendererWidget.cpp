@@ -257,20 +257,27 @@ void MapRendererWidget::makeObject() {
 
 void MapRendererWidget::setSource(QString mapName, QImage minimap, QImage metalmap, RawHeightMap heightmap) {
     if (currentMap == mapName) return;
+    int primNumber = 0;
     currentMap = mapName;
     m_minimap = minimap;
     m_metalmap = metalmap;
     heightmap.downscale(Settings::Instance()->value("MapViewing/downscaleHeightmap").toInt());
+    m_ratio = heightmap.getRatio();
+    primNumber += heightmap.getWidth()*heightmap.getHeight()*2;
     m_heightmap.build(heightmap);
-    m_waterPlane.build(heightmap, 0, 10);
+    heightmap.resetRatio();
+    heightmap.downscale(1);
+    m_lowResHeightmap.build(heightmap);
+    heightmap.downscale(2);
+    primNumber += heightmap.getWidth()*heightmap.getHeight()*2;
+    m_waterPlane.build(heightmap, 0);
     heightmap.free();
     if (getGLExtensionFunctions().openGL15Supported())
         m_debugInfo = "VBO: <b>" + tr("Enabled");
     else
         m_debugInfo = "VBO: <b>" + tr("Disabled");
-    m_debugInfo += "</b> FPS: <b>%1</b> " + tr("Number of primitives") + ": <b>" + QString::number(heightmap.getWidth()*heightmap.getHeight()*2)+"</b>";
+    m_debugInfo += "</b> FPS: <b>%1</b> " + tr("Number of primitives") + ": <b>" + QString::number(primNumber)+"</b>";
     m_compileObjects = true;
-    m_ratio = heightmap.getRatio();
     lastZoom *= m_ratio;
     switch(Settings::Instance()->value("MapViewing/startPos/startRect/brushNumber").toInt()) {
     case 1:

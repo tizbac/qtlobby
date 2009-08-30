@@ -7,7 +7,7 @@
 class GLWaterPlane : public GLHeightMap {
 public:
     GLWaterPlane();
-    void build(RawHeightMap heightmap, float y, int downscale = 2);
+    void build(RawHeightMap heightmap, float y);
 };
 
 #endif // GLWATERPLANE_H

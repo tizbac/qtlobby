@@ -232,7 +232,7 @@ else:LIBS += -lqscintilla2
 # ([]lennart)sets preprocessor switch to use direct winapi calls instead of qt
 # to load unitsync library
 contains( CONFIG, unitsync_winapi ): DEFINES += PURE_WINAPI_UNITSYNC_LOADER
-unix:!contains( CONFIG, buildbot ) { 
+unix:!contains( CONFIG, buildbot ) {
     HEADERS += src/DBusVisualNotificationBackend.h
     SOURCES += src/DBusVisualNotificationBackend.cpp
     QT += dbus

@@ -16,6 +16,7 @@ public:
     int getMaxHeight() const;
     void downscale(unsigned int x);
     float getRatio();
+    void resetRatio();
 private:
     void minifyByTwo();
     
@@ -49,6 +50,10 @@ inline int RawHeightMap::getMaxHeight() const {
 
 inline float RawHeightMap::getRatio() {
     return m_ratio;
+}
+
+inline void RawHeightMap::resetRatio() {
+    m_ratio = 1.0;
 }
 
 #endif // RAWHEIGHTMAP_H
