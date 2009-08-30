@@ -276,6 +276,10 @@ void MapRendererWidget::setSource(QString mapName, QImage minimap, QImage metalm
         m_debugInfo = "VBO: <b>" + tr("Enabled");
     else
         m_debugInfo = "VBO: <b>" + tr("Disabled");
+    if (getGLExtensionFunctions().glslSupported())
+        m_debugInfo += "</b> GLSL: <b>" + tr("Enabled");
+    else
+        m_debugInfo += "</b> GLSL: <b>" + tr("Disabled");
     m_debugInfo += "</b> FPS: <b>%1</b> " + tr("Number of primitives") + ": <b>" + QString::number(primNumber)+"</b>";
     m_compileObjects = true;
     lastZoom *= m_ratio;
