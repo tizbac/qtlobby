@@ -72,8 +72,8 @@ void MapRendererWidget::initializeGL() {
     //Water material
     m_waterMaterial.setAmbient(0.0, 0.0, 0.2, 1.0);
     m_waterMaterial.setDiffuse(0.0, 0.0, 0.8, 1.0);
-    m_waterMaterial.setSpecular(1.0, 1.0, 1.0, 1.0);
-    m_waterMaterial.setShininess(80.0);
+    m_waterMaterial.setSpecular(0.9, 0.9, 0.9, 1.0);
+    m_waterMaterial.setShininess(128.0);
 
     glClearColor (0.0, 0.0, 0.4, 0.0);
     glShadeModel (GL_SMOOTH);

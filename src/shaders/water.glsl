@@ -35,7 +35,9 @@ void main()	{
 uniform sampler2D permTexture;
 uniform float time; // Used for texture animation
 uniform int lightSource;
-
+varying vec4 diffuse,ambientGlobal, ambient;
+varying vec3 normal,lightDir,halfVector;
+varying float dist;
 varying vec3 v_texCoord3D;
 
 #define ONE 0.00390625
@@ -47,39 +49,6 @@ float fade(float t) {
   return t*t*t*(t*(t*6.0-15.0)+10.0); // Improved fade, yields C2-continuous noise
 }
 
-/*
- * 2D classic Perlin noise. Fast, but less useful than 3D noise.
- */
-float noise(vec2 P)
-{
-  vec2 Pi = ONE*floor(P)+ONEHALF; // Integer part, scaled and offset for texture lookup
-  vec2 Pf = fract(P);             // Fractional part for interpolation
-
-  // Noise contribution from lower left corner
-  vec2 grad00 = texture2D(permTexture, Pi).rg * 4.0 - 1.0;
-  float n00 = dot(grad00, Pf);
-
-  // Noise contribution from lower right corner
-  vec2 grad10 = texture2D(permTexture, Pi + vec2(ONE, 0.0)).rg * 4.0 - 1.0;
-  float n10 = dot(grad10, Pf - vec2(1.0, 0.0));
-
-  // Noise contribution from upper left corner
-  vec2 grad01 = texture2D(permTexture, Pi + vec2(0.0, ONE)).rg * 4.0 - 1.0;
-  float n01 = dot(grad01, Pf - vec2(0.0, 1.0));
-
-  // Noise contribution from upper right corner
-  vec2 grad11 = texture2D(permTexture, Pi + vec2(ONE, ONE)).rg * 4.0 - 1.0;
-  float n11 = dot(grad11, Pf - vec2(1.0, 1.0));
-
-  // Blend contributions along x
-  vec2 n_x = mix(vec2(n00, n01), vec2(n10, n11), fade(Pf.x));
-
-  // Blend contributions along y
-  float n_xy = mix(n_x.x, n_x.y, fade(Pf.y));
-
-  // We're done, return the final noise value.
-  return n_xy;
-}
 
 float noise(vec3 P) {
   vec3 Pi = ONE*floor(P)+ONEHALF; // Integer part, scaled so +1 moves one texel
@@ -127,90 +96,6 @@ float noise(vec3 P) {
   // We're done, return the final noise value.
   return n_xyz;
 }
-
-void simplex( const in vec3 P, out vec3 offset1, out vec3 offset2 ) {
-  vec3 offset0;
- 
-  vec2 isX = step( P.yz, P.xx );
-  offset0.x  = dot( isX, vec2( 1.0 ) );
-  offset0.yz = 1.0 - isX;
-
-  float isY = step( P.z, P.y );
-  offset0.y += isY;
-  offset0.z += 1.0 - isY;
- 
-  offset2 = clamp(   offset0, 0.0, 1.0 );
-  offset1 = clamp( --offset0, 0.0, 1.0 );
-}
-
-float snoise(vec3 P) {
-
-
-#define F3 0.333333333333
-#define G3 0.166666666667
-
-
-  float s = (P.x + P.y + P.z) * F3;
-  vec3 Pi = floor(P + s);
-  float t = (Pi.x + Pi.y + Pi.z) * G3;
-  vec3 P0 = Pi - t;
-  Pi = Pi * ONE + ONEHALF;
-
-  vec3 Pf0 = P - P0;
-
-  vec3 o1;
-  vec3 o2;
-  simplex(Pf0, o1, o2);
-
-  float perm0 = texture2D(permTexture, Pi.xy).a;
-  vec3  grad0 = texture2D(permTexture, vec2(perm0, Pi.z)).rgb * 4.0 - 1.0;
-  float t0 = 0.6 - dot(Pf0, Pf0);
-  float n0;
-  if (t0 < 0.0) n0 = 0.0;
-  else {
-    t0 *= t0;
-    n0 = t0 * t0 * dot(grad0, Pf0);
-  }
-
-  vec3 Pf1 = Pf0 - o1 + G3;
-  float perm1 = texture2D(permTexture, Pi.xy + o1.xy*ONE).a;
-  vec3  grad1 = texture2D(permTexture, vec2(perm1, Pi.z + o1.z*ONE)).rgb * 4.0 - 1.0;
-  float t1 = 0.6 - dot(Pf1, Pf1);
-  float n1;
-  if (t1 < 0.0) n1 = 0.0;
-  else {
-    t1 *= t1;
-    n1 = t1 * t1 * dot(grad1, Pf1);
-  }
-  
-  vec3 Pf2 = Pf0 - o2 + 2.0 * G3;
-  float perm2 = texture2D(permTexture, Pi.xy + o2.xy*ONE).a;
-  vec3  grad2 = texture2D(permTexture, vec2(perm2, Pi.z + o2.z*ONE)).rgb * 4.0 - 1.0;
-  float t2 = 0.6 - dot(Pf2, Pf2);
-  float n2;
-  if (t2 < 0.0) n2 = 0.0;
-  else {
-    t2 *= t2;
-    n2 = t2 * t2 * dot(grad2, Pf2);
-  }
-  
-  vec3 Pf3 = Pf0 - vec3(1.0-3.0*G3);
-  float perm3 = texture2D(permTexture, Pi.xy + vec2(ONE, ONE)).a;
-  vec3  grad3 = texture2D(permTexture, vec2(perm3, Pi.z + ONE)).rgb * 4.0 - 1.0;
-  float t3 = 0.6 - dot(Pf3, Pf3);
-  float n3;
-  if(t3 < 0.0) n3 = 0.0;
-  else {
-    t3 *= t3;
-    n3 = t3 * t3 * dot(grad3, Pf3);
-  }
-
-  return 32.0 * (n0 + n1 + n2 + n3);
-}
-
-varying vec4 diffuse,ambientGlobal, ambient;
-varying vec3 normal,lightDir,halfVector;
-varying float dist;
 	
 	
 float F(vec3 v) {
