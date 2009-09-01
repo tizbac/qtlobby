@@ -13,6 +13,7 @@ void main()	{
 	normal = normalize(gl_NormalMatrix * gl_Normal);
 		
 	ecPos = gl_ModelViewMatrix * gl_Vertex;
+	gl_ClipVertex = ecPos;
 		
 	v_texCoord3D = gl_Vertex.xyz;
 		
@@ -31,14 +32,15 @@ void main()	{
 	gl_Position = ftransform();
 }
 [FragmentShader]
-
 uniform sampler2D permTexture;
+//uniform sampler2D reflectionTexture;
 uniform float time; // Used for texture animation
 uniform int lightSource;
 varying vec4 diffuse,ambientGlobal, ambient;
 varying vec3 normal,lightDir,halfVector;
 varying float dist;
 varying vec3 v_texCoord3D;
+varying vec3 v_texCoord2D;
 
 #define ONE 0.00390625
 #define ONEHALF 0.001953125
@@ -116,6 +118,7 @@ float F(vec3 v) {
 void main() {
 	vec3 n,halfV,viewV,ldir;
 	float NdotL,NdotHV;
+	//vec4 reflectionColor = texture2D(reflectionTexture,gl_TexCoord[0].st).rgba;
 	vec4 color = ambientGlobal;
 	float att;
 		
@@ -145,11 +148,12 @@ void main() {
 		color += att * gl_FrontMaterial.specular * gl_LightSource[lightSource].specular * 
 						pow(NdotHV,gl_FrontMaterial.shininess);
 	}
-
-	gl_FragColor = vec4(color.xyz, 0.3);
+	//color*=reflectionColor;
+	gl_FragColor = vec4(color.rgb, 0.3);
 }
 
 
 [Parameters]
 int lightSource = 0;
 sampler2D permTexture = load("../../../../../../tmp/permutations.png");
+sampler2D reflectionTexture = load("");

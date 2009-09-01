@@ -7,9 +7,13 @@ class GLMaterial {
 public:
     GLMaterial();
     void setAmbient(GLfloat r,GLfloat g,GLfloat b,GLfloat a);
+    const GLfloat* getAmbient() const;
     void setDiffuse(GLfloat r,GLfloat g,GLfloat b,GLfloat a);
+    const GLfloat* getDiffuese() const;
     void setSpecular(GLfloat r,GLfloat g,GLfloat b,GLfloat a);
+    const GLfloat* getSpecular() const;
     void setShininess(GLfloat s);
+    GLfloat getShininess() const;
     void apply();
 private:
     GLfloat m_ambient[4];
@@ -41,6 +45,24 @@ inline void GLMaterial::setSpecular(GLfloat r,GLfloat g,GLfloat b,GLfloat a) {
 
 inline void GLMaterial::setShininess(GLfloat s) {
     m_shininess = s;
+}
+
+inline const GLfloat* GLMaterial::getAmbient() const {
+    return m_ambient;
+}
+
+inline const GLfloat* GLMaterial::getDiffuese() const {
+    return m_diffuse;
+}
+
+
+inline const GLfloat* GLMaterial::getSpecular() const {
+    return m_specular;
+}
+
+
+inline GLfloat GLMaterial::getShininess() const {
+    return m_shininess;
 }
 
 

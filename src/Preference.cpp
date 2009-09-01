@@ -54,6 +54,9 @@ void Preference::loadPreferences() {
     INIT_PREF("MapViewing/perspectiveProjectionType", true);
     projectionPerspectiveRadioButton->setChecked(settings->value("MapViewing/perspectiveProjectionType").toBool());
     projectionOrghogonalRadioButton->setChecked(!settings->value("MapViewing/perspectiveProjectionType").toBool());
+    INIT_PREF("MapViewing/useShaders", true);
+    useShadersCheckBox->setChecked(settings->value("MapViewing/useShaders").toBool());
+
 
     /*Start Positions*/
     INIT_PREF("MapViewing/startPos/showOnMinimapCheckBox", true);
@@ -112,6 +115,7 @@ void Preference::onApply() {
     settings->setValue("MapViewing/downscaleHeightmap", downscaleHeightmapSpinBox->value());
     settings->setValue("MapViewing/metalmapSuperposition", metalmapSuperpositionCheckBox->isChecked());
     settings->setValue("MapViewing/perspectiveProjectionType", projectionPerspectiveRadioButton->isChecked());
+    settings->setValue("MapViewing/useShaders", useShadersCheckBox->isChecked());
 
     /*Start Positions*/
     settings->setValue("MapViewing/startPos/showOnMinimapCheckBox", startPosShowOnMinimapCheckBox->isChecked());
@@ -149,7 +153,8 @@ void Preference::onResetFormToSettings() {
     downscaleHeightmapSpinBox->setValue(settings->value("MapViewing/downscaleHeightmap").toInt());
     metalmapSuperpositionCheckBox->setChecked(settings->value("MapViewing/metalmapSuperposition").toBool());
     projectionPerspectiveRadioButton->setChecked(settings->value("MapViewing/perspectiveProjectionType").toBool());
-    projectionOrghogonalRadioButton->setChecked(settings->value("MapViewing/perspectiveProjectionType").toBool());
+    projectionOrghogonalRadioButton->setChecked(!settings->value("MapViewing/perspectiveProjectionType").toBool());
+    useShadersCheckBox->setChecked(settings->value("MapViewing/useShaders").toBool());
 
     /*Start Positions*/
     startPosShowOnMinimapCheckBox->setChecked(settings->value("MapViewing/startPos/showOnMinimapCheckBox").toBool());

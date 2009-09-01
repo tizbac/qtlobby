@@ -81,9 +81,9 @@ void GLHeightMap::build(RawHeightMap heightmap) {
         for (int j = 0; j < heightmap.getWidth(); j++) {
             unsigned short int value = heightmap.getData()[i*heightmap.getWidth()+j];
             int offset = i*heightmap.getWidth()+j;
-            vertexes[offset].x = i * m_scaleFactor * 8;
-            vertexes[offset].y = (m_heightmap.getMinHeight()+value*range/MAX_SHORT)*m_heightmap.getRatio()*m_scaleFactor;
-            vertexes[offset].z = j * m_scaleFactor * 8;
+            vertexes[offset].x = i * m_scaleFactor * 8 * 1/m_heightmap.getRatio();
+            vertexes[offset].y = (m_heightmap.getMinHeight()+value*range/MAX_SHORT)*m_scaleFactor;
+            vertexes[offset].z = j * m_scaleFactor * 8 * 1/m_heightmap.getRatio();
         }
     }
     computeNormals();

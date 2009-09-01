@@ -38,21 +38,29 @@ MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
     blockRerender = false;
     getGLExtensionFunctions().resolve(context());
     m_glslSupported = getGLExtensionFunctions().glslSupported();
+    m_glslSupported = m_glslSupported && Settings::Instance()->value("MapViewing/useShaders").toBool();
     m_redrawStartRects = true;
     setAutoBufferSwap(false);
     m_perspective = Settings::Instance()->value("MapViewing/perspectiveProjectionType").toBool();
-    //m_glslSupported = false;
     if(m_glslSupported) {
         makeCurrent();
         if(m_waterShaderSet.loadShaders(":/src/shaders/water.glsl")) {
             m_waterTimeLoc = m_waterShaderSet.getUniformLocation("time");
             m_waterpermTextureLoc = m_waterShaderSet.getUniformLocation("permTexture");
             m_lightSourceLoc = m_waterShaderSet.getUniformLocation("lightSource");
+            m_reflectionTextureLoc = m_waterShaderSet.getUniformLocation("reflectionTexture");
+            glActiveTexture(GL_TEXTURE1);
             initPermTexture();
-            glUniform1fARB(m_waterTimeLoc, 0.0f);
-            glUniform1iARB(m_waterpermTextureLoc, GL_TEXTURE0);
         } else {
+            qDebug() << "Water shader failed to load";
             qDebug() << m_waterShaderSet.getErrorMessage();
+        }
+        if(m_landShaderSet.loadShaders(":/src/shaders/land.glsl")) {
+            m_landTextureLoc = m_landShaderSet.getUniformLocation("tex");
+            m_landLightSourceLoc = m_landShaderSet.getUniformLocation("lightSource");
+        } else {
+            qDebug() << "Land shader failed to load";
+            qDebug() << m_landShaderSet.getErrorMessage();
         }
     }
 }
@@ -63,6 +71,9 @@ MapRendererWidget::~MapRendererWidget() {
 }
 
 void MapRendererWidget::initializeGL() {
+    glActiveTexture(GL_TEXTURE0);
+    glEnable(GL_TEXTURE_2D);
+
     //Land material
     m_landMaterial.setAmbient(1.0, 1.0, 1.0, 1.0);
     m_landMaterial.setDiffuse(1.0, 1.0, 1.0, 1.0);
@@ -70,9 +81,9 @@ void MapRendererWidget::initializeGL() {
     m_landMaterial.setShininess(80.0);
 
     //Water material
-    m_waterMaterial.setAmbient(0.0, 0.0, 0.2, 1.0);
-    m_waterMaterial.setDiffuse(0.0, 0.0, 0.8, 1.0);
-    m_waterMaterial.setSpecular(0.9, 0.9, 0.9, 1.0);
+    m_waterMaterial.setAmbient(0.0, 0.0, 0.2, 0.3);
+    m_waterMaterial.setDiffuse(0.0, 0.0, 0.8, 0.3);
+    m_waterMaterial.setSpecular(0.9, 0.9, 0.9, 0.9);
     m_waterMaterial.setShininess(128.0);
 
     glClearColor (0.0, 0.0, 0.4, 0.0);
@@ -82,7 +93,6 @@ void MapRendererWidget::initializeGL() {
     //glEnable(GL_LIGHT0);
     //glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_TEXTURE_2D);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -157,6 +167,7 @@ void MapRendererWidget::paintGL() {
     if (!m_heightmap.getWidth() || blockRerender) return;
 
     m_time.start();
+    int curMSecs = m_lightTime.elapsed();
 
     //GLfloat light_position[] = { 5, 5, MAX_HEIGHT*1.3, 0.0 };
     //Weird, but this line doesn't work for my i915 integrated graphics, tho next 2 work fine
@@ -183,18 +194,9 @@ void MapRendererWidget::paintGL() {
     glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
     glTranslatef(-m_heightmap.getWidth()/2, 0, -m_heightmap.getHeight()/2);
 
-    int curMSecs = m_lightTime.elapsed();
+    if(!m_glslSupported)
+        glEnable(GL_LIGHTING);
 
-    glEnable(GL_LIGHTING);
-
-    //GLfloat LightPosition[]= { (m_heightmap.getHeight()/3) *sin(curMSecs/2000.0), 5, (m_heightmap.getWidth()/3) *cos(curMSecs/2000.0), 1.0f };
-    /*GLfloat LightPosition[]= {
-        2*m_heightmap.getHeight()*sin(curMSecs/2000.0),
-        -5,
-        2*m_heightmap.getWidth()*cos(curMSecs/2000.0),
-        1.0f
-    };*/
-    //GLfloat LightPosition[]= {m_heightmap.getHeight()/2, 40, m_heightmap.getWidth()/2, 0 };
     GLfloat LightPosition[]= {10, 20, 10, 0 };
     //GLfloat LightDirection[]= {m_heightmap.getHeight()/2, 0, m_heightmap.getWidth()/2, 0 };
     glLightfv(GL_LIGHT0, GL_POSITION, LightPosition);
@@ -207,33 +209,48 @@ void MapRendererWidget::paintGL() {
     glEnableClientState( GL_NORMAL_ARRAY );
 
     if(m_redrawStartRects) drawStartRecs();
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_texture);
-
+    if(m_glslSupported) {
+        m_landShaderSet.use();
+        glUniform1iARB(m_landTextureLoc, 0);
+        glUniform1iARB(m_lightSourceLoc, 0);
+    }
     m_landMaterial.apply();
     m_heightmap.draw();
-
+    if(m_glslSupported)
+        m_landShaderSet.stop();
 
     glDisableClientState( GL_NORMAL_ARRAY );
 
-    //glDisable(GL_LIGHTING);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, m_permTexture);
+    glActiveTexture(GL_TEXTURE2);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    if(!m_glslSupported)
+        glDisable(GL_LIGHTING);
 
     //Water rendering
     glEnable(GL_BLEND);
     if(m_glslSupported) {
-        glBindTexture(GL_TEXTURE_2D, m_permTexture);
         m_waterShaderSet.use();
         glUniform1fARB(m_waterTimeLoc, curMSecs/100.0);
-        glUniform1iARB(m_waterpermTextureLoc, GL_TEXTURE0);
+        glUniform1iARB(m_waterpermTextureLoc, 1);
+        glUniform1iARB(m_reflectionTextureLoc, 2);
         glUniform1iARB(m_lightSourceLoc, 0);
     }
-    glColor4f(0, 0, 1, 1.0);
     m_waterMaterial.apply();
 
+    glColor4f(0.0, 0.0, 1.0, 0.3);
     glNormal3f(0, 1.0, 0);
     m_waterPlane.draw();
     if(m_glslSupported)
         m_waterShaderSet.stop();
     glDisable(GL_BLEND);
+
+    glDisableClientState( GL_NORMAL_ARRAY );
     glDisableClientState( GL_TEXTURE_COORD_ARRAY );
     glDisableClientState( GL_VERTEX_ARRAY );
 
@@ -247,10 +264,16 @@ void MapRendererWidget::paintGL() {
 
 void MapRendererWidget::makeObject() {
     blockRerender = true;
+
     m_heightmap.compile();
     m_heightmap.freeUnusedData();
+
+    m_lowResHeightmap.compile();
+    m_lowResHeightmap.freeUnusedData();
+
     m_waterPlane.compile();
     m_waterPlane.freeUnusedData();
+
     blockRerender = false;
 }
 
@@ -265,10 +288,9 @@ void MapRendererWidget::setSource(QString mapName, QImage minimap, QImage metalm
     m_ratio = heightmap.getRatio();
     primNumber += heightmap.getWidth()*heightmap.getHeight()*2;
     m_heightmap.build(heightmap);
-    heightmap.resetRatio();
-    heightmap.downscale(1);
-    m_lowResHeightmap.build(heightmap);
     heightmap.downscale(2);
+    m_lowResHeightmap.build(heightmap);
+    heightmap.downscale(1);
     primNumber += heightmap.getWidth()*heightmap.getHeight()*2;
     m_waterPlane.build(heightmap, 0);
     heightmap.free();
@@ -276,6 +298,10 @@ void MapRendererWidget::setSource(QString mapName, QImage minimap, QImage metalm
         m_debugInfo = "VBO: <b>" + tr("Enabled");
     else
         m_debugInfo = "VBO: <b>" + tr("Disabled");
+    if (getGLExtensionFunctions().fboSupported())
+        m_debugInfo += "</b> FBO: <b>" + tr("Enabled");
+    else
+        m_debugInfo += "</b> FBO: <b>" + tr("Disabled");
     if (getGLExtensionFunctions().glslSupported())
         m_debugInfo += "</b> GLSL: <b>" + tr("Enabled");
     else
@@ -393,6 +419,8 @@ void MapRendererWidget::drawStartRecs() {
     p.end();
     deleteTexture(m_texture);
     m_texture = bindTexture(QPixmap::fromImage(m_withRects), GL_TEXTURE_2D);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, m_texture);
     m_redrawStartRects = false;
 }
 
@@ -419,7 +447,7 @@ void MapRendererWidget::initPermTexture() {
     int i,j;
 
     glGenTextures(1, &m_permTexture); // Generate a unique texture ID
-    glBindTexture(GL_TEXTURE_2D, m_permTexture); // Bind the texture to texture unit 0
+    glBindTexture(GL_TEXTURE_2D, m_permTexture); // Bind the texture to texture unit N
 
     pixels = (char*)malloc( 256*256*4 );
     for(i = 0; i<256; i++)
@@ -431,7 +459,7 @@ void MapRendererWidget::initPermTexture() {
         pixels[offset+2] = grad3[value & 0x0F][2] * 64 + 64; // Gradient z
         pixels[offset+3] = value;                     // Permuted index
     }
-    // GLFW texture loading functions won't work here - we need GL_NEAREST lookup.
+
     glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, 256, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );

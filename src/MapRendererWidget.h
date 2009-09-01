@@ -8,6 +8,7 @@
 #include <QImage>
 #include <QVector>
 #include <QTime>
+#include <QGLFramebufferObject>
 #include "RawHeightMap.h"
 #include "glextensions.h"
 #include "ShaderSet.h"
@@ -78,6 +79,10 @@ private:
     GLint m_waterTimeLoc;
     GLint m_waterpermTextureLoc;
     GLint m_lightSourceLoc;
+    GLint m_reflectionTextureLoc;
+    ShaderSet m_landShaderSet;
+    GLint m_landTextureLoc;
+    GLint m_landLightSourceLoc;
     GLMaterial m_landMaterial;
     GLMaterial m_waterMaterial;
     bool m_glslSupported;
@@ -86,6 +91,7 @@ private:
     bool m_compileObjects;
     float m_ratio;
     GLWaterPlane m_waterPlane;
+    QGLFramebufferObject *fbo;
 };
 
 inline void MapRendererWidget::setDrawStartPositions(bool b) {

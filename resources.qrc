@@ -377,5 +377,6 @@
         <file>icons/color-picker-black.png</file>
         <file>icons/open_game_empty.xpm</file>
         <file>src/shaders/water.glsl</file>
+	<file>src/shaders/land.glsl</file>
     </qresource>
 </RCC>

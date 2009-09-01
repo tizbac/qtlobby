@@ -66,7 +66,7 @@
       <enum>QFrame::Raised</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="pathWidget"/>
      <widget class="QWidget" name="chatWidget">
@@ -297,6 +297,13 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
            <widget class="QCheckBox" name="metalmapSuperpositionCheckBox">
             <property name="text">
              <string>Metalmap superposition</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="useShadersCheckBox">
+            <property name="text">
+             <string>Use shaders</string>
             </property>
            </widget>
           </item>
