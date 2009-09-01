@@ -25,11 +25,11 @@ inline void GLHeightMap::setScaleFactor(float factor) {
 }
 
 inline int GLHeightMap::getWidth() {
-    return m_heightmap.getWidth() * m_scaleFactor * 8;
+    return m_heightmap.getWidth() * m_scaleFactor * 8 * 1/m_heightmap.getRatio();
 }
 
 inline int GLHeightMap::getHeight() {
-    return m_heightmap.getHeight() * m_scaleFactor * 8;
+    return m_heightmap.getHeight() * m_scaleFactor * 8 * 1/m_heightmap.getRatio();
 }
 
 #endif // GLHEIGHTMAP_H
