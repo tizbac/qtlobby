@@ -9,7 +9,7 @@ QMutex mutex;
 QMutex clean;
 
 #define QMC_MAGIC 0xA0B0C0D0
-#define QMC_VERSION 0x01
+#define QMC_VERSION 0x02
 
 static char author[200];
 static char description[255];
@@ -165,7 +165,7 @@ void MapInfoLoader::saveCache() {
     QFile file(QString("%1/%2.qmc")
                .arg(userDir.absolutePath())
                .arg(m_mapName));
-    file.open(QIODevice::WriteOnly);
+    file.open(QIODevice::WriteOnly | QIODevice::Truncate);
     QDataStream fileStream(&file);
     QByteArray buffer;
     QDataStream out(&buffer, QIODevice::WriteOnly);

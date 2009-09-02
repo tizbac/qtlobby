@@ -37,7 +37,6 @@ public:
     QList<Battle>& battleList();
     void setUsers(Users* users);
     void clear();
-    void retranslateUi();
 public slots:
     void onGroupChanged();
 private:

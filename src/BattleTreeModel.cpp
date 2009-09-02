@@ -319,7 +319,3 @@ void BattleTreeModel::clear() {
     m_battleList.clear();
     reset();
 }
-
-void BattleTreeModel::retranslateUi() {
-    reset();
-}
