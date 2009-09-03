@@ -139,6 +139,10 @@ void Users::receiveCommand( Command command ) {
         channelUserManagerMap[command.attributes[0]]->delUser( command.attributes[1] );
     } else if ( command.name == "BATTLECLOSED" ) {
         int id = command.attributes[0].toInt();
+        User u = infoChannelUserManager->getUser( url.userName() );
+        if( u.joinedBattleId == id )
+            u.joinedBattleId = -1;
+        modUserInAllManagers( u );
         battleIdUserManagerMap[id]->model()->clear();
         battleIdUserManagerMap.remove( id );
     } else if ( command.name == "FORCEQUITBATTLE" ) {
