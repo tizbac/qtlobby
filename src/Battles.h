@@ -32,6 +32,7 @@ public:
     ~Battles();
     void setUsers( Users* users );
     void wipeModels();
+    BattleCloseFirstWidget* battleCloseFirstWidget;
 signals:
     void sendCommand( Command command );
     void wantJoinBattle( unsigned int battleId, QString password, bool closeFirst );
@@ -78,7 +79,6 @@ protected:
     Users* users;
     QUrl url;
     BattlePasswordWidget* battlePasswordWidget;
-    BattleCloseFirstWidget* battleCloseFirstWidget;
     QSettings* settings;
     int battleCount;
     QMenu* m_menu;

@@ -215,7 +215,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
              this, SLOT( sendTrayMessage( QString ) ) );
     connect( battles, SIGNAL( start() ),
              this, SLOT( startSpring() ) );
-
+    connect( battles->battleCloseFirstWidget, SIGNAL( wantHostBattle( bool ) ),
+             this, SLOT( on_hostPushButton_clicked( bool ) ) );
     //Groups dialog
     connect(userGroupsDialog, SIGNAL(groupsChanged()), battles, SLOT(invalidateModel()));
     connect(userGroupsDialog, SIGNAL(groupsChanged()), users, SLOT(invalidateModel()));
@@ -541,7 +542,18 @@ void MainWindow::onTeamPlayerSpecCountChanged(QString ratio) {
     }
 }
 
-void MainWindow::on_hostPushButton_clicked() {
+void MainWindow::on_hostPushButton_clicked( bool closeFirst ) {
+    User me = users->getUser( users->getCurrentUsername() );
+    if ( closeFirst ) {
+        lobbyTabs->onCloseBattleChannel();
+    } else if ( me.joinedBattleId >= 0 ) { // in battle
+        if ( !Settings::Instance()->value( "Battle/autoCloseFirst", false ).toBool() ) {
+            battles->battleCloseFirstWidget->setBattleId( -1 );
+            battles->battleCloseFirstWidget->show();
+            return;
+        }
+        lobbyTabs->onCloseBattleChannel();
+    }
     battleHostingDialog->show();
     battleHostingDialog->activateWindow();
     battleHostingDialog->raise();

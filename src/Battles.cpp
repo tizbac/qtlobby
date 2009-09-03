@@ -290,8 +290,8 @@ void Battles::doubleClicked( const QModelIndex & index ) {
     emit wantJoinBattle( b.id, "", false );
 }
 
-void Battles::joinBattleCommand( unsigned int id, QString password, bool firstClose ) {
-    if ( firstClose ) {
+void Battles::joinBattleCommand( unsigned int id, QString password, bool closeFirst ) {
+    if ( closeFirst ) {
         emit closeBattleChannel();
     } else {
         User me = this->users->getUser( url.userName() );

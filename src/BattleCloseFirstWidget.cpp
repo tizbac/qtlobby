@@ -14,7 +14,10 @@ BattleCloseFirstWidget::~BattleCloseFirstWidget() { }
 void BattleCloseFirstWidget::acceptThis() {
     Settings::Instance()->setValue( "Battle/autoCloseFirst", battleCloseFirstCheckBox->isChecked() );
     hide();
-    emit wantJoinBattle( id, password, true );
+    if( id == -1 )
+        emit wantHostBattle( true );
+    else
+        emit wantJoinBattle( id, password, true );
 }
 
 void BattleCloseFirstWidget::setBattleId( int id ) {

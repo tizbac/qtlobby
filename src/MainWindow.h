@@ -97,7 +97,7 @@ protected:
     void showEvent(QShowEvent * event);
 private slots:
     void on_actionDownloads_triggered();
-    void on_hostPushButton_clicked();
+    void on_hostPushButton_clicked( bool closeFirst = false );
     void on_actionScripting_triggered();
     void about();
     void newUserTextInput();

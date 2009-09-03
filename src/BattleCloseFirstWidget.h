@@ -17,10 +17,11 @@ public:
     void setBattleId( int );
     void setPassword( QString password );
 private:
-    unsigned int id;
+    int id;
     QString password;
 signals:
     void wantJoinBattle( unsigned int battleId, QString password, bool closeFirst );
+    void wantHostBattle( bool closeFirst );
 private slots:
     void acceptThis();
 };
