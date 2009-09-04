@@ -63,6 +63,7 @@ MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
             qDebug() << m_landShaderSet.getErrorMessage();
         }
     }
+    fbo = 0;
 }
 
 MapRendererWidget::~MapRendererWidget() {
@@ -86,7 +87,8 @@ void MapRendererWidget::initializeGL() {
     m_waterMaterial.setSpecular(0.9, 0.9, 0.9, 0.9);
     m_waterMaterial.setShininess(128.0);
 
-    glClearColor (0.0, 0.0, 0.4, 0.0);
+    compileSimpleWaterPlane();
+
     glShadeModel (GL_SMOOTH);
 
     //glEnable(GL_LIGHTING);
@@ -123,6 +125,7 @@ void MapRendererWidget::initializeGL() {
     //glColorMaterial ( GL_FRONT_AND_BACK, GL_DIFFUSE ) ;
 
     //glEnable(GL_COLOR_MATERIAL);
+    fbo = new QGLFramebufferObject(1024, 1024, QGLFramebufferObject::Depth, GL_TEXTURE_2D, GL_RGBA16);
 
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(updateGL()));
 }
@@ -169,12 +172,6 @@ void MapRendererWidget::paintGL() {
     m_time.start();
     int curMSecs = m_lightTime.elapsed();
 
-    //GLfloat light_position[] = { 5, 5, MAX_HEIGHT*1.3, 0.0 };
-    //Weird, but this line doesn't work for my i915 integrated graphics, tho next 2 work fine
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glClear(GL_DEPTH_BUFFER_BIT);
-
     //    glEnable(GL_LIGHT0);
 
     glLoadIdentity();
@@ -199,16 +196,52 @@ void MapRendererWidget::paintGL() {
 
     GLfloat LightPosition[]= {10, 20, 10, 0 };
     //GLfloat LightDirection[]= {m_heightmap.getHeight()/2, 0, m_heightmap.getWidth()/2, 0 };
-    glLightfv(GL_LIGHT0, GL_POSITION, LightPosition);
     //glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, LightDirection);
 
 
-    glColor4f(1, 1, 1, 1);
     glEnableClientState( GL_VERTEX_ARRAY );
     glEnableClientState( GL_TEXTURE_COORD_ARRAY );
     glEnableClientState( GL_NORMAL_ARRAY );
 
     if(m_redrawStartRects) drawStartRecs();
+
+    //Rendering water reflection into a framebuffer
+    if(m_glslSupported && fbo->bind()) {
+        glClearColor(0.0, 0.0, 0.0, 0.0); //transparent pixels will be ingnored while constructing reflection in shader
+        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_DEPTH_BUFFER_BIT);
+        glPushMatrix();
+        //Mirroring along xz plane
+        glScalef(1.0, -1.0, 1.0);
+        glLightfv(GL_LIGHT0, GL_POSITION, LightPosition);
+        glFrontFace( GL_CW );
+        if(m_glslSupported) {
+            m_landShaderSet.use();
+            glUniform1iARB(m_landTextureLoc, 0);
+            glUniform1iARB(m_lightSourceLoc, 0);
+        }
+        //glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+        //glCallList(m_simpleWaterPlane);
+        //glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);*/
+        m_landMaterial.apply();
+        m_lowResHeightmap.draw();
+        glDepthFunc(GL_GREATER);
+        glCallList(m_simpleWaterPlane);
+        glDepthFunc(GL_LESS);
+        if(m_glslSupported)
+            m_landShaderSet.stop();
+        glPopMatrix();
+        glFrontFace( GL_CCW );
+
+        fbo->release();
+//        fbo->toImage().save("/home/lupus/fbo.png");
+    }
+    glClearColor (0.0, 0.0, 0.4, 0.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_DEPTH_BUFFER_BIT);
+    glLightfv(GL_LIGHT0, GL_POSITION, LightPosition);
+
+    //land rendering
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_texture);
     if(m_glslSupported) {
@@ -223,14 +256,14 @@ void MapRendererWidget::paintGL() {
 
     glDisableClientState( GL_NORMAL_ARRAY );
 
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, m_permTexture);
-    glActiveTexture(GL_TEXTURE2);
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, 0);
-
     if(!m_glslSupported)
         glDisable(GL_LIGHTING);
+
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, m_permTexture);
+
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, fbo->texture());
 
     //Water rendering
     glEnable(GL_BLEND);
@@ -253,6 +286,8 @@ void MapRendererWidget::paintGL() {
     glDisableClientState( GL_NORMAL_ARRAY );
     glDisableClientState( GL_TEXTURE_COORD_ARRAY );
     glDisableClientState( GL_VERTEX_ARRAY );
+
+    //glCallList(m_simpleWaterPlane);
 
     swapBuffers();
     int msecs = m_time.elapsed();
@@ -463,4 +498,18 @@ void MapRendererWidget::initPermTexture() {
     glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, 256, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+}
+
+void MapRendererWidget::compileSimpleWaterPlane() {
+    m_simpleWaterPlane = glGenLists(1);
+    glNewList(m_simpleWaterPlane, GL_COMPILE);
+    glBegin(GL_TRIANGLE_STRIP);
+    const float overkill = 1.5;
+    glNormal3f(0.0, 1.0, 0.0);
+    glTexCoord2f(0, 0); glVertex3f(-overkill*m_heightmap.getWidth(), 0, -overkill*m_heightmap.getHeight());
+    glTexCoord2f(1, 0); glVertex3f(overkill*m_heightmap.getWidth(), 0, -overkill*m_heightmap.getHeight());
+    glTexCoord2f(0, 1); glVertex3f(-overkill*m_heightmap.getWidth(), 0, overkill*m_heightmap.getHeight());
+    glTexCoord2f(1, 1); glVertex3f(overkill*m_heightmap.getWidth(), 0, overkill*m_heightmap.getHeight());
+    glEnd();
+    glEndList();
 }

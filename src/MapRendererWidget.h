@@ -47,6 +47,7 @@ private:
     void makeObject();
     void drawStartRecs();
     void initPermTexture();
+    void compileSimpleWaterPlane();
 private:
     QString currentMap;
     GLuint m_texture;
@@ -92,6 +93,7 @@ private:
     float m_ratio;
     GLWaterPlane m_waterPlane;
     QGLFramebufferObject *fbo;
+    GLuint m_simpleWaterPlane;
 };
 
 inline void MapRendererWidget::setDrawStartPositions(bool b) {

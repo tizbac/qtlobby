@@ -36,13 +36,11 @@ void GLObject::compile() {
         glGenBuffers( 1, &m_VBOVertices );
         glBindBuffer( GL_ARRAY_BUFFER, m_VBOVertices );
         glBufferData( GL_ARRAY_BUFFER, vertexNumber*sizeof(Vertex), vertexes, GL_STATIC_DRAW );
-    }
-    if(getGLExtensionFunctions().openGL15Supported()) {
+
         glGenBuffers( 1, &m_VBONormals );
         glBindBuffer( GL_ARRAY_BUFFER, m_VBONormals );
         glBufferData( GL_ARRAY_BUFFER, vertexNumber*sizeof(Vertex), normals, GL_STATIC_DRAW );
-    }
-    if (getGLExtensionFunctions().openGL15Supported()) {
+
         glGenBuffers( 1, &m_VBOTexCoords );
         glBindBuffer( GL_ARRAY_BUFFER, m_VBOTexCoords );
         glBufferData( GL_ARRAY_BUFFER, vertexNumber*sizeof(TexCoord), texCoords, GL_STATIC_DRAW );

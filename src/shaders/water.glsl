@@ -5,6 +5,7 @@ varying vec4 diffuse,ambientGlobal,ambient;
 varying vec3 normal,lightDir,halfVector;
 varying float dist;
 uniform int lightSource;
+varying float w;
 	
 void main()	{	
 	vec4 ecPos;
@@ -13,8 +14,9 @@ void main()	{
 	normal = normalize(gl_NormalMatrix * gl_Normal);
 		
 	ecPos = gl_ModelViewMatrix * gl_Vertex;
-	gl_ClipVertex = ecPos;
-		
+	gl_TexCoord[0] = gl_MultiTexCoord0;
+	w = ecPos.w;
+	
 	v_texCoord3D = gl_Vertex.xyz;
 		
 	aux = vec3(gl_LightSource[lightSource].position-ecPos);
@@ -27,13 +29,12 @@ void main()	{
 		
 	ambient = gl_FrontMaterial.ambient * gl_LightSource[lightSource].ambient;
 	ambientGlobal = gl_LightModel.ambient * gl_FrontMaterial.ambient;
-		
-			
+				
 	gl_Position = ftransform();
 }
 [FragmentShader]
 uniform sampler2D permTexture;
-//uniform sampler2D reflectionTexture;
+uniform sampler2D reflectionTexture;
 uniform float time; // Used for texture animation
 uniform int lightSource;
 varying vec4 diffuse,ambientGlobal, ambient;
@@ -41,6 +42,7 @@ varying vec3 normal,lightDir,halfVector;
 varying float dist;
 varying vec3 v_texCoord3D;
 varying vec3 v_texCoord2D;
+varying float w;
 
 #define ONE 0.00390625
 #define ONEHALF 0.001953125
@@ -118,8 +120,8 @@ float F(vec3 v) {
 void main() {
 	vec3 n,halfV,viewV,ldir;
 	float NdotL,NdotHV;
-	//vec4 reflectionColor = texture2D(reflectionTexture,gl_TexCoord[0].st).rgba;
-	vec4 color = ambientGlobal;
+	vec4 reflectionColor = texture2D(reflectionTexture,gl_TexCoord[0].st/w).rgba;
+	vec4 color = ambientGlobal+reflectionColor;
 	float att;
 		
 	n = normalize(normal);
@@ -148,7 +150,6 @@ void main() {
 		color += att * gl_FrontMaterial.specular * gl_LightSource[lightSource].specular * 
 						pow(NdotHV,gl_FrontMaterial.shininess);
 	}
-	//color*=reflectionColor;
 	gl_FragColor = vec4(color.rgb, 0.3);
 }
 
@@ -156,4 +157,4 @@ void main() {
 [Parameters]
 int lightSource = 0;
 sampler2D permTexture = load("../../../../../../tmp/permutations.png");
-sampler2D reflectionTexture = load("");
+sampler2D reflectionTexture = load("../../../../../../tmp/reflection.png");

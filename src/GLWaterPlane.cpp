@@ -15,5 +15,6 @@ void GLWaterPlane::build(RawHeightMap heightmap, float y) {
             vertexes[offset].z = j * m_scaleFactor * 8 * 1/heightmap.getRatio();
         }
     }
+    generateTexCoords();
     generateIndexes();
 }
