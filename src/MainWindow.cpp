@@ -16,6 +16,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     if ( settings->value("unitsync").toString().isEmpty() )
         preference->exec();
     setupUi( this );
+    preference->onResetFormToSettings();
     battles->setUsers( users );
     setWindowTitle(QString( "QtLobby v%1" ).arg( QTLOBBY_VERSION ));
     serverContextState  = new ServerContextState( this );

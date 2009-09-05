@@ -7,6 +7,7 @@
 
 
 class ShaderSet : QObject {
+    Q_OBJECT
 public:
     ShaderSet();
     bool loadShaders(QString filename);

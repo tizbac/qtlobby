@@ -35,7 +35,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;License for more details.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;&lt;br /&gt;You should have received a copy of the GNU General Public License along &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;with this program. If not, see &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.gnu.org/licenses/&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+        <translation type="obsolete">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Verdana&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
@@ -66,6 +66,36 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Close</source>
         <translation>Sulje</translation>
+    </message>
+    <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/icons/qtlobby-logo-64x64.png&quot; /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:12pt; font-weight:600;&quot;&gt;QtLobby v#version# revision #revision#&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://code.google.com/p/qtlobby/&quot;&gt;&lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:10pt; text-decoration: underline; color:#0057ae;&quot;&gt;http://code.google.com/p/qtlobby&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:600;&quot;&gt;Contributors&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://code.google.com/u/ajaakkola/&quot;&gt;&lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:10pt; text-decoration: underline; color:#0057ae;&quot;&gt;Antti Jaakkola (aweres, ajaakkola)&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://lastlog.de&quot;&gt;&lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:10pt; text-decoration: underline; color:#0057ae;&quot;&gt;Joachim Schiele&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://jakob.dettner.de&quot;&gt;&lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:10pt; text-decoration: underline; color:#0057ae;&quot;&gt;Jakob Dettner&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://code.google.com/u/cavernxxx/&quot;&gt;&lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:10pt; text-decoration: underline; color:#0057ae;&quot;&gt;Konstantin Olkhovskij (Lupus, cavernxxx)&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://code.google.com/u/marcel.hauf/&quot;&gt;&lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:10pt; text-decoration: underline; color:#0057ae;&quot;&gt;Marcel Hauf&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a href=&quot;http://mirko.windhoff.net&quot;&gt;&lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:10pt; text-decoration: underline; color:#0057ae;&quot;&gt;Mirko Windhoff&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:600;&quot;&gt;License&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;This program is free software: you can redistribute it and/or modify it &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;under the terms of the GNU General Public License as published by the &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;Free Software Foundation, either version 3 of the License, or (at your &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;option) any later version.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;This program is distributed in the hope that it will be useful, but WITHOUT &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;ANY WARRANTY; without even the implied warranty of MERCHANTABILITY &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;License for more details.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;&lt;br /&gt;You should have received a copy of the GNU General Public License along &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;with this program. If not, see &lt;/span&gt;&lt;a href=&quot;http://www.gnu.org/licenses/&quot;&gt;&lt;span style=&quot; font-family:&apos;Verdana&apos;; font-size:10pt; text-decoration: underline; color:#0057ae;&quot;&gt;http://www.gnu.org/licenses/&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -109,6 +139,10 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Leave the channel</source>
         <translation>Poistu kanavalta</translation>
+    </message>
+    <message>
+        <source>Say /me is using QtLobby vXXX revYYY</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -213,6 +247,29 @@ Haluatko ladata sen?</translation>
     <message>
         <source>Select value for %1</source>
         <translation type="unfinished">Valitse arvo %1 </translation>
+    </message>
+    <message>
+        <source>Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlocked</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BattleCloseFirstWidget</name>
+    <message>
+        <source>Battle Password</source>
+        <translation type="unfinished">Pelin salasana</translation>
+    </message>
+    <message>
+        <source>Always close the battle first</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You are already in a battle. Do you want to close it first?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -377,7 +434,7 @@ Anna salasana:</translation>
         <source>%1 players in battle
 %2 players maximum
 %3 spectators in battle</source>
-        <translation type="unfinished">%1 pelaajaa pelissä
+        <translation type="obsolete">%1 pelaajaa pelissä
 %2 pelaajaa max.
 %3 katsojaa</translation>
     </message>
@@ -428,6 +485,14 @@ Anna salasana:</translation>
     <message>
         <source>Players</source>
         <translation>Pelaajat</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;%1&lt;/b&gt; players in battle&lt;br/&gt;&lt;b&gt;%2&lt;/b&gt; players maximum&lt;br/&gt;&lt;b&gt;%3&lt;/b&gt; spectators in battle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Average rank:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -634,6 +699,18 @@ Anna salasana:</translation>
     <message>
         <source>3D Preview</source>
         <translation>3D esikatselu</translation>
+    </message>
+    <message>
+        <source>Battle status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;&lt;img src=&quot;:/icons/open_game.xpm&quot; /&gt;&lt;/td&gt;&lt;td&gt;Unlocked&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -863,7 +940,6 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>New profile</source>
-        <extracomment>this</extracomment>
         <translation>Uusi profiili</translation>
     </message>
     <message>
@@ -1384,7 +1460,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>toolBar</source>
-        <translation type="unfinished">työkalupalkki</translation>
+        <translation type="obsolete">työkalupalkki</translation>
     </message>
     <message>
         <source>&amp;Exit</source>
@@ -1436,7 +1512,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>&amp;Start Spring</source>
-        <translation type="unfinished">&amp;Käynnistä Spring</translation>
+        <translation type="obsolete">&amp;Käynnistä Spring</translation>
     </message>
     <message>
         <source>&amp;Preferences</source>
@@ -1485,6 +1561,54 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>available Slots: 0</source>
         <translation type="unfinished">vapaita paikkoja: 0</translation>
+    </message>
+    <message>
+        <source>Tabs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Q</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+U</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Try to &amp;reconnect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+G</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+I</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+D</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+H</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1551,6 +1675,14 @@ p, li { white-space: pre-wrap; }
         <source>Springsettings is a detailed and advanced configuration program. This binary is not in the qtlobby distribution yet so you might have to download it at springlobby.info</source>
         <translation>Springsettings on yksityiskohtainen ja kehittynyt ohjelma Springin asetuksien muokkaukseen. Tämä ei tule qtlobby jakelun mukana joten se on ehkä ladattava osoitteesta springlobby.info</translation>
     </message>
+    <message>
+        <source>GB</source>
+        <translation>FI</translation>
+    </message>
+    <message>
+        <source>English</source>
+        <translation>Suomi</translation>
+    </message>
 </context>
 <context>
     <name>PreferencePathElement</name>
@@ -1616,22 +1748,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Highlight my username in Chat messages</source>
         <translation>Korosta oma käyttäjänimi keskusteluissa</translation>
-    </message>
-    <message>
-        <source>Deutsch</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>English</source>
-        <translation></translation>
-    </message>
-    <message utf8="true">
-        <source>Русский</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Suomi</source>
-        <translation></translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
@@ -1704,7 +1820,6 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
     </message>
     <message>
         <source>x</source>
-        <extracomment>That&apos;s suffix for downscaling, i.e. 5x = 5 times</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1758,6 +1873,30 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
     <message>
         <source>Alpha:</source>
         <translation type="unfinished">Läpinäkyvyys:</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use shaders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>3D Projection type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Orthogonal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always close the battle before opening new</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1829,6 +1968,32 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
     <message>
         <source>&gt;&gt; agreement denied, disconnecting from server.</source>
         <translation>&gt;&gt; ehtoja ei hyväksytty, katkaistaan yhteys palvelimeen.</translation>
+    </message>
+</context>
+<context>
+    <name>ShaderSet</name>
+    <message>
+        <source>Requested shader file does not exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open requested shader file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error compiling vertex shader:
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error compiling fragment shader:
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error linking program:
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2228,6 +2393,89 @@ XX:?
     </message>
 </context>
 <context>
+    <name>UserMenuBuilder</name>
+    <message>
+        <source>Start private chat</source>
+        <translation type="unfinished">Aloita ykistyiskeskustelu</translation>
+    </message>
+    <message>
+        <source>Slap around</source>
+        <translation type="unfinished">Lätki</translation>
+    </message>
+    <message>
+        <source>Join same battle</source>
+        <translation type="unfinished">Liity samaan peliin</translation>
+    </message>
+    <message>
+        <source>Toggle ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add to group</source>
+        <translation type="unfinished">Lisää ryhmään</translation>
+    </message>
+    <message>
+        <source>Remove from group</source>
+        <translation type="unfinished">Poista ryhmästä</translation>
+    </message>
+    <message>
+        <source>Add clan to group</source>
+        <translation type="unfinished">Lisää klaani ryhmään</translation>
+    </message>
+    <message>
+        <source>Remove clan from group</source>
+        <translation type="unfinished">Poista klaani ryhmästä</translation>
+    </message>
+    <message>
+        <source>Force</source>
+        <translation type="unfinished">Pakota</translation>
+    </message>
+    <message>
+        <source>Team</source>
+        <translation type="unfinished">Joukkue</translation>
+    </message>
+    <message>
+        <source>Ally</source>
+        <translation type="unfinished">Liittolainen</translation>
+    </message>
+    <message>
+        <source>Color</source>
+        <translation type="unfinished">Väri</translation>
+    </message>
+    <message>
+        <source>Spec</source>
+        <translation type="unfinished">Katso</translation>
+    </message>
+    <message>
+        <source>Kick</source>
+        <translation type="unfinished">Potki</translation>
+    </message>
+    <message>
+        <source>New Group</source>
+        <translation type="unfinished">Uusi ryhmä</translation>
+    </message>
+    <message>
+        <source>Select team</source>
+        <translation type="unfinished">Valitse joukkue</translation>
+    </message>
+    <message>
+        <source>Select a team to force player to</source>
+        <translation type="unfinished">Pakota joukkueeseen</translation>
+    </message>
+    <message>
+        <source>Select ally team</source>
+        <translation type="unfinished">Valitse liittolainen</translation>
+    </message>
+    <message>
+        <source>Select an ally team to force player to</source>
+        <translation type="unfinished">Pakota liittoon</translation>
+    </message>
+    <message>
+        <source>Select user color</source>
+        <translation type="unfinished">Valitse käyttäjän väri</translation>
+    </message>
+</context>
+<context>
     <name>UserTreeModel</name>
     <message>
         <source>Bot </source>
@@ -2338,67 +2586,67 @@ XX:?
     </message>
     <message>
         <source>Add to group</source>
-        <translation type="unfinished">Lisää ryhmään</translation>
+        <translation type="obsolete">Lisää ryhmään</translation>
     </message>
     <message>
         <source>Remove from group</source>
-        <translation type="unfinished">Poista ryhmästä</translation>
+        <translation type="obsolete">Poista ryhmästä</translation>
     </message>
     <message>
         <source>Add clan to group</source>
-        <translation type="unfinished">Lisää klaani ryhmään</translation>
+        <translation type="obsolete">Lisää klaani ryhmään</translation>
     </message>
     <message>
         <source>Remove clan from group</source>
-        <translation type="unfinished">Poista klaani ryhmästä</translation>
+        <translation type="obsolete">Poista klaani ryhmästä</translation>
     </message>
     <message>
         <source>Force</source>
-        <translation>Pakota</translation>
+        <translation type="obsolete">Pakota</translation>
     </message>
     <message>
         <source>Team</source>
-        <translation>Joukkue</translation>
+        <translation type="obsolete">Joukkue</translation>
     </message>
     <message>
         <source>Ally</source>
-        <translation type="unfinished">Liittolainen</translation>
+        <translation type="obsolete">Liittolainen</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation type="unfinished">Väri</translation>
+        <translation type="obsolete">Väri</translation>
     </message>
     <message>
         <source>Spec</source>
-        <translation>Katso</translation>
+        <translation type="obsolete">Katso</translation>
     </message>
     <message>
         <source>Kick</source>
-        <translation>Potki</translation>
+        <translation type="obsolete">Potki</translation>
     </message>
     <message>
         <source>New Group</source>
-        <translation>Uusi ryhmä</translation>
+        <translation type="obsolete">Uusi ryhmä</translation>
     </message>
     <message>
         <source>Select team</source>
-        <translation type="unfinished">Valitse joukkue</translation>
+        <translation type="obsolete">Valitse joukkue</translation>
     </message>
     <message>
         <source>Select a team to force player to</source>
-        <translation type="unfinished">Pakota joukkueeseen</translation>
+        <translation type="obsolete">Pakota joukkueeseen</translation>
     </message>
     <message>
         <source>Select ally team</source>
-        <translation type="unfinished">Valitse liittolainen</translation>
+        <translation type="obsolete">Valitse liittolainen</translation>
     </message>
     <message>
         <source>Select an ally team to force player to</source>
-        <translation type="unfinished">Pakota liittoon</translation>
+        <translation type="obsolete">Pakota liittoon</translation>
     </message>
     <message>
         <source>Select user color</source>
-        <translation type="unfinished">Valitse käyttäjän väri</translation>
+        <translation type="obsolete">Valitse käyttäjän väri</translation>
     </message>
 </context>
 </TS>

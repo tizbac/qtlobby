@@ -5,29 +5,24 @@
 #include "UnitSyncLib.h"
 
 Preference::Preference( QDialog* parent ) : QDialog( parent ) {
+    settings = Settings::Instance();
     setupUi( this );
     setUpPathForm();
-    settings = Settings::Instance();
+    setUpLanguageComboBox();
+    translator = new QTranslator(this);
     connect( okPushButton, SIGNAL( clicked() ), SLOT( onOk() ) );
     connect( applyPushButton, SIGNAL( clicked() ), SLOT( onApply() ) );
     connect( cancelPushButton, SIGNAL( clicked() ), SLOT( onCancel() ) );
-    connect( languageComboBox, SIGNAL( activated( QString ) ), SLOT( onLanguageChanged( QString ) ) );
+    connect( languageComboBox, SIGNAL( activated( int ) ), SLOT( onLanguageChanged( int ) ) );
     loadPreferences();
     // show first page by default
     preferencesListWidget->setCurrentRow(0);
     stackedWidget->setCurrentIndex(0);
-    languageNameLocaleMap["Deutsch"] = "de_DE";
-    languageNameLocaleMap["English"] = "en";
-    languageNameLocaleMap[QString::fromUtf8( "Español" )] = "es";
-    languageNameLocaleMap[QString::fromUtf8( "Русский" )] = "ru";
-    languageNameLocaleMap["Suomi"] = "fi";
-    translator = new QTranslator(this);
 }
 
 #define INIT_PREF(key, value) if(!settings->contains(key)) \
         settings->setValue(key, value);
 
-//Moved it out from constructor for sake of clarity (ko)
 void Preference::loadPreferences() {
     /*Chat*/
     INIT_PREF("Chat/joinMain", true);
@@ -57,7 +52,6 @@ void Preference::loadPreferences() {
     INIT_PREF("MapViewing/useShaders", true);
     useShadersCheckBox->setChecked(settings->value("MapViewing/useShaders").toBool());
 
-
     /*Start Positions*/
     INIT_PREF("MapViewing/startPos/showOnMinimapCheckBox", true);
     startPosShowOnMinimapCheckBox->setChecked(settings->value("MapViewing/startPos/showOnMinimapCheckBox").toBool());
@@ -77,16 +71,17 @@ void Preference::loadPreferences() {
     /*General*/
     INIT_PREF("Battle/autoCloseFirst", false);
     battleAutoCloseFirstCheckBox->setChecked( settings->value("Battle/autoCloseFirst").toBool() );
-    QString locale = QLocale::system().name();
-    qDebug() << "Your locale is: " << locale;
-    INIT_PREF( "locale", locale );
-    locale = settings->value( "locale" ).toString();
-    for( int i = 0; i < languageComboBox->count(); i++ ) {
-        if( languageNameLocaleMap[languageComboBox->itemText(i)] == locale ) {
-            languageComboBox->setCurrentIndex(i);
-            break;
-        }
-    }
+
+    /*Language*/
+    QString fullLocale = QLocale::system().name();
+    qDebug() << "Your system locale is set to " << fullLocale << ".";
+    INIT_PREF( "locale", fullLocale );
+    fullLocale = settings->value( "locale" ).toString();
+    int index = languageComboBox->findData( fullLocale, Qt::UserRole );
+    if( index < 0 )
+        index = languageComboBox->findData( fullLocale.section( '_', 0, 0 ), Qt::UserRole, Qt::MatchStartsWith );
+    languageComboBox->setCurrentIndex( index );
+    onLanguageChanged( index );
 }
 
 Preference::~Preference() { }
@@ -128,6 +123,8 @@ void Preference::onApply() {
 
     /*General*/
     settings->setValue( "Battle/autoCloseFirst", battleAutoCloseFirstCheckBox->isChecked() );
+    /*Language*/
+    settings->setValue( "locale", languageComboBox->itemData( languageComboBox->currentIndex(), Qt::UserRole ).toString() );
 }
 
 void Preference::onCancel() {
@@ -138,58 +135,14 @@ void Preference::onCancel() {
 void Preference::onResetFormToSettings() {
     for ( int i = 0; i < pathElements.size(); ++i )
         pathElements[i]->resetConfiguration();
-
-    /*Chat*/
-    joinMainCheckBox->setChecked(settings->value("Chat/joinMain").toBool());
-    joinQtlobbyCheckBox->setChecked(settings->value("Chat/joinQtlobby").toBool());
-    chatShowFlagsCheckBox->setChecked(settings->value("Chat/showFlags").toBool());
-    chatHighlightUserNameCheckBox->setChecked(settings->value("Chat/highlightUserName").toBool());
-    popupNewPrivateChannelCheckBox->setChecked(settings->value("Chat/popupNewPrivateChannel").toBool());
-    notifyNewPrivateMessagesCheckBox->setChecked(settings->value("Chat/notifyNewPrivateMessages").toBool());
-
-    /*Map viewing*/
-    colrizedHeightMapCheckBox->setChecked(settings->value("MapViewing/colorizedHeightmap").toBool());
-    grayScaleHeightmapCheckBox->setChecked(!settings->value("MapViewing/colorizedHeightmap").toBool());
-    downscaleHeightmapSpinBox->setValue(settings->value("MapViewing/downscaleHeightmap").toInt());
-    metalmapSuperpositionCheckBox->setChecked(settings->value("MapViewing/metalmapSuperposition").toBool());
-    projectionPerspectiveRadioButton->setChecked(settings->value("MapViewing/perspectiveProjectionType").toBool());
-    projectionOrghogonalRadioButton->setChecked(!settings->value("MapViewing/perspectiveProjectionType").toBool());
-    useShadersCheckBox->setChecked(settings->value("MapViewing/useShaders").toBool());
-
-    /*Start Positions*/
-    startPosShowOnMinimapCheckBox->setChecked(settings->value("MapViewing/startPos/showOnMinimapCheckBox").toBool());
-    startPosShowOnHeightmapCheckBox->setChecked(settings->value("MapViewing/startPos/showOnHeightmapCheckBox").toBool());
-    startPosShowOnMetalmapCheckBox->setChecked(settings->value("MapViewing/startPos/showOnMetalmapCheckBox").toBool());
-    startPosShowOn3DMapCheckBox->setChecked(settings->value("MapViewing/startPos/showOn3DMapCheckBox").toBool());
-    startRectBrushComboBox->setCurrentIndex(settings->value("MapViewing/startPos/startRect/brushNumber").toInt());
-    startRectBorderWidthSpinBox->setValue(settings->value("MapViewing/startPos/startRect/borderWidth").toInt());
-    startRectAlphaSpinBox->setValue(settings->value("MapViewing/startPos/startRect/alpha").toInt());
-
-    /*General*/
-    battleAutoCloseFirstCheckBox->setChecked( settings->value( "Battle/autoCloseFirst" ).toBool() );
-    QString locale = settings->value( "locale" ).toString();
-    for( int i = 0; i < languageComboBox->count(); i++ ) {
-        if( languageNameLocaleMap[languageComboBox->itemText(i)] == locale ) {
-            languageComboBox->setCurrentIndex(i);
-            break;
-        }
-    }
+    loadPreferences();
 }
 
-void Preference::onLanguageChanged(QString language) {
-    if( languageNameLocaleMap.contains( language ) ) {
-        QString currentLocale = settings->value("locale", "en").toString(); // get the current locale setting
-        if( languageNameLocaleMap[language] != currentLocale ) {
-            QString newLocale = languageNameLocaleMap[language];
-            if( translator->load( "qtlobby_" +  newLocale, ":/i18n/" ) ) {
-                qDebug() << "Installing translator for locale: " + newLocale;
-                qApp->installTranslator( translator );
-            }
-            settings->setValue( "locale", newLocale );
-        }
-        return;
-    }
-    qDebug() << QString("Error: Locale for language %1 not found.").arg(language);
+void Preference::onLanguageChanged( int index ) {
+    qApp->removeTranslator( translator );
+    QString newLocale = languageComboBox->itemData( index, Qt::UserRole ).toString();
+    if( translator->load( "qtlobby_" +  newLocale, ":/i18n/" ) )
+        qApp->installTranslator( translator );
 }
 
 void Preference::setUpPathForm() {
@@ -339,6 +292,25 @@ void Preference::initPathExamples() {
             "/usr/games/springsettings;"
             "/usr/bin/springsettings";
 #endif
+}
+
+void Preference::setUpLanguageComboBox() {
+    QStringList qmFileNames = findQmFiles();
+    languageComboBox->addItem( QIcon( ":/flags/GB.xpm" ), "English", "en");
+    foreach( QString qmFile, qmFileNames ) {
+        translator = new QTranslator();
+        QString fullLocale = qmFile.section( '.', 0, 0 ).section( '_', 1, -1 );
+        translator->load( qmFile );
+        languageComboBox->addItem( QIcon( ":/flags/" + translator->translate( "Preference", "GB" ) + ".xpm" ),
+                                   translator->translate( "Preference", "English" ),
+                                   fullLocale );
+    }
+    /* This has to be translated to "Deutsch" or "Русский" according to the target language.
+       This variable has no other purpose than being found by lupdate to be translated. */
+    QString languageName = tr( "English" );
+    /* This has to be translated to "DE" or "RU" to the uppercase Top Level Domain of the country of the Locale.
+       This variable has no other purpose than being found by lupdate to be translated. */
+    QString languageCountryTLD = tr( "GB" );
 }
 
 QStringList Preference::findQmFiles() {

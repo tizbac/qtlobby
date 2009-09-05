@@ -36,6 +36,7 @@ private:
     PreferencePathElement* springSettingsFilePathElement;
     void initPathExamples();
     void setUpPathForm();
+    void setUpLanguageComboBox();
     void loadPreferences();
     QStringList findQmFiles();
     QMap<QString, QString> languageNameLocaleMap;
@@ -44,7 +45,7 @@ public slots:
     void onResetFormToSettings();
     void changeEvent( QEvent* event );
 private slots:
-    void onLanguageChanged(QString language);
+    void onLanguageChanged( int index );
     void onOk();
     void onApply();
     void onCancel();

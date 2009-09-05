@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="de">
+<!DOCTYPE TS><TS>
 <context>
     <name>AboutWidget</name>
     <message>
@@ -86,7 +84,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Say /me is using QtLobby vXXX revYYY</source>
-        <translation type="unfinished"></translation>
+        <translation>Sage &quot;/me is using Qtlobby vXXX revYYY&quot;</translation>
     </message>
 </context>
 <context>
@@ -136,7 +134,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>You have been kicked from the battle!</source>
-        <translation type="unfinished">Du wurdest aus dem Spiel gekickt!</translation>
+        <translation>Du wurdest aus dem Spiel gekickt!</translation>
     </message>
     <message>
         <source>You have been kicked from the battle!
@@ -193,26 +191,26 @@ Möchtest du sie runterladen?</translation>
     </message>
     <message>
         <source>Locked</source>
-        <translation type="unfinished"></translation>
+        <translation>Abgeschlossen</translation>
     </message>
     <message>
         <source>Unlocked</source>
-        <translation type="unfinished"></translation>
+        <translation>Offen</translation>
     </message>
 </context>
 <context>
     <name>BattleCloseFirstWidget</name>
     <message>
         <source>Battle Password</source>
-        <translation type="unfinished">Battle Passwort</translation>
+        <translation>Battle Passwort</translation>
     </message>
     <message>
         <source>Always close the battle first</source>
-        <translation type="unfinished"></translation>
+        <translation>Immer Battle zuerst schließen</translation>
     </message>
     <message>
         <source>You are already in a battle. Do you want to close it first?</source>
-        <translation type="unfinished"></translation>
+        <translation>Du bist schon in einem Battle. Willst du es erst schließen?</translation>
     </message>
 </context>
 <context>
@@ -646,7 +644,7 @@ Bitte Passwort angeben:</translation>
     </message>
     <message>
         <source>Battle status</source>
-        <translation type="unfinished"></translation>
+        <translation>Battle Status</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -654,7 +652,11 @@ Bitte Passwort angeben:</translation>
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;&lt;img src=&quot;:/icons/open_game.xpm&quot; /&gt;&lt;/td&gt;&lt;td&gt;Unlocked&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;&lt;img src=&quot;:/icons/open_game.xpm&quot; /&gt;&lt;/td&gt;&lt;td&gt;Offen&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -878,7 +880,6 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Please change your new name to %1 and reconnect to the server.</source>
-        <translatorcomment>I dont understand this sentence.</translatorcomment>
         <translation>Bitte ändere deinen neuen Namen zu %1 und verbinde dich erneut zum Server.</translation>
     </message>
     <message>
@@ -903,7 +904,6 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>New profile</source>
-        <extracomment>this</extracomment>
         <translation>Neues Profil</translation>
     </message>
     <message>
@@ -1066,7 +1066,13 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;If you hit connect in the Login tab you will see the client server communication logs here. &lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;This is handy if something doesn&apos;t work as expected.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;DejaVu Sans&apos;; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;Wenn du auf Verbinden klickst, siehst du den Client-Server-Kommunikationslog hier.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;;&quot;&gt;Das ist nützlich, falls etwas nicht wie erwartet klappt.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;Sans Serif&apos;;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Server:</source>
@@ -1078,8 +1084,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>springrts.com</source>
-        <translatorcomment>why does it need to be translated?</translatorcomment>
-        <translation type="unfinished"></translation>
+        <translation>springrts.com</translation>
     </message>
     <message>
         <source>Current Profile</source>
@@ -1553,6 +1558,46 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Try to &amp;reconnect</source>
+        <translation>Nochmal ve&amp;rbinden</translation>
+    </message>
+    <message>
+        <source>Ctrl+Q</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+B</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+U</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+P</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+G</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+I</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+D</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+H</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1587,7 +1632,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Number of primitives</source>
-        <translation type="unfinished"></translation>
+        <translation>Anzahl an Dreiecken</translation>
     </message>
     <message>
         <source>Inf</source>
@@ -1615,6 +1660,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Springsettings is a detailed and advanced configuration program. This binary is not in the qtlobby distribution yet so you might have to download it at springlobby.info</source>
         <translation>Springsettings ist ein externes Konfigurations-Programm, welches nicht Bestandteil von QtLobby ist. Es muss eventuell bei springlobby.info herunter geladen werden</translation>
+    </message>
+    <message>
+        <source>GB</source>
+        <translation>DE</translation>
+    </message>
+    <message>
+        <source>English</source>
+        <translation>Deutsch</translation>
     </message>
 </context>
 <context>
@@ -1688,19 +1741,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>English</source>
-        <translation>English</translation>
+        <translation type="obsolete">English</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <source>Русский</source>
-        <translation>Русский</translation>
+        <translation type="obsolete">Русский</translation>
     </message>
     <message>
         <source>Suomi</source>
-        <translation>Suomi</translation>
+        <translation type="obsolete">Suomi</translation>
     </message>
     <message>
         <source>Deutsch</source>
-        <translation>Deutsch</translation>
+        <translation type="obsolete">Deutsch</translation>
     </message>
     <message>
         <source>Join #main on start</source>
@@ -1773,16 +1826,16 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>Each downscaling pass will make heightmap 2 times smaller, thus occupying twice less memory and GPU time for rendering. Adjust this value to fit your video card.
 Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if you card supports VBO, usual memory if not) in full resolution.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jeder Downscaling-Durchgang macht die Höhenkarte um die Hälfte kleiner und halbiert deshalb den RAM-Verbrauch und GPU-Rechenzeit für das Rendern. Passe diesen Wert entsprechend deiner Grafikkarte an.
+Große Karten wie Dworld oder Nation können in voller Auflösung bis zu 400MB Videospeicher verbrauchen (wenn deine Grafikkarte keinen VBO unterstützt, dann RAM).</translation>
     </message>
     <message>
         <source>x</source>
-        <extracomment>That&apos;s suffix for downscaling, i.e. 5x = 5 times</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Metalmap superposition</source>
-        <translation type="unfinished"></translation>
+        <translation>Metallkartenüberlagerung</translation>
     </message>
     <message>
         <source>Visibility of Start Position</source>
@@ -1850,10 +1903,10 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
     </message>
     <message>
         <source>Always close the battle before opening new</source>
-        <translation type="unfinished"></translation>
+        <translation>Immer Battle zuerst schließen bevor ein neues geöffnet wird</translation>
     </message>
-    <message utf8="true">
-        <source>Espagñol</source>
+    <message>
+        <source>Use shaders</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1876,7 +1929,7 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
     <name>ProgressBarItemDelegate</name>
     <message>
         <source>File size unknown</source>
-        <translation>Dateigröße unbekannt</translation>
+        <translation type="unfinished">Dateigröße unbekannt</translation>
     </message>
 </context>
 <context>
@@ -1888,6 +1941,10 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
     <message>
         <source>I couldn&apos;t detect any system tray on this system.</source>
         <translation>Konnte keinen Systray auf diesem System finden.</translation>
+    </message>
+    <message>
+        <source>File size unknown</source>
+        <translation type="obsolete">Dateigröße unbekannt</translation>
     </message>
 </context>
 <context>
