@@ -206,7 +206,7 @@ void MapRendererWidget::paintGL() {
     if(m_redrawStartRects) drawStartRecs();
 
     //Rendering water reflection into a framebuffer
-    if(m_glslSupported && fbo->bind()) {
+    if(0 && m_glslSupported && fbo->bind()) {
         glClearColor(0.0, 0.0, 0.0, 0.0); //transparent pixels will be ingnored while constructing reflection in shader
         glClear(GL_COLOR_BUFFER_BIT);
         glClear(GL_DEPTH_BUFFER_BIT);
@@ -234,7 +234,7 @@ void MapRendererWidget::paintGL() {
         glFrontFace( GL_CCW );
 
         fbo->release();
-//        fbo->toImage().save("/home/lupus/fbo.png");
+        //fbo->toImage().save("/home/lupus/fbo.png");
     }
     glClearColor (0.0, 0.0, 0.4, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -263,6 +263,7 @@ void MapRendererWidget::paintGL() {
     glBindTexture(GL_TEXTURE_2D, m_permTexture);
 
     glActiveTexture(GL_TEXTURE2);
+    glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, fbo->texture());
 
     //Water rendering
@@ -286,8 +287,12 @@ void MapRendererWidget::paintGL() {
     glDisableClientState( GL_NORMAL_ARRAY );
     glDisableClientState( GL_TEXTURE_COORD_ARRAY );
     glDisableClientState( GL_VERTEX_ARRAY );
-
-    //glCallList(m_simpleWaterPlane);
+    /*
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, fbo->texture());
+    glFrontFace( GL_CW );
+    glCallList(m_simpleWaterPlane);
+    glFrontFace( GL_CCW );*/
 
     swapBuffers();
     int msecs = m_time.elapsed();

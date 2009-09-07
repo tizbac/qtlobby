@@ -120,13 +120,13 @@ float F(vec3 v) {
 void main() {
 	vec3 n,halfV,viewV,ldir;
 	float NdotL,NdotHV;
-	vec4 reflectionColor = texture2D(reflectionTexture,gl_TexCoord[0].st/w).rgba;
+	vec4 reflectionColor = texture2D(reflectionTexture,gl_TexCoord[0].st).rgba;
 	vec4 color = ambientGlobal+reflectionColor;
 	float att;
 		
 	n = normalize(normal);
 	float F0, Fx, Fy, Fz;
-	float e = 5.0;
+	float e = 7.0;
 	F0 = F(v_texCoord3D.xyz);
 	Fx = F(vec3(v_texCoord3D.x+e,v_texCoord3D.y,v_texCoord3D.z));
 	Fy = F(vec3(v_texCoord3D.x,v_texCoord3D.y+e,v_texCoord3D.z));
