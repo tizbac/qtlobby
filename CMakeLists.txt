@@ -12,8 +12,10 @@ if($ENV{SVN_REV})
   set(SVN_REV $ENV{SVN_REV})
   message(STATUS Overriding SVN_REV from environment variable)
 else($ENV{SVN_REV})
-  execute_process(COMMAND svnversion -n OUTPUT_VARIABLE SVN_REV)
+  execute_process(COMMAND svnversion -n WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} OUTPUT_VARIABLE SVN_REV)
 endif($ENV{SVN_REV})
+
+message(STATUS "SVN_REV: " ${SVN_REV})
 
 
 option(BUILDBOT "Use buildbot build configuration(used for cross compiling)" OFF)
