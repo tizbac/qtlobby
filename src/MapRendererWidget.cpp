@@ -44,7 +44,7 @@ MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
     setAutoBufferSwap(false);
     m_perspective = Settings::Instance()->value("MapViewing/perspectiveProjectionType").toBool();
     if(m_glslSupported) {
-        if(m_waterShaderSet.loadShaders("L:\\qtlobby_project\\svn\\src\\shaders\\water.glsl")) {
+      if(m_waterShaderSet.loadShaders(":/src/shaders/water.glsl")) {
             m_waterTimeLoc = m_waterShaderSet.getUniformLocation("time");
             m_waterpermTextureLoc = m_waterShaderSet.getUniformLocation("permTexture");
             m_lightSourceLoc = m_waterShaderSet.getUniformLocation("lightSource");
@@ -56,7 +56,7 @@ MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
             qDebug() << "Water shader failed to load";
             qDebug() << m_waterShaderSet.getErrorMessage();
         }
-        if(m_landShaderSet.loadShaders("L:\\qtlobby_project\\svn\\src\\shaders\\land.glsl")) {
+      if(m_landShaderSet.loadShaders(":/src/shaders/land.glsl")) {
             m_landTextureLoc = m_landShaderSet.getUniformLocation("tex");
             m_landLightSourceLoc = m_landShaderSet.getUniformLocation("lightSource");
         } else {
