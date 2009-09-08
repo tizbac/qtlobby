@@ -19,6 +19,8 @@ endif($ENV{SVN_REV})
 option(BUILDBOT "Use buildbot build configuration(used for cross compiling)" OFF)
 mark_as_advanced(BUILDBOT)
 
+option(TRANSLATIONS "Create .qm files)" OFF)
+
 set(QT_USE_QTCORE true)
 set(QT_USE_QTGUI true)
 set(QT_USE_QTSCRIPT true)

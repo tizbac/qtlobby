@@ -189,13 +189,14 @@ QT4_WRAP_UI(qtlobby_UIS_H ${qtlobby_UIS})
 include_directories(../ui)
       
 #QT4_ADD_RESOURCES(qtlobby_RES ../resources.qrc)
-      
-QT4_ADD_TRANSLATION(qtlobby_TRANS
-../i18n/qtlobby_de.ts
-../i18n/qtlobby_es.ts
-../i18n/qtlobby_fi.ts
-../i18n/qtlobby_ru.ts
-)     
+if(TRANSLATIONS)
+  QT4_ADD_TRANSLATION(qtlobby_TRANS
+  ../i18n/qtlobby_de.ts
+  ../i18n/qtlobby_es.ts
+  ../i18n/qtlobby_fi.ts
+  ../i18n/qtlobby_ru.ts
+)
+endif(TRANSLATIONS)
       
 # linking compiling
 add_executable(qtlobby ${qtlobby_SRCS} ${qtlobby_SRCS_HH} ${qtlobby_UIS_H} ${qtlobby_SRCS_MOC} ${qtlobby_RES} ${qtlobby_TRANS} main.cpp)
