@@ -125,8 +125,7 @@ HEADERS += src/MainWindow.h \
     src/GLMaterial.h \
     src/GLObject.h \
     src/GLHeightMap.h \
-    src/GLWaterPlane.h \
-    src/PathManager.h
+    src/GLWaterPlane.h
 
 # src/MapSelector.h \ # not used
 # src/MapElementWidget.h \ # not used
@@ -199,8 +198,7 @@ SOURCES += src/main.cpp \
     src/GLMaterial.cpp \
     src/GLObject.cpp \
     src/GLHeightMap.cpp \
-    src/GLWaterPlane.cpp \
-    src/PathManager.cpp
+    src/GLWaterPlane.cpp
 
 # src/MapSelector.cpp \ # not used
 # src/MapElementWidget.cpp \ # not used
