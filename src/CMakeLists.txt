@@ -48,7 +48,7 @@ MapWidget.cpp
 ModOption.cpp                    
 NetworkInterface.cpp             
 Notification.cpp                 
-PathManager.cpp                  
+#PathManager.cpp                  
 Preference.cpp                   
 PreferencePathElement.cpp        
 PrivateChannel.cpp               
@@ -125,7 +125,7 @@ MapWidget.h
 ModOption.h                    
 NetworkInterface.h             
 Notification.h                 
-PathManager.h                  
+#PathManager.h                  
 Preference.h                   
 PreferencePathElement.h        
 PrivateChannel.h               
