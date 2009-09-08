@@ -81,6 +81,7 @@ private:
     GLint m_waterpermTextureLoc;
     GLint m_lightSourceLoc;
     GLint m_reflectionTextureLoc;
+    GLint m_screensizeLoc;
     ShaderSet m_landShaderSet;
     GLint m_landTextureLoc;
     GLint m_landLightSourceLoc;

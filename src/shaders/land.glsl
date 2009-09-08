@@ -22,7 +22,7 @@ void main () {
 
 	vec3 N = normalize(v_N);
 	vec3 V = normalize(v_V);
-	vec3 L = normalize(vec3(gl_LightSource[lightSource].position));
+	vec3 L = normalize(vec3(gl_LightSource[0].position));
 
 	vec3 ambient = 0.1 * color;
 	vec3 diffuse = color * max(dot(L, N), 0.0);

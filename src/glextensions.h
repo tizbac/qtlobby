@@ -169,6 +169,7 @@ typedef void (APIENTRY *_glUseProgramObjectARB) (GLhandleARB);
 typedef GLint (APIENTRY *_glGetUniformLocationARB) (GLhandleARB, const GLcharARB *);
 typedef void (APIENTRY *_glUniform1iARB) (GLint, GLint);
 typedef void (APIENTRY *_glUniform1fARB) (GLint, GLfloat);
+typedef void (APIENTRY *_glUniform2fARB) (GLint, GLfloat, GLfloat);
 typedef void (APIENTRY *_glUniform4fARB) (GLint, GLfloat, GLfloat, GLfloat, GLfloat);
 typedef void (APIENTRY *_glUniformMatrix4fvARB) (GLint, GLuint, GLboolean, const GLfloat *);
 
@@ -214,6 +215,7 @@ struct GLExtensionFunctions {
     _glGetUniformLocationARB GetUniformLocationARB;
     _glUniform1iARB Uniform1iARB;
     _glUniform1fARB Uniform1fARB;
+    _glUniform2fARB Uniform2fARB;
     _glUniform4fARB Uniform4fARB;
     _glUniformMatrix4fvARB UniformMatrix4fvARB;
 
@@ -259,6 +261,7 @@ inline GLExtensionFunctions &getGLExtensionFunctions() {
 #define glUniform1iARB getGLExtensionFunctions().Uniform1iARB
 #define glUniform1fARB getGLExtensionFunctions().Uniform1fARB
 #define glUniform4fARB getGLExtensionFunctions().Uniform4fARB
+#define glUniform2fARB getGLExtensionFunctions().Uniform2fARB
 #define glUniformMatrix4fvARB getGLExtensionFunctions().UniformMatrix4fvARB
 
 #define glGenFramebuffersEXT getGLExtensionFunctions().GenFramebuffersEXT

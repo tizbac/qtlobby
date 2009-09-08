@@ -36,6 +36,7 @@ MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
     lastZoom = 1.0;
     m_compileObjects = false;
     blockRerender = false;
+    makeCurrent();
     getGLExtensionFunctions().resolve(context());
     m_glslSupported = getGLExtensionFunctions().glslSupported();
     m_glslSupported = m_glslSupported && Settings::Instance()->value("MapViewing/useShaders").toBool();
@@ -43,19 +44,19 @@ MapRendererWidget::MapRendererWidget(QWidget* parent) : QGLWidget(parent) {
     setAutoBufferSwap(false);
     m_perspective = Settings::Instance()->value("MapViewing/perspectiveProjectionType").toBool();
     if(m_glslSupported) {
-        makeCurrent();
-        if(m_waterShaderSet.loadShaders(":/src/shaders/water.glsl")) {
+        if(m_waterShaderSet.loadShaders("L:\\qtlobby_project\\svn\\src\\shaders\\water.glsl")) {
             m_waterTimeLoc = m_waterShaderSet.getUniformLocation("time");
             m_waterpermTextureLoc = m_waterShaderSet.getUniformLocation("permTexture");
             m_lightSourceLoc = m_waterShaderSet.getUniformLocation("lightSource");
             m_reflectionTextureLoc = m_waterShaderSet.getUniformLocation("reflectionTexture");
+            m_screensizeLoc = m_waterShaderSet.getUniformLocation("screensize");
             glActiveTexture(GL_TEXTURE1);
             initPermTexture();
         } else {
             qDebug() << "Water shader failed to load";
             qDebug() << m_waterShaderSet.getErrorMessage();
         }
-        if(m_landShaderSet.loadShaders(":/src/shaders/land.glsl")) {
+        if(m_landShaderSet.loadShaders("L:\\qtlobby_project\\svn\\src\\shaders\\land.glsl")) {
             m_landTextureLoc = m_landShaderSet.getUniformLocation("tex");
             m_landLightSourceLoc = m_landShaderSet.getUniformLocation("lightSource");
         } else {
@@ -71,236 +72,251 @@ MapRendererWidget::~MapRendererWidget() {
     m_waterPlane.free();
 }
 
-void MapRendererWidget::initializeGL() {
-    glActiveTexture(GL_TEXTURE0);
-    glEnable(GL_TEXTURE_2D);
+void MapRendererWidget::initializeGL() { 
+	    glActiveTexture(GL_TEXTURE0); 
+	    glEnable(GL_TEXTURE_2D); 
+	 
+	    //Land material 
+	    m_landMaterial.setAmbient(1.0, 1.0, 1.0, 1.0); 
+	    m_landMaterial.setDiffuse(1.0, 1.0, 1.0, 1.0); 
+	    m_landMaterial.setSpecular(1.0, 0.8, 0.8, 1.0); 
+	    m_landMaterial.setShininess(80.0); 
+	 
+	    //Water material 
+	    m_waterMaterial.setAmbient(0.0, 0.0, 0.6, 1.0); 
+	    m_waterMaterial.setDiffuse(0.3, 0.3, 0.3, 1.0); 
+	    m_waterMaterial.setSpecular(0.9, 0.9, 0.9, 0.9); 
+	    m_waterMaterial.setShininess(40.0); 
+	 
+	    compileSimpleWaterPlane(); 
+	 
+	    glShadeModel (GL_SMOOTH); 
+	 
+	    //glEnable(GL_LIGHTING); 
+	    //glEnable(GL_LIGHT0); 
+	    //glEnable(GL_CULL_FACE); 
+	    glEnable(GL_DEPTH_TEST); 
+	    glEnable(GL_CULL_FACE); 
+	    glCullFace(GL_BACK); 
+	    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); 
+	    //glBlendFunc(GL_ONE,GL_ONE); 
+	    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+	    //glEnable(GL_ALPHA_TEST); 
+	    //glDepthMask(GL_FALSE); 
+	 
+	    //    glLightfv(GL_LIGHT0, GL_POSITION,LightPosition); 
+	    glEnable(GL_LIGHT0); 
+	    GLfloat ambientLight[]={0.3,0.3,0.3,1.0};                    // set ambient light parameters 
+	    glLightfv(GL_LIGHT0,GL_AMBIENT,ambientLight); 
+	 
+	    GLfloat diffuseLight[]={0.5,0.5,0.5,1.0};                    // set diffuse light parameters 
+	    glLightfv(GL_LIGHT0,GL_DIFFUSE,diffuseLight); 
+	 
+	    GLfloat specularLight[]={1.0,1.0,1.0,1.0};                     // set specular light parameters 
+	    glLightfv(GL_LIGHT0,GL_SPECULAR,specularLight); 
+	 
+	    /*glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0); 
+	    glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, 0.0); 
+	    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 30.0); 
+	    glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 15.0f); */
+      
+      // sets only constant attenuation (which would be default anyway)
+	    glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.0f); 
+	    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.0f); 
+	    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.0f);
+	 
+	    //glColorMaterial ( GL_FRONT_AND_BACK, GL_DIFFUSE ) ; 
+	 
+	    //glEnable(GL_COLOR_MATERIAL); 
+      fbo = new QGLFramebufferObject(1024, 1024, QGLFramebufferObject::Depth, GL_TEXTURE_2D, GL_RGB8); 
+	 
+	    connect(&m_timer, SIGNAL(timeout()), this, SLOT(updateGL())); 
+	} 
+	 
+	void MapRendererWidget::hideEvent(QHideEvent* /*event*/){ 
+	    m_timer.stop(); 
+	} 
+	 
+	void MapRendererWidget::showEvent(QShowEvent * /*event*/) { 
+	    m_timer.start(); 
+	} 
+	 
+	void MapRendererWidget::resizeGL(int w, int h) { 
+	    glViewport(0, 0, (GLint)w, (GLint)h); 
+	    glMatrixMode (GL_PROJECTION); 
+	    glLoadIdentity(); 
+	 
+	    if(m_perspective) { 
+	        const float angle=30; 
+	        gluPerspective(angle,double(w)/double(h),1,1000); 
+	    } else { 
+	        if (w <= h) 
+	            glOrtho (dx+lastZoom*-100, dx+lastZoom*100,/*left,right*/ 
+	                     dy+lastZoom*-100*(GLfloat)h/(GLfloat)w, dy+lastZoom*100*(GLfloat)h/(GLfloat)w,/*top,bottom*/ 
+	                     -2000.0, 2000.0);/*near,far*/ 
+	        else 
+	            glOrtho (dx+lastZoom*-100*(GLfloat)w/(GLfloat)h, dx+lastZoom*100*(GLfloat)w/(GLfloat)h,/*left,right*/ 
+	                     dy+lastZoom*-100, dy+lastZoom*100,/*top,bottom*/ 
+	                     -2000.0, 2000.0);/*near,far*/ 
+	    } 
+	    glMatrixMode(GL_MODELVIEW); 
+	    glLoadIdentity(); 
+	    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA); 
+	    glEnable(GL_LIGHT0); 
+	    glEnable(GL_LIGHT1); 
+	 
+	    m_timer.start(25); 
+	    m_lightTime.start(); 
+	} 
+	 
+	void MapRendererWidget::paintGL() { 
+	    if (!m_heightmap.getWidth() || blockRerender) return; 
+	 
+	    m_time.start(); 
+	    int curMSecs = m_lightTime.elapsed(); 
+	 
+	    //    glEnable(GL_LIGHT0); 
+	 
+	    glLoadIdentity(); 
+	 
+	    if (m_compileObjects) { 
+	        makeObject(); 
+	        m_compileObjects = false; 
+	    } 
+	 
+	    if(m_perspective) { 
+	        glTranslatef(0,-(lastZoom*100),0); 
+	    } 
+	 
+	    glTranslatef(dx, dy, dz); 
+	    glRotated(xRot / 16.0, 1.0, 0.0, 0.0); 
+	    glRotated(yRot / 16.0, 0.0, 1.0, 0.0); 
+	    glRotated(zRot / 16.0, 0.0, 0.0, 1.0); 
+	    glTranslatef(-m_heightmap.getWidth()/2, 0, -m_heightmap.getHeight()/2); 
+	 
+	    if(!m_glslSupported) 
+	        glEnable(GL_LIGHTING); 
+	 
+	    GLfloat LightPosition[]= {40, 50, 40, 1.0 }; 
+	    //GLfloat LightDirection[]= {m_heightmap.getHeight()/2, 0, m_heightmap.getWidth()/2, 0 }; 
+	    //glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, LightDirection); 
+	 
+	 
+	    glEnableClientState( GL_VERTEX_ARRAY ); 
+	    glEnableClientState( GL_TEXTURE_COORD_ARRAY ); 
+	    glEnableClientState( GL_NORMAL_ARRAY ); 
+	 
+	    if(m_redrawStartRects) drawStartRecs(); 
+	 
+	    //Rendering water reflection into a framebuffer 
+	    if(m_glslSupported && fbo->bind()) {//rendering reflection is working but is turned off due to lack of way to map it to water :D yet 
+          glPushAttrib(GL_VIEWPORT_BIT);
+          glViewport(0,0,1024,1024); //fbo size
 
-    //Land material
-    m_landMaterial.setAmbient(1.0, 1.0, 1.0, 1.0);
-    m_landMaterial.setDiffuse(1.0, 1.0, 1.0, 1.0);
-    m_landMaterial.setSpecular(1.0, 0.8, 0.8, 1.0);
-    m_landMaterial.setShininess(80.0);
+	        glClearColor(0.0, 0.0, 0.0, 0.0); //transparent pixels will be ingnored while constructing reflection in shader 
+	        glClear(GL_COLOR_BUFFER_BIT); 
+	        glClear(GL_DEPTH_BUFFER_BIT); 
+          glColor4f(1.0,1.0,1.0,1.0);
 
-    //Water material
-    m_waterMaterial.setAmbient(0.0, 0.0, 0.2, 0.3);
-    m_waterMaterial.setDiffuse(0.0, 0.0, 0.8, 0.3);
-    m_waterMaterial.setSpecular(0.9, 0.9, 0.9, 0.9);
-    m_waterMaterial.setShininess(128.0);
-
-    compileSimpleWaterPlane();
-
-    glShadeModel (GL_SMOOTH);
-
-    //glEnable(GL_LIGHTING);
-    //glEnable(GL_LIGHT0);
-    //glEnable(GL_CULL_FACE);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    //glBlendFunc(GL_ONE,GL_ONE);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    //glEnable(GL_ALPHA_TEST);
-    //glDepthMask(GL_FALSE);
-
-    //    glLightfv(GL_LIGHT0, GL_POSITION,LightPosition);
-    glEnable(GL_LIGHT0);
-    GLfloat ambientLight[]={0.1,0.1,0.1,1.0};    	             // set ambient light parameters
-    glLightfv(GL_LIGHT0,GL_AMBIENT,ambientLight);
-
-    GLfloat diffuseLight[]={0.8,0.8,0.8,1.0};    	             // set diffuse light parameters
-    glLightfv(GL_LIGHT0,GL_DIFFUSE,diffuseLight);
-
-    GLfloat specularLight[]={0.5,0.5,0.5,1.0};  	               // set specular light parameters
-    glLightfv(GL_LIGHT0,GL_SPECULAR,specularLight);
-
-    /*glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, 1.0);
-    glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, 0.0);
-    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 30.0);
-    glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 15.0f);
-    glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.0f);
-    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.0f);
-    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.0f);*/
-
-    //glColorMaterial ( GL_FRONT_AND_BACK, GL_DIFFUSE ) ;
-
-    //glEnable(GL_COLOR_MATERIAL);
-    fbo = new QGLFramebufferObject(1024, 1024, QGLFramebufferObject::Depth, GL_TEXTURE_2D, GL_RGBA16);
-
-    connect(&m_timer, SIGNAL(timeout()), this, SLOT(updateGL()));
-}
-
-void MapRendererWidget::hideEvent(QHideEvent* /*event*/){
-    m_timer.stop();
-}
-
-void MapRendererWidget::showEvent(QShowEvent * /*event*/) {
-    m_timer.start();
-}
-
-void MapRendererWidget::resizeGL(int w, int h) {
-    glViewport(0, 0, (GLint)w, (GLint)h);
-    glMatrixMode (GL_PROJECTION);
-    glLoadIdentity();
-
-    if(m_perspective) {
-        const float angle=30;
-        gluPerspective(angle,double(w)/double(h),1,1000);
-    } else {
-        if (w <= h)
-            glOrtho (dx+lastZoom*-100, dx+lastZoom*100,/*left,right*/
-                     dy+lastZoom*-100*(GLfloat)h/(GLfloat)w, dy+lastZoom*100*(GLfloat)h/(GLfloat)w,/*top,bottom*/
-                     -2000.0, 2000.0);/*near,far*/
-        else
-            glOrtho (dx+lastZoom*-100*(GLfloat)w/(GLfloat)h, dx+lastZoom*100*(GLfloat)w/(GLfloat)h,/*left,right*/
-                     dy+lastZoom*-100, dy+lastZoom*100,/*top,bottom*/
-                     -2000.0, 2000.0);/*near,far*/
-    }
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHT1);
-
-    m_timer.start(25);
-    m_lightTime.start();
-}
-
-void MapRendererWidget::paintGL() {
-    if (!m_heightmap.getWidth() || blockRerender) return;
-
-    m_time.start();
-    int curMSecs = m_lightTime.elapsed();
-
-    //    glEnable(GL_LIGHT0);
-
-    glLoadIdentity();
-
-    if (m_compileObjects) {
-        makeObject();
-        m_compileObjects = false;
-    }
-
-    if(m_perspective) {
-        glTranslatef(0,-(lastZoom*100),0);
-    }
-
-    glTranslatef(dx, dy, dz);
-    glRotated(xRot / 16.0, 1.0, 0.0, 0.0);
-    glRotated(yRot / 16.0, 0.0, 1.0, 0.0);
-    glRotated(zRot / 16.0, 0.0, 0.0, 1.0);
-    glTranslatef(-m_heightmap.getWidth()/2, 0, -m_heightmap.getHeight()/2);
-
-    if(!m_glslSupported)
-        glEnable(GL_LIGHTING);
-
-    GLfloat LightPosition[]= {10, 20, 10, 0 };
-    //GLfloat LightDirection[]= {m_heightmap.getHeight()/2, 0, m_heightmap.getWidth()/2, 0 };
-    //glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, LightDirection);
-
-
-    glEnableClientState( GL_VERTEX_ARRAY );
-    glEnableClientState( GL_TEXTURE_COORD_ARRAY );
-    glEnableClientState( GL_NORMAL_ARRAY );
-
-    if(m_redrawStartRects) drawStartRecs();
-
-    //Rendering water reflection into a framebuffer
-    if(0 && m_glslSupported && fbo->bind()) {
-        glClearColor(0.0, 0.0, 0.0, 0.0); //transparent pixels will be ingnored while constructing reflection in shader
-        glClear(GL_COLOR_BUFFER_BIT);
-        glClear(GL_DEPTH_BUFFER_BIT);
-        glPushMatrix();
-        //Mirroring along xz plane
-        glScalef(1.0, -1.0, 1.0);
-        glLightfv(GL_LIGHT0, GL_POSITION, LightPosition);
-        glFrontFace( GL_CW );
-        if(m_glslSupported) {
-            m_landShaderSet.use();
-            glUniform1iARB(m_landTextureLoc, 0);
-            glUniform1iARB(m_lightSourceLoc, 0);
-        }
-        //glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-        //glCallList(m_simpleWaterPlane);
-        //glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);*/
-        m_landMaterial.apply();
-        m_lowResHeightmap.draw();
-        glDepthFunc(GL_GREATER);
-        glCallList(m_simpleWaterPlane);
-        glDepthFunc(GL_LESS);
-        if(m_glslSupported)
-            m_landShaderSet.stop();
-        glPopMatrix();
-        glFrontFace( GL_CCW );
-
-        fbo->release();
-        //fbo->toImage().save("/home/lupus/fbo.png");
-    }
-    glClearColor (0.0, 0.0, 0.4, 0.0);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glClear(GL_DEPTH_BUFFER_BIT);
-    glLightfv(GL_LIGHT0, GL_POSITION, LightPosition);
-
-    //land rendering
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, m_texture);
-    if(m_glslSupported) {
-        m_landShaderSet.use();
-        glUniform1iARB(m_landTextureLoc, 0);
-        glUniform1iARB(m_lightSourceLoc, 0);
-    }
-    m_landMaterial.apply();
-    m_heightmap.draw();
-    if(m_glslSupported)
-        m_landShaderSet.stop();
-
-    glDisableClientState( GL_NORMAL_ARRAY );
-
-    if(!m_glslSupported)
-        glDisable(GL_LIGHTING);
-
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, m_permTexture);
-
-    glActiveTexture(GL_TEXTURE2);
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, fbo->texture());
-
-    //Water rendering
-    glEnable(GL_BLEND);
-    if(m_glslSupported) {
-        m_waterShaderSet.use();
-        glUniform1fARB(m_waterTimeLoc, curMSecs/100.0);
-        glUniform1iARB(m_waterpermTextureLoc, 1);
-        glUniform1iARB(m_reflectionTextureLoc, 2);
-        glUniform1iARB(m_lightSourceLoc, 0);
-    }
-    m_waterMaterial.apply();
-
-    glColor4f(0.0, 0.0, 1.0, 0.3);
-    glNormal3f(0, 1.0, 0);
-    m_waterPlane.draw();
-    if(m_glslSupported)
-        m_waterShaderSet.stop();
-    glDisable(GL_BLEND);
-
-    glDisableClientState( GL_NORMAL_ARRAY );
-    glDisableClientState( GL_TEXTURE_COORD_ARRAY );
-    glDisableClientState( GL_VERTEX_ARRAY );
-    /*
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, fbo->texture());
-    glFrontFace( GL_CW );
-    glCallList(m_simpleWaterPlane);
-    glFrontFace( GL_CCW );*/
-
-    swapBuffers();
-    int msecs = m_time.elapsed();
-    if(msecs)
-        emit updateDebugInfo(m_debugInfo.arg(1000/msecs));
-    else
-        emit updateDebugInfo(m_debugInfo.arg(tr("Inf")));
-}
+	        glPushMatrix(); 
+	        //Mirroring along xz plane 
+	        glScalef(1.0, -1.0, 1.0); 
+	        glLightfv(GL_LIGHT0, GL_POSITION, LightPosition); 
+          glFrontFace( GL_CW ); 
+          /*
+	        if(m_glslSupported) { 
+	            m_landShaderSet.use(); 
+	            glUniform1iARB(m_landTextureLoc, 0); 
+	            glUniform1iARB(m_lightSourceLoc, 0); 
+	        } 
+	        //glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE); 
+	        //glCallList(m_simpleWaterPlane); 
+	        //glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);*/ 
+	//        glEnableClientState( GL_VERTEX_ARRAY ); 
+	//        glEnableClientState( GL_TEXTURE_COORD_ARRAY ); 
+	//        glEnableClientState( GL_NORMAL_ARRAY ); 
+	        m_landMaterial.apply(); 
+	        m_heightmap.draw(); 
+	//        glDisableClientState( GL_NORMAL_ARRAY ); 
+	//        glDisableClientState( GL_TEXTURE_COORD_ARRAY ); 
+	//        glDisableClientState( GL_VERTEX_ARRAY ); 
+	        /*glDepthFunc(GL_GREATER); 
+	        glCallList(m_simpleWaterPlane); 
+	        glDepthFunc(GL_LESS); 
+	        if(m_glslSupported) 
+	            m_landShaderSet.stop(); */
+	        glPopMatrix(); 
+	        glFrontFace( GL_CCW );
+        	
+          glPopAttrib(); //pop viewport again
+	        fbo->release(); 
+          //fbo->toImage().save("M:\\temp\\fbo.png"); 
+      }
+	    glClearColor (0.0, 0.0, 0.4, 0.0); 
+	    glClear(GL_COLOR_BUFFER_BIT); 
+	    glClear(GL_DEPTH_BUFFER_BIT); 
+	    glLightfv(GL_LIGHT0, GL_POSITION, LightPosition); 
+      glBegin(GL_POINT);
+        glColor4f(1.0,1.0,1.0,1.0);
+        glVertex3fv(LightPosition);
+      glEnd();
+	 
+	    //land rendering 
+	    glActiveTexture(GL_TEXTURE0); 
+	    glBindTexture(GL_TEXTURE_2D, m_texture); 
+	    if(m_glslSupported) { 
+	        m_landShaderSet.use(); 
+	        glUniform1iARB(m_landTextureLoc, 0); 
+	        glUniform1iARB(m_lightSourceLoc, 0); 
+	    } 
+	    m_landMaterial.apply(); 
+	    m_heightmap.draw(); 
+	    if(m_glslSupported) 
+	        m_landShaderSet.stop();
+	 
+	    glDisableClientState( GL_NORMAL_ARRAY ); 
+	 
+	    if(!m_glslSupported) 
+	        glDisable(GL_LIGHTING); 
+	 
+	    glActiveTexture(GL_TEXTURE1); 
+	    glBindTexture(GL_TEXTURE_2D, m_permTexture); 
+	 
+	    glActiveTexture(GL_TEXTURE2); 
+	    glBindTexture(GL_TEXTURE_2D, fbo->texture()); 
+	 
+	    //Water rendering 
+	    glEnable(GL_BLEND); 
+	    if(m_glslSupported) { 
+	        m_waterShaderSet.use(); 
+	        glUniform1fARB(m_waterTimeLoc, curMSecs/100.0); 
+	        glUniform1iARB(m_waterpermTextureLoc, 1); 
+	        glUniform1iARB(m_reflectionTextureLoc, 2);
+	        glUniform1iARB(m_lightSourceLoc, 0); 
+//          GLfloat size[2]={,height()};
+          glUniform2fARB(m_screensizeLoc, width(), height()); 
+      } 
+	    m_waterMaterial.apply(); 
+	 
+	    glColor4f(1.0, 1.0, 1.0, 0.3); 
+	    glNormal3f(0, 1.0, 0); 
+//      glCallList(m_simpleWaterPlane);
+	    m_waterPlane.draw(); 
+	    if(m_glslSupported) 
+	        m_waterShaderSet.stop(); 
+	    glDisable(GL_BLEND); 
+	 
+	    glDisableClientState( GL_NORMAL_ARRAY ); 
+	    glDisableClientState( GL_TEXTURE_COORD_ARRAY ); 
+	    glDisableClientState( GL_VERTEX_ARRAY ); 
+	 
+	    swapBuffers(); 
+	    int msecs = m_time.elapsed(); 
+	    if(msecs) 
+	        emit updateDebugInfo(m_debugInfo.arg(1000/msecs)); 
+	    else 
+	        emit updateDebugInfo(m_debugInfo.arg(tr("Inf"))); 
+	}  
 
 void MapRendererWidget::makeObject() {
     blockRerender = true;
@@ -512,8 +528,8 @@ void MapRendererWidget::compileSimpleWaterPlane() {
     const float overkill = 1.5;
     glNormal3f(0.0, 1.0, 0.0);
     glTexCoord2f(0, 0); glVertex3f(-overkill*m_heightmap.getWidth(), 0, -overkill*m_heightmap.getHeight());
-    glTexCoord2f(1, 0); glVertex3f(overkill*m_heightmap.getWidth(), 0, -overkill*m_heightmap.getHeight());
     glTexCoord2f(0, 1); glVertex3f(-overkill*m_heightmap.getWidth(), 0, overkill*m_heightmap.getHeight());
+    glTexCoord2f(1, 0); glVertex3f(overkill*m_heightmap.getWidth(), 0, -overkill*m_heightmap.getHeight());
     glTexCoord2f(1, 1); glVertex3f(overkill*m_heightmap.getWidth(), 0, overkill*m_heightmap.getHeight());
     glEnd();
     glEndList();

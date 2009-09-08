@@ -60,6 +60,7 @@ bool GLExtensionFunctions::resolve(const QGLContext *context) {
     RESOLVE_GL_FUNC(GetUniformLocationARB)
     RESOLVE_GL_FUNC(Uniform1iARB)
     RESOLVE_GL_FUNC(Uniform1fARB)
+    RESOLVE_GL_FUNC(Uniform2fARB)
     RESOLVE_GL_FUNC(Uniform4fARB)
     RESOLVE_GL_FUNC(UniformMatrix4fvARB)
 

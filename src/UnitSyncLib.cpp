@@ -89,7 +89,7 @@ bool UnitSyncLib::loadLibrary() {
                                   QString( "could not load unitsync using winapi." ));
         return false;
     }
-#define GetUnitsyncFunction(x) GetSpringVersion(GetProcAddress(unitsynclibHandle,x))
+#define GetUnitsyncFunction(x) GetProcAddress(unitsynclibHandle,x)
 #else
     //   unitsynclib->setLoadHints(QLibrary::ExportExternalSymbolsHint|QLibrary::LoadArchiveMemberHint);
     unitsynclib->load();
