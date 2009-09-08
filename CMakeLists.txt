@@ -17,6 +17,23 @@ find_package(Qt4 COMPONENTS QtCore QtGui QtDbus QtScript QtNetwork QtOpenGL QtXm
 find_package(QScintilla REQUIRED)
 find_package(QtScriptTools REQUIRED)
 
-add_definitions(-DSVN_REV)
+set(QTLOBBY_VERSION 1.0alpha)
 
-add_subdirectory(./src)
+if($ENV{SVN_REV})
+  set(SVN_REV $ENV{SVN_REV})
+  message(STATUS Overriding SVN_REV from environment variable)
+else($ENV{SVN_REV})
+  execute_process(COMMAND svnversion -n OUTPUT_VARIABLE SVN_REV)
+endif($ENV{SVN_REV})
+
+
+option(BUILDBOT "Use buildbot build configuration(used for cross compiling)" OFF)
+mark_as_advanced(BUILDBOT)
+if(WIN32 OR BUILDBOT)
+  option(PURE_WINAPI_UNITSYNC_LOADER "Use pure Win API unitsync loader(helps against some loading bugs)" ON)
+  mark_as_advanced(PURE_WINAPI_UNITSYNC_LOADER)
+endif(WIN32 OR BUILDBOT)
+
+CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/src/config.h.cmake ${CMAKE_SOURCE_DIR}/src/config.h )
+
+add_subdirectory(src)

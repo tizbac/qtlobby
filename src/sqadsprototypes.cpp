@@ -3,7 +3,7 @@
 #include <QScriptEngine>
 #include <QScriptValue>
 #include <QRegExp>
-#include "../BattleHost.h"
+#include "BattleHost.h"
 
 SqadsUserListPrototype::SqadsUserListPrototype(QObject *parent) : QObject(parent) {
 

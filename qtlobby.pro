@@ -20,20 +20,30 @@ else {
     else:DEFINES += 'SVN_REV=\\"$$system(svnversion -n .)\\"'
 }
 DEFINES += RPM_OPT_FLAGS
-target.path += $$INSTALL_ROOT/bin
+
+INSTALL_ROOT = $$(INSTALL_ROOT)
+isEmpty(INSTALL_ROOT):INSTALL_ROOT=/usr/local
+RESOURCES_ROOT = $$(RESOURCES_ROOT)
+isEmpty(RESOURCES_ROOT):RESOURCES_ROOT="$(INSTALL_ROOT)/share/qtlobby"
+
+DEFINES += 'RESOURCES_ROOT=\\"$(RESOURCES_ROOT)\\"'
+
+target.path += $(INSTALL_ROOT)/bin
 INSTALLS += target
 
 # QtLobby version
 DEFINES += 'QTLOBBY_VERSION=\\"1.0alpha\\"'
 desktop.files = src/qtlobby.desktop
-desktop.path = $$INSTALL_ROOT/share/applications
+desktop.path = INSTALL_ROOT/share/applications
 INSTALLS += desktop
 desktopicon.files = icons/qtlobby-logo.svg
-desktopicon.path = $$INSTALL_ROOT/share/pixmaps
+desktopicon.path = INSTALL_ROOT/share/pixmaps
 INSTALLS += desktopicon
+resources.files += icons src/shaders
+resources.path = INSTALL_ROOT/share/qtlobby
+INSTALLS += resources
 contains( CONFIG, buildbot ) { 
-    QMAKE_LFLAGS += -static-libgcc \
-        -Wl,-subsystem,windows
+    QMAKE_LFLAGS += -static-libgcc -Wl,-subsystem,windows
     QMAKE_CXXFLAGS += -g
     
     # ([]lennart) for testing the bug when trying to load unitsync library with qt.
@@ -98,7 +108,7 @@ HEADERS += src/MainWindow.h \
     src/glextensions.h \
     src/ScriptingDialog.h \
     src/BattleHost.h \
-    src/sqads/sqadsprototypes.h \
+    src/sqadsprototypes.h \
     src/BattleHostingDialog.h \
     src/Notification.h \
     src/AbstractNotificationBackend.h \
@@ -115,7 +125,8 @@ HEADERS += src/MainWindow.h \
     src/GLMaterial.h \
     src/GLObject.h \
     src/GLHeightMap.h \
-    src/GLWaterPlane.h
+    src/GLWaterPlane.h \
+    src/PathManager.h
 
 # src/MapSelector.h \ # not used
 # src/MapElementWidget.h \ # not used
@@ -172,7 +183,7 @@ SOURCES += src/main.cpp \
     src/glextensions.cpp \
     src/ScriptingDialog.cpp \
     src/BattleHost.cpp \
-    src/sqads/sqadsprototypes.cpp \
+    src/sqadsprototypes.cpp \
     src/BattleHostingDialog.cpp \
     src/Notification.cpp \
     src/TrayIconNotificationBackend.cpp \
@@ -188,7 +199,8 @@ SOURCES += src/main.cpp \
     src/GLMaterial.cpp \
     src/GLObject.cpp \
     src/GLHeightMap.cpp \
-    src/GLWaterPlane.cpp
+    src/GLWaterPlane.cpp \
+    src/PathManager.cpp
 
 # src/MapSelector.cpp \ # not used
 # src/MapElementWidget.cpp \ # not used
@@ -223,16 +235,14 @@ DISTFILES += doc/ProtocolDescription.xml \
     doc/xml2html.xsl \
     doc/z
 contains( CONFIG, vc ) { 
-    HEADERS += src/MiniDumper.h
-    SOURCES += src/MiniDumper.cpp
     LIBS += QScintilla2.lib
 }
 else:LIBS += -lqscintilla2
 
 # ([]lennart)sets preprocessor switch to use direct winapi calls instead of qt
 # to load unitsync library
-contains( CONFIG, unitsync_winapi ): DEFINES += PURE_WINAPI_UNITSYNC_LOADER
-unix:!contains( CONFIG, buildbot ) {
+contains( CONFIG, unitsync_winapi ):DEFINES += PURE_WINAPI_UNITSYNC_LOADER
+unix:!contains( CONFIG, buildbot ) { 
     HEADERS += src/DBusVisualNotificationBackend.h
     SOURCES += src/DBusVisualNotificationBackend.cpp
     QT += dbus
