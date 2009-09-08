@@ -33,6 +33,7 @@ class QtLobbyBuilder(Thread):
                 if p.returncode != 0:                                   
                         self.onMessage("Error executing " + command + "!\n" + str(stderr))
                         raise CommandError("Command failed")                              
+		print stdout
                 return stdout                                                             
 
         def run(self):
@@ -44,17 +45,23 @@ class QtLobbyBuilder(Thread):
                         self.onMessage("Perforimg svn update...")
        	                self.runCommand("svn up -r " + rev)      
                	        rev = self.runCommand("svn up | perl -e '<> =~ /At revision (\d+)./; print $1;'")
+			if not self.clean and os.path.exists("/var/www/qtlobby.oxnull.net/htdocs/qtlobby.r"+rev+"_installer.exe"):
+				self.onMessage("Requested revision was already built")
+				self.onCompleted({"Exe": "http://qtlobby.oxnull.net/qtlobby.r"+rev+".exe.zip", \
+				                  "Installer": "http://qtlobby.oxnull.net/qtlobby.r"+rev+"_installer.exe", \
+						  "Debug symbols": "http://qtlobby.oxnull.net/qtlobby.r"+rev+"_symbols.dbg.zip"})
+				return
+                        self.onMessage("Building revision "+rev+"...")
 			self.onMessage("Building resources...")
 			self.runCommand("./mkresources.sh")
-                        self.onMessage("Building revision "+rev+"...")
 			os.chdir("cbuild")
 			if self.clean:
-				self.onMessage("Cleaning up...")
+				self.onMessage("Cleaning up building environment...")
 				self.runCommand("rm -rf *")
-			self.runCommand("cmake -DCMAKE_TOOLCHAIN_FILE=../toolchain-mingw.cmake -DBUILDBOT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo ..")
-			self.runCommand("grep 'SVN_REV\|QTLOBBY_VERSION' * -R | perl -e 'while(<>){if(/(.*.cpp)/){system(\"touch $1\");}}'")
+			self.runCommand("touch ../src/config.h")
 			self.runCommand("rm -f cbuild/src/qtlobby.*")
-               	        self.runCommand("make -j3")
+			self.runCommand("cmake -DCMAKE_TOOLCHAIN_FILE=../toolchain-mingw.cmake -DBUILDBOT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo ..")
+               	        self.runCommand("make")
                        	os.chdir("src")
                         self.runCommand("objcopy --only-keep-debug qtlobby.exe qtlobby.dbg")
        	                self.runCommand("strip --strip-debug --strip-unneeded qtlobby.exe")

@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "QtLobby"     
-!define PRODUCT_VERSION "1.0prealpha"
+!define PRODUCT_VERSION "1.0alpha"
 !define PRODUCT_PUBLISHER "QtLobby Development Team"
 !define PRODUCT_WEB_SITE "http://code.google.com/p/qtlobby/"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\qtlobby.exe"
@@ -67,9 +67,10 @@ Section "MainSection" SEC01
   File "..\build\QtXml4.dll"        
   File "..\build\Microsoft_VC90_CRT_x86.msi"
   File "..\build\policy_9_0_Microsoft_VC90_CRT_x86.msi"
+  File "resources.zip"
                                                        
-  SetOverwrite ifnewer                                 
-  File "release\qtlobby.exe"                           
+  ;SetOverwrite ifnewer                                 
+  File "cbuild\src\qtlobby.exe"                           
   CreateDirectory "$SMPROGRAMS\QtLobby"                
   CreateShortCut "$SMPROGRAMS\QtLobby\QtLobby.lnk" "$INSTDIR\qtlobby.exe"
   CreateShortCut "$DESKTOP\QtLobby.lnk" "$INSTDIR\qtlobby.exe"           
@@ -96,6 +97,8 @@ Section -Post
   ExecWait 'msiexec /i "$INSTDIR\policy_9_0_Microsoft_VC90_CRT_x86.msi" /qn'                            
   Delete "$INSTDIR\Microsoft_VC90_CRT_x86.msi"                                                          
   Delete "$INSTDIR\policy_9_0_Microsoft_VC90_CRT_x86.msi"                                               
+  nsisunz::Unzip "$INSTDIR\resources.zip" $INSTDIR
+  Delete "$INSTDIR\resources.zip"
 SectionEnd                                                                                              
 
 
@@ -122,8 +125,11 @@ Section Uninstall
   Delete "$INSTDIR\QtCore4.dll"
   Delete "$INSTDIR\qscintilla2.dll"
   Delete "$INSTDIR\libgcc_s_dw2-1.dll"
+  Delete "$INSTDIR\mingwm10.dll"
+  Delete "$INSTDIR\exchndl.dll"
   Delete "$INSTDIR\msvcr90.dll"
   Delete "$INSTDIR\msvcp90.dll"
+  Delete "$INSTDIR\share"
 
   Delete "$SMPROGRAMS\QtLobby\Uninstall.lnk"
   Delete "$SMPROGRAMS\QtLobby\Website.lnk"
