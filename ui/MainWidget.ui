@@ -19,6 +19,9 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
+    <item row="1" column="0">
+     <widget class="InputLine" name="inputLineEdit"/>
+    </item>
     <item row="0" column="0">
      <widget class="QStackedWidget" name="lobbyStackedWidget">
       <property name="contextMenuPolicy">
@@ -26,9 +29,6 @@
       </property>
       <widget class="QWidget" name="lobbyStackedWidgetPage6"/>
      </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="InputLine" name="inputLineEdit"/>
     </item>
    </layout>
   </widget>
@@ -629,7 +629,7 @@
   <customwidget>
    <class>InputLine</class>
    <extends>QLineEdit</extends>
-   <header>src/InputLine.h</header>
+   <header>InputLine.h</header>
    <slots>
     <slot>onTabChanged(int)</slot>
    </slots>

@@ -1,6 +1,7 @@
 include(${QT_USE_FILE})
 include_directories(${QTSCRIPTTOOLS_INCLUDE_DIR})
-include_directories(..)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 # source files
 set(qtlobby_SRCS
@@ -186,7 +187,7 @@ set( qtlobby_UIS
 ../ui/UserGroupsDialog.ui
 )     
 QT4_WRAP_UI(qtlobby_UIS_H ${qtlobby_UIS})
-include_directories(../ui)
+ 
       
 #QT4_ADD_RESOURCES(qtlobby_RES ../resources.qrc)
 if(TRANSLATIONS)
