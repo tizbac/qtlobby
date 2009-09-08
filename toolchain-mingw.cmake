@@ -9,7 +9,7 @@ SET(CMAKE_CXX_COMPILER mingw32-g++)
 
 set(QT_WIN32_PREFIX /opt/qt-win-opensource-src-4.5.2)
 
-set(CMAKE_FIND_ROOT_PATH /usr/mingw32/ ${QT_WIN32_PREFIX} )
+set(CMAKE_FIND_ROOT_PATH /usr/mingw32/usr/lib /usr/mingw32/usr/include ${QT_WIN32_PREFIX} )
 
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
