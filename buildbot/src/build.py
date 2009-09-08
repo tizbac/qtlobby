@@ -15,7 +15,7 @@ class CommandError(Exception):
 builder_lock  = threading.RLock()
 
 class QtLobbyBuilder(Thread):
-        def __init__(self, targetDir, onMessage, onCompleted):
+        def __init__(self, targetDir, onMessage, onCompleted, clean):
                 Thread.__init__(self)              
                 self.onMessage = onMessage         
                 self.onCompleted = onCompleted     
@@ -23,6 +23,7 @@ class QtLobbyBuilder(Thread):
                 self.abort = False
 		self.dir = targetDir
 		self.config = "debug"
+		self.clean = clean
 		print "QtLobbyBuilder instance created"
 
         def runCommand(self, command):
@@ -43,22 +44,32 @@ class QtLobbyBuilder(Thread):
                         self.onMessage("Perforimg svn update...")
        	                self.runCommand("svn up -r " + rev)      
                	        rev = self.runCommand("svn up | perl -e '<> =~ /At revision (\d+)./; print $1;'")
+			self.onMessage("Building resources...")
+			self.runCommand("./mkresources.sh")
                         self.onMessage("Building revision "+rev+"...")
-       	                self.runCommand("qmake -spec win32-x-g++ CONFIG+=buildbot CONFIG+="+self.config)
+			os.chdir("cbuild")
+			if self.clean:
+				self.onMessage("Cleaning up...")
+				self.runCommand("rm -rf *")
+			self.runCommand("cmake -DCMAKE_TOOLCHAIN_FILE=../toolchain-mingw.cmake -DBUILDBOT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo ..")
 			self.runCommand("grep 'SVN_REV\|QTLOBBY_VERSION' * -R | perl -e 'while(<>){if(/(.*.cpp)/){system(\"touch $1\");}}'")
-               	        self.runCommand("make")
-                       	os.chdir(self.config)
+			self.runCommand("rm -f cbuild/src/qtlobby.*")
+               	        self.runCommand("make -j3")
+                       	os.chdir("src")
                         self.runCommand("objcopy --only-keep-debug qtlobby.exe qtlobby.dbg")
        	                self.runCommand("strip --strip-debug --strip-unneeded qtlobby.exe")
-               	        os.chdir("..")
+			self.runCommand("rm -f *.zip")
+			self.runCommand("zip -9 qtlobby.exe.zip qtlobby.exe")
+			self.runCommand("zip -9 qtlobby.dbg.zip qtlobby.dbg")
+               	        os.chdir("../..")
                        	self.onMessage("Compiling installer...")
                         self.runCommand("makensis installer.nsi")
-       	                self.runCommand("mv "+self.config+"/qtlobby.exe ~apache/qtlobby.oxnull.net/htdocs/qtlobby.r"+rev+".exe")
+       	                self.runCommand("mv cbuild/src/qtlobby.exe.zip ~apache/qtlobby.oxnull.net/htdocs/qtlobby.r"+rev+".exe.zip")
                	        self.runCommand("mv qtlobby_installer.exe ~apache/qtlobby.oxnull.net/htdocs/qtlobby.r"+rev+"_installer.exe")
-                       	self.runCommand("mv "+self.config+"/qtlobby.dbg ~apache/qtlobby.oxnull.net/htdocs/qtlobby.r"+rev+"_symbols.dbg")
-                        self.onCompleted({"Exe": "http://qtlobby.oxnull.net/qtlobby.r"+rev+".exe", \
+                       	self.runCommand("mv cbuild/src/qtlobby.dbg.zip ~apache/qtlobby.oxnull.net/htdocs/qtlobby.r"+rev+"_symbols.dbg.zip")
+                        self.onCompleted({"Exe": "http://qtlobby.oxnull.net/qtlobby.r"+rev+".exe.zip", \
        	                                  "Installer": "http://qtlobby.oxnull.net/qtlobby.r"+rev+"_installer.exe", \
-               	                          "Debug symbols": "http://qtlobby.oxnull.net/qtlobby.r"+rev+"_symbols.dbg"})
+               	                          "Debug symbols": "http://qtlobby.oxnull.net/qtlobby.r"+rev+"_symbols.dbg.zip"})
                 except CommandError:
        	                pass
                	finally:
