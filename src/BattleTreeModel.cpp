@@ -3,6 +3,7 @@
 #include "BattleTreeModel.h"
 #include "UserGroup.h"
 #include "TLDList.h"
+#include "PathManager.h"
 #include <QLinearGradient>
 
 BattleTreeModel::BattleTreeModel( QObject* parent ) : QAbstractItemModel( parent ) {
@@ -96,16 +97,16 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
     case 0: //status
         if ( role == Qt::DecorationRole ) {
             if ( b.isStarted )
-                return QIcon( ":/icons/ingame.xpm" );
+                return QIcon( P("icons/ingame.xpm") );
             if ( b.isLocked && b.isPasswordProtected )
-                return QIcon( ":/icons/closed_pw_game.xpm" );
+                return QIcon( P("icons/closed_pw_game.xpm") );
             if ( b.isLocked )
-                return QIcon( ":/icons/closed_game.xpm" );
+                return QIcon( P("icons/closed_game.xpm") );
             if ( b.isPasswordProtected )
-                return QIcon( ":/icons/open_pw_game.xpm" );
+                return QIcon( P("icons/open_pw_game.xpm") );
             if ( b.playerCount - b.spectatorCount == 0 )
-                return QIcon( ":/icons/open_game_empty.xpm" );
-            return QIcon( ":/icons/open_game.xpm" );
+                return QIcon( P("icons/open_game_empty.xpm") );
+            return QIcon( P("icons/open_game.xpm") );
         }
         if ( role == Qt::ToolTipRole ) {
             if ( b.isStarted )
@@ -121,7 +122,7 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
         break;
     case 1: //flags
         if ( role == Qt::DecorationRole ) {
-            QString filename = QString( ":/flags/%1.xpm" ).arg( m_battleList[index.row()].countryCode );
+            QString filename = QString( P("flags/%1.xpm") ).arg( m_battleList[index.row()].countryCode );
             return QIcon( filename );
         }
         if ( role == Qt::ToolTipRole ) {
@@ -148,8 +149,8 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
             return m_battleList[index.row()].shortMapName();
         if ( role == Qt::DecorationRole && !Settings::Instance()->value("Battles/filterUnavailableMaps").toBool() ) {
             if(us->getMapNames().contains(b.mapName))
-                return QIcon(":/icons/exists.xpm");
-            return QIcon(":/icons/nexists.xpm");
+                return QIcon(P("icons/exists.xpm"));
+            return QIcon(P("icons/nexists.xpm"));
         }
         if ( role == Qt::ToolTipRole )
             return m_battleList[index.row()].mapName;
@@ -159,8 +160,8 @@ QVariant BattleTreeModel::data( const QModelIndex& index, int role ) const {
             return m_battleList[index.row()].shortModName();
         if( role == Qt::DecorationRole && !Settings::Instance()->value("Battles/filterUnavailableMods").toBool() ) {
             if(us->getModNames().contains(b.modName))
-                return QIcon(":/icons/exists.xpm");
-            return QIcon(":/icons/nexists.xpm");
+                return QIcon(P("icons/exists.xpm"));
+            return QIcon(P("icons/nexists.xpm"));
         }
         if ( role == Qt::ToolTipRole )
             return m_battleList[index.row()].modName;
@@ -223,7 +224,7 @@ QString BattleTreeModel::stringifyRank(int rank) const {
 }
 
 QString BattleTreeModel::getRankIconFilename(int rank) const {
-    return QString( ":/icons/rank%1-icon.png" ).arg(rank);
+    return QString( P("icons/rank%1-icon.png") ).arg(rank);
 }
 
 bool BattleTreeModel::setData( const QModelIndex index, QVariant v, int /*role*/ ) {

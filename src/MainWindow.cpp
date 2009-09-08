@@ -2,7 +2,9 @@
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "MainWindow.h"
 #include "ToolBarWidget.h"
+#include "PathManager.h"
 #include <QInputDialog>
+#include <QDir>
 
 MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     //   QTime *timer = new QTime();
@@ -15,7 +17,12 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     preference->setWindowFlags( Qt::Window );
     if ( settings->value("unitsync").toString().isEmpty() )
         preference->exec();
+    QDir overlay(settings->value("spring_user_dir").toString());
+    overlay.mkdir("qtlobby");
+    overlay.cd("qtlobby");
+    PathManager::getInstance()->setOverlayPath(overlay.absolutePath());
     setupUi( this );
+    setupIcons();
     preference->onResetFormToSettings();
     battles->setUsers( users );
     setWindowTitle(QString( "QtLobby v%1" ).arg( QTLOBBY_VERSION ));
@@ -263,6 +270,13 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     inBattle = false;
 }
 
+void MainWindow::setupIcons() {
+    action_Connect->setIcon(QIcon(P("icons/Connect_creating.png")));
+    action_Disconnect->setIcon(QIcon(P("icons/Connect_no.png")));
+    action_Exit->setIcon(QIcon(P("icons/Exit.png")));
+    actionDownloads->setIcon(QIcon(P("icons/download_map.xpm")));
+}
+
 void MainWindow::setupToolbar() {
     tabBar = toolBarWidget->ui->tabBar;
     newTabButton = toolBarWidget->ui->joinToolButton;
@@ -338,7 +352,7 @@ void MainWindow::showConnectionWidget( bool ) {
 
 void MainWindow::createTrayIcon() {
     trayIcon = new QSystemTrayIcon( this );
-    QIcon icon = QIcon( ":/icons/qtlobby-logo.svg" );
+    QIcon icon = QIcon( P("icons/qtlobby-logo.svg") );
 
     trayIconMenu = new QMenu( this );
 

@@ -3,6 +3,8 @@
 #include "Channel.h"
 #include "UserGroup.h"
 
+#include "config.h"
+
 Channel::Channel( QString name, QObject * parent ) : AbstractChannel( name, parent ) {
     isDefault = true;
     uiSetup = false;

@@ -1,4 +1,5 @@
 #include "ServerProfilesModel.h"
+#include "PathManager.h"
 #include <QIcon>
 #include <QBuffer>
 #include <QDebug>
@@ -27,9 +28,9 @@ QVariant ServerProfilesModel::data ( const QModelIndex & index, int role ) const
         //TODO: Make better icons for server profile and autologin
         //TODO2: And some icon for active profile?(currently connected one)
         if(index.row() == m_autologin)
-            return QIcon(":/icons/open_game.xpm");
+            return QIcon(P("icons/open_game.xpm"));
         else
-            return QIcon(":/icons/open_game_empty.xpm");
+            return QIcon(P("icons/open_game_empty.xpm"));
     } else if(role == Qt::UserRole) {
         return m_profiles[index.row()];
     }

@@ -1,13 +1,14 @@
 // $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "AbstractChannel.h"
+#include "PathManager.h"
 
 QString AbstractChannel::currentUsername;
 
 AbstractChannel::AbstractChannel( QString name, QObject * parent ) : AbstractLobbyTab( parent ) {
     setObjectName( name );
-    activeIcon = QIcon( ":/icons/channel.xpm" );
-    inactiveIcon = QIcon( ":/icons/channel_unread.xpm" );
+    activeIcon = QIcon( P("icons/channel.xpm") );
+    inactiveIcon = QIcon( P("icons/channel_unread.xpm") );
     activeTextColor = QColor("black");
     inactiveTextColor = QColor("green");
 }

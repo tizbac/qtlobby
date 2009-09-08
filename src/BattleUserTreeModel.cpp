@@ -2,6 +2,7 @@
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "BattleUserTreeModel.h"
 #include "UnitSyncLib.h"
+#include "PathManager.h"
 
 BattleUserTreeModel::BattleUserTreeModel(QObject* parent)
     : UserTreeModel(parent) {
@@ -59,17 +60,17 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
                     switch (u.battleState.syncState()) {
                     case 0:
                         if (role == Qt::DecorationRole)
-                            return QIcon( QString( ":/icons/ready_q.xpm" ));
+                            return QIcon( QString( P("icons/ready_q.xpm") ));
                         else
                             return tr("Ready, sync status unknown");
                     case 1:
                         if (role == Qt::DecorationRole)
-                            return QIcon( QString( ":/icons/open_game.xpm" ));
+                            return QIcon( QString( P("icons/open_game.xpm") ));
                         else
                             return tr("Ready");
                     case 2:
                         if (role == Qt::DecorationRole)
-                            return QIcon( QString( ":/icons/ready_unsync.xpm" ));
+                            return QIcon( QString( P("icons/ready_unsync.xpm") ));
                         else
                             return tr("Ready, unsynced");
                     }
@@ -77,17 +78,17 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
                     switch (u.battleState.syncState()) {
                     case 0:
                         if (role == Qt::DecorationRole)
-                            return QIcon( QString( ":/icons/nready_q.xpm" ));
+                            return QIcon( QString( P("icons/nready_q.xpm") ));
                         else
                             return tr("Not ready, sync status unknown");
                     case 1:
                         if (role == Qt::DecorationRole)
-                            return QIcon( QString( ":/icons/closed_game.xpm" ));
+                            return QIcon( QString( P("icons/closed_game.xpm") ));
                         else
                             return tr("Not ready");
                     case 2:
                         if (role == Qt::DecorationRole)
-                            return QIcon( QString( ":/icons/nready_unsync.xpm" ));
+                            return QIcon( QString( P("icons/nready_unsync.xpm") ));
                         else
                             return tr("Not ready, unsynced");
                     }
@@ -95,7 +96,7 @@ QVariant BattleUserTreeModel::data( const QModelIndex& index, int role ) const {
 
             } else {
                 if (role == Qt::DecorationRole)
-                    return QIcon( QString( ":/icons/spectator.xpm" ));
+                    return QIcon( QString( P("icons/spectator.xpm") ));
                 else
                     return tr("Spectating");
             }

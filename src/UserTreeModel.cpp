@@ -2,6 +2,7 @@
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "UserTreeModel.h"
 #include "UserGroup.h"
+#include "PathManager.h"
 #include <QFont>
 
 UserTreeModel::UserTreeModel( QObject* parent ) : QAbstractItemModel( parent ) {
@@ -61,13 +62,13 @@ QVariant UserTreeModel::data( const QModelIndex& index, int role ) const {
             //tip.arg("aaa").arg("bbb");
 
             if ( role == Qt::DecorationRole )
-                return QIcon( QString( ":/icons/%1.xpm" ).arg( fileNameParts.join( "_" ) ) );
+                return QIcon( QString( P("icons/%1.xpm") ).arg( fileNameParts.join( "_" ) ) );
             return tip;
         }
         break;
     case 1: //flags
         if ( role == Qt::DecorationRole ) {
-            QString filename = QString( ":/flags/%1.xpm" ).arg( m_userList[index.row()].countryCode );
+            QString filename = QString( P("flags/%1.xpm") ).arg( m_userList[index.row()].countryCode );
             return QIcon( filename );
         }
         if ( role == Qt::ToolTipRole ) {
@@ -82,7 +83,7 @@ QVariant UserTreeModel::data( const QModelIndex& index, int role ) const {
         if ( role == Qt::DecorationRole ) {
             int rank = m_userList[index.row()].userState.getRank();
             if ( rank > 6 ) return QVariant();
-            return QIcon( QString( ":/icons/rank%1-icon.png" ).arg( rank ) );
+            return QIcon( QString( P("icons/rank%1-icon.png") ).arg( rank ) );
         }
         if ( role == Qt::ToolTipRole ) {
             switch ( m_userList[index.row()].userState.getRank() ) {
@@ -108,7 +109,7 @@ QVariant UserTreeModel::data( const QModelIndex& index, int role ) const {
         if ( role == Qt::DisplayRole )
             return m_userList[index.row()].name;
         if ( role == Qt::DecorationRole && m_userList[index.row()].founder)
-            return QIcon(":/icons/host.xpm");
+            return QIcon(P("icons/host.xpm"));
         break;
     }
     return QVariant();

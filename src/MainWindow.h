@@ -38,6 +38,8 @@
     #include "TrayIconNotificationBackend.h"
 #endif
 
+#include "config.h"
+
 
 class MainWindow : public QMainWindow, private Ui::MainWindow {
     Q_OBJECT
@@ -49,6 +51,7 @@ public:
 
 private:
     void setupToolbar();
+    void setupIcons();
     //the connection dialog
     ConnectionWidget* connectionWidget;
     //handles the interaction with the server and the authentication

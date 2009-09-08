@@ -1,16 +1,14 @@
 // $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
 #include <QApplication>
+#include <QDir>
 #include "MainWindow.h"
 #include "MapInfoLoader.h"
 #include "MapOverviewDialog.h"
+#include "PathManager.h"
 
 #ifdef Q_WS_WIN
-#ifdef _MSC_VER
-#include "MiniDumper.h"
-#else
 #include <windows.h>
-#endif
 #endif
 
 bool mainLoop = true;
@@ -30,15 +28,19 @@ void cmd_3dpreview(QApplication& app, QString mapname) {
 
 
 int main( int argc, char *argv[] ) {
-    #ifdef Q_WS_WIN
-    #ifdef _MSC_VER
-    MiniDumper(TEXT("QtLobby"));
-    #else
+#ifdef Q_WS_WIN
     LoadLibrary(TEXT("exchndl.dll"));
-    #endif
-    #endif
+#endif
     QApplication app( argc, argv );
     QStringList args = app.arguments();
+    QStringList list = args.at(0).split(QDir::separator());
+    list.removeLast();
+#ifndef Q_WS_WIN
+    list.removeLast();//windows does not have bin folder, so no need to get one level higher
+#endif
+    list.append("share");
+    list.append("qtlobby");
+    PathManager::getInstance()->setResourceRoot(list.join(QDir::separator())+QDir::separator());
     for(int i = 1; i < args.size(); i++) {
         if(args.at(i) == "--3dpreview" || args.at(i) == "-3d") {
             i++;

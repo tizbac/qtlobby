@@ -2,6 +2,7 @@
 // QtLobby released under the GPLv3, see COPYING for details.
 
 #include "PreferencePathElement.h"
+#include "PathManager.h"
 
 PreferencePathElement::PreferencePathElement( QWidget* parent ) : QWidget( parent ), Ui::PreferencePathElement() {
     setupUi( this );
@@ -134,6 +135,6 @@ bool PreferencePathElement::isExistingPath( const QString & path ) {
 void PreferencePathElement::updateExistingState( QString ) {
     QFileInfo fi = QFileInfo( lineEdit->text().trimmed() );
     m_exists = m_isDirectory ? fi.exists() && fi.isDir() : fi.exists();
-    QString iconName = m_exists ? ":/icons/open_game.xpm" : ":/icons/closed_game.xpm";
+    QString iconName = m_exists ? P("icons/open_game.xpm") : P("icons/closed_game.xpm");
     iconLabel->setPixmap( QPixmap( iconName ) );
 }

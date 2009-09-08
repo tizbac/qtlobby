@@ -3,6 +3,7 @@
 
 #include "Preference.h"
 #include "UnitSyncLib.h"
+#include "PathManager.h"
 
 Preference::Preference( QDialog* parent ) : QDialog( parent ) {
     settings = Settings::Instance();
@@ -141,7 +142,7 @@ void Preference::onResetFormToSettings() {
 void Preference::onLanguageChanged( int index ) {
     qApp->removeTranslator( translator );
     QString newLocale = languageComboBox->itemData( index, Qt::UserRole ).toString();
-    if( translator->load( "qtlobby_" +  newLocale, ":/i18n/" ) )
+    if( translator->load( "qtlobby_" +  newLocale, P("i18n/") ) )
         qApp->installTranslator( translator );
 }
 
@@ -296,12 +297,12 @@ void Preference::initPathExamples() {
 
 void Preference::setUpLanguageComboBox() {
     QStringList qmFileNames = findQmFiles();
-    languageComboBox->addItem( QIcon( ":/flags/GB.xpm" ), "English", "en");
+    languageComboBox->addItem( QIcon( P("flags/GB.xpm") ), "English", "en");
     foreach( QString qmFile, qmFileNames ) {
         translator = new QTranslator();
         QString fullLocale = qmFile.section( '.', 0, 0 ).section( '_', 1, -1 );
         translator->load( qmFile );
-        languageComboBox->addItem( QIcon( ":/flags/" + translator->translate( "Preference", "GB" ) + ".xpm" ),
+        languageComboBox->addItem( QIcon( P("flags/") + translator->translate( "Preference", "GB" ) + ".xpm" ),
                                    translator->translate( "Preference", "English" ),
                                    fullLocale );
     }
@@ -314,7 +315,7 @@ void Preference::setUpLanguageComboBox() {
 }
 
 QStringList Preference::findQmFiles() {
-     QDir dir(":/i18n");
+     QDir dir(P("i18n"));
      QStringList fileNames = dir.entryList(QStringList("*.qm"), QDir::Files,
                                            QDir::Name);
      QMutableStringListIterator i(fileNames);

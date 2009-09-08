@@ -1,6 +1,7 @@
 // $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "MapInfoLoader.h"
+#include "PathManager.h"
 #include <QMutex>
 #include <QMutexLocker>
 #include <QTimer>
@@ -159,9 +160,9 @@ QDataStream & operator<< (QDataStream& stream, const RawHeightMap& rawhm) {
 }
 
 void MapInfoLoader::saveCache() {
-    QDir userDir(Settings::Instance()->value("spring_user_dir").toString());
-    userDir.mkdir("qtlobby");
-    userDir.cd("qtlobby");
+    QDir userDir(PathManager::getInstance()->resolveOverlayPath());
+    userDir.mkdir("cache");
+    userDir.cd("cache");
     QFile file(QString("%1/%2.qmc")
                .arg(userDir.absolutePath())
                .arg(m_mapName));

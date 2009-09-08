@@ -1,6 +1,7 @@
 // $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "AbstractLobbyTab.h"
+#include "PathManager.h"
 
 AbstractLobbyTab::AbstractLobbyTab( QObject * parent ) {
     this->setParent( parent );
@@ -11,7 +12,7 @@ AbstractLobbyTab::AbstractLobbyTab( QObject * parent ) {
 AbstractLobbyTab::~AbstractLobbyTab() {}
 
 QString AbstractLobbyTab::flag( const QString userName ) {
-    QString flag = "<img width=\"16\" height=\"16\" src=\":/flags/%1.xpm\" />&nbsp;";
+    QString flag = "<img width=\"16\" height=\"16\" src=\""+P("flags/%1.xpm")+"\" />&nbsp;";
     if( Settings::Instance()->value("Chat/showFlags").toBool() )
         if ( userNameCountryCodeMap->contains( userName ) )
             return flag.arg( userNameCountryCodeMap->value( userName ) );

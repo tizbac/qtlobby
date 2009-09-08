@@ -415,7 +415,7 @@
   </widget>
   <action name="action_Exit">
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset>
      <normaloff>:/icons/Exit.png</normaloff>:/icons/Exit.png</iconset>
    </property>
    <property name="text">
@@ -427,7 +427,7 @@
   </action>
   <action name="action_Connect">
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset>
      <normaloff>:/icons/Connect_creating.png</normaloff>:/icons/Connect_creating.png</iconset>
    </property>
    <property name="text">
@@ -458,7 +458,7 @@
   </action>
   <action name="action_Disconnect">
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset>
      <normaloff>:/icons/Connect_no.png</normaloff>:/icons/Connect_no.png</iconset>
    </property>
    <property name="text">
@@ -473,7 +473,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset>
      <normaloff>:/icons/battle_list.xpm</normaloff>:/icons/battle_list.xpm</iconset>
    </property>
    <property name="text">
@@ -491,7 +491,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset>
      <normaloff>:/icons/userlist.png</normaloff>:/icons/userlist.png</iconset>
    </property>
    <property name="text">
@@ -519,7 +519,7 @@
   </action>
   <action name="actionLeave">
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset>
      <normaloff>:/icons/closetab.png</normaloff>:/icons/closetab.png</iconset>
    </property>
    <property name="text">
@@ -587,7 +587,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset>
      <normaloff>:/icons/rank6.xpm</normaloff>:/icons/rank6.xpm</iconset>
    </property>
    <property name="text">
@@ -605,7 +605,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset>
      <normaloff>:/icons/download_map.xpm</normaloff>:/icons/download_map.xpm</iconset>
    </property>
    <property name="text">
@@ -656,9 +656,7 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../resources.qrc"/>
- </resources>
+ <resources/>
  <connections>
   <connection>
    <sender>action_Exit</sender>

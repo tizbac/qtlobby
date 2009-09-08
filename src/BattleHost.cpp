@@ -3,6 +3,7 @@
 #include "BattleHost.h"
 #include <QMainWindow>
 #include "UnitSyncLib.h"
+#include "PathManager.h"
 
 BattleHost::BattleHost(QString host, QObject* parent) : QThread(parent) {
     m_host = host;
@@ -78,7 +79,7 @@ void BattleHost::receiveCommand( Command command ) {
 #ifdef SQADS_DEBUG
         m_debugger.standardWindow()->show();
 #endif
-        QFile scriptFile(":/src/sqads.js");
+        QFile scriptFile(P("src/sqads.js"));
         scriptFile.open(QIODevice::ReadOnly);
         m_engine.evaluate(scriptFile.readAll(), "sqads.js");
         scriptFile.close();

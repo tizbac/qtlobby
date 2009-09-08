@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QApplication>
 #include "Settings.h"
+#include "PathManager.h"
 
 
 int perm[256]= {151,160,137,91,90,15,

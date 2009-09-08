@@ -4,6 +4,7 @@
 #include "ui_DownloadsDialog.h"
 #include "DownloadsModel.h"
 #include "ProgressBarItemDelegate.h"
+#include "PathManager.h"
 #include <QDateTime>
 
 DownloadsDialog::DownloadsDialog(QWidget *parent) :
@@ -31,7 +32,7 @@ void DownloadsDialog::changeEvent(QEvent *e) {
 }
 
 void DownloadsDialog::showEvent(QShowEvent* /*event*/) {
-    QString file(":/icons/logos/jobjol/logo%1.xpm");
+    QString file(P("icons/logos/jobjol/logo%1.xpm"));
     int idx = qrand() % 16;
     m_ui->jobjolLogoLabel->setPixmap(QPixmap(file.arg(idx)));
 }

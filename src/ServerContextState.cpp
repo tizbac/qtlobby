@@ -3,6 +3,7 @@
 
 #include "ServerContextState.h"
 #include "Settings.h"
+#include "config.h"
 
 ServerContextState::ServerContextState( QObject * parent ) : NetworkInterface( parent ) {
     keepaliveping = false;

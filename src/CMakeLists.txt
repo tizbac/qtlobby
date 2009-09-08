@@ -48,7 +48,7 @@ MapWidget.cpp
 ModOption.cpp                    
 NetworkInterface.cpp             
 Notification.cpp                 
-#PathManager.cpp                  
+PathManager.cpp                  
 Preference.cpp                   
 PreferencePathElement.cpp        
 PrivateChannel.cpp               
@@ -125,7 +125,7 @@ MapWidget.h
 ModOption.h                    
 NetworkInterface.h             
 Notification.h                 
-#PathManager.h                  
+PathManager.h                  
 Preference.h                   
 PreferencePathElement.h        
 PrivateChannel.h               
@@ -156,10 +156,10 @@ UserTreeModel.h
 sqadsprototypes.h
 )     
 
-if(WIN32 OR BUILDBOT)
+if(UNIX)
 set(qtlobby_SRCS ${qtlobby_SRCS} DBusVisualNotificationBackend.cpp)
 set(qtlobby_SRCS_H ${qtlobby_SRCS_H} DBusVisualNotificationBackend.h)
-endif(WIN32 OR BUILDBOT)
+endif(UNIX)
 
 QT4_WRAP_CPP(qtlobby_SRCS_MOC ${qtlobby_SRCS_H})
       
@@ -188,7 +188,7 @@ set( qtlobby_UIS
 QT4_WRAP_UI(qtlobby_UIS_H ${qtlobby_UIS})
 include_directories(../ui)
       
-QT4_ADD_RESOURCES(qtlobby_RES ../resources.qrc)
+#QT4_ADD_RESOURCES(qtlobby_RES ../resources.qrc)
       
 QT4_ADD_TRANSLATION(qtlobby_TRANS
 ../i18n/qtlobby_de.ts
@@ -201,7 +201,7 @@ QT4_ADD_TRANSLATION(qtlobby_TRANS
 add_executable(qtlobby ${qtlobby_SRCS} ${qtlobby_SRCS_HH} ${qtlobby_UIS_H} ${qtlobby_SRCS_MOC} ${qtlobby_RES} ${qtlobby_TRANS} main.cpp)
 
 if(BUILDBOT)
-SET_TARGET_PROPERTIES(qtlobby PROPERTIES LINK_FLAGS -static-libgcc -Wl,-subsystem,windows)
+SET_TARGET_PROPERTIES(qtlobby PROPERTIES LINK_FLAGS "-static-libgcc -Wl,-subsystem,windows")
 endif(BUILDBOT)
 
 target_link_libraries(qtlobby ${QT_LIBRARIES} ${QSCINTILLA_LIBRARIES} ${QTSCRIPTTOOLS_LIBRARIES})

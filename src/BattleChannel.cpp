@@ -2,6 +2,8 @@
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "BattleChannel.h"
 #include "DownloadsModel.h"
+#include "PathManager.h"
+#include "config.h"
 #include <QSplitter>
 #include <QInputDialog>
 
@@ -41,7 +43,7 @@ BattleChannel::BattleChannel( QString id, Battles* battles, QObject * parent ) :
     m_battle = battles->battleManager->getBattle( id.toInt() );
     //setObjectName(m_battle.founder);
     battleWindowForm = new Ui::BattleWindowForm();
-    activeIcon = QIcon( ":/icons/battle.xpm" );
+    activeIcon = QIcon( P("icons/battle.xpm") );
     mapOverviewDialog = new MapOverviewDialog();
     loader = new MapInfoLoader(this);
     noMapUpdates = false;
@@ -296,9 +298,9 @@ void BattleChannel::receiveCommand( Command command ) {
                 this->locked = locked;
                 QString table="<table><tr><td><img src=\"%1\"</td><td>%2</td></tr></table>";
                 if(locked)
-                    battleWindowForm->battleStatusLabel->setText(table.arg(":/icons/closed_game.xpm").arg(tr("Locked")));
+                    battleWindowForm->battleStatusLabel->setText(table.arg(P("icons/closed_game.xpm")).arg(tr("Locked")));
                 else
-                    battleWindowForm->battleStatusLabel->setText(table.arg(":/icons/open_game.xpm").arg(tr("Unlocked")));
+                    battleWindowForm->battleStatusLabel->setText(table.arg(P("icons/open_game.xpm")).arg(tr("Unlocked")));
             }
             if (currentMap != mapName) requestMapInfo( mapName );
             currentMap = mapName;

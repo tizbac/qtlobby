@@ -2,9 +2,11 @@
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "PrivateChannel.h"
 #include "UserGroup.h"
+#include "PathManager.h"
+#include "config.h"
 
 PrivateChannel::PrivateChannel( QString name, QObject * parent ) : AbstractChannel( name, parent ) {
-    activeIcon = QIcon( ":/icons/userchat.xpm" );
+    activeIcon = QIcon( P("icons/userchat.xpm") );
     notify = Notification::getInstance();
 }
 
