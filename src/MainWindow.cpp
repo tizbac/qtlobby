@@ -83,8 +83,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     // serverContextState -> QString -> commandAssigner
     connect( serverContextState, SIGNAL( incommingMessage( QString ) ),
              commandAssigner, SLOT( receiveMessage( QString ) ) );
-    /*connect( serverContextState, SIGNAL( incommingMessage( QString ) ),
-             History::getInstance(), SLOT( receiveMessage( QString ) ) );*/
+    connect( serverContextState, SIGNAL( incommingMessage( QString ) ),
+             History::getInstance(), SLOT( receiveMessage( QString ) ) );
     // commandAssigner -> Command -> serverContextState
     connect( commandAssigner, SIGNAL( serverContextStateCommand( Command ) ),
              serverContextState, SLOT( receiveCommand( Command ) ) );
