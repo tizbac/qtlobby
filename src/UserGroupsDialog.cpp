@@ -2,6 +2,7 @@
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "UserGroupsDialog.h"
 #include "ui_UserGroupsDialog.h"
+#include "PathManager.h"
 #include <QDebug>
 #include <QColorDialog>
 
@@ -9,6 +10,12 @@ UserGroupsDialog::UserGroupsDialog(QWidget *parent) :
         QDialog(parent),
         m_ui(new Ui::UserGroupsDialog) {
     m_ui->setupUi(this);
+
+    //Get icons from PathManager
+    m_ui->newPushButton->setIcon(QIcon(P("icons/trolltech/filenew.png")));
+    m_ui->deletePushButton->setIcon(QIcon(P("icons/editdelete.png")));
+    m_ui->savePushButton->setIcon(QIcon(P("icons/trolltech/filesave.png")));
+
     UserGroupList* groups = UserGroupList::getInstance();
     groups->load();
     m_ui->groupsListWidget->addItems(groups->getGroupNames());

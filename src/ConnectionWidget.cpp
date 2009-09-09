@@ -1,11 +1,16 @@
 // $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "ConnectionWidget.h"
+#include "PathManager.h"
 #include <QProgressBar>
 
 ConnectionWidget::ConnectionWidget( ServerContextState* serverContextState,
                                     QWidget *parent ) : QDialog( parent ) {
     setupUi( this );
+
+    newProfileButton->setIcon(QIcon(P("/icons/trolltech/plus.png")));
+    delProfileButton->setIcon(QIcon(P("/icons/trolltech/minus.png")));
+
     profilesListView->setModel(ServerProfilesModel::getInstance());
     currentProfileGroupBox->setEnabled(ServerProfilesModel::getInstance()->rowCount());
     this->serverContextState = serverContextState;
