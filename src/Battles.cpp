@@ -593,7 +593,6 @@ void Battles::setFilterWithoutFriendsSlot( bool state ) {
 }
 
 void Battles::onReboot() {
-    qDebug() << "Resyncing";
     User u = users->getUser( ServerProfilesModel::getInstance()->getActiveProfile().userName() );
     u.battleState.setSyncState(resyncStatus());
     users->onMyBattleStateChanged( u );
