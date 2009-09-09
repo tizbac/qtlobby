@@ -4,6 +4,7 @@
 #include <QColor>
 #include <QMutex>
 #include <QMutexLocker>
+#include "config.h"
 
 #ifdef PURE_WINAPI_UNITSYNC_LOADER
 #include <windows.h>
