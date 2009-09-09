@@ -307,8 +307,11 @@ RawHeightMap UnitSyncLib::getHeightMapRaw( const QString mapFileName ) {
     m_GetInfoMapSize(mapFileName.toAscii(), "height", &width, &height);
     unsigned short *ptr = new unsigned short[width*height];
     m_GetInfoMap(mapFileName.toAscii(), "height", ptr, 2);
-    float min = m_GetMapMinHeight(mapFileName.toAscii());
-    float max = m_GetMapMaxHeight(mapFileName.toAscii());
+    float min = 0, max = 100;
+    if(m_GetMapMinHeight) {
+        min = m_GetMapMinHeight(mapFileName.toAscii());
+        max = m_GetMapMaxHeight(mapFileName.toAscii());
+    }
     return RawHeightMap(width,height,min,max,ptr);
 }
 
