@@ -51,9 +51,10 @@ class QtLobbyBuilder(Thread):
 				                  "Installer": "http://qtlobby.oxnull.net/qtlobby.r"+rev+"_installer.exe", \
 						  "Debug symbols": "http://qtlobby.oxnull.net/qtlobby.r"+rev+"_symbols.dbg.zip"})
 				return
-                        self.onMessage("Building revision "+rev+"...")
-			self.onMessage("Building resources...")
+                        self.onMessage("Building revision "+rev+"")
+			self.onMessage("Compressing resources...")
 			self.runCommand("./mkresources.sh")
+			self.onMessage("Building...")
 			os.chdir("cbuild")
 			if self.clean:
 				self.onMessage("Cleaning up building environment...")
