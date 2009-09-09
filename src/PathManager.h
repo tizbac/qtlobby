@@ -13,6 +13,7 @@ public:
     QString resolvePath(const QString& path);
     QString resolveOverlayPath(const QString& path);
     QString resolveOverlayPath();
+    void invalidateCache(const QString& path);
 private:
     QString m_base;
     QString m_overlay;

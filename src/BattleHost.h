@@ -80,7 +80,7 @@ private:
     QString m_title;
     int m_id;
     int m_hash;
-    QScriptEngine m_engine;
+    QScriptEngine* m_engine;
     QScriptEngineDebugger m_debugger;
     bool m_locked;
     QScriptValue m_sqads;

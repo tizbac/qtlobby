@@ -14,6 +14,7 @@ BattleHost::BattleHost(QString host, QObject* parent) : QThread(parent) {
     for(int i = 0; i < 15; i++) {
         m_startRects[i] = false;
     }
+    m_engine = 0;
 }
 
 void BattleHost::setHostingParams(quint8 type, quint8 natType, QString password, quint16 port, quint8 maxplayers, quint8 rank, QString map, QString mod, QString title) {
@@ -27,9 +28,8 @@ void BattleHost::setHostingParams(quint8 type, quint8 natType, QString password,
     m_mod = mod;
     m_title = title;
     m_locked = false;
-    m_debugger.attachTo(&m_engine);
-    m_engine.setDefaultPrototype(qMetaTypeId<SqadsUserListPtr>(), m_engine.newQObject(&sqadsUserList));
-    m_engine.setDefaultPrototype(qMetaTypeId<SqadsUserPtr>(), m_engine.newQObject(&sqadsUser));
+    m_debugger.attachTo(m_engine);
+    reloadSqads();
     qRegisterMetaType<Command>("Command");
 }
 
@@ -362,16 +362,22 @@ void BattleHost::ring(User* u) {
 }
 
 void BattleHost::reloadSqads() {
+    if(m_engine) m_engine->deleteLater();
+    m_engine = new QScriptEngine(this);
+    m_engine->setDefaultPrototype(qMetaTypeId<SqadsUserListPtr>(), m_engine->newQObject(&sqadsUserList));
+    m_engine->setDefaultPrototype(qMetaTypeId<SqadsUserPtr>(), m_engine->newQObject(&sqadsUser));
+    m_debugger.attachTo(m_engine);
+    PathManager::getInstance()->invalidateCache("javascript/sqads.js");
     QFile scriptFile(P("javascript/sqads.js"));
     if(!scriptFile.open(QIODevice::ReadOnly)) {
         QMessageBox::critical(0, "SQADS not found", "File " + P("javascript/sqads.js") + " was not found");
         quit();
         return;
     }
-    m_engine.evaluate(scriptFile.readAll(), "sqads.js");
+    m_engine->evaluate(scriptFile.readAll(), "sqads.js");
     scriptFile.close();
-    QScriptValue ctor = m_engine.evaluate("Sqads");
-    QScriptValue scriptBattleHost = m_engine.newQObject(this);
+    QScriptValue ctor = m_engine->evaluate("Sqads");
+    QScriptValue scriptBattleHost = m_engine->newQObject(this);
     m_sqads = ctor.construct(QScriptValueList() << scriptBattleHost);
 }
 
