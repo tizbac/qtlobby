@@ -15,7 +15,9 @@ function Sqads(battleHost) {
             {name: "lock", admin: false, description: "Locks the room", argc: 0, opt: 0, callback: this.cmdLock},
             {name: "unlock", admin: false, description: "Unlocks the room", argc: 0, opt: 0, callback: this.cmdUnlock},
             {name: "autolock", admin: false, description: "Sets number of players which should be reached for locking", argc: 1, opt: 1, callback: this.cmdAutolock},
-            {name: "teamsize", admin: false, description: "Sets team size", argc: 1, opt: 0, callback: this.cmdTeamSize}
+            {name: "teamsize", admin: false, description: "Sets team size", argc: 1, opt: 0, callback: this.cmdTeamSize},
+            {name: "reload", admin: true, description: "Reloads sqads.js", argc: 0, opt: 0, callback: this.cmdReload},
+            {name: "showdebugger", admin: true, description: "Shows SQADS script debugger window", argc: 0, opt: 0, callback: this.cmdShowDebugger}
     ];
 
     this.bh = battleHost;
@@ -352,4 +354,12 @@ Sqads.prototype.cmdTeamSize = function(caller, number) {
     this.bh.sayBattleEx("* Global setting changed by " + caller + "(teamSize=" + number + ")");
     this.teamSize = number/this.nbTeams;
     this.updateAutolock();
+};
+
+Sqads.prototype.cmdReload = function(caller) {
+    this.bh.reloadSqads();
+};
+
+Sqads.prototype.cmdShowDebugger = function(caller) {
+    this.bh.showDebugger();
 };

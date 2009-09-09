@@ -75,17 +75,7 @@ void BattleHost::receiveCommand( Command command ) {
     command.name = command.name.toUpper();
     if ( command.name == "OPENBATTLE" ) {
         m_id = command.attributes[0].toInt();
-        //For SQADS debugging
-#ifdef SQADS_DEBUG
-        m_debugger.standardWindow()->show();
-#endif
-        QFile scriptFile(P("src/sqads.js"));
-        scriptFile.open(QIODevice::ReadOnly);
-        m_engine.evaluate(scriptFile.readAll(), "sqads.js");
-        scriptFile.close();
-        QScriptValue ctor = m_engine.evaluate("Sqads");
-        QScriptValue scriptBattleHost = m_engine.newQObject(this);
-        m_sqads = ctor.construct(QScriptValueList() << scriptBattleHost);
+        reloadSqads();
         emit hosted(command.attributes[0].toInt());
         fillScriptTags();
         broadcastScriptTags();
@@ -369,4 +359,22 @@ void BattleHost::clearStartRects() {
 
 void BattleHost::ring(User* u) {
     emit sendCommand(Command("RING " + u->name));
+}
+
+void BattleHost::reloadSqads() {
+    QFile scriptFile(P("javascript/sqads.js"));
+    if(!scriptFile.open(QIODevice::ReadOnly)) {
+        QMessageBox::critical(0, "SQADS not found", "File " + P("javascript/sqads.js") + " was not found");
+        quit();
+        return;
+    }
+    m_engine.evaluate(scriptFile.readAll(), "sqads.js");
+    scriptFile.close();
+    QScriptValue ctor = m_engine.evaluate("Sqads");
+    QScriptValue scriptBattleHost = m_engine.newQObject(this);
+    m_sqads = ctor.construct(QScriptValueList() << scriptBattleHost);
+}
+
+void BattleHost::showDebugger() {
+    m_debugger.standardWindow()->show();
 }

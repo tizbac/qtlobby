@@ -62,6 +62,8 @@ public slots:
     void addStartRect(quint8 left, quint8 top, quint8 right, quint8 bottom, quint8 ally);
     void removeStartRect(quint8 ally);
     void clearStartRects();
+    void reloadSqads();
+    void showDebugger();
 protected:
     void run();
     void fillScriptTags();
