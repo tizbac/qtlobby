@@ -7,7 +7,6 @@
 #include <QSortFilterProxyModel>
 #include <QDebug>
 #include <QMap>
-#include <QUrl>
 #include <QItemSelectionModel>
 #include <QMenu>
 #include <QMessageBox>
@@ -31,7 +30,6 @@ public:
     UserTreeModel* getUserModel(int battleId);
     int usersCountInCurrentChannel();
     void wipeModels();
-    QString getCurrentUsername();
     void modUserInAllManagers( User );
     QString teamPlayerSpecCount();
     int usersInChanCount();
@@ -46,7 +44,6 @@ signals:
 public slots:
     void setRegExp( QString regExp );
     void receiveCommand( Command command );
-    void setConfiguration( QUrl url );
     void currentTabChanged( QString name, QString lobbyTabType );
     void inv();
     void onMyBattleStateChanged( User u );
@@ -90,7 +87,6 @@ protected:
     void updateUserList();
     TreeSortFilterProxyModel* proxyModel;
     QRegExp clanRegexp;
-    QUrl url;
     int userCount;
     int moderatorCount;
     static Users* lastThis;

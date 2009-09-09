@@ -78,6 +78,7 @@
     <addaction name="actionMap_list"/>
     <addaction name="actionGroups"/>
     <addaction name="actionDownloads"/>
+    <addaction name="actionHistory"/>
    </widget>
    <widget class="QMenu" name="menu_Game">
     <property name="title">
@@ -623,6 +624,11 @@
     <string notr="true">Ctrl+H</string>
    </property>
   </action>
+  <action name="actionHistory">
+   <property name="text">
+    <string>History</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="4" margin="4"/>
  <customwidgets>
@@ -834,6 +840,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionHistory</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>showHistoryDialog()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>397</x>
+     <y>367</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <designerdata>
   <property name="gridDeltaX">
@@ -855,5 +877,6 @@
  <slots>
   <slot>showStylesheetEditor()</slot>
   <slot>showGroupsDialog()</slot>
+  <slot>showHistoryDialog()</slot>
  </slots>
 </ui>

@@ -6,6 +6,7 @@
 #include <QTextBrowser>
 #include <QScrollBar>
 #include <QTime>
+#include <QDateTime>
 #include <QGridLayout>
 #include <QDesktopServices>
 
@@ -18,11 +19,14 @@ class AbstractChannel : public AbstractLobbyTab {
 public:
     AbstractChannel( QString name, QObject * parent = 0 );
     virtual ~AbstractChannel();
-    static void setCurrentUsername(QString user);
+    void setChannelBrowser(ChannelTextBrowser* b);
+    void setHistoryMode(bool b);
 
 public slots:
     virtual void receiveInput( QString input ) = 0;
     virtual void receiveCommand( Command command ) = 0;
+    virtual void historyMessage( QDateTime time, QString message );
+
 protected:
     void setActive( bool isActive );
     virtual void setupUi( QWidget * tab );
@@ -40,8 +44,10 @@ protected:
     QIcon inactiveIcon;
     QColor activeTextColor;
     QColor inactiveTextColor;
-    static QString currentUsername;
     QString userNameLink( const QString userName );
+
+    bool historyMode;
+    QDateTime historyDateTime;
 protected slots:
     void anchorClicked(QUrl url);
 };

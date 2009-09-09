@@ -22,7 +22,7 @@ void PrivateChannel::receiveCommand( Command command ) {
                     .arg( "&lt;%1&gt; %2" )
                     .arg( objectName() )
                     .arg( processInput(command.attributes.join( " " ))));
-                                if(isActive == false && Settings::Instance()->value("Chat/notifyNewPrivateMessages").toBool())
+                                if(isActive == false && Settings::Instance()->value("Chat/notifyNewPrivateMessages").toBool() && !historyMode)
                                 {
                                     QString title = QString("PM from " + objectName());
                                     QString message = QString(processInput(command.attributes.join( " " )));
@@ -34,7 +34,7 @@ void PrivateChannel::receiveCommand( Command command ) {
         if ( command.attributes.takeFirst() == objectName() && command.attributes.join( " " ).trimmed() != "" ) {
             insertLine( line.arg( "%1&lt;%2&gt; %3" )
                         .arg( flag( myUserName ) )
-                        .arg( myUserName )
+                        .arg( historyMode ? "me" : myUserName )
                         .arg( processInput(command.attributes.join( " " ))));
         }
     } else if ( command.name == "CLIENTMSG" ) {

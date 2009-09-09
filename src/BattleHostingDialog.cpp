@@ -3,6 +3,7 @@
 #include "BattleHostingDialog.h"
 #include "ui_BattleHostingDialog.h"
 #include "UnitSyncLib.h"
+#include "ServerProfilesModel.h"
 
 BattleHostingDialog::BattleHostingDialog(QProcess* spring, CommandAssigner* assigner, LobbyTabs* lobbyTabs, QWidget *parent) :
         QDialog(parent),
@@ -39,7 +40,7 @@ void BattleHostingDialog::on_buttonBox_accepted() {
         QMessageBox::critical(this, tr("Error"), tr("You have a battle running!\nClose it first!"));
         return;
     }
-    m_battleHost = new BattleHost(m_currentUsername, this);
+    m_battleHost = new BattleHost(ServerProfilesModel::getInstance()->getActiveProfile().userName(), this);
     QString passwd = m_ui->passwordLineEdit->text();
     m_battleHost->setHostingParams(0,
                                    0,
@@ -72,10 +73,6 @@ void BattleHostingDialog::on_buttonBox_accepted() {
 void BattleHostingDialog::onClosed() {
     m_battleHost->deleteLater();
     m_battleHost = 0;
-}
-
-void BattleHostingDialog::setCurrentUsername(QString username) {
-    m_currentUsername = username;
 }
 
 void BattleHostingDialog::onReboot() {

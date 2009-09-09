@@ -18,7 +18,6 @@ class BattleHostingDialog : public QDialog {
 public:
     explicit BattleHostingDialog(QProcess* spring, CommandAssigner* assigner, LobbyTabs* lobbyTabs, QWidget *parent = 0);
     virtual ~BattleHostingDialog();
-    void setCurrentUsername(QString username);
 
 protected:
     virtual void changeEvent(QEvent *e);
@@ -33,7 +32,6 @@ private:
     BattleHost* m_battleHost;
     CommandAssigner* m_assigner;
     LobbyTabs* m_tabs;
-    QString m_currentUsername;
     QProcess* m_spring;
 };
 

@@ -78,6 +78,8 @@ Users.cpp
 UsersTreeView.cpp
 UserTreeModel.cpp
 sqadsprototypes.cpp
+History.cpp
+HistoryDialog.cpp
 )
 
 set(qtlobby_SRCS_H 
@@ -155,6 +157,8 @@ Users.h
 UsersTreeView.h
 UserTreeModel.h
 sqadsprototypes.h
+History.h
+HistoryDialog.h
 )     
 
 if(UNIX)
@@ -185,6 +189,7 @@ set( qtlobby_UIS
 ../ui/StylesheetDialog.ui
 ../ui/ToolBarWidget.ui
 ../ui/UserGroupsDialog.ui
+../ui/HistoryDialog.ui
 )     
 QT4_WRAP_UI(qtlobby_UIS_H ${qtlobby_UIS})
  

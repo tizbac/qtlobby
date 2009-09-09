@@ -119,6 +119,7 @@ void ConnectionWidget::establishConnection() {
                                tr("You have to add a profile first before you can connect to a server.") );
         return;
     }
+    ServerProfilesModel::getInstance()->setActiveProfile(index);
     QUrl url = ServerProfilesModel::getInstance()->data(index, Qt::UserRole).toUrl();
     if ( !rememberPassCheckBox->isChecked() ) {
         url.setPassword("");
@@ -141,9 +142,7 @@ void ConnectionWidget::establishConnection() {
         ServerProfilesModel::getInstance()->modifyProfile( index, url );
     }
 
-    emit emitConfiguration( url );
     emit establishConnection_();
-    emit usernameChanged(url.userName());
 }
 
 void ConnectionWidget::simpleViewChanged() {
@@ -175,9 +174,8 @@ void ConnectionWidget::establishSimpleConnection() {
     simpleUrl.setPassword( simplePasswdEdit->text() );
     simpleUrl.setScheme("tas");
 
-    emit emitConfiguration( simpleUrl );
+    ServerProfilesModel::getInstance()->setActiveProfile(simpleUrl);
     emit establishConnection_();
-    emit usernameChanged(simpleUrl.userName());
     if(!simpleRememberPasswdChechbox->isChecked())
         simpleUrl.setPassword(QString::null);
     settings->setValue("simpleLogin", simpleUrl.toString());
@@ -298,7 +296,6 @@ void ConnectionWidget::renameLoginName() {
     if ( newUsername == "" )
         return;
     serverContextState->sendMessage( QString( "RENAMEACCOUNT %1" ).arg( newUsername ) ) ;
-    emit usernameChanged(newUsername);
 }
 
 void ConnectionWidget::renameLoginNameFeedbackSuccess( QString newName ) {
@@ -374,7 +371,6 @@ void ConnectionWidget::registerNewAccount() {
              this, SLOT( registrationSuccessFeedback(QString)) );
     configuration.setHost(newServerLineEdit->text());
     configuration.setPort(newPortSpinBox->value());
-    registrationServerContextState->setConfiguration(configuration);
     registrationServerContextState->registerNewAccount(username, passwordTry1lineEdit->text());
     configuration.setUserName(username);
     configuration.setPassword(passwordTry1lineEdit->text());

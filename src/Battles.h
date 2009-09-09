@@ -47,9 +47,7 @@ signals:
 public slots:
     void setRegExp( QString regExp );
     void receiveCommand( Command command );
-    void setConfiguration( QUrl url );
     void joinBattleCommand( unsigned int id, QString password, bool firstClose );
-    void setCurrentUsername( QString username );
     void invalidateModel();
     void connectionStateChanged( ConnectionState state );
     void onJoin();
@@ -75,9 +73,7 @@ protected:
     void retranslateUi();
     QString currentTabType;
     QString currentTabName;
-    QString username;
     Users* users;
-    QUrl url;
     BattlePasswordWidget* battlePasswordWidget;
     QSettings* settings;
     int battleCount;

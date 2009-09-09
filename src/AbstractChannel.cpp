@@ -2,8 +2,7 @@
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "AbstractChannel.h"
 #include "PathManager.h"
-
-QString AbstractChannel::currentUsername;
+#include "ServerProfilesModel.h"
 
 AbstractChannel::AbstractChannel( QString name, QObject * parent ) : AbstractLobbyTab( parent ) {
     setObjectName( name );
@@ -11,6 +10,7 @@ AbstractChannel::AbstractChannel( QString name, QObject * parent ) : AbstractLob
     inactiveIcon = QIcon( P("icons/channel_unread.xpm") );
     activeTextColor = QColor("black");
     inactiveTextColor = QColor("green");
+    historyMode = false;
 }
 
 AbstractChannel::~AbstractChannel() {}
@@ -19,12 +19,7 @@ void AbstractChannel::setupUi( QWidget * channelTabWidget ) {
     channelTabWidget->setObjectName( QString::fromUtf8( "channelTabWidget" ) + objectName() );
     channelTextBrowser = new ChannelTextBrowser( channelTabWidget );
     channelTextBrowser->setObjectName( "channelTextBrowser" + objectName() );
-    channelTextBrowser->setOpenLinks(false);
-    channelTextBrowser->setReadOnly( true );
-    QTextDocument * channelTextDocument = new QTextDocument( channelTextBrowser );
-    //after exeeding the 500 blocks the first block will be removed
-    channelTextDocument->setMaximumBlockCount( 500 );
-    channelTextBrowser->setDocument( channelTextDocument );
+    setChannelBrowser(channelTextBrowser);
     gridLayout = new QGridLayout( channelTabWidget );
     gridLayout->setContentsMargins(0,0,0,0);
     gridLayout->setObjectName( QString::fromUtf8( "channelGridLayout" ) + objectName() );
@@ -73,17 +68,17 @@ bool AbstractChannel::executeChannelInput( QString input ) {
         ret.name = "CLIENTMSG";
         QString row( "<tr><td style=\"padding:0;border:none;\">%1</td><td style=\"padding:0;border:none;\">%2</td></tr>" );
         ret.attributes << objectName() << tr("Chat Help").append(" <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">%1</table>" ).arg(
-                        row.arg( "/help, /h", tr( "Display this help" ) ) +
-                        row.arg( "/channels, /list", tr( "Display channel list" ) ) +
-                        row.arg( "/join, /j &lt;channel&gt;", tr( "Join channel" ) ) +
-                        row.arg( "/j &lt;channel&gt; &lt;password&gt;", tr( "Join password protected channel" ) ) +
-                        row.arg( "/j &lt;channel1&gt; &lt;password1&gt;, &lt;channel2&gt; ...  ", tr( "Join multiple channels" ) ) +
-                        row.arg( "/me &lt;text&gt;", tr( "Say highlighted" ) ) +
-                        row.arg( "/sayver", tr( "Say /me is using QtLobby vXXX revYYY" ) ) +
-                        row.arg( "/slap &lt;user&gt;", tr( "Say the mIRC slap sentence" ) ) +
-                        row.arg( "/query, /msg &lt;user&gt;", tr( "Open private chat" ) ) +
-                        row.arg( "/leave, /wc", tr( "Leave the channel" ) )
-                        );
+                row.arg( "/help, /h", tr( "Display this help" ) ) +
+                row.arg( "/channels, /list", tr( "Display channel list" ) ) +
+                row.arg( "/join, /j &lt;channel&gt;", tr( "Join channel" ) ) +
+                row.arg( "/j &lt;channel&gt; &lt;password&gt;", tr( "Join password protected channel" ) ) +
+                row.arg( "/j &lt;channel1&gt; &lt;password1&gt;, &lt;channel2&gt; ...  ", tr( "Join multiple channels" ) ) +
+                row.arg( "/me &lt;text&gt;", tr( "Say highlighted" ) ) +
+                row.arg( "/sayver", tr( "Say /me is using QtLobby vXXX revYYY" ) ) +
+                row.arg( "/slap &lt;user&gt;", tr( "Say the mIRC slap sentence" ) ) +
+                row.arg( "/query, /msg &lt;user&gt;", tr( "Open private chat" ) ) +
+                row.arg( "/leave, /wc", tr( "Leave the channel" ) )
+                );
         receiveCommand( ret );
         return true;
     } else if ( QString( "/ingame" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
@@ -96,7 +91,12 @@ bool AbstractChannel::executeChannelInput( QString input ) {
 }
 
 void AbstractChannel::insertLine( QString line ) {
-    QString timeString = QString( "<span style=\"color:gray;\">%1</span> " ).arg( QTime().currentTime().toString( "[hh:mm:ss]" ) );
+    QTime t;
+    if(historyMode)
+        t = historyDateTime.time();
+    else
+        t = QTime::currentTime();
+    QString timeString = QString( "<span style=\"color:gray;\">%1</span> " ).arg( t.toString( "[hh:mm:ss]" ) );
     bool scrollToMaximum = channelTextBrowser->verticalScrollBar()->value() == channelTextBrowser->verticalScrollBar()->maximum();
     QTextCursor c = channelTextBrowser->textCursor();
     //go to end of document
@@ -116,11 +116,11 @@ void AbstractChannel::insertLine( QString line ) {
 QString AbstractChannel::makeHtml( QString in ) {
     QString ret = in;
     ret.replace( "\n", "<br>" );
+    if(historyMode) {
+        ret.prepend("<font color=\"gray\">");
+        ret.append("</font>");
+    }
     return ret.prepend( "<p>" ).append( "</p>" );
-}
-
-void AbstractChannel::setCurrentUsername(QString user) {
-    currentUsername = user;
 }
 
 /*
@@ -309,15 +309,16 @@ QString AbstractChannel::highlightUserName( QString input ) {
     if( !Settings::Instance()->value("Chat/highlightUserName").toBool() )
         return input;
     // highlight currentUsername
-    QString pattern = currentUsername;
+    QString username = ServerProfilesModel::getInstance()->getActiveProfile().userName();
+    QString pattern = username;
     pattern.replace("[", "\\[").replace("]", "\\]");
     pattern += "(?!&gt;)";
-    input.replace(QRegExp(pattern), "<font style=\" font-weight:600; color:#aa0000;\">"+currentUsername+"</font>");
+    input.replace(QRegExp(pattern), "<font style=\" font-weight:600; color:#aa0000;\">"+username+"</font>");
     return input;
 }
 
 QString AbstractChannel::userNameLink( const QString userName ) {
-    if( userName == currentUsername )
+    if( userName == ServerProfilesModel::getInstance()->getActiveProfile().userName() )
         return userName;
     QUrl url("qtlobby://query");
     url.addQueryItem("username",userName);
@@ -331,4 +332,21 @@ void AbstractChannel::anchorClicked(QUrl url) {
     } else {
         QDesktopServices::openUrl(url);
     }
+}
+
+void AbstractChannel::setChannelBrowser(ChannelTextBrowser* b) {
+    channelTextBrowser = b;
+    channelTextBrowser->setOpenLinks(false);
+    channelTextBrowser->setReadOnly( true );
+    QTextDocument * channelTextDocument = new QTextDocument( channelTextBrowser );
+    channelTextBrowser->setDocument( channelTextDocument );
+}
+
+void AbstractChannel::historyMessage( QDateTime time, QString message ) {
+    historyDateTime = time;
+    receiveCommand(Command(message));
+}
+
+void AbstractChannel::setHistoryMode(bool b) {
+    historyMode = b;
 }

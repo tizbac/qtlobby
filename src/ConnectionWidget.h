@@ -30,9 +30,7 @@ public:
     ConnectionWidget( ServerContextState*, QWidget *parent = 0 );
     ~ConnectionWidget();
 signals:
-    void emitConfiguration( QUrl );
     void establishConnection_();
-    void usernameChanged(QString username);
 public slots:
     void show_if_wanted();
     void logWrite( QString );

@@ -24,6 +24,7 @@ public:
     void modifyProfile(const QModelIndex& profile, const QUrl& url);
     void removeProfile(const QModelIndex& profile);
     void setActiveProfile(const QModelIndex& profile);
+    void setActiveProfile(const QUrl& url);
     QUrl getActiveProfile();
 private:
     ServerProfilesModel(QObject* parent = 0);
@@ -33,6 +34,7 @@ private:
     QList<QUrl> m_profiles;
     QSettings* m_settings;
     int m_autologin;
+    QUrl m_active;
 };
 
 #endif // SERVERPROFILESMODEL_H

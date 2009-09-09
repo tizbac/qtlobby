@@ -53,7 +53,6 @@ public:
     void registerNewAccount( QString user, QString password );
     QString encodePassword( QString password );
 private:
-    QUrl url; // server:port username:password for the TASServer is saved here
     bool keepaliveping;
     AgreementWidget* agreementWidget;
     QString agreement;
@@ -79,8 +78,6 @@ public slots:
     void displayError( QAbstractSocket::SocketError );
     void establishConnection();
     void forceDisconnect();
-    void setConfiguration( QUrl );
-    QUrl getConfiguration( );
     void connectionStateChanged( ServerContextState::State state );
 
     void acceptAgreement();

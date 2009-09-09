@@ -29,6 +29,7 @@
 #include "ScriptingDialog.h"
 #include "BattleHost.h"
 #include "BattleHostingDialog.h"
+#include "HistoryDialog.h"
 #include "DownloadsDialog.h"
 #include "UserMenuBuilder.h"
 #include "Notification.h"
@@ -70,6 +71,7 @@ private:
     ScriptingDialog* scriptingDialog;
     BattleHostingDialog *battleHostingDialog;
     DownloadsDialog* downloadsDialog;
+    HistoryDialog* historyDialog;
 
     QTabBar* tabBar;
     QToolButton* newTabButton;
@@ -108,12 +110,12 @@ private slots:
     void toggleShowHideMainWindow( QSystemTrayIcon::ActivationReason );
     void showConnectionWidget( bool );
     void showGroupsDialog();
+    void showHistoryDialog();
     void setColorInducatorUsers( QString regExp );
     void setColorInducatorBattles( QString regExp );
     void startSpring();
     void startSpringSettings();
     void showStylesheetEditor();
-    void setCurrentUsername( QString username );
     void onCurrentChanged(const QModelIndex & current, const QModelIndex & previous);
     void onCurrentTabChanged();
     void onTeamPlayerSpecCountChanged(QString ratio);

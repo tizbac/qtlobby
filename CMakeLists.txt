@@ -33,10 +33,10 @@ set(QT_USE_QTXML true)
 if(WIN32 OR BUILDBOT)
   option(PURE_WINAPI_UNITSYNC_LOADER "Use pure Win API unitsync loader(helps against some loading bugs)" ON)
   mark_as_advanced(PURE_WINAPI_UNITSYNC_LOADER)
-  find_package(Qt4 COMPONENTS QtCore QtGui QtScript QtNetwork QtOpenGL QtXml REQUIRED) # -QtDbus
+  find_package(Qt4 COMPONENTS QtCore QtGui QtScript QtNetwork QtOpenGL QtXml QtSql REQUIRED) # -QtDbus
 else(WIN32 OR BUILDBOT)
   set(QT_USE_QTDBUS true)
-  find_package(Qt4 COMPONENTS QtCore QtGui QtDbus QtScript QtNetwork QtOpenGL QtXml REQUIRED)
+  find_package(Qt4 COMPONENTS QtCore QtGui QtDbus QtScript QtNetwork QtOpenGL QtXml QtSql REQUIRED)
 endif(WIN32 OR BUILDBOT)
 
 find_package(QScintilla REQUIRED)

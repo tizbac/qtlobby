@@ -3,6 +3,8 @@
 #include "MainWindow.h"
 #include "ToolBarWidget.h"
 #include "PathManager.h"
+#include "ServerProfilesModel.h"
+#include "History.h"
 #include <QInputDialog>
 #include <QDir>
 
@@ -19,9 +21,11 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     if ( settings->value("unitsync").toString().isEmpty() )
         preference->exec();
     QDir overlay(settings->value("spring_user_dir").toString());
-    overlay.mkdir("qtlobby");
-    overlay.cd("qtlobby");
-    PathManager::getInstance()->setOverlayPath(overlay.absolutePath());
+    if(overlay.exists()) {
+        overlay.mkdir("qtlobby");
+        overlay.cd("qtlobby");
+        PathManager::getInstance()->setOverlayPath(overlay.absolutePath());
+    }
     setupUi( this );
     setupIcons();
     preference->onResetFormToSettings();
@@ -44,6 +48,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     battleHostingDialog->setWindowFlags(Qt::Window);
     downloadsDialog     = new DownloadsDialog(this);
     downloadsDialog->setWindowFlags(Qt::Window);
+    historyDialog       = new HistoryDialog(this);
+    historyDialog->setWindowFlags(Qt::Window);
 
     scriptingEngine.globalObject().setProperty("battles", scriptingEngine.newQObject(battles));
     scriptingEngine.globalObject().setProperty("users", scriptingEngine.newQObject(users));
@@ -77,6 +83,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     // serverContextState -> QString -> commandAssigner
     connect( serverContextState, SIGNAL( incommingMessage( QString ) ),
              commandAssigner, SLOT( receiveMessage( QString ) ) );
+    /*connect( serverContextState, SIGNAL( incommingMessage( QString ) ),
+             History::getInstance(), SLOT( receiveMessage( QString ) ) );*/
     // commandAssigner -> Command -> serverContextState
     connect( commandAssigner, SIGNAL( serverContextStateCommand( Command ) ),
              serverContextState, SLOT( receiveCommand( Command ) ) );
@@ -116,18 +124,6 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
 
     connect( serverContextState, SIGNAL( connectionStateChanged( ConnectionState ) ),
              this, SLOT( connectionStatusChanged( ConnectionState ) ) );
-
-    // setting the configuration
-    connect( connectionWidget, SIGNAL( emitConfiguration( QUrl ) ),
-             users, SLOT( setConfiguration( QUrl ) ) );
-    connect( connectionWidget, SIGNAL( emitConfiguration( QUrl ) ),
-             battles, SLOT( setConfiguration( QUrl ) ) );
-    connect( connectionWidget, SIGNAL( emitConfiguration( QUrl ) ),
-             serverContextState, SLOT( setConfiguration( QUrl ) ) );
-    connect( connectionWidget, SIGNAL( usernameChanged(QString ) ),
-             battles, SLOT( setCurrentUsername( QString ) ) );
-    connect( connectionWidget, SIGNAL( usernameChanged(QString ) ),
-             this, SLOT( setCurrentUsername( QString ) ) );
 
     // disconnect
     connect( action_Disconnect, SIGNAL( triggered() ),
@@ -443,9 +439,10 @@ void MainWindow::showGroupsDialog() {
     userGroupsDialog->raise();
 }
 
-void MainWindow::setCurrentUsername( QString username ) {
-    AbstractChannel::setCurrentUsername(username);
-    battleHostingDialog->setCurrentUsername(username);
+void MainWindow::showHistoryDialog() {
+    historyDialog->show();
+    historyDialog->activateWindow();
+    historyDialog->raise();
 }
 
 void MainWindow::onChangedToBattleTab() {
@@ -550,16 +547,18 @@ void MainWindow::onTeamPlayerSpecCountChanged(QString ratio) {
     } else {
         usersInCurrentChannel->setText(ratio);
         usersInCurrentChannel->setToolTip(tr("# Players + # Specs (# 1st Ally : # 2nd Ally :...)"));
+        QUrl url = ServerProfilesModel::getInstance()->getActiveProfile();
         availableSlots->setText( tr("free slot(s): %1")
                                  .arg(QString::number(battles->battleManager->getBattle(users->getUser(
-                                         users->getCurrentUsername()).joinedBattleId).maxPlayers
+                                         url.userName()).joinedBattleId).maxPlayers
                                                       - users->usersInChanCount())));
         availableSlots->setToolTip( tr("# free slots in the current battle"));
     }
 }
 
 void MainWindow::on_hostPushButton_clicked( bool closeFirst ) {
-    User me = users->getUser( users->getCurrentUsername() );
+    QUrl url = ServerProfilesModel::getInstance()->getActiveProfile();
+    User me = users->getUser( url.userName() );
     if ( closeFirst ) {
         lobbyTabs->onCloseBattleChannel();
     } else if ( me.joinedBattleId >= 0 ) { // in battle

@@ -3,6 +3,7 @@
 
 #include "ServerContextState.h"
 #include "Settings.h"
+#include "ServerProfilesModel.h"
 #include "config.h"
 
 ServerContextState::ServerContextState( QObject * parent ) : NetworkInterface( parent ) {
@@ -152,11 +153,8 @@ void ServerContextState::ping() {
     QTimer::singleShot( 20000, this, SLOT( ping() ) );
 }
 
-void ServerContextState::setConfiguration( QUrl url ) {
-    this->url = url;
-}
-
 void ServerContextState::establishConnection() {
+    QUrl url = ServerProfilesModel::getInstance()->getActiveProfile();
     emit logWrite( QString( ">< %2 -> %3::%4" )
                    .arg( "address::port" )
                    .arg( url.host() )
@@ -165,6 +163,7 @@ void ServerContextState::establishConnection() {
 }
 
 void ServerContextState::authenticate() {
+    QUrl url = ServerProfilesModel::getInstance()->getActiveProfile();
     emit connectionStateChanged( AUTHENTICATING );
     QString user = url.userName();
 
@@ -277,10 +276,6 @@ void ServerContextState::receiveCommand( Command command ) {
         if ( command.name == "REGISTRATIONDENIED" ) {
         emit registrationFailure(command.attributes.join( " " ));
     }
-}
-
-QUrl ServerContextState::getConfiguration( ) {
-    return url;
 }
 
 void ServerContextState::acceptAgreement() {

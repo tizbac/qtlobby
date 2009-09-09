@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>HistoryDialog</class>
+ <widget class="QDialog" name="HistoryDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>704</width>
+    <height>573</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Channel history</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="ChannelTextBrowser" name="textBrowser"/>
+   </item>
+   <item>
+    <widget class="QSplitter" name="splitter_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Type:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="typeComboBox">
+      <item>
+       <property name="text">
+        <string>Channel</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Private</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Name:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nameLineEdit"/>
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string>From:</string>
+      </property>
+     </widget>
+     <widget class="QDateEdit" name="fromDateEdit"/>
+     <widget class="QLabel" name="label_4">
+      <property name="text">
+       <string>To:</string>
+      </property>
+     </widget>
+     <widget class="QDateEdit" name="toDateEdit"/>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ChannelTextBrowser</class>
+   <extends>QTextBrowser</extends>
+   <header>ChannelTextBrowser.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

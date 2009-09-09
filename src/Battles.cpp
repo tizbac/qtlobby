@@ -1,6 +1,7 @@
 // $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "Battles.h"
+#include "ServerProfilesModel.h"
 #include <QStringList>
 #include <algorithm>
 #include <list>
@@ -109,6 +110,7 @@ Battles::~Battles() {}
 
 void Battles::receiveCommand( Command command ) {
     //   qDebug()<< "command: " << command.toQString();
+    QUrl url = ServerProfilesModel::getInstance()->getActiveProfile();
     command.name = command.name.toUpper();
     if ( command.name == "CLIENTSTATUS" ) {
         User u = users->getUser( command.attributes[0] );
@@ -190,7 +192,7 @@ void Battles::receiveCommand( Command command ) {
             users->onMyBattleStateChanged( u );
         }
     } else if ( command.name == "SETSCRIPTTAGS" ) {
-        int bi = users->getUser( username ).joinedBattleId;
+        int bi = users->getUser( url.userName() ).joinedBattleId;
         if( !battleManager->isBattleId( bi ) )
             return;
         Battle b = battleManager->getBattle( bi );
@@ -201,7 +203,7 @@ void Battles::receiveCommand( Command command ) {
         }
         battleManager->modBattle( b );
     } else if ( command.name == "REMOVESCRIPTTAGS" ) {
-        int bi = users->getUser( username ).joinedBattleId;
+        int bi = users->getUser( url.userName() ).joinedBattleId;
         if( !battleManager->isBattleId( bi ) )
             return;
         Battle b = battleManager->getBattle( bi );
@@ -213,7 +215,7 @@ void Battles::receiveCommand( Command command ) {
         }
         battleManager->modBattle( b );
     } else if ( command.name == "ADDSTARTRECT" ) { // allyno left top right bottom
-        int bi = users->getUser( username ).joinedBattleId;
+        int bi = users->getUser( url.userName() ).joinedBattleId;
         if( !battleManager->isBattleId( bi ) )
             return;
         Battle b = battleManager->getBattle( bi );
@@ -231,7 +233,7 @@ void Battles::receiveCommand( Command command ) {
         emit addStartRect(command.attributes[0].toInt(), r);
         battleManager->modBattle( b );
     } else if ( command.name == "REMOVESTARTRECT" ) { // allyno
-        int bi = users->getUser( username ).joinedBattleId;
+        int bi = users->getUser( url.userName() ).joinedBattleId;
         if( !battleManager->isBattleId( bi ) )
             return;
         Battle b = battleManager->getBattle( bi );
@@ -263,10 +265,6 @@ void Battles::receiveCommand( Command command ) {
     }
 }
 
-void Battles::setConfiguration( QUrl url ) {
-    this->url = url;
-}
-
 void Battles::setRegExp( QString regExp ) {
     battleManager->proxyModel()->setFilterString(regExp);
     //battleManager->proxyModel()->setFilterKeyColumn( -1 );
@@ -277,7 +275,7 @@ void Battles::doubleClicked( const QModelIndex & index ) {
     Battle b = battleManager->model()-> data(
             battleManager->proxyModel()->mapToSource( index ), Qt::UserRole ).value<Battle>();
     if ( !b.isLocked ) {
-        User me = this->users->getUser( url.userName() );
+        User me = this->users->getUser( ServerProfilesModel::getInstance()->getActiveProfile().userName() );
         if ( me.joinedBattleId == b.id ) // don't rejoin same
             return;
         if ( b.isPasswordProtected ) {
@@ -294,7 +292,7 @@ void Battles::joinBattleCommand( unsigned int id, QString password, bool closeFi
     if ( closeFirst ) {
         emit closeBattleChannel();
     } else {
-        User me = this->users->getUser( url.userName() );
+        User me = this->users->getUser( ServerProfilesModel::getInstance()->getActiveProfile().userName() );
         if ( me.joinedBattleId >= 0 ) { // in battle
             if ( !Settings::Instance()->value( "Battle/autoCloseFirst", false ).toBool() ) {
                 battleCloseFirstWidget->setPassword( password );
@@ -338,10 +336,6 @@ void Battles::setUsers( Users* users ) {
     battleManager->setUsers(users);
 }
 
-void Battles::setCurrentUsername(QString a_username) {
-    username = a_username;
-}
-
 void Battles::startGame( Battle b, bool host ) {
     QString springDir = settings->value("spring_user_dir").toString();
     QFile scriptFile( springDir + "/script_qtlobby.txt" );
@@ -370,7 +364,7 @@ QString Battles::generateScript( Battle b, bool host ) {
     int  numTeams = 0, numAllies = 0, myPlayerNum = -1;
     for ( int i = 0; i < battleUsers.size(); ++i ) {
         User u = battleUsers[i];
-        if ( u.name == url.userName() )
+        if ( u.name == ServerProfilesModel::getInstance()->getActiveProfile().userName() )
             myPlayerNum = i;
         if ( !u.battleState.isPlayer() )
             continue;
@@ -410,10 +404,10 @@ QString Battles::generateScript( Battle b, bool host ) {
         gameOptions[k] = QString::number( b.options[k].toFloat() );
     }
     gameOptions["HostPort"]     = QString::number(m_portOverride > 0 ? m_portOverride : b.port );
-    gameOptions["HostIP"]       = b.founder == url.userName() ? QString( "localhost" ) : b.ip;
+    gameOptions["HostIP"]       = b.founder == ServerProfilesModel::getInstance()->getActiveProfile().userName() ? QString( "localhost" ) : b.ip;
     gameOptions["IsHost"]       = host ? "1" : "0";
     gameOptions["MyPlayerNum"]  = QString::number( myPlayerNum );
-    gameOptions["MyPlayerName"] = username;
+    gameOptions["MyPlayerName"] = ServerProfilesModel::getInstance()->getActiveProfile().userName();
     gameOptions["NumPlayers"]   = QString::number( b.playerCount );
     gameOptions["NumTeams"]     = QString::number( numTeams + numBots );
     gameOptions["NumAllyTeams"] = QString::number( numAllies );
@@ -524,21 +518,24 @@ QString Battles::generateScript( Battle b, bool host ) {
  * returns the sync status for map checksums
  */
 int Battles::resyncStatus() {
-    int battleId = users->getUser( url.userName() ).joinedBattleId;
-
+    int battleId = users->getUser( ServerProfilesModel::getInstance()->getActiveProfile().userName() ).joinedBattleId;
     if ( !battleManager->isBattleId( battleId ) ) {
         // set battle status to unsync
         // popup messagebox with error, that this should not happen
-        qDebug() << __FILE__ << __LINE__<< " error: should I resync for a none existing battle?!";
+        qDebug() << __FILE__ << __LINE__<< " error: should I resync for a none existing battle(id: " << battleId << "?!";
         return 0;
     }
     Battle b = battleManager->getBattle( battleId );
     QString modName = b.modName;
 
-    if ( UnitSyncLib::getInstance()->mapChecksum( b.mapName ) != ( unsigned int ) b.mapHash )
+    if ( UnitSyncLib::getInstance()->mapChecksum( b.mapName ) != ( unsigned int ) b.mapHash ) {
+        qDebug() << "Map checksum is wrong";
         return 2; // 2 = not sync
-    if (UnitSyncLib::getInstance()->modIndex(modName) < 0)
+    }
+    if (UnitSyncLib::getInstance()->modIndex(modName) < 0) {
+        qDebug() << "Mod not found";
         return 2; // 2 = not sync
+    }
 
     return 1; // 1 = sync is 'in sync'
 }
@@ -597,7 +594,7 @@ void Battles::setFilterWithoutFriendsSlot( bool state ) {
 
 void Battles::onReboot() {
     qDebug() << "Resyncing";
-    User u = users->getUser( url.userName() );
+    User u = users->getUser( ServerProfilesModel::getInstance()->getActiveProfile().userName() );
     u.battleState.setSyncState(resyncStatus());
     users->onMyBattleStateChanged( u );
 }

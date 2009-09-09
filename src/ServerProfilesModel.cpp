@@ -123,3 +123,15 @@ QUrl ServerProfilesModel::parseUrl(const QString& str) {
     }
     return QUrl();
 }
+
+void ServerProfilesModel::setActiveProfile(const QModelIndex& profile) {
+    m_active = m_profiles[profile.row()];
+}
+
+void ServerProfilesModel::setActiveProfile(const QUrl& url) {
+    m_active = url;
+}
+
+QUrl ServerProfilesModel::getActiveProfile() {
+    return m_active;
+}

@@ -3,6 +3,7 @@
 #include "Users.h"
 #include "UserGroup.h"
 #include "UserMenuBuilder.h"
+#include "ServerProfilesModel.h"
 #include <QInputDialog>
 #include <QColorDialog>
 
@@ -54,6 +55,7 @@ QStringList Users::getUsernamesList() {
 
 void Users::receiveCommand( Command command ) {
     //   qDebug() << "command: " << command.toQString();
+    QUrl url = ServerProfilesModel::getInstance()->getActiveProfile();
     command.name = command.name.toUpper();
     if ( command.name == "CLIENTSTATUS" ) {
         User u = infoChannelUserManager->getUser( command.attributes[0] );
@@ -159,10 +161,6 @@ void Users::receiveCommand( Command command ) {
     }
 }
 
-void Users::setConfiguration( QUrl url ) {
-    this->url = url;
-}
-
 void Users::currentTabChanged( QString name, QString lobbyTabType ) {
     QString oldTabType = currentTabType;
     currentTabType = lobbyTabType;
@@ -249,39 +247,39 @@ void Users::onMyStateChanged( User u ) {
 }
 
 void Users::onSideComboBoxChanged( int index ) {
-    User u = infoChannelUserManager->getUser( url.userName() );
+    User u = infoChannelUserManager->getUser( ServerProfilesModel::getInstance()->getActiveProfile().userName() );
     u.battleState.setSide(index);
     onMyBattleStateChanged( u );
 }
 
 void Users::onSpecStateChanged( int state ) {
     bool isSpec = state == Qt::Checked;
-    User u = infoChannelUserManager->getUser( url.userName() );
+    User u = infoChannelUserManager->getUser( ServerProfilesModel::getInstance()->getActiveProfile().userName() );
     u.battleState.setPlayer(!isSpec);
     onMyBattleStateChanged( u );
 }
 
 void Users::onReadyStateChanged( int state ) {
     bool isReady = state == Qt::Checked;
-    User u = infoChannelUserManager->getUser( url.userName() );
+    User u = infoChannelUserManager->getUser( ServerProfilesModel::getInstance()->getActiveProfile().userName() );
     u.battleState.setReady(isReady);
     onMyBattleStateChanged( u );
 }
 
 void Users::onColorChanged(QColor c) {
-    User u = infoChannelUserManager->getUser( url.userName() );
+    User u = infoChannelUserManager->getUser( ServerProfilesModel::getInstance()->getActiveProfile().userName() );
     u.m_color = c;
     onMyBattleStateChanged(u);
 }
 
 void Users::onTeamNumberChanged( int i ) {
-    User u = infoChannelUserManager->getUser( url.userName() );
+    User u = infoChannelUserManager->getUser( ServerProfilesModel::getInstance()->getActiveProfile().userName() );
     u.battleState.setTeamNo(i-1);
     onMyBattleStateChanged(u);
 }
 
 void Users::onAllyTeamNumberChanged( int i ) {
-    User u = infoChannelUserManager->getUser( url.userName() );
+    User u = infoChannelUserManager->getUser( ServerProfilesModel::getInstance()->getActiveProfile().userName() );
     u.battleState.setAllyTeamNo(i-1);
     onMyBattleStateChanged(u);
 }
@@ -361,12 +359,8 @@ void Users::wipeModels() {
     infoChannelUserManager->model()->clear();
 }
 
-QString Users::getCurrentUsername() {
-    return url.userName();
-}
-
 void Users::onSpringStopped() {
-    User u = infoChannelUserManager->getUser( url.userName() );
+    User u = infoChannelUserManager->getUser( ServerProfilesModel::getInstance()->getActiveProfile().userName() );
     u.userState.setIngame(false);
     onMyStateChanged( u );
 }

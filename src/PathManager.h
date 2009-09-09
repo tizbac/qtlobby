@@ -13,10 +13,12 @@ public:
     QString resolvePath(const QString& path);
     QString resolveOverlayPath(const QString& path);
     QString resolveOverlayPath();
+    bool isOverlayValid();
     void invalidateCache(const QString& path);
 private:
     QString m_base;
     QString m_overlay;
+    bool m_overlayUsable;
     QMap<QString, bool> m_inOverlay;
     PathManager();
 };

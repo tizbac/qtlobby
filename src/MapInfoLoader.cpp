@@ -187,9 +187,9 @@ void MapInfoLoader::saveCache() {
 }
 
 bool MapInfoLoader::loadCache() {
-    QDir userDir(Settings::Instance()->value("spring_user_dir").toString());
-    if (!userDir.exists("qtlobby")) return false;
-    userDir.cd("qtlobby");
+    QDir userDir(PathManager::getInstance()->resolveOverlayPath());
+    if(!userDir.exists("cache")) return false;
+    userDir.cd("cache");
     QFile file(QString("%1/%2.qmc")
                .arg(userDir.absolutePath())
                .arg(m_mapName));
