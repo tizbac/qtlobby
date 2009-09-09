@@ -21,7 +21,7 @@ message(STATUS "SVN_REV: " ${SVN_REV})
 option(BUILDBOT "Use buildbot build configuration(used for cross compiling)" OFF)
 mark_as_advanced(BUILDBOT)
 
-option(TRANSLATIONS "Create .qm files)" OFF)
+option(TRANSLATIONS "Create .qm files)" ON)
 
 set(QT_USE_QTCORE true)
 set(QT_USE_QTGUI true)

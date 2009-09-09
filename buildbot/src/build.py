@@ -61,7 +61,7 @@ class QtLobbyBuilder(Thread):
 				self.runCommand("rm -rf *")
 			self.runCommand("touch ../src/config.h")
 			self.runCommand("rm -f cbuild/src/qtlobby.*")
-			self.runCommand("cmake -DCMAKE_TOOLCHAIN_FILE=../toolchain-mingw.cmake -DBUILDBOT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo ..")
+			self.runCommand("cmake -DCMAKE_TOOLCHAIN_FILE=../toolchain-mingw.cmake -DBUILDBOT=ON -DTRANSLATIONS=OFF -DCMAKE_BUILD_TYPE=RelWithDebInfo ..")
                	        self.runCommand("make")
                        	os.chdir("src")
                         self.runCommand("objcopy --only-keep-debug qtlobby.exe qtlobby.dbg")
