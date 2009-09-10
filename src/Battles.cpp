@@ -272,6 +272,16 @@ void Battles::setRegExp( QString regExp ) {
 }
 
 void Battles::doubleClicked( const QModelIndex & index ) {
+    QString unitsyncSpringVersion = UnitSyncLib::getInstance()->getSpringVersion();
+    if(serverSpringVersion != unitsyncSpringVersion)
+        if(QMessageBox::warning(this, "Wrong spring version",
+                                "Lobby server reported spring version " + serverSpringVersion +
+                                "\nYour unitsync reported that you have " + unitsyncSpringVersion +
+                                "\nYou can desync if you have wrong spring version!!!" +
+                                "\nAre you sure you want to continue?",
+                                QMessageBox::Yes,
+                                QMessageBox::No) == QMessageBox::No)
+            return;
     Battle b = battleManager->model()-> data(
             battleManager->proxyModel()->mapToSource( index ), Qt::UserRole ).value<Battle>();
     if ( !b.isLocked ) {
@@ -626,4 +636,8 @@ void Battles::selectionChanged ( const QItemSelection & selected, const QItemSel
     if( ( deselected.indexes().size() > 0 ) != ( selected.indexes().size() > 0 ) )
         emit battleSelected(selected.indexes().size() > 0);
     QTreeView::selectionChanged( selected, deselected );
+}
+
+void Battles::onServerSpringVersion(QString version) {
+    serverSpringVersion = version;
 }

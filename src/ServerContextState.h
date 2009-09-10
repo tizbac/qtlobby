@@ -69,6 +69,7 @@ signals:
     void changePasswordFailure( QString );
     void registrationSuccess( QString );
     void registrationFailure( QString );
+    void serverSpringVersion( QString );
 public slots:
     void authenticate();
     void sendMessage( QString message );

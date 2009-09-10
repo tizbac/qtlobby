@@ -124,6 +124,7 @@ private slots:
     void connectionStatusChanged(ConnectionState);
     void onBlockInput(bool b);
     void onJoinRequested();
+    void onServerSpringVersion(QString);
 
     void onChangedToBattleTab();
     void onChangedFromBattleTab();

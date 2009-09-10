@@ -51,6 +51,7 @@ public slots:
     void invalidateModel();
     void connectionStateChanged( ConnectionState state );
     void onJoin();
+    void onServerSpringVersion(QString version);
 
 protected slots:
     void customContextMenuRequested( const QPoint & point );
@@ -89,6 +90,7 @@ protected:
     QAction* filterWithoutPlayersAction;
     QAction* filterWithoutFriendsAction;
     int m_portOverride;
+    QString serverSpringVersion;
 public:
     BattleManager* battleManager;
 };

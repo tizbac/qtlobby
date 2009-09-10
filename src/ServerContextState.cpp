@@ -275,7 +275,11 @@ void ServerContextState::receiveCommand( Command command ) {
     } else
         if ( command.name == "REGISTRATIONDENIED" ) {
         emit registrationFailure(command.attributes.join( " " ));
+    } else
+        if ( command.name == "TASSERVER" ) {
+        emit serverSpringVersion(command.attributes[1]);
     }
+
 }
 
 void ServerContextState::acceptAgreement() {

@@ -236,6 +236,12 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     connect(lobbyTabs, SIGNAL(blockInput(bool)),
             this, SLOT(onBlockInput(bool)));
 
+    //Spring version signal
+    connect(serverContextState, SIGNAL(serverSpringVersion(QString)),
+            battles, SLOT(onServerSpringVersion(QString)));
+    connect(serverContextState, SIGNAL(serverSpringVersion(QString)),
+            this, SLOT(onServerSpringVersion(QString)));
+
     //user menu builder stuff
     UserMenuBuilder* b = UserMenuBuilder::getInstance();
     connect(b, SIGNAL(joinSameBattle(User)), users, SLOT(joinSameBattle(User)));
@@ -252,6 +258,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     QTimer::singleShot( 0, connectionWidget, SLOT( show_if_wanted() ) );
     //   qDebug() << timer->msec() << "ms elapsed";
     QSettings* s = Settings::Instance();
+    //Default states for main window and docks
     if (!s->contains("mainwindow/geometry")) {
         s->setValue("mainwindow/geometry", QVariant("\\x1\\xd9\\xd0\\xcb\\0\\x1\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\x4\\xff\\0\\0\\x3\\xd6\\0\\0\\0\\0\\0\\0\\0\\0\\xff\\xff\\xff\\xfe\\xff\\xff\\xff\\xfe\\0\\0\\0\\0\\x2\\0"));
         s->setValue("mainwindow/state", QVariant("\\0\\0\\0\\xff\\0\\0\\0\\0\\xfd\\0\\0\\0\\x3\\0\\0\\0\\x1\\0\\0\\x1\\v\\0\\0\\x2T\\xfc\\x2\\0\\0\\0\\x1\\xfb\\0\\0\\0$\\0u\\0s\\0\\x65\\0r\\0L\\0i\\0s\\0t\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0H\\0\\0\\x2T\\0\\0\\0\\x96\\x1\\0\\0\\x2\\0\\0\\0\\x2\\0\\0\\x5\\0\\0\\0\\0+\\xfc\\x1\\0\\0\\0\\x2\\xfb\\0\\0\\0\\x1c\\0t\\0\\x61\\0\\x62\\0s\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\0\\0\\0\\x5\\0\\0\\0\\x4\\x3\\x1\\0\\0\\x5\\xfb\\0\\0\\0\\x14\\0\\x64\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\0\\0\\0\\x3p\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\x3\\0\\0\\x5\\0\\0\\0\\x1\\v\\xfc\\x1\\0\\0\\0\\x2\\xfb\\0\\0\\0(\\0\\x62\\0\\x61\\0t\\0t\\0l\\0\\x65\\0L\\0i\\0s\\0t\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\0\\0\\0\\x3\\xf6\\0\\0\\x1v\\x1\\0\\0\\x5\\xfb\\0\\0\\0(\\0\\x62\\0\\x61\\0t\\0t\\0l\\0\\x65\\0I\\0n\\0\\x66\\0o\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\x3\\xf9\\0\\0\\x1\\a\\0\\0\\0N\\x1\\0\\0\\x5\\0\\0\\x3\\xf2\\0\\0\\x2T\\0\\0\\0\\x4\\0\\0\\0\\x4\\0\\0\\0\\b\\0\\0\\0\\b\\xfc\\0\\0\\0\\x1\\0\\0\\0\\x2\\0\\0\\0\\0"));
@@ -607,4 +614,13 @@ void MainWindow::changeEvent(QEvent *e) {
     default:
         break;
     }
+}
+
+void MainWindow::onServerSpringVersion(QString version) {
+    QString unitsyncSpringVersion = UnitSyncLib::getInstance()->getSpringVersion();
+    if(version != unitsyncSpringVersion)
+        QMessageBox::warning(this, "Wrong spring version",
+                             "Lobby server reported spring version " + version +
+                             "\nYour unitsync reported that you have " + unitsyncSpringVersion +
+                             "\nYou can desync if you have wrong spring version!!!");
 }
