@@ -177,6 +177,8 @@ void LobbyTabs::createLobbyTab( AbstractLobbyTab * lobbyTab, bool focus) {
         (QString(lobbyTab->metaObject()->className()) == "PrivateChannel" && Settings::Instance()->value("Chat/popupNewPrivateChannel").toBool())) {
         lobbyStackedWidget->setCurrentWidget(widget);
         tabBar->setCurrentIndex(c);
+        BattleChannel* bc = (BattleChannel*)lobbyTab;
+        connect(bc, SIGNAL(closeMe()), this, SLOT(closeTab()));
     }
     if(lobbyTab->objectName() == "qtlobby")
         lobbyTab->receiveInput("/sayver");
@@ -233,6 +235,11 @@ void LobbyTabs::setTabIcon( int index ) {
 
 
 void LobbyTabs::closeTab() {
+    QObject* s =  sender();
+    if(s) {
+        AbstractLobbyTab* tab = (AbstractLobbyTab*)s;
+        closeTab(tab->currentTabIndex);
+    } else
     closeTab(tabBar->currentIndex());
 }
 

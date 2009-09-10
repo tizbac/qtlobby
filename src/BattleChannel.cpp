@@ -256,9 +256,8 @@ void BattleChannel::receiveCommand( Command command ) {
                     .arg( processInput(command.attributes.join( " " ), false)));
     } else if ( command.name == "FORCEQUITBATTLE" ) {
         QMessageBox::critical(NULL, tr("Kicked from battle"), tr("You have been kicked from the battle!"));
-        insertLine(tr("You have been kicked from the battle!\n"));
         battleWindowForm_ui->setEnabled(false);
-        wasKicked = true;
+        emit closeMe();
     } else if ( command.name == "JOINEDBATTLE" ) {
         if ( command.attributes.takeFirst() == objectName() ) {
             QString userName = command.attributes.takeFirst();
