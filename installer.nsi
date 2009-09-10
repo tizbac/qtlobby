@@ -71,7 +71,9 @@ Section "MainSection" SEC01
   File "resources.zip"
                                                        
   ;SetOverwrite ifnewer                                 
-  File "cbuild\src\qtlobby.exe"                           
+  File "cbuild\src\qtlobby.exe"           
+  SetOutPath "$INSTDIR\qt\sqldrivers"                     
+  File "..\build\qsqlite4.dll"
   CreateDirectory "$SMPROGRAMS\QtLobby"                
   CreateShortCut "$SMPROGRAMS\QtLobby\QtLobby.lnk" "$INSTDIR\qtlobby.exe"
   CreateShortCut "$DESKTOP\QtLobby.lnk" "$INSTDIR\qtlobby.exe"           
@@ -132,6 +134,7 @@ Section Uninstall
   Delete "$INSTDIR\msvcr90.dll"
   Delete "$INSTDIR\msvcp90.dll"
   Delete "$INSTDIR\share"
+  Delete "$INSTDIR\qt\sqldrivers\qsqlite4.dll"
 
   Delete "$SMPROGRAMS\QtLobby\Uninstall.lnk"
   Delete "$SMPROGRAMS\QtLobby\Website.lnk"
