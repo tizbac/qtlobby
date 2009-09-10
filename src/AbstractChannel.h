@@ -38,16 +38,20 @@ protected:
     QString highlightUserName( QString input );
     QString processIRCCodes(QString in);
     QString urlify(QString in);
+    QString userNameLink( const QString userName );
+    void insertBlock(QTextCursor& c);
+
     ChannelTextBrowser * channelTextBrowser;
     QGridLayout * gridLayout;
     QIcon activeIcon;
     QIcon inactiveIcon;
     QColor activeTextColor;
     QColor inactiveTextColor;
-    QString userNameLink( const QString userName );
-
     bool historyMode;
     QDateTime historyDateTime;
+    QDateTime previous;
+    bool firstBlock;
+
 protected slots:
     void anchorClicked(QUrl url);
 };

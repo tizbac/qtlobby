@@ -49,7 +49,7 @@ void Channel::receiveCommand( Command command ) {
                     .arg( processInput(command.attributes.join( " " ), false)));
             }
         }
-    } else if ( command.name == "JOINED"  && showJoinLeave ) {
+    } else if ( command.name == "JOINED"  && (historyMode || showJoinLeave) ) {
         if ( command.attributes.takeFirst() == objectName() ) {
             QString userName = command.attributes.takeFirst();
             insertLine( flag( userName ) + line
@@ -57,7 +57,7 @@ void Channel::receiveCommand( Command command ) {
                     .arg( tr( "** %1 joined the channel." ) )
                     .arg( userNameLink( userName ) ) );
         }
-    } else if ( command.name == "LEFT" && showJoinLeave) {
+    } else if ( command.name == "LEFT" && (historyMode || showJoinLeave)) {
         if ( command.attributes.takeFirst() == objectName()) {
             QString userName = command.attributes.takeFirst();
             insertLine( flag( userName ) + line

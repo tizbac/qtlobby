@@ -11,6 +11,8 @@ AbstractChannel::AbstractChannel( QString name, QObject * parent ) : AbstractLob
     activeTextColor = QColor("black");
     inactiveTextColor = QColor("green");
     historyMode = false;
+    previous = QDateTime::currentDateTime();
+    firstBlock = true;
 }
 
 AbstractChannel::~AbstractChannel() {}
@@ -90,17 +92,32 @@ bool AbstractChannel::executeChannelInput( QString input ) {
     return true;
 }
 
+void AbstractChannel::insertBlock(QTextCursor& c) {
+    if(firstBlock) {
+        firstBlock = false;
+        return;
+    }
+    c.insertBlock();
+}
+
 void AbstractChannel::insertLine( QString line ) {
-    QTime t;
+    QDateTime t;
     if(historyMode)
-        t = historyDateTime.time();
+        t = historyDateTime;
     else
-        t = QTime::currentTime();
+        t = QDateTime::currentDateTime();
+    QTextCursor c = channelTextBrowser->textCursor();
+    if(previous.date().day() != t.date().day()) {
+        c.movePosition( QTextCursor::End );
+        insertBlock(c);
+        c.insertHtml( makeHtml("<b>" + t.toString( "MMMM d, dddd, yyyy" ) + "</b>" ) );
+    }
+    previous = t;
     QString timeString = QString( "<span style=\"color:gray;\">%1</span> " ).arg( t.toString( "[hh:mm:ss]" ) );
     bool scrollToMaximum = channelTextBrowser->verticalScrollBar()->value() == channelTextBrowser->verticalScrollBar()->maximum();
-    QTextCursor c = channelTextBrowser->textCursor();
     //go to end of document
     c.movePosition( QTextCursor::End );
+    insertBlock(c);
     c.insertHtml( makeHtml( timeString.append( line ) ) );
     //if we don't read previous messages (by moving the scrollbar up)
     //we want to scroll down to see the new messages
@@ -115,8 +132,8 @@ void AbstractChannel::insertLine( QString line ) {
 
 QString AbstractChannel::makeHtml( QString in ) {
     QString ret = in;
-    ret.replace( "\n", "<br>" );
-    return ret.prepend( "<p>" ).append( "</p>" );
+    ret.replace( "\n", "<br/>" );
+    return ret;//.prepend( "<p>" ).append( "</p>" );
 }
 
 /*
