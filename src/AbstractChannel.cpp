@@ -116,10 +116,6 @@ void AbstractChannel::insertLine( QString line ) {
 QString AbstractChannel::makeHtml( QString in ) {
     QString ret = in;
     ret.replace( "\n", "<br>" );
-    if(historyMode) {
-        ret.prepend("<font color=\"gray\">");
-        ret.append("</font>");
-    }
     return ret.prepend( "<p>" ).append( "</p>" );
 }
 

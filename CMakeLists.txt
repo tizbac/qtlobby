@@ -54,6 +54,8 @@ file(GLOB flags "${CMAKE_SOURCE_DIR}/share/qtlobby/flags/?*.*")
 install(FILES ${flags} DESTINATION share/qtlobby/flags)
 file(GLOB shaders "${CMAKE_SOURCE_DIR}/share/qtlobby/shaders/?*.*")
 install(FILES ${shaders} DESTINATION share/qtlobby/shaders)
+file(GLOB javascript "${CMAKE_SOURCE_DIR}/share/qtlobby/javascript/?*.*")
+install(FILES ${javascript} DESTINATION share/qtlobby/javascript)
 
 
 add_subdirectory(src)
