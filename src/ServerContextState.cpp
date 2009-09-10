@@ -183,11 +183,17 @@ void ServerContextState::authenticate() {
     cpu = result.toInt()/1000000;
     qDebug() << tr("Detected cpu frequency is: %1 MHz").arg(cpu);
 #else
-    QFile file("/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq");
+    ///sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq");
+    //^i don't have such a file
+    QFile file("/proc/cpuinfo");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         qDebug() << tr("Could not retreive CPU information.");
-    QTextStream in(&file);
-    cpu = in.readLine().toInt()/1000;
+    QString contents = file.readAll();
+    QRegExp re("cpu\\s+MHz\\s+:\\s+(\\d+)(?:\\.\\d+)", Qt::CaseInsensitive, QRegExp::RegExp2);
+    if(re.indexIn(contents, 0) > -1) {
+        cpu = re.cap(1).toInt();
+    } else
+        qDebug() << tr("Unable to get cpu info from /proc/cpuinfo.");
     file.close();
 #endif
     QString lobbyclient = "qtlobby";
