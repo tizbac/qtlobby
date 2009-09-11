@@ -8,14 +8,12 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
 
 set(QTLOBBY_VERSION 1.0alpha)
 
-if($ENV{SVN_REV})
+if("$ENV{SVN_REV}" GREATER 0)
   set(SVN_REV $ENV{SVN_REV})
   message(STATUS Overriding SVN_REV from environment variable)
-else($ENV{SVN_REV})
+else("$ENV{SVN_REV}" GREATER 0)
   execute_process(COMMAND svnversion -n WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} OUTPUT_VARIABLE SVN_REV)
-endif($ENV{SVN_REV})
-
-message(STATUS "SVN_REV: " ${SVN_REV})
+endif("$ENV{SVN_REV}" GREATER 0)
 
 
 option(BUILDBOT "Use buildbot build configuration(used for cross compiling)" OFF)
