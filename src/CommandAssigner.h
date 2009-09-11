@@ -3,7 +3,7 @@
 #ifndef COMMANDASSIGNER_H
 #define COMMANDASSIGNER_H
 
-#include <QObject>
+#include <QThread>
 #include <QStringList>
 #include <QRegExp>
 #include <QDebug>
@@ -12,12 +12,11 @@
 /**
  * This class delegates parsed commands to all potential receivers.
  */
-class CommandAssigner : public QObject {
+class CommandAssigner : public QThread {
     Q_OBJECT
 public:
     CommandAssigner( QObject* parent = 0 );
     ~CommandAssigner();
-
 signals:
     void serverContextStateCommand( Command );
     void sendMessage( QString message );
@@ -28,6 +27,8 @@ signals:
 public slots:
     void receiveMessage( QString message );
     void sendCommand( Command command );
+protected:
+    virtual void run();
 };
 
 #endif

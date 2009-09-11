@@ -2,8 +2,19 @@
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "CommandAssigner.h"
 
-CommandAssigner::CommandAssigner( QObject* parent ) : QObject( parent ) {}
-CommandAssigner::~CommandAssigner() {}
+CommandAssigner::CommandAssigner( QObject* parent ) : QThread( parent ) {
+    start();
+}
+
+CommandAssigner::~CommandAssigner() {
+    quit();
+    wait();
+}
+
+void CommandAssigner::run() {
+    qDebug() << "Command assigner thread started";
+    exec();
+}
 
 void CommandAssigner::receiveMessage( QString message ) {
     //initialize the command object and parse the command

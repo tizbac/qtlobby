@@ -1,7 +1,7 @@
 #include "History.h"
 #include "PathManager.h"
 
-History::History(QObject* parent) : QObject(parent) {
+History::History(QObject* parent) : QThread(parent) {
     m_initialized = false;
     m_filter << "SAYPRIVATE"
             << "SAIDPRIVATE"
@@ -15,6 +15,12 @@ History::History(QObject* parent) : QObject(parent) {
             << "LEFT"
             ;
     initialize();
+    start();
+}
+
+void History::run() {
+    qDebug() << "History thread started";
+    exec();
 }
 
 void History::initialize() {
