@@ -4,6 +4,8 @@
 DBusVisualNotificationBackend::DBusVisualNotificationBackend()
 {
     // Use session bus
+    start();
+    moveToThread(this);
     m_notify = new QDBusInterface("org.kde.VisualNotifications", "/VisualNotifications", "org.kde.VisualNotifications");
 }
 
@@ -17,13 +19,13 @@ bool DBusVisualNotificationBackend::isUsable() const
         return false;
 }
 
-void DBusVisualNotificationBackend::showMessage(QString& title, QString& message, int timeout_ms)
+void DBusVisualNotificationBackend::showMessage(QString title, QString message, int timeout_ms)
 {
     QString icon_path = QString();
     showMessage(title, message, icon_path, timeout_ms);
 }
 
-void DBusVisualNotificationBackend::showMessage(QString& title, QString& message, QString& icon_path, int timeout_ms)
+void DBusVisualNotificationBackend::showMessage(QString title, QString message, QString icon_path, int timeout_ms)
 {
     if(timeout_ms == -2)
     {

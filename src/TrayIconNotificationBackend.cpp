@@ -8,13 +8,13 @@ bool TrayIconNotificationBackend::isUsable() const
         return SystemTrayIcon->isSystemTrayAvailable();
 }
 
-void TrayIconNotificationBackend::showMessage(QString& title, QString& message, int timeout_ms)
+void TrayIconNotificationBackend::showMessage(QString title, QString message, int timeout_ms)
 {
     QString icon_path = QString("");
     showMessage(title, message, icon_path, timeout_ms);
 }
 
-void TrayIconNotificationBackend::showMessage(QString& title, QString& message, QString& icon_path, int timeout_ms)
+void TrayIconNotificationBackend::showMessage(QString title, QString message, QString icon_path, int timeout_ms)
 {
     QSystemTrayIcon::MessageIcon icon;
 

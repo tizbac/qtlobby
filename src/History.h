@@ -24,7 +24,7 @@ private:
     bool m_initialized;
     QSet<QString> m_filter;
 
-    History(QObject* parent = 0);
+    History();
     void initialize();
 };
 

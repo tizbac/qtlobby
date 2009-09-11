@@ -44,7 +44,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     connectionWidget->setWindowFlags(Qt::Window);
     setupToolbar();
     lobbyTabs           = new LobbyTabs( this, battles, UnitSyncLib::getInstance(), tabBar, lobbyStackedWidget );
-    commandAssigner     = new CommandAssigner( this );
+    commandAssigner     = new CommandAssigner();
     //statusTracker       = new StatusTracker( statusbar );
     //    mapSelector         = new MapSelector();
     stylesheetDialog    = new StylesheetDialog();
@@ -77,10 +77,15 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
 
     Notification* notify = Notification::getInstance();
 #ifdef Q_WS_X11
-    notify->NotificationBackend = new DBusVisualNotificationBackend();
+    DBusVisualNotificationBackend* be = new DBusVisualNotificationBackend();
+    connect(notify, SIGNAL(showMessageSignal(QString,QString,int)), be, SLOT(showMessage(QString,QString,int)));
+    connect(notify, SIGNAL(showMessageSignal(QString,QString,QString,int)), be, SLOT(showMessage(QString,QString,QString,int)));
+    notify->NotificationBackend = be;
 #else // Use system tray icon on none x11 systems
     TrayIconNotificationBackend* trayIconBackend = new TrayIconNotificationBackend();
     trayIconBackend->SystemTrayIcon = trayIcon;
+    connect(notify, SIGNAL(message(QString,QString,int)), trayIconBackend, SLOT(showMessage(QString,QString,int)));
+    connect(notify, SIGNAL(message(QString,QString,QString,int)), trayIconBackend, SLOT(showMessage(QString,QString,QString,int)));
     notify->NotificationBackend = trayIconBackend;
 #endif
     notify->NotificationBackend->applicationName = "QtLobby";

@@ -1,9 +1,12 @@
 // $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "CommandAssigner.h"
+#include <QMetaObject>
 
 CommandAssigner::CommandAssigner( QObject* parent ) : QThread( parent ) {
+    qRegisterMetaType<Command>("Command");
     start();
+    moveToThread(this);
 }
 
 CommandAssigner::~CommandAssigner() {
