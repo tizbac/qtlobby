@@ -21,6 +21,8 @@ class Preference : public QDialog, private Ui::PreferenceWidget {
 public:
     Preference( QDialog* parent = 0 );
     ~Preference();
+signals:
+    void preferencesChanged();
 private:
     QSettings* settings;
     QList<PreferencePathElement*> pathElements;

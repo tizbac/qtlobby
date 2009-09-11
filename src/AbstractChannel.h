@@ -26,6 +26,10 @@ public slots:
     virtual void receiveInput( QString input ) = 0;
     virtual void receiveCommand( Command command ) = 0;
     virtual void historyMessage( QDateTime time, QString message );
+    void scrollToMaximum();
+
+private slots:
+    void onScrollBarValueChanged(int);
 
 protected:
     void setActive( bool isActive );
@@ -51,6 +55,7 @@ protected:
     QDateTime historyDateTime;
     QDateTime previous;
     bool firstBlock;
+    bool scrollToMax;
 
 protected slots:
     void anchorClicked(QUrl url);

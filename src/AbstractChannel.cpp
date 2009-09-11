@@ -28,6 +28,8 @@ void AbstractChannel::setupUi( QWidget * channelTabWidget ) {
     gridLayout->addWidget( channelTextBrowser, 1, 0, 1, 1 );
     connect(channelTextBrowser, SIGNAL(anchorClicked(QUrl)),
             this, SLOT(anchorClicked(QUrl)));
+    connect(channelTextBrowser->verticalScrollBar(), SIGNAL(valueChanged(int)),
+            this, SLOT(onScrollBarValueChanged(int)));
 }
 
 void AbstractChannel::setActive( bool isActive ) {
@@ -97,7 +99,7 @@ void AbstractChannel::insertBlock(QTextCursor& c) {
         firstBlock = false;
         return;
     }
-    c.insertBlock();
+    c.insertBlock(QTextBlockFormat());
 }
 
 void AbstractChannel::insertLine( QString line ) {
@@ -107,6 +109,7 @@ void AbstractChannel::insertLine( QString line ) {
     else
         t = QDateTime::currentDateTime();
     QTextCursor c = channelTextBrowser->textCursor();
+    scrollToMax = channelTextBrowser->verticalScrollBar()->value() == channelTextBrowser->verticalScrollBar()->maximum();
     if(previous.date().day() != t.date().day()) {
         c.movePosition( QTextCursor::End );
         insertBlock(c);
@@ -114,19 +117,22 @@ void AbstractChannel::insertLine( QString line ) {
     }
     previous = t;
     QString timeString = QString( "<span style=\"color:gray;\">%1</span> " ).arg( t.toString( "[hh:mm:ss]" ) );
-    bool scrollToMaximum = channelTextBrowser->verticalScrollBar()->value() == channelTextBrowser->verticalScrollBar()->maximum();
     //go to end of document
     c.movePosition( QTextCursor::End );
     insertBlock(c);
     c.insertHtml( makeHtml( timeString.append( line ) ) );
-    //if we don't read previous messages (by moving the scrollbar up)
-    //we want to scroll down to see the new messages
-    if ( scrollToMaximum ) {
-        channelTextBrowser->verticalScrollBar()->setValue( channelTextBrowser->verticalScrollBar()->maximum() );
-    }
+    scrollToMaximum();
     if ( !isActive ) {
         icon = inactiveIcon;
         color = inactiveTextColor;
+    }
+}
+
+void AbstractChannel::scrollToMaximum() {
+    //if we don't read previous messages (by moving the scrollbar up)
+    //we want to scroll down to see the new messages
+    if ( scrollToMax ) {
+        channelTextBrowser->verticalScrollBar()->setValue( channelTextBrowser->verticalScrollBar()->maximum() );
     }
 }
 
@@ -362,4 +368,8 @@ void AbstractChannel::historyMessage( QDateTime time, QString message ) {
 
 void AbstractChannel::setHistoryMode(bool b) {
     historyMode = b;
+}
+
+void AbstractChannel::onScrollBarValueChanged(int value) {
+    scrollToMax = value == channelTextBrowser->verticalScrollBar()->maximum();
 }

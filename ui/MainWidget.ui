@@ -88,10 +88,17 @@
     <addaction name="action_Spring_Settings"/>
     <addaction name="action_Host_a_Battle"/>
    </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>&amp;Tools</string>
+    </property>
+    <addaction name="actionCopy_normal_UI_to_battle"/>
+   </widget>
    <addaction name="menu_Program"/>
    <addaction name="menu_Tools"/>
    <addaction name="menu_View"/>
    <addaction name="menu_Game"/>
+   <addaction name="menuTools"/>
    <addaction name="menu_Help"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -382,6 +389,15 @@
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_2">
     <layout class="QGridLayout" name="gridLayout_5">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMinimumSize</enum>
+     </property>
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <property name="spacing">
+      <number>0</number>
+     </property>
      <item row="0" column="0">
       <widget class="ToolBarWidget" name="toolBarWidget" native="true"/>
      </item>
@@ -394,19 +410,6 @@
         <size>
          <width>744</width>
          <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="1" column="0" colspan="2">
-      <spacer name="verticalSpacer">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>748</width>
-         <height>2</height>
         </size>
        </property>
       </spacer>
@@ -627,6 +630,11 @@
   <action name="actionHistory">
    <property name="text">
     <string>History</string>
+   </property>
+  </action>
+  <action name="actionCopy_normal_UI_to_battle">
+   <property name="text">
+    <string>Copy normal UI to battle</string>
    </property>
   </action>
  </widget>
@@ -856,6 +864,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionCopy_normal_UI_to_battle</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>copyUsualLayoutToBattle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>397</x>
+     <y>367</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <designerdata>
   <property name="gridDeltaX">
@@ -878,5 +902,6 @@
   <slot>showStylesheetEditor()</slot>
   <slot>showGroupsDialog()</slot>
   <slot>showHistoryDialog()</slot>
+  <slot>copyUsualLayoutToBattle()</slot>
  </slots>
 </ui>

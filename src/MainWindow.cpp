@@ -27,6 +27,14 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
         PathManager::getInstance()->setOverlayPath(overlay.absolutePath());
     }
     setupUi( this );
+    //QWidget* titleBarWidget =
+    //tabsDockWidget->titleBarWidget()->hide();
+    QWidget* hidden = new QWidget(tabsDockWidget);
+    tabsDockWidget->setTitleBarWidget(hidden);
+    hidden->hide();
+    tabsDockWidget->setMaximumHeight(tabsDockWidget->sizeHint().height());
+    tabsDockWidget->setMinimumHeight(tabsDockWidget->sizeHint().height());
+    //delete titleBarWidget;
     setupIcons();
     preference->onResetFormToSettings();
     battles->setUsers( users );
@@ -250,6 +258,9 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     connect(b, SIGNAL(openGroupsDialog()), userGroupsDialog, SLOT(show()));
     connect(b, SIGNAL(sendCommand(Command)), commandAssigner, SLOT(sendCommand(Command)));
 
+    //Preferences reloading
+    connect(preference, SIGNAL(preferencesChanged()), this, SLOT(reloadPreferences()));
+
 
     //Spring stopped signal
     connect(&qpSpring, SIGNAL(finished (int, QProcess::ExitStatus)),
@@ -272,6 +283,9 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     for (int i = 0; i < 4; i++)
         users->resizeColumnToContents(i);
     inBattle = false;
+
+    //load preferences
+    reloadPreferences();
 }
 
 void MainWindow::setupIcons() {
@@ -619,8 +633,20 @@ void MainWindow::changeEvent(QEvent *e) {
 void MainWindow::onServerSpringVersion(QString version) {
     QString unitsyncSpringVersion = UnitSyncLib::getInstance()->getSpringVersion();
     if(version != unitsyncSpringVersion)
-        QMessageBox::warning(this, "Wrong spring version",
-                             "Lobby server reported spring version " + version +
-                             "\nYour unitsync reported that you have " + unitsyncSpringVersion +
-                             "\nYou can desync if you have wrong spring version!!!");
+        QMessageBox::warning(this, tr("Wrong spring version"),
+                             tr("Lobby server reported spring version") + " " + version +
+                             "\n" + tr("Your unitsync reported that you have") + " " + unitsyncSpringVersion +
+                             "\n" + tr("You can desync if you have wrong spring version!!!")
+                             );
+}
+
+void MainWindow::reloadPreferences() {
+    QSettings* settings = Settings::Instance();
+    statusBar()->setVisible(settings->value("MainWindow/showStatusBar").toBool());
+}
+
+void MainWindow::copyUsualLayoutToBattle() {
+    lastBattleState = lastState;
+    if(inBattle)
+        restoreState(lastBattleState);
 }

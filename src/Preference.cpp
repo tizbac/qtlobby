@@ -83,6 +83,10 @@ void Preference::loadPreferences() {
         index = languageComboBox->findData( fullLocale.section( '_', 0, 0 ), Qt::UserRole, Qt::MatchStartsWith );
     languageComboBox->setCurrentIndex( index );
     onLanguageChanged( index );
+
+    /*Main Window*/
+    INIT_PREF("MainWindow/showStatusBar", true);
+    showStatusBarCheckBox->setChecked( settings->value("MainWindow/showStatusBar").toBool() );
 }
 
 Preference::~Preference() { }
@@ -124,8 +128,14 @@ void Preference::onApply() {
 
     /*General*/
     settings->setValue( "Battle/autoCloseFirst", battleAutoCloseFirstCheckBox->isChecked() );
+
     /*Language*/
     settings->setValue( "locale", languageComboBox->itemData( languageComboBox->currentIndex(), Qt::UserRole ).toString() );
+
+    /*Main Window*/
+    settings->setValue( "MainWindow/showStatusBar", showStatusBarCheckBox->isChecked() );
+
+    emit preferencesChanged();
 }
 
 void Preference::onCancel() {

@@ -36,7 +36,7 @@ void LobbyTabs::connectionStateChanged( ConnectionState connectionState ) {
 
     if ( connectionState == AUTHENTICATED ) {
         bool qtlobbyChannelFound = false, mainChannelFound = false;
-/*        foreach( AbstractLobbyTab * l, lobbyTabList ) {
+        /*        foreach( AbstractLobbyTab * l, lobbyTabList ) {
             if ( QString(l->metaObject()->className()) == "Channel" ) {
                 if ( QString(l->objectName()) == "qtlobby" )
                     qtlobbyChannelFound = true;
@@ -94,7 +94,7 @@ void LobbyTabs::receiveCommand( Command command ) {
     } else if ( command.name == "BATTLECLOSED" /*|| command.name == "FORCEQUITBATTLE"*/ ) {
         for ( int i = 0; i < lobbyTabList.count(); ++i ) {
             if ( ( lobbyTabList[i]->objectName() == command.attributes.first()
-                 // || command.name == "FORCEQUITBATTLE"
+                // || command.name == "FORCEQUITBATTLE"
                 ) && lobbyTabList[i]->metaObject()->className() == QString( "BattleChannel" )
                 ) {
                 closeTab(lobbyTabList[i]->currentTabIndex);
@@ -220,6 +220,9 @@ void LobbyTabs::currentTabChangedSlot( int index ) {
         }
     }
     lastIndex = index;
+    AbstractChannel* ac = qobject_cast<AbstractChannel*>(lobbyTabList[index]);
+    if(ac)
+        ac->scrollToMaximum();
 }
 
 void LobbyTabs::setTabIcon( int index ) {
@@ -240,7 +243,7 @@ void LobbyTabs::closeTab() {
         AbstractLobbyTab* tab = (AbstractLobbyTab*)s;
         closeTab(tab->currentTabIndex);
     } else
-    closeTab(tabBar->currentIndex());
+        closeTab(tabBar->currentIndex());
 }
 
 void LobbyTabs::closeTab(int i) {

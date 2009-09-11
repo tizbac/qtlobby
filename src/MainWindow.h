@@ -125,9 +125,10 @@ private slots:
     void onBlockInput(bool b);
     void onJoinRequested();
     void onServerSpringVersion(QString);
-
     void onChangedToBattleTab();
     void onChangedFromBattleTab();
+    void reloadPreferences();
+    void copyUsualLayoutToBattle();
 public slots:
     void changeEvent(QEvent *e);
     void playSample( SampleCollection sample );

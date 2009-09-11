@@ -127,6 +127,9 @@ void BattleChannel::setupUi( QWidget * tab ) {
     requestMapInfo( m_battle.mapName );
     fillSides();
     battleWindowForm->factionsComboBox->setCurrentIndex(settings->value("sidesPreferences/" + m_battle.modName, 0).toInt());
+    //Set initial Unlocked state of battleStatusLabel
+    QString table="<table><tr><td><img src=\"%1\"</td><td>%2</td></tr></table>";
+    battleWindowForm->battleStatusLabel->setText(table.arg(P("icons/open_game.xpm")).arg(tr("Unlocked")));
 }
 
 void BattleChannel::receiveCommand( Command command ) {
