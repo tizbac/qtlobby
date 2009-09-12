@@ -298,6 +298,7 @@ void MainWindow::setupIcons() {
     action_Disconnect->setIcon(QIcon(P("icons/Connect_no.png")));
     action_Exit->setIcon(QIcon(P("icons/Exit.png")));
     actionDownloads->setIcon(QIcon(P("icons/download_map.xpm")));
+    toolBarWidget->ui->joinToolButton->setIcon(QIcon(P("icons/trolltech/plus.png")));
 }
 
 void MainWindow::setupToolbar() {
