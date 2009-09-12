@@ -87,6 +87,14 @@ void Preference::loadPreferences() {
     /*Main Window*/
     INIT_PREF("MainWindow/showStatusBar", true);
     showStatusBarCheckBox->setChecked( settings->value("MainWindow/showStatusBar").toBool() );
+
+    /*History*/
+    INIT_PREF("History/enabled", true);
+    historyEnableCheckBox->setChecked( settings->value("History/enabled").toBool() );
+    INIT_PREF("History/showInChannels", true);
+    showHistoryInChannelsCheckBox->setChecked( settings->value("History/showInChannels").toBool() );
+    INIT_PREF("History/showInChannelsDays", 2);
+    historyInChannelDaysSpinBox->setValue(settings->value("History/showInChannelsDays").toInt());
 }
 
 Preference::~Preference() { }
@@ -134,6 +142,11 @@ void Preference::onApply() {
 
     /*Main Window*/
     settings->setValue( "MainWindow/showStatusBar", showStatusBarCheckBox->isChecked() );
+
+    /*History*/
+    settings->setValue( "History/enabled", historyEnableCheckBox->isChecked() );
+    settings->setValue( "History/showInChannels", showHistoryInChannelsCheckBox->isChecked() );
+    settings->setValue("History/showInChannelsDays", historyInChannelDaysSpinBox->value());
 
     emit preferencesChanged();
 }

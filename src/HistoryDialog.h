@@ -13,6 +13,8 @@ class HistoryDialog : public QDialog {
 public:
     explicit HistoryDialog(QWidget *parent = 0);
     virtual ~HistoryDialog();
+    void showChannel(QString channel);
+    void showPrivate(QString nick);
 signals:
     void needReplay(QDate from, QDate to);
 

@@ -648,10 +648,15 @@ void MainWindow::onServerSpringVersion(QString version) {
 void MainWindow::reloadPreferences() {
     QSettings* settings = Settings::Instance();
     statusBar()->setVisible(settings->value("MainWindow/showStatusBar").toBool());
+    History::getInstance()->setEnabled(settings->value("History/enabled").toBool());
 }
 
 void MainWindow::copyUsualLayoutToBattle() {
     lastBattleState = lastState;
     if(inBattle)
         restoreState(lastBattleState);
+}
+
+HistoryDialog* MainWindow::getHistoryDialog() {
+    return historyDialog;
 }

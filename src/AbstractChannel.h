@@ -21,15 +21,21 @@ public:
     virtual ~AbstractChannel();
     void setChannelBrowser(ChannelTextBrowser* b);
     void setHistoryMode(bool b);
+    void setInlineHistoryMode(bool b);
 
 public slots:
     virtual void receiveInput( QString input ) = 0;
     virtual void receiveCommand( Command command ) = 0;
     virtual void historyMessage( QDateTime time, QString message );
     void scrollToMaximum();
+    void requestHistoryReplay(QDate from, QDate to);
+
+signals:
+    void needReplay(QDate from, QDate to);
 
 private slots:
-    void onScrollBarValueChanged(int);
+    void onScrollBarValueChanged(int value);
+    void onHistoryFinished();
 
 protected:
     void setActive( bool isActive );
@@ -44,6 +50,7 @@ protected:
     QString urlify(QString in);
     QString userNameLink( const QString userName );
     void insertBlock(QTextCursor& c);
+    QString flag( const QString userName );
 
     ChannelTextBrowser * channelTextBrowser;
     QGridLayout * gridLayout;
@@ -56,6 +63,8 @@ protected:
     QDateTime previous;
     bool firstBlock;
     bool scrollToMax;
+    bool inlineHistoryMode;
+    QStringList historyBuffer;
 
 protected slots:
     void anchorClicked(QUrl url);

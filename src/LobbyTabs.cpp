@@ -4,6 +4,7 @@
 #include "Settings.h"
 #include "UnitSyncLib.h"
 #include "UserGroup.h"
+#include "History.h"
 
 LobbyTabs::LobbyTabs( QObject * parent, Battles* battles, UnitSyncLib* unitSyncLib, QTabBar* tabBar, QStackedWidget * lobbyStackedWidget) : AbstractStateClient( parent ) {
     this->battles = battles;
@@ -180,8 +181,14 @@ void LobbyTabs::createLobbyTab( AbstractLobbyTab * lobbyTab, bool focus) {
         BattleChannel* bc = (BattleChannel*)lobbyTab;
         connect(bc, SIGNAL(closeMe()), this, SLOT(closeTab()));
     }
-    if(lobbyTab->objectName() == "qtlobby")
-        lobbyTab->receiveInput("/sayver");
+    AbstractChannel* ac = qobject_cast<AbstractChannel*>(lobbyTab);
+    if(ac && Settings::Instance()->value("History/showInChannels").toBool()) {
+        connect(ac, SIGNAL(needReplay(QDate,QDate)), History::getInstance(), SLOT(play(QDate,QDate)));
+        connect(History::getInstance(), SIGNAL(historyMessage(QDateTime,QString)), ac, SLOT(historyMessage(QDateTime,QString)));
+        connect(History::getInstance(), SIGNAL(finished()), ac, SLOT(onHistoryFinished()));
+        int days = Settings::Instance()->value("History/showInChannelsDays").toInt();
+        ac->requestHistoryReplay(QDate::currentDate().addDays(-days-1), QDate::currentDate().addDays(1));
+    }
 }
 
 AbstractLobbyTab * LobbyTabs::getActiveLobbyTab() {

@@ -41,6 +41,7 @@ void History::initialize() {
 }
 
 void History::receiveMessage(QString message) {
+    if(!m_enabled) return;
     initialize();
     if(!m_initialized) return;
     if(!m_filter.contains(message.split(" ").takeFirst())) return;
@@ -50,6 +51,7 @@ void History::receiveMessage(QString message) {
 }
 
 void History::play(QDate from, QDate to) {
+    if(!m_enabled) return;
     initialize();
     if(!m_initialized) return;
     m_fetchQuery.bindValue(0, QDateTime(from).toTime_t());
@@ -58,4 +60,7 @@ void History::play(QDate from, QDate to) {
     while(m_fetchQuery.next()) {
         emit historyMessage(QDateTime::fromTime_t(m_fetchQuery.value(0).toUInt()), m_fetchQuery.value(1).toString());
     }
+    disconnect(this, SIGNAL(historyMessage(QDateTime,QString)), 0, 0);
+    emit finished();
+    disconnect(this, SIGNAL(finished()), 0, 0);
 }

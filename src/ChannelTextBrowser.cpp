@@ -1,6 +1,7 @@
 // $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "ChannelTextBrowser.h"
+#include "MainWindow.h"
 #include <QTextCursor>
 #include <QClipboard>
 #include <QApplication>
@@ -33,6 +34,7 @@ void ChannelTextBrowser::onCustomContextMenuRequested(QPoint point) {
     QMenu* contextMenu = createStandardContextMenu(point);
     QAction* jl_this = NULL;
     QAction* jl_all = NULL;
+    QAction* history = NULL;
     if(m_menuEnabled) {
         contextMenu->addSeparator();
         jl_this = contextMenu->addAction(tr("Enable join/leave messages for this channel"));
@@ -41,6 +43,8 @@ void ChannelTextBrowser::onCustomContextMenuRequested(QPoint point) {
         jl_all = contextMenu->addAction(tr("Enable join/leave messages by default"));
         jl_all->setCheckable(true);
         jl_all->setChecked(m_enableJoinLeaveDefault);
+        contextMenu->addSeparator();
+        history = contextMenu->addAction(tr("History"));
     }
     QAction *action = contextMenu->exec( this->viewport()->mapToGlobal( point ) );
     if(action == jl_this) {
@@ -49,6 +53,8 @@ void ChannelTextBrowser::onCustomContextMenuRequested(QPoint point) {
     } else if(action == jl_all) {
         emit enableJoinLeaveDefault(jl_all->isChecked());
         m_enableJoinLeaveDefault = jl_all->isChecked();
+    } else if(action == history) {
+        MainWindow::getInstance()->getHistoryDialog()->showChannel(objectName().section("_", 1));
     }
     delete contextMenu;
 }

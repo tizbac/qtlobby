@@ -41,6 +41,7 @@ private:
     QAction* m_slapAction;
     QAction* m_joinSameBattleAction;
     QAction* m_ignoreAction;
+    QAction* m_historyAction;
     QMenu* m_forceMenu;
     QAction* m_forceTeam;
     QAction* m_forceAlly;

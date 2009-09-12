@@ -60,3 +60,19 @@ void HistoryDialog::on_fromDateEdit_editingFinished() {
 void HistoryDialog::on_toDateEdit_editingFinished() {
     replayHistory();
 }
+
+void HistoryDialog::showChannel(QString channel) {
+    m_ui->typeComboBox->setCurrentIndex(0);
+    m_ui->nameLineEdit->setText(channel);
+    replayHistory();
+    show();
+    activateWindow();
+}
+
+void HistoryDialog::showPrivate(QString nick) {
+    m_ui->typeComboBox->setCurrentIndex(1);
+    m_ui->nameLineEdit->setText(nick);
+    replayHistory();
+    show();
+    activateWindow();
+}

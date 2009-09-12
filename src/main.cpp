@@ -55,7 +55,6 @@ int main( int argc, char *argv[] ) {
                                QObject::tr( "I couldn't detect any system tray "
                                             "on this system." ) );
     }
-    MainWindow mw;
-    mw.show();
+    MainWindow::getInstance()->show();
     return app.exec();
 }

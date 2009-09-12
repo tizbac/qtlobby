@@ -42,15 +42,18 @@
 #include "config.h"
 
 
-class MainWindow : public QMainWindow, private Ui::MainWindow {
+class MainWindow : public QMainWindow, public Singleton<MainWindow>, private Ui::MainWindow {
     Q_OBJECT
+    friend class Singleton<MainWindow>;
 public:
-    MainWindow( QWidget* parent = 0 );
-    ~MainWindow();
+    HistoryDialog* getHistoryDialog();
+
     QProcess qpSpring;
     QProcess qpSpringSetting;
 
 private:
+    MainWindow( QWidget* parent = 0 );
+    ~MainWindow();
     void setupToolbar();
     void setupIcons();
     //the connection dialog

@@ -1,4 +1,5 @@
 #include "UserMenuBuilder.h"
+#include "MainWindow.h"
 #include <QInputDialog>
 #include <QColorDialog>
 
@@ -7,12 +8,15 @@ UserMenuBuilder::UserMenuBuilder() {
     m_slapAction = new QAction( tr("Slap around"), this );
     m_joinSameBattleAction = new QAction( tr("Join same battle"), this );
     m_ignoreAction = new QAction( tr("Toggle ignore"), this );
+    m_historyAction = new QAction( tr("History"), this );
 
     m_userMenu = new QMenu( "userListContextMenu" );
     m_userMenu->addAction( m_openPrivateChannelAction );
     m_userMenu->addAction( m_slapAction );
     m_userMenu->addAction( m_joinSameBattleAction );
     m_userMenu->addAction( m_ignoreAction );
+    m_userMenu->addSeparator();
+    m_userMenu->addAction( m_historyAction );
     m_userMenu->addSeparator();
     m_groupsMenu = new QMenu(tr("Add to group"));
     m_removeFromGroupAction = new QAction(tr("Remove from group"), m_userMenu);
@@ -86,6 +90,8 @@ void UserMenuBuilder::processMenuAction ( QAction *action ) {
             joinSameBattle( m_user );
         } else if ( action == m_ignoreAction ) {
             toggleIgnoreUser( m_user );
+        } else if ( action == m_historyAction ) {
+            MainWindow::getInstance()->getHistoryDialog()->showPrivate(m_user.name);
         } else if ( action == m_removeFromGroupAction ) {
             removeUserFromGroup(m_user.name);
         } else if ( action == m_removeClanFromGroupAction ) {

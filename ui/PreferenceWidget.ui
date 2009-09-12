@@ -60,6 +60,11 @@
        <string>Main Window</string>
       </property>
      </item>
+     <item>
+      <property name="text">
+       <string>History</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item row="1" column="0" colspan="2">
@@ -115,7 +120,7 @@
       <enum>QFrame::Raised</enum>
      </property>
      <property name="currentIndex">
-      <number>6</number>
+      <number>7</number>
      </property>
      <widget class="QWidget" name="pathWidget"/>
      <widget class="QWidget" name="chatWidget">
@@ -541,6 +546,77 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
              <size>
               <width>20</width>
               <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_2">
+      <layout class="QVBoxLayout" name="verticalLayout_10">
+       <item>
+        <widget class="QGroupBox" name="groupBox_11">
+         <property name="title">
+          <string>History</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_9">
+          <item>
+           <widget class="QCheckBox" name="historyEnableCheckBox">
+            <property name="text">
+             <string>Enable</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="showHistoryInChannelsCheckBox">
+            <property name="text">
+             <string>Show history in channels</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>Show in channels history for last</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="historyInChannelDaysSpinBox">
+              <property name="minimum">
+               <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>10</number>
+              </property>
+              <property name="value">
+               <number>1</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>days</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>258</width>
+              <height>250</height>
              </size>
             </property>
            </spacer>

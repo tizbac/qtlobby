@@ -11,8 +11,10 @@ AbstractChannel::AbstractChannel( QString name, QObject * parent ) : AbstractLob
     activeTextColor = QColor("black");
     inactiveTextColor = QColor("green");
     historyMode = false;
+    inlineHistoryMode = false;
     previous = QDateTime::currentDateTime();
     firstBlock = true;
+    scrollToMax = true;
 }
 
 AbstractChannel::~AbstractChannel() {}
@@ -20,8 +22,9 @@ AbstractChannel::~AbstractChannel() {}
 void AbstractChannel::setupUi( QWidget * channelTabWidget ) {
     channelTabWidget->setObjectName( QString::fromUtf8( "channelTabWidget" ) + objectName() );
     channelTextBrowser = new ChannelTextBrowser( channelTabWidget );
-    channelTextBrowser->setObjectName( "channelTextBrowser" + objectName() );
+    channelTextBrowser->setObjectName( "channelTextBrowser_" + objectName() );
     setChannelBrowser(channelTextBrowser);
+    channelTextBrowser->document()->setMaximumBlockCount(500);
     gridLayout = new QGridLayout( channelTabWidget );
     gridLayout->setContentsMargins(0,0,0,0);
     gridLayout->setObjectName( QString::fromUtf8( "channelGridLayout" ) + objectName() );
@@ -104,23 +107,32 @@ void AbstractChannel::insertBlock(QTextCursor& c) {
 
 void AbstractChannel::insertLine( QString line ) {
     QDateTime t;
-    if(historyMode)
+    if(historyMode || inlineHistoryMode)
         t = historyDateTime;
     else
         t = QDateTime::currentDateTime();
-    QTextCursor c = channelTextBrowser->textCursor();
-    scrollToMax = channelTextBrowser->verticalScrollBar()->value() == channelTextBrowser->verticalScrollBar()->maximum();
+    QTextCursor c;
+    if(!inlineHistoryMode) {
+        scrollToMax = channelTextBrowser->verticalScrollBar()->value() == channelTextBrowser->verticalScrollBar()->maximum();
+        c = channelTextBrowser->textCursor();
+        c.movePosition(QTextCursor::End);
+    }
     if(previous.date().day() != t.date().day()) {
-        c.movePosition( QTextCursor::End );
-        insertBlock(c);
-        c.insertHtml( makeHtml("<b>" + t.toString( "MMMM d, dddd, yyyy" ) + "</b>" ) );
+        if(inlineHistoryMode) {
+            historyBuffer << makeHtml("<b>" + t.toString( "MMMM d, dddd, yyyy") + "</b>" );
+        } else {
+            insertBlock(c);
+            c.insertHtml( makeHtml("<b>" + t.toString( "MMMM d, dddd, yyyy" ) + "</b>" ) );
+        }
     }
     previous = t;
     QString timeString = QString( "<span style=\"color:gray;\">%1</span> " ).arg( t.toString( "[hh:mm:ss]" ) );
-    //go to end of document
-    c.movePosition( QTextCursor::End );
-    insertBlock(c);
-    c.insertHtml( makeHtml( timeString.append( line ) ) );
+    if(inlineHistoryMode) {
+        historyBuffer << "<font color=\"gray\">"+timeString.append( line ).remove(QRegExp("<[a-zA-Z\\/][^>]*>"))+"</font>";
+    } else {
+        insertBlock(c);
+        c.insertHtml( makeHtml( timeString.append( line ) ) );
+    }
     scrollToMaximum();
     if ( !isActive ) {
         icon = inactiveIcon;
@@ -134,6 +146,10 @@ void AbstractChannel::scrollToMaximum() {
     if ( scrollToMax ) {
         channelTextBrowser->verticalScrollBar()->setValue( channelTextBrowser->verticalScrollBar()->maximum() );
     }
+}
+
+void AbstractChannel::onScrollBarValueChanged(int value) {
+    scrollToMax = value == channelTextBrowser->verticalScrollBar()->maximum();
 }
 
 QString AbstractChannel::makeHtml( QString in ) {
@@ -363,13 +379,44 @@ void AbstractChannel::setChannelBrowser(ChannelTextBrowser* b) {
 
 void AbstractChannel::historyMessage( QDateTime time, QString message ) {
     historyDateTime = time;
+    if(!historyMode) inlineHistoryMode = true;
     receiveCommand(Command(message));
+    inlineHistoryMode = false;
 }
 
 void AbstractChannel::setHistoryMode(bool b) {
     historyMode = b;
 }
 
-void AbstractChannel::onScrollBarValueChanged(int value) {
-    scrollToMax = value == channelTextBrowser->verticalScrollBar()->maximum();
+void AbstractChannel::requestHistoryReplay(QDate from, QDate to) {
+    emit needReplay(from, to);
+}
+
+void AbstractChannel::setInlineHistoryMode(bool b) {
+    inlineHistoryMode = b;
+}
+
+QString AbstractChannel::flag( const QString userName ) {
+    if(historyMode || inlineHistoryMode) return QString();
+    QString flag = "<img width=\"16\" height=\"16\" src=\""+P("flags/%1.xpm")+"\" />&nbsp;";
+    if( Settings::Instance()->value("Chat/showFlags").toBool() && userNameCountryCodeMap )
+        if ( userNameCountryCodeMap->contains( userName ) )
+            return flag.arg( userNameCountryCodeMap->value( userName ) );
+    return QString();
+}
+
+
+void AbstractChannel::onHistoryFinished() {
+    if(!historyBuffer.size()) return;
+    QTextCursor c = channelTextBrowser->textCursor();
+    c.movePosition(QTextCursor::Start);
+    firstBlock = true;
+    foreach(QString s, historyBuffer) {
+        insertBlock(c);
+        c.insertHtml(s);
+    }
+    insertBlock(c);
+    c.insertHtml("<b>-------------------</b><br/>");
+    scrollToMax = true;
+    scrollToMaximum();
 }

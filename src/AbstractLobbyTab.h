@@ -40,7 +40,6 @@ public slots:
     virtual void receiveCommand( Command command ) = 0;
 
 protected:
-    QString flag( const QString userName );
     QMap<QString, QString>* userNameCountryCodeMap;
 };
 
