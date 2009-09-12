@@ -12,6 +12,7 @@ HistoryDialog::HistoryDialog(QWidget *parent) :
     m_ui->fromDateEdit->setDate(QDate::currentDate());
     m_ui->toDateEdit->setDate(QDate::currentDate().addDays(1));
     m_channel = 0;
+    connect(this, SIGNAL(needReplay(QDate,QDate)), History::getInstance(), SLOT(play(QDate,QDate)));
 }
 
 HistoryDialog::~HistoryDialog() {
@@ -41,7 +42,7 @@ void HistoryDialog::replayHistory() {
     m_channel->setHistoryMode(true);
     connect(History::getInstance(), SIGNAL(historyMessage(QDateTime, QString)),
             m_channel, SLOT(historyMessage(QDateTime,QString)));
-    History::getInstance()->play(m_ui->fromDateEdit->date(), m_ui->toDateEdit->date());
+    emit needReplay(m_ui->fromDateEdit->date(), m_ui->toDateEdit->date());
 }
 
 void HistoryDialog::on_typeComboBox_activated(QString type) {

@@ -33,6 +33,7 @@ public:
 signals:
     void sendCommand( Command );
     void sendInput(QString input);
+    void closeMe();
 
 public slots:
     virtual void receiveInput( QString input ) = 0;

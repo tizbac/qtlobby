@@ -9,9 +9,8 @@
 class History : public QThread, public Singleton<History> {
     Q_OBJECT
     friend class Singleton<History>;
-public:
-    void play(QDate from, QDate to);
 public slots:
+    void play(QDate from, QDate to);
     void receiveMessage(QString message);
 signals:
     void historyMessage(QDateTime timestamp, QString message);

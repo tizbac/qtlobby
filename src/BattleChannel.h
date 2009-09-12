@@ -33,7 +33,7 @@ signals:
     void playSample( SampleCollection sample );
     void newTrayMessage( QString );
     void colorChanged(QColor color);
-    void closeMe();
+
 public slots:
     void receiveInput( QString input );
     void receiveCommand( Command command );
