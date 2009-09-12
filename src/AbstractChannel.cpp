@@ -417,6 +417,7 @@ void AbstractChannel::onHistoryFinished() {
     }
     insertBlock(c);
     c.insertHtml("<b>-------------------</b><br/>");
+    insertBlock(c);
     scrollToMax = true;
     scrollToMaximum();
 }
