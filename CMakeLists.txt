@@ -27,6 +27,7 @@ set(QT_USE_QTSCRIPT true)
 set(QT_USE_QTNETWORK true)
 set(QT_USE_QTOPENGL true)
 set(QT_USE_QTXML true)
+set(QT_USE_QTSQL true)
 
 if(WIN32 OR BUILDBOT)
   option(PURE_WINAPI_UNITSYNC_LOADER "Use pure Win API unitsync loader(helps against some loading bugs)" ON)
