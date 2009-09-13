@@ -183,17 +183,21 @@ void ServerContextState::authenticate() {
     cpu = result.toInt()/1000000;
     qDebug() << tr("Detected cpu frequency is: %1 MHz").arg(cpu);
 #else
-    ///sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq");
-    //^i don't have such a file
-    QFile file("/proc/cpuinfo");
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        qDebug() << tr("Could not retreive CPU information.");
-    QString contents = file.readAll();
-    QRegExp re("cpu\\s+MHz\\s+:\\s+(\\d+)(?:\\.\\d+)", Qt::CaseInsensitive, QRegExp::RegExp2);
-    if(re.indexIn(contents, 0) > -1) {
-        cpu = re.cap(1).toInt();
-    } else
-        qDebug() << tr("Unable to get cpu info from /proc/cpuinfo.");
+    QFile file("/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq");
+    if(file.exists() && file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        cpu = file.readLine().toInt()/1000;
+    } else {
+        file.setFileName("/proc/cpuinfo");
+        if(file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QString contents = file.readAll();
+            QRegExp re("cpu\\s+MHz\\s+:\\s+(\\d+)(?:\\.\\d+)", Qt::CaseInsensitive, QRegExp::RegExp2);
+            if(re.indexIn(contents, 0) > -1) {
+                cpu = re.cap(1).toInt();
+            } else
+                qDebug() << "Unable to get cpu info from /proc/cpuinfo.";
+        } else
+            qDebug() << "Horrible fail while detecting your cpu speed";
+    }
     file.close();
 #endif
     QString lobbyclient = "qtlobby";
