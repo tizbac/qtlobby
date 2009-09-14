@@ -366,7 +366,7 @@ void MainWindow::about() {
     QDialog* a = new QDialog(this);
     Ui::AboutWidget* about = new Ui::AboutWidget();
     about->setupUi( a );
-    about->label->setText(about->label->text().replace("#version#", QString(QTLOBBY_VERSION)).replace("#revision#", QString(SVN_REV)).replace("#logo_icon#", P("icons/qtlobby-logo-64x64.png")));
+    about->label->setText(about->label->text().replace("#version#", QString(QTLOBBY_VERSION)).replace("#revision#", QString(SVN_REV)).replace("#logo_icon#", P("icons/qtlobby-64x64.png")));
     a->show();
 }
 
@@ -376,7 +376,7 @@ void MainWindow::showConnectionWidget( bool ) {
 
 void MainWindow::createTrayIcon() {
     trayIcon = new QSystemTrayIcon( this );
-    QIcon icon = QIcon( P("icons/qtlobby-logo.svg") );
+    QIcon icon = QIcon( P("qtlobby-no-triangle-16x16.png") );
 
     trayIconMenu = new QMenu( this );
 
