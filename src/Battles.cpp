@@ -355,7 +355,11 @@ void Battles::startGame( Battle b, bool host ) {
     QTextStream out( &scriptFile );
     out << generateScript( b, host );
     scriptFile.close();
-    qDebug() << tr("Script file %1 written.").arg(springDir + "/script_qtlobby.txt");
+    qDebug() << QString("Script file %1 written.").arg(springDir + "/script_qtlobby.txt");
+    User me = users->getUser(ServerProfilesModel::getInstance()->getActiveProfile().userName());
+    me.battleState.setReady(false);
+    users->modUserInAllManagers(me);
+    users->onMyBattleStateChanged( me );
     emit start();
 }
 
