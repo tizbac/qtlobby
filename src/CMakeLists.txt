@@ -2,6 +2,7 @@ include(${QT_USE_FILE})
 include_directories(${QTSCRIPTTOOLS_INCLUDE_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/src/config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h )
 
 # source files
 set(qtlobby_SRCS
@@ -103,8 +104,7 @@ Channel.h
 ChannelTextBrowser.h         
 CommandAssigner.h            
 Command.h                    
-CompletionListWidget.h       
-config.h                     
+CompletionListWidget.h           
 ConnectionWidget.h           
 Downloader.h                   
 DownloadsDialog.h              

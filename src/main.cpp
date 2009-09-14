@@ -33,16 +33,16 @@ int main( int argc, char *argv[] ) {
 #endif
     QApplication app( argc, argv );
     QStringList args = app.arguments();
+#ifndef Q_WS_WIN
+    PathManager::getInstance()->setResourceRoot(QString(CMAKE_INSTALL_PREFIX)+"/share/qtlobby/");
+#else
     QStringList list = args.at(0).split(QDir::separator());
     list.removeLast();
-#ifndef Q_WS_WIN
-    list.removeLast();//windows does not have bin folder, so no need to get one level higher
-#else
     QCoreApplication::addLibraryPath(list.join(QDir::separator())+QDir::separator()+"qt");
-#endif
     list.append("share");
     list.append("qtlobby");
     PathManager::getInstance()->setResourceRoot(list.join(QDir::separator())+QDir::separator());
+#endif
     for(int i = 1; i < args.size(); i++) {
         if(args.at(i) == "--3dpreview" || args.at(i) == "-3d") {
             i++;
