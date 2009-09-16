@@ -170,7 +170,7 @@
           <bool>true</bool>
          </property>
          <property name="textElideMode">
-          <enum>Qt::ElideNone</enum>
+          <enum>Qt::ElideRight</enum>
          </property>
          <property name="indentation">
           <number>0</number>
@@ -182,6 +182,9 @@
           <bool>false</bool>
          </property>
          <property name="sortingEnabled">
+          <bool>true</bool>
+         </property>
+         <property name="animated">
           <bool>true</bool>
          </property>
          <property name="expandsOnDoubleClick">

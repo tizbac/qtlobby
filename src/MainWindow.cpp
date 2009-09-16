@@ -35,6 +35,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     tabsDockWidget->setMaximumHeight(tabsDockWidget->sizeHint().height());
     tabsDockWidget->setMinimumHeight(tabsDockWidget->sizeHint().height());
     //delete titleBarWidget;
+    users->setTextElideMode(Qt::ElideRight);
+    battles->setTextElideMode(Qt::ElideRight);
     setupIcons();
     preference->onResetFormToSettings();
     battles->setUsers( users );
