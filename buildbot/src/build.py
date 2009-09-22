@@ -15,7 +15,7 @@ class CommandError(Exception):
 builder_lock  = threading.RLock()
 
 class QtLobbyBuilder(Thread):
-        def __init__(self, targetDir, onMessage, onCompleted, clean):
+        def __init__(self, targetDir, onMessage, onCompleted, clean, justTarball):
                 Thread.__init__(self)              
                 self.onMessage = onMessage         
                 self.onCompleted = onCompleted     
@@ -24,6 +24,7 @@ class QtLobbyBuilder(Thread):
 		self.dir = targetDir
 		self.config = "debug"
 		self.clean = clean
+		self.tarball = justTarball
 		print "QtLobbyBuilder instance created"
 
         def runCommand(self, command):
@@ -45,6 +46,17 @@ class QtLobbyBuilder(Thread):
                         self.onMessage("Perforimg svn update...")
        	                self.runCommand("svn up -r " + rev)      
                	        rev = self.runCommand("svn up | perl -e '<> =~ /At revision (\d+)./; print $1;'")
+			if(self.tarball):
+				self.onMessage("Creating tarball...")
+				self.runCommand("rm -rf qtlobby-r* || true")
+				self.runCommand("svn export . qtlobby-r"+rev)
+				self.runCommand("cat qtlobby-r"+rev+"/src/config.h.cmake | sed 's/#cmakedefine SVN_REV \"@SVN_REV@\"/#define SVN_REV \""+rev+"\"/g' > qtlobby-r"+rev+"/src/config.h.cmake.new")
+				self.runCommand("mv qtlobby-r"+rev+"/src/config.h.cmake.new qtlobby-r"+rev+"/src/config.h.cmake")
+				config_h = open("qtlobby-r"+rev+"/src/config.h.cmake")
+				self.runCommand("tar -czf qtlobby-r"+rev+".tar.gz qtlobby-r"+rev)
+				self.runCommand("mv qtlobby-r"+rev+".tar.gz ~apache/qtlobby.oxnull.net/htdocs/qtlobby-r"+rev+".tar.gz")
+				self.onCompleted({"Tarball": "http://qtlobby.oxnull.net/qtlobby-r"+rev+".tar.gz"})
+				return
 			if not self.clean and os.path.exists("/var/www/qtlobby.oxnull.net/htdocs/qtlobby.r"+rev+"_installer.exe"):
 				self.onMessage("Requested revision was already built")
 				self.onCompleted({"Exe": "http://qtlobby.oxnull.net/qtlobby.r"+rev+".exe.zip", \
@@ -61,7 +73,7 @@ class QtLobbyBuilder(Thread):
 				self.runCommand("rm -rf *")
 			self.runCommand("touch ../src/config.h")
 			self.runCommand("rm -f cbuild/src/qtlobby.*")
-			self.runCommand("cmake -DCMAKE_TOOLCHAIN_FILE=../toolchain-mingw.cmake -DBUILDBOT=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo ..")
+			self.runCommand("cmake -DCMAKE_TOOLCHAIN_FILE=../toolchain-mingw.cmake -DBUILDBOT=ON -DTRANSLATIONS=OFF -DCMAKE_BUILD_TYPE=RelWithDebInfo ..")
                	        self.runCommand("make")
                        	os.chdir("src")
                         self.runCommand("objcopy --only-keep-debug qtlobby.exe qtlobby.dbg")
@@ -92,7 +104,7 @@ def completed(links):
                 print k + ": " + links[k]
 
 if __name__ == "__main__":
-        builder = QtLobbyBuilder("../qtlobby", message, completed)
+        builder = QtLobbyBuilder("../qtlobby", message, completed, False, True)
 	builder.revision = "HEAD"
         builder.start()
 

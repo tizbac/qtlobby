@@ -44,7 +44,7 @@ class Main:
         self.config = configobj.ConfigObj("FlexBot.conf")
         self.config.list_values = True
         self.operator = self.config['buildbot']['operator']
-        self.builder = build.QtLobbyBuilder(self.config['buildbot'][self.profile]['builddir'], self.onMessage, self.onCompleted, False)
+        self.builder = build.QtLobbyBuilder(self.config['buildbot'][self.profile]['builddir'], self.onMessage, self.onCompleted, False, False)
 
     def onsaid(self, channel,user,message):
         self.sayTo("Marcel", message)
@@ -92,16 +92,19 @@ class Main:
 
     def Build(self, user, message):
         try:
-            opts, args = getopt.gnu_getopt(message.split(), "p:r:c:h", ["profile=", "revision=", "clean", "help"])
+            opts, args = getopt.gnu_getopt(message.split(), "p:r:t:c:h", ["profile=", "revision=", "tarball", "clean", "help"])
         except getopt.GetoptError, err:
             self.sayTo(user, err)
             return
 	clean = False
+	tarball = False
         for o, a in opts:
             if o == "--profile":
                 self.profile = a
             if o == "--revision":
                 self.revision = a
+            if o == "--tarball":
+	    	tarball = True
 	    if o == "--clean":
 	    	clean = True
             elif o in ("-h", "--help"):
@@ -120,7 +123,7 @@ class Main:
                 return
             else:
                 try:
-                    self.builder = build.QtLobbyBuilder(self.config['buildbot'][self.profile]['builddir'], self.onMessage, self.onCompleted, clean)
+                    self.builder = build.QtLobbyBuilder(self.config['buildbot'][self.profile]['builddir'], self.onMessage, self.onCompleted, clean, tarball)
                     self.employer = user
                     self.builder.dir = self.config['buildbot'][self.profile]['builddir']
                     self.builder.revision = self.revision
