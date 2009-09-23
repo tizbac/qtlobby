@@ -37,7 +37,6 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     //delete titleBarWidget;
     users->setTextElideMode(Qt::ElideRight);
     battles->setTextElideMode(Qt::ElideRight);
-    setupIcons();
     preference->onResetFormToSettings();
     battles->setUsers( users );
     setWindowTitle(QString( "QtLobby v%1" ).arg( QTLOBBY_VERSION ));
@@ -75,6 +74,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     statusBar()->addPermanentWidget(battlesOnline);
     statusBar()->addPermanentWidget(new QLabel());
     createTrayIcon();
+    setupIcons();
     trayIcon->show();
 
     Notification* notify = Notification::getInstance();
@@ -301,6 +301,13 @@ void MainWindow::setupIcons() {
     action_Exit->setIcon(QIcon(P("icons/Exit.png")));
     actionDownloads->setIcon(QIcon(P("icons/download_map.xpm")));
     toolBarWidget->ui->joinToolButton->setIcon(QIcon(P("icons/trolltech/plus.png")));
+    setWindowIcon(QIcon(P("icons/qtlobby-64x64.png")));
+    QApplication::setWindowIcon(QIcon(P("icons/qtlobby-64x64.png")));
+#ifdef Q_WS_WIN
+    trayIcon->setIcon(QIcon(P("icons/logo.ico")));
+#else
+    trayIcon->setIcon(QIcon(P("icons/qtlobby-64x64.png")));
+#endif
 }
 
 void MainWindow::setupToolbar() {
@@ -378,7 +385,6 @@ void MainWindow::showConnectionWidget( bool ) {
 
 void MainWindow::createTrayIcon() {
     trayIcon = new QSystemTrayIcon( this );
-    QIcon icon = QIcon( P("qtlobby-no-triangle-16x16.png") );
 
     trayIconMenu = new QMenu( this );
 
@@ -390,12 +396,6 @@ void MainWindow::createTrayIcon() {
     trayIconMenu->addSeparator();
     trayIconMenu->addAction( action_Exit );
     trayIcon->setContextMenu( trayIconMenu );
-
-    trayIcon->setIcon( icon );
-    setWindowIcon( icon );
-
-    // set icon for macos dock
-    QApplication::setWindowIcon(icon);
 }
 
 void MainWindow::setColorInducatorUsers( QString regExp ) {
