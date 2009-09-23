@@ -71,7 +71,7 @@ class QtLobbyBuilder(Thread):
 			if self.clean:
 				self.onMessage("Cleaning up building environment...")
 				self.runCommand("rm -rf *")
-			self.runCommand("touch ../src/config.h")
+			self.runCommand("touch src/config.h")
 			self.runCommand("rm -f cbuild/src/qtlobby.*")
 			self.runCommand("cmake -DCMAKE_TOOLCHAIN_FILE=../toolchain-mingw.cmake -DBUILDBOT=ON -DTRANSLATIONS=OFF -DCMAKE_BUILD_TYPE=RelWithDebInfo ..")
                	        self.runCommand("make")
