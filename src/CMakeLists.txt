@@ -3,6 +3,7 @@ include_directories(${QTSCRIPTTOOLS_INCLUDE_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/src/config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h )
+CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/src/qtlobby.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/qtlobby.rc )
 
 # source files
 set(qtlobby_SRCS
@@ -82,6 +83,22 @@ sqadsprototypes.cpp
 History.cpp
 HistoryDialog.cpp
 )
+
+if(MINGW)
+if(BUILDBOT)
+SET(WINDRES_BINARY mingw32-windres)
+else(BUILDBOT)
+SET(WINDRES_BINARY windres.exe)
+endif(BUILDBOT)
+# resource compilation for mingw
+ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/qtlobby_rc.o
+COMMAND ${WINDRES_BINARY} -I${CMAKE_CURRENT_SOURCE_DIR}
+-i ${CMAKE_CURRENT_BINARY_DIR}/qtlobby.rc
+-o ${CMAKE_CURRENT_BINARY_DIR}/qtlobby_rc.o)
+SET(qtlobby_SRCS ${qtlobby_SRCS} ${CMAKE_CURRENT_BINARY_DIR}/qtlobby_rc.o)
+else(MINGW)
+SET(qtlobby_SRCS ${qtlobby_SRCS} qtlobby.rc)
+endif(MINGW)
 
 set(qtlobby_SRCS_H 
 AbstractChannel.h
