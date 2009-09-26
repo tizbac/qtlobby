@@ -3,6 +3,8 @@
 #include "AbstractChannel.h"
 #include "PathManager.h"
 #include "ServerProfilesModel.h"
+#include "Users.h"
+#include "MainWindow.h"
 
 AbstractChannel::AbstractChannel( QString name, QObject * parent ) : AbstractLobbyTab( parent ) {
     setObjectName( name );
@@ -73,24 +75,64 @@ bool AbstractChannel::executeChannelInput( QString input ) {
         ret.attributes << inputList;
     } else if ( QString( "/h,/help" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
         ret.name = "CLIENTMSG";
-        QString row( "<tr><td style=\"padding:0;border:none;\">%1</td><td style=\"padding:0;border:none;\">%2</td></tr>" );
+        QString row( "<tr><td style=\"padding:0;padding-right: 10px;border:none;\">%1</td><td style=\"padding:0;border:none;\">%2</td></tr>" );
         ret.attributes << objectName() << tr("Chat Help").append(" <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">%1</table>" ).arg(
                 row.arg( "/help, /h", tr( "Display this help" ) ) +
                 row.arg( "/channels, /list", tr( "Display channel list" ) ) +
-                row.arg( "/join, /j &lt;channel&gt;", tr( "Join channel" ) ) +
-                row.arg( "/j &lt;channel&gt; &lt;password&gt;", tr( "Join password protected channel" ) ) +
-                row.arg( "/j &lt;channel1&gt; &lt;password1&gt;, &lt;channel2&gt; ...  ", tr( "Join multiple channels" ) ) +
+                row.arg( "/join, /j - &lt;channel&gt; [&lt;password&gt; &lt;channel2&gt; &lt;password2&gt; ... ]",tr( "Join channel(s)" ) ) +
                 row.arg( "/me &lt;text&gt;", tr( "Say highlighted" ) ) +
                 row.arg( "/sayver", tr( "Say /me is using QtLobby vXXX revYYY" ) ) +
                 row.arg( "/slap &lt;user&gt;", tr( "Say the mIRC slap sentence" ) ) +
                 row.arg( "/query, /msg &lt;user&gt;", tr( "Open private chat" ) ) +
-                row.arg( "/leave, /wc", tr( "Leave the channel" ) )
+                row.arg( "/leave, /wc", tr( "Leave the channel" ) ) +
+                row.arg( "/away,/back", tr( "Toggles away mode" ) ) +
+                row.arg( "/rename &lt;new username&gt;", tr( "Renames account" ) ) +
+                row.arg( "/changepassword,/chpw &lt;old password&gt; &lt;new password&gt;", tr( "Change your account password" ) )
                 );
         receiveCommand( ret );
         return true;
-    } else if ( QString( "/ingame" ).split( "," ).contains( firstWord, Qt::CaseInsensitive ) ) {
+    } else if ( firstWord.toLower() == "/ingame" ) {
         ret.name = "GETINGAMETIME";
         ret.attributes << inputList;
+    } else if ( firstWord.toLower() == "/ring" ) {
+        ret.name = "RING";
+        ret.attributes << inputList;
+    } else if ( firstWord.toLower() == "/ip" ) {
+        ret.name = "GETIP";
+        ret.attributes << inputList;
+    } else if ( firstWord.toLower() == "/lastlogin" ) {
+        ret.name = "GETLASTLOGINTIME";
+        ret.attributes << inputList;
+    } else if ( firstWord.toLower() == "/findip" ) {
+        ret.name = "FINDIP";
+        ret.attributes << inputList;
+    } else if ( firstWord.toLower() == "/lastip" ) {
+        ret.name = "LASTIP";
+        ret.attributes << inputList;
+    } else if ( firstWord.toLower() == "/away" ) {
+        User me = Users::getCurrentUsers()->getUser(ServerProfilesModel::getInstance()->getActiveProfile().userName());
+        me.userState.setAway(true);
+        Users::getCurrentUsers()->onMyStateChanged(me);
+        return true;
+    } else if ( firstWord.toLower() == "/back" ) {
+        User me = Users::getCurrentUsers()->getUser(ServerProfilesModel::getInstance()->getActiveProfile().userName());
+        me.userState.setAway(false);
+        Users::getCurrentUsers()->onMyStateChanged(me);
+        return true;
+    } else if ( firstWord.toLower() == "/rename" ) {
+        ConnectionWidget* cw = MainWindow::getInstance()->getConnectionDialog();
+        if(inputList.size())
+            cw->showRename(inputList.takeFirst());
+        else
+            cw->showRename(QString());
+        return true;
+    } else if ( firstWord.toLower() == "/changepassword" || firstWord.toLower() == "/chpw" ) {
+        ConnectionWidget* cw = MainWindow::getInstance()->getConnectionDialog();
+        if(inputList.size() >= 2)
+            cw->showChangePassword(inputList[0], inputList[1]);
+        else
+            cw->showChangePassword(QString(), QString());
+        return true;
     } else
         return false;
     emit sendCommand( ret );

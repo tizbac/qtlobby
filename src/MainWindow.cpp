@@ -663,3 +663,7 @@ void MainWindow::copyUsualLayoutToBattle() {
 HistoryDialog* MainWindow::getHistoryDialog() {
     return historyDialog;
 }
+
+ConnectionWidget* MainWindow::getConnectionDialog() {
+    return connectionWidget;
+}

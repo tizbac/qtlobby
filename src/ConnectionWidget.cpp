@@ -186,21 +186,6 @@ void ConnectionWidget::logWrite( QString l ) {
     connectionLogTextBrowser->append( time + l );
 }
 
-//// once the new profile wizzard is working, we can remove this code (js)
-//void ConnectionWidget::addDefaultServers() {
-//    QList<QVariant> list = settings->value( "ServerProfiles" ).toList();
-//    if ( list.size() > 0 )
-//        return;
-//
-//    QUrl url;
-//    url.setHost( "taspring.clan-sy.com" );
-//    url.setPort( 8200 );
-//    url.setUserName( "qtlobby" );
-//
-//    list.append( url );
-//    settings->setValue( "ServerProfiles", list );
-//}
-
 // after a modification of a server profile we have to reload the
 // combobox with the new entries. in the profile editor we also need
 // to update the selected profile's settings
@@ -299,9 +284,18 @@ void ConnectionWidget::renameLoginName() {
 }
 
 void ConnectionWidget::renameLoginNameFeedbackSuccess( QString newName ) {
-    QString renameString = QString( tr("Please change your new name to %1 and reconnect to the server.") )
-                           .arg( newName );
-    QMessageBox::information( this, tr("Rename success"), renameString );
+    ServerProfilesModel::getInstance()->changeActiveProfileName(newName);
+    QModelIndex index = ServerProfilesModel::getInstance()->getActiveProfileIndex();
+    profilesListView->setCurrentIndex(index);
+    comboBoxCurrentIndexChanged(index,index);
+    countdownTimer = new QTimer(this);
+    countdownDialog = new QProgressDialog(tr("Connecting..."),tr("Cancel"),0,0,this);
+    countdownDialog->setValue(0);
+    countdownDialog->setWindowModality(Qt::WindowModal);
+    countdownDialog->setLabelText(tr("Wait 5 seconds to connect again with new username"));
+    countdownDialog->show();
+    QTimer::singleShot(5000, this, SLOT(establishConnection()));
+    QTimer::singleShot(5000, countdownDialog, SLOT(hide()));
 }
 
 void ConnectionWidget::renameLoginNameFeedbackFailure( QString failureMsg ) {
@@ -315,9 +309,10 @@ void ConnectionWidget::changePassword() {
         QMessageBox::critical( this, tr("Different password"), tr("Passwords you entered are different! Try again please.") );
         return;
     }
-    QString newPassword = newPasswordTry1LineEdit->text();
+    newPassword = newPasswordTry1LineEdit->text();
     if (( newPassword == "" ) || ( newPassword == oldPassword ) )
         return;
+
     QString a = serverContextState->encodePassword( oldPassword );
     QString b = serverContextState->encodePassword( newPassword );
     serverContextState->sendMessage( QString( "CHANGEPASSWORD %1 %2" )
@@ -326,12 +321,15 @@ void ConnectionWidget::changePassword() {
 }
 
 void ConnectionWidget::changePasswordSuccess( QString pwString ) {
-    QMessageBox::information( this, tr("Password change success"), pwString );
-    //FIXME add direct modificator to profiles
+    ServerProfilesModel::getInstance()->changeActiveProfilePassword(newPassword);
+    QModelIndex index = ServerProfilesModel::getInstance()->getActiveProfileIndex();
+    profilesListView->setCurrentIndex(index);
+    comboBoxCurrentIndexChanged(index,index);
+    QMessageBox::information( this, tr("Password change was successfull"), pwString );
 }
 
 void ConnectionWidget::changePasswordFailure( QString pwString ) {
-    QMessageBox::critical( this, tr("Password change error"), pwString );
+    QMessageBox::critical( this, tr("Password change failed"), pwString );
 }
 
 void ConnectionWidget::toggleRememberPassword(bool /*checked*/) {
@@ -475,4 +473,22 @@ void ConnectionWidget::registrationFailFeedback(QString info) {
 
 void ConnectionWidget::serverContextStateLoopback(QString message) {
     registrationServerContextState->receiveCommand(Command(message));
+}
+
+void ConnectionWidget::showRename(QString newLogin) {
+    tabWidget->setCurrentIndex(2);
+    newUsernameLineEdit->setText(newLogin);
+    renameButton->setFocus();
+    show();
+    activateWindow();
+}
+
+void ConnectionWidget::showChangePassword(QString old, QString newPassword) {
+    tabWidget->setCurrentIndex(2);
+    oldPasswordLineEdit->setText(old);
+    newPasswordTry1LineEdit->setText(newPassword);
+    newPasswordTry2LineEdit->setText(newPassword);
+    changePasswordButton->setFocus();
+    show();
+    activateWindow();
 }

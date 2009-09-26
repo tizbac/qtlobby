@@ -29,19 +29,25 @@ class ConnectionWidget : public QDialog, public Ui::ConnectionWidget {
 public:
     ConnectionWidget( ServerContextState*, QWidget *parent = 0 );
     ~ConnectionWidget();
+    void showRename(QString newLogin);
+    void showChangePassword(QString old, QString newPassword);
 signals:
     void establishConnection_();
 public slots:
+    void establishConnection();
+    void createNewProfile();
+    void delSelectedProfile();
+    void registerNewAccount();
+    void saveModifiedProfile();
+protected:
+    void keyPressEvent(QKeyEvent* event);
+    void hideEvent(QHideEvent* event);
+private slots:
     void show_if_wanted();
     void logWrite( QString );
     void toggleAutoLogin(bool checked);
     void toggleRememberPassword(bool checked);
-    void establishConnection();
-//    void addDefaultServers();
     void comboBoxCurrentIndexChanged(QModelIndex current, QModelIndex previous);
-    void createNewProfile();
-    void delSelectedProfile();
-    void registerNewAccount();
     void renameLoginNameFeedbackSuccess(QString);
     void renameLoginNameFeedbackFailure(QString);
     void registrationSuccessFeedback(QString);
@@ -51,11 +57,6 @@ public slots:
     void onLogin();
     void establishSimpleConnection();
     void simpleViewChanged();
-    void saveModifiedProfile();
-protected:
-    void keyPressEvent(QKeyEvent* event);
-    void hideEvent(QHideEvent* event);
-private slots:
     void on_simpleAutologinChechbox_toggled(bool checked);
     void on_profilePortSpinBox_valueChanged(int );
     void on_profileServerAddressLineEdit_textChanged(QString );
@@ -77,6 +78,7 @@ private:
     QUrl simpleUrl;
     QUrl configuration;
     ServerContextState* registrationServerContextState;
+    QString newPassword;
 
     void lockInterface();
     void unlockInterface();

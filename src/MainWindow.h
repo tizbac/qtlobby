@@ -47,6 +47,7 @@ class MainWindow : public QMainWindow, public Singleton<MainWindow>, private Ui:
     friend class Singleton<MainWindow>;
 public:
     HistoryDialog* getHistoryDialog();
+    ConnectionWidget* getConnectionDialog();
 
     QProcess qpSpring;
     QProcess qpSpringSetting;

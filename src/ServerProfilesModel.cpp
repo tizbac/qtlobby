@@ -126,6 +126,7 @@ QUrl ServerProfilesModel::parseUrl(const QString& str) {
 
 void ServerProfilesModel::setActiveProfile(const QModelIndex& profile) {
     m_active = m_profiles[profile.row()];
+    m_activeIndex = profile;
 }
 
 void ServerProfilesModel::setActiveProfile(const QUrl& url) {
@@ -134,4 +135,20 @@ void ServerProfilesModel::setActiveProfile(const QUrl& url) {
 
 QUrl ServerProfilesModel::getActiveProfile() {
     return m_active;
+}
+
+void ServerProfilesModel::changeActiveProfileName(QString newname) {
+    m_profiles[m_activeIndex.row()].setUserName(newname);
+    save();
+    emit dataChanged(m_activeIndex, m_activeIndex);
+}
+
+void ServerProfilesModel::changeActiveProfilePassword(QString password) {
+    m_profiles[m_activeIndex.row()].setPassword(password);
+    save();
+    emit dataChanged(m_activeIndex, m_activeIndex);
+}
+
+QModelIndex ServerProfilesModel::getActiveProfileIndex() {
+    return m_activeIndex;
 }

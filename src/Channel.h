@@ -29,6 +29,8 @@ private:
     bool showJoinLeaveDefault;
     bool isDefault;
     bool uiSetup;
+    QStringList muteList;
+    bool collectingMuteList;
 };
 
 #endif

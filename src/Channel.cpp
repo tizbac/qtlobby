@@ -24,6 +24,7 @@ void Channel::setupUi( QWidget * tab ) {
     channelTextBrowser->setEnableJoinLeave(showJoinLeave);
     channelTextBrowser->setEnableJoinLeaveDefault(showJoinLeaveDefault);
     uiSetup = true;
+    collectingMuteList = false;
 }
 
 void Channel::receiveCommand( Command command ) {
@@ -34,9 +35,9 @@ void Channel::receiveCommand( Command command ) {
             QString userName = command.attributes.takeFirst();
             if(!UserGroupList::getInstance()->getIgnore(userName)) {
                 insertLine( flag( userName ) + line
-                    .arg( "&lt;%1&gt; %2" )
-                    .arg( userNameLink( userName ) )
-                    .arg( processInput(command.attributes.join( " " ))));
+                            .arg( "&lt;%1&gt; %2" )
+                            .arg( userNameLink( userName ) )
+                            .arg( processInput(command.attributes.join( " " ))));
             }
         }
     } else if ( command.name == "SAIDEX" ) {
@@ -44,18 +45,18 @@ void Channel::receiveCommand( Command command ) {
             QString userName = command.attributes.takeFirst();
             if(!UserGroupList::getInstance()->getIgnore(userName)) {
                 insertLine( flag( userName ) + line
-                    .arg( "<span style=\"color:magenta;\">* %1 %2</span>" )
-                    .arg( userNameLink( userName ) )
-                    .arg( processInput(command.attributes.join( " " ), false)));
+                            .arg( "<span style=\"color:magenta;\">* %1 %2</span>" )
+                            .arg( userNameLink( userName ) )
+                            .arg( processInput(command.attributes.join( " " ), false)));
             }
         }
     } else if ( command.name == "JOINED"  && (historyMode || showJoinLeave) ) {
         if ( command.attributes.takeFirst() == objectName() ) {
             QString userName = command.attributes.takeFirst();
             insertLine( flag( userName ) + line
-                    .arg( "<span style=\"color:darkgreen;\">%1</span>" )
-                    .arg( tr( "** %1 joined the channel." ) )
-                    .arg( userNameLink( userName ) ) );
+                        .arg( "<span style=\"color:darkgreen;\">%1</span>" )
+                        .arg( tr( "** %1 joined the channel." ) )
+                        .arg( userNameLink( userName ) ) );
         }
     } else if ( command.name == "LEFT" && (historyMode || showJoinLeave)) {
         if ( command.attributes.takeFirst() == objectName()) {
@@ -104,6 +105,26 @@ void Channel::receiveCommand( Command command ) {
                        .arg("<span style=\"color: #5673a4;\">** %1</span>")
                        .arg( processInput(msg) ));
         }
+    } else if ( command.name == "MUTELISTBEGIN" ) {
+        if (command.attributes.takeFirst() == objectName()) {
+            muteList.clear();
+            collectingMuteList = true;
+        }
+    } else if ( command.name == "MUTELIST" ) {
+        if (collectingMuteList) {
+            QString msg = command.attributes.join(" ");
+            muteList << msg;
+        }
+    } else if ( command.name == "MUTELISTEND" ) {
+        if (collectingMuteList) {
+            QString text = "<span style=\"color: #5673a4;\">** Mute list for this channel</span><div style=\"color: #5673a4;\"><ul>";
+            foreach(QString line, muteList) {
+                text += "<li>" + line + "</li>";
+            }
+            text += "</ul></div>";
+            insertLine(text);
+            collectingMuteList = false;
+        }
     }
 }
 
@@ -128,6 +149,25 @@ void Channel::receiveInput( QString input ) {
     } else if ( firstWord.toLower() == "/sayver" ) {
         ret.name = "SAYEX";
         ret.attributes << objectName() << QString("is using QtLobby v%1 rev %2").arg(QTLOBBY_VERSION).arg(SVN_REV);
+    } else if ( firstWord.toLower() == "/kick" ) {
+        ret.name = "FORCELEAVECHANNEL";
+        ret.attributes << objectName() << inputList;
+    } else if ( firstWord.toLower() == "/topic" ) {
+        ret.name = "CHANNELTOPIC";
+        ret.attributes << objectName() << inputList.join(" ");
+    } else if ( firstWord.toLower() == "/chanmsg" ) {
+        ret.name = "CHANNELMESSAGE";
+        ret.attributes << objectName() << inputList.join(" ");
+    } else if ( firstWord.toLower() == "/mute" ) {
+        ret.name = "MUTE";
+        if(inputList.size() == 1) inputList.append("0");
+        ret.attributes << objectName() << inputList;
+    } else if ( firstWord.toLower() == "/unmute" ) {
+        ret.name = "UNMUTE";
+        ret.attributes << objectName() << inputList;
+    } else if ( firstWord.toLower() == "/mutelist" ) {
+        ret.name = "MUTELIST";
+        ret.attributes << objectName();
     } else {
         ret.name = "SAY";
         ret.attributes << objectName() << input;
