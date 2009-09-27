@@ -54,10 +54,6 @@ protected:
 
     ChannelTextBrowser * channelTextBrowser;
     QGridLayout * gridLayout;
-    QIcon activeIcon;
-    QIcon inactiveIcon;
-    QColor activeTextColor;
-    QColor inactiveTextColor;
     bool historyMode;
     QDateTime historyDateTime;
     QDateTime previous;

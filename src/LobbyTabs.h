@@ -11,6 +11,8 @@
 #include <QToolButton>
 #include <QTimer>
 #include <QDebug>
+#include <QStandardItemModel>
+#include <QStandardItem>
 
 #include "AbstractStateClient.h"
 #include "Battles.h"
@@ -26,11 +28,12 @@ class MainWindow;
 class LobbyTabs : public AbstractStateClient {
     Q_OBJECT
 public:
-    LobbyTabs( QObject * parent = 0, Battles* battles = 0, UnitSyncLib* unitSyncLib = 0, QTabBar* tabBar = 0, QStackedWidget * lobbyStackedWidget = 0 );
+    LobbyTabs( QObject * parent = 0, Battles* battles = 0, UnitSyncLib* unitSyncLib = 0, QTreeView* tabTreeView = 0, QStackedWidget * lobbyStackedWidget = 0 );
     ~LobbyTabs();
     //contains all tabs with their individual functionality
     QList<AbstractLobbyTab *> lobbyTabList;
     QStringList getChannelList();
+    void activateChannel(AbstractLobbyTab* channel);
 
 signals:
     //outgoing commands to commandAssigner
@@ -41,51 +44,54 @@ signals:
     void blockInput(bool b);
 
 public slots:
-    //sets the internal state occording the global connection state
     void connectionStateChanged( ConnectionState connectionState );
-    //incoming commands from commandAssigner
     void receiveCommand( Command command );
-    //incoming commands from inputLineEdit
-        // this description is not true (jd)
     void receiveInput( QString input, bool focus = false );
     void receiveInputAndFocus( QString input );
-    //receives commands to be sent to commandAssigner
     void sendCommandSlot( Command command );
-    //sets the tab icon and emits the update signal for the user list
-    void currentTabChangedSlot( int index );
-    //close tab
-    void closeTab(int i);
-    void closeTab();
+    void closeTab(AbstractLobbyTab* tab = 0);
     void onCloseBattleChannel();
-    void onTabMoved( int from, int to );
     void onEnableJoinLeaveDefault(bool b);
     void onMapsModsReload();
     void onBattleHosted(int id);
 
+private slots:
+    void channelActivated(const QModelIndex & index);
+
 private:
-    //last tab index
-    int lastIndex;
+    //last tab
+    AbstractLobbyTab* lastTab;
+    AbstractLobbyTab* currentTab;
     //users and battles will acces this and update
     BattleChannel* battleChannel;
+    InfoChannel* infoChannel;
     //this is for displaying the lobbyTabs
-    QTabBar* tabBar;
+    QTreeView* tabTreeView;
     QStackedWidget* lobbyStackedWidget;
     QList<QWidget*> widgets;
     Battles* battles;
     UnitSyncLib* unitSyncLib;
     QString myUserName;
     QMap<QString, QString> userNameCountryCodeMap;
+    bool showJoinLeaveDefault;
+
     //adds a new tab to lobbyTabWidget and lobbyTabList
     void createLobbyTab( AbstractLobbyTab * lobbyTab, bool focus = false );
     //refreshes the tab icon, needed when the unfocused channels get changed
-    void setTabIcon( int index );
+    //void setTabIcon( int index );
     //void updateCloseTabState();
     // opens an empty private channel if not existing
     void privateChannelOpen( QString userName, bool popup = false );
     //needed to delegate the input to the active channel
     AbstractLobbyTab * getActiveLobbyTab();
     int mapToLobbyTabs(int index);
-    bool showJoinLeaveDefault;
+
+    QStandardItemModel* model;
+    QStandardItem* battle;
+    QStandardItem* channels;
+    QStandardItem* privates;
+
+    QAction* closeChannelAction;
 };
 
 #endif

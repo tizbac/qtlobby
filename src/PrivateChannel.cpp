@@ -6,7 +6,6 @@
 #include "config.h"
 
 PrivateChannel::PrivateChannel( QString name, QObject * parent ) : AbstractChannel( name, parent ) {
-    activeIcon = QIcon( P("icons/userchat.xpm") );
     notify = Notification::getInstance();
 }
 

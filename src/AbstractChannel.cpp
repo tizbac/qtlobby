@@ -8,10 +8,7 @@
 
 AbstractChannel::AbstractChannel( QString name, QObject * parent ) : AbstractLobbyTab( parent ) {
     setObjectName( name );
-    activeIcon = QIcon( P("icons/channel.xpm") );
-    inactiveIcon = QIcon( P("icons/channel_unread.xpm") );
-    activeTextColor = QColor("black");
-    inactiveTextColor = QColor("green");
+    isActive = false;
     historyMode = false;
     inlineHistoryMode = false;
     previous = QDateTime::currentDateTime();
@@ -39,10 +36,8 @@ void AbstractChannel::setupUi( QWidget * channelTabWidget ) {
 
 void AbstractChannel::setActive( bool isActive ) {
     this->isActive = isActive;
-    if ( isActive ) {
-        icon = activeIcon;
-        color = activeTextColor;
-    }
+    if(isActive)
+        item->setData(QVariant(), Qt::ForegroundRole);
 }
 
 bool AbstractChannel::executeChannelInput( QString input ) {
@@ -177,8 +172,7 @@ void AbstractChannel::insertLine( QString line ) {
     }
     scrollToMaximum();
     if ( !isActive ) {
-        icon = inactiveIcon;
-        color = inactiveTextColor;
+        item->setData(QBrush(Qt::green), Qt::ForegroundRole);
     }
 }
 

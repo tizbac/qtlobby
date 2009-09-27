@@ -28,6 +28,7 @@ public:
     void refreshMapAndModOptions();
     ~BattleChannel();
     bool isBlocked() const;
+    void setItem(QStandardItem* item);
 
 signals:
     void playSample( SampleCollection sample );
@@ -74,5 +75,10 @@ private:
 protected:
     Battles* battles;
 };
+
+inline void BattleChannel::setItem(QStandardItem* item) {
+    AbstractLobbyTab::setItem(item);
+    item->setText(getTabTitle());
+}
 
 #endif

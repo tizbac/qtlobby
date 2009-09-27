@@ -6,7 +6,7 @@
 AbstractLobbyTab::AbstractLobbyTab( QObject * parent ) {
     this->setParent( parent );
     isActive = false;
-    currentWidget = 0;
+    widget = 0;
     currentTabIndex = -1;
     userNameCountryCodeMap = 0;
 }

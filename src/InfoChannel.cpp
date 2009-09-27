@@ -1,11 +1,8 @@
 // $Id$
 // QtLobby released under the GPLv3, see COPYING for details.
 #include "InfoChannel.h"
-#include "PathManager.h"
 
 InfoChannel::InfoChannel( QString name, QObject * parent ) : AbstractChannel( name, parent ) {
-    activeIcon = QIcon( P("icons/chanop.xpm") );
-    inactiveIcon = QIcon( P("icons/chanop.xpm") );
 }
 
 InfoChannel::~InfoChannel() {}

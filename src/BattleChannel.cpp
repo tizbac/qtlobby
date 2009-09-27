@@ -43,7 +43,6 @@ BattleChannel::BattleChannel( QString id, Battles* battles, QObject * parent ) :
     m_battle = battles->battleManager->getBattle( id.toInt() );
     //setObjectName(m_battle.founder);
     battleWindowForm = new Ui::BattleWindowForm();
-    activeIcon = QIcon( P("icons/battle.xpm") );
     mapOverviewDialog = new MapOverviewDialog();
     loader = new MapInfoLoader(this);
     noMapUpdates = false;

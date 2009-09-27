@@ -133,7 +133,9 @@ void InputLine::returnPressed() {
     emit returnPressed();
 }
 
-void InputLine::onTabChanged(int index) {
+void InputLine::onChannelActivated(QModelIndex modelIndex) {
+    //we assume that number of chanels/privates ofr a user will be < 1000000 and generate unique number describing a channel or private
+    int index = modelIndex.parent().row() * 1000000 + modelIndex.row();
     buffers[currentIndex] = text();
     clear();
     if (buffers.contains(index))

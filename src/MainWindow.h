@@ -77,7 +77,6 @@ private:
     DownloadsDialog* downloadsDialog;
     HistoryDialog* historyDialog;
 
-    QTabBar* tabBar;
     QToolButton* newTabButton;
     QLabel* battlesOnline;
     QLabel* usersOnline;
@@ -105,6 +104,7 @@ protected:
     void hideEvent(QHideEvent * event);
     void showEvent(QShowEvent * event);
 private slots:
+    void on_joinToolButton_clicked();
     void on_actionDownloads_triggered();
     void on_hostPushButton_clicked( bool closeFirst = false );
     void on_actionScripting_triggered();
@@ -121,13 +121,12 @@ private slots:
     void startSpringSettings();
     void showStylesheetEditor();
     void onCurrentChanged(const QModelIndex & current, const QModelIndex & previous);
-    void onCurrentTabChanged();
+    void onChannelActivated();
     void onTeamPlayerSpecCountChanged(QString ratio);
     void onStatsChange(int users, int moderators);
     void onStatsChange(int battles);
     void connectionStatusChanged(ConnectionState);
     void onBlockInput(bool b);
-    void onJoinRequested();
     void onServerSpringVersion(QString);
     void onChangedToBattleTab();
     void onChangedFromBattleTab();

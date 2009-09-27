@@ -29,11 +29,11 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     setupUi( this );
     //QWidget* titleBarWidget =
     //tabsDockWidget->titleBarWidget()->hide();
-    QWidget* hidden = new QWidget(tabsDockWidget);
+    /*QWidget* hidden = new QWidget(tabsDockWidget);
     tabsDockWidget->setTitleBarWidget(hidden);
     hidden->hide();
     tabsDockWidget->setMaximumHeight(tabsDockWidget->sizeHint().height());
-    tabsDockWidget->setMinimumHeight(tabsDockWidget->sizeHint().height());
+    tabsDockWidget->setMinimumHeight(tabsDockWidget->sizeHint().height());*/
     //delete titleBarWidget;
     users->setTextElideMode(Qt::ElideRight);
     battles->setTextElideMode(Qt::ElideRight);
@@ -43,8 +43,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     serverContextState  = new ServerContextState( this );
     connectionWidget    = new ConnectionWidget( serverContextState );
     connectionWidget->setWindowFlags(Qt::Window);
-    setupToolbar();
-    lobbyTabs           = new LobbyTabs( this, battles, UnitSyncLib::getInstance(), tabBar, lobbyStackedWidget );
+    //setupToolbar();
+    lobbyTabs           = new LobbyTabs( this, battles, UnitSyncLib::getInstance(), channelsTreeView, lobbyStackedWidget );
     commandAssigner     = new CommandAssigner();
     //statusTracker       = new StatusTracker( statusbar );
     //    mapSelector         = new MapSelector();
@@ -170,7 +170,7 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     connect( users, SIGNAL(statsChange(int,int)),
              this, SLOT(onStatsChange(int,int)));
     connect( users, SIGNAL(statsChange(int,int)),
-             this, SLOT(onCurrentTabChanged()));
+             this, SLOT(onChannelActivated()));
     connect( battles, SIGNAL(statsChange(int)),
              this, SLOT(onStatsChange(int)));
 
@@ -181,10 +181,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
              this, SLOT( onChangedToBattleTab()) );
     connect( lobbyTabs, SIGNAL(changedFromBattleTab()),
              this, SLOT( onChangedFromBattleTab()) );
-    connect( tabBar, SIGNAL(tabMoved(int,int)),
-             lobbyTabs, SLOT(onTabMoved(int,int)));
-    connect( tabBar, SIGNAL(currentChanged(int)),
-             this, SLOT(onCurrentTabChanged()));
+    connect( channelsTreeView, SIGNAL(activated(QModelIndex)),
+             this, SLOT(onChannelActivated()));
     closeTab = new QShortcut(QKeySequence(QKeySequence::Close), this);
     connect( closeTab, SIGNAL( activated() ),
              lobbyTabs, SLOT( closeTab() ) );
@@ -212,8 +210,8 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
 
     connect( inputLineEdit, SIGNAL( sendInput( QString ) ),
              lobbyTabs, SLOT( receiveInput( QString ) ) );
-    connect (tabBar, SIGNAL(currentChanged(int)),
-             inputLineEdit, SLOT(onTabChanged(int)));
+    connect (channelsTreeView, SIGNAL(activated(QModelIndex)),
+             inputLineEdit, SLOT(onChannelActivated(QModelIndex)));
 
     // regular expresion line edits
     connect( userListLineEdit, SIGNAL( textChanged( QString ) ),
@@ -278,9 +276,9 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     QSettings* s = Settings::Instance();
     //Default states for main window and docks
     if (!s->contains("mainwindow/geometry")) {
-        s->setValue("mainwindow/geometry", QVariant("\\x1\\xd9\\xd0\\xcb\\0\\x1\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\x4\\xff\\0\\0\\x3\\xd6\\0\\0\\0\\0\\0\\0\\0\\0\\xff\\xff\\xff\\xfe\\xff\\xff\\xff\\xfe\\0\\0\\0\\0\\x2\\0"));
-        s->setValue("mainwindow/state", QVariant("\\0\\0\\0\\xff\\0\\0\\0\\0\\xfd\\0\\0\\0\\x3\\0\\0\\0\\x1\\0\\0\\x1\\v\\0\\0\\x2T\\xfc\\x2\\0\\0\\0\\x1\\xfb\\0\\0\\0$\\0u\\0s\\0\\x65\\0r\\0L\\0i\\0s\\0t\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0H\\0\\0\\x2T\\0\\0\\0\\x96\\x1\\0\\0\\x2\\0\\0\\0\\x2\\0\\0\\x5\\0\\0\\0\\0+\\xfc\\x1\\0\\0\\0\\x2\\xfb\\0\\0\\0\\x1c\\0t\\0\\x61\\0\\x62\\0s\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\0\\0\\0\\x5\\0\\0\\0\\x4\\x3\\x1\\0\\0\\x5\\xfb\\0\\0\\0\\x14\\0\\x64\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\0\\0\\0\\x3p\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\x3\\0\\0\\x5\\0\\0\\0\\x1\\v\\xfc\\x1\\0\\0\\0\\x2\\xfb\\0\\0\\0(\\0\\x62\\0\\x61\\0t\\0t\\0l\\0\\x65\\0L\\0i\\0s\\0t\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\0\\0\\0\\x3\\xf6\\0\\0\\x1v\\x1\\0\\0\\x5\\xfb\\0\\0\\0(\\0\\x62\\0\\x61\\0t\\0t\\0l\\0\\x65\\0I\\0n\\0\\x66\\0o\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\x3\\xf9\\0\\0\\x1\\a\\0\\0\\0N\\x1\\0\\0\\x5\\0\\0\\x3\\xf2\\0\\0\\x2T\\0\\0\\0\\x4\\0\\0\\0\\x4\\0\\0\\0\\b\\0\\0\\0\\b\\xfc\\0\\0\\0\\x1\\0\\0\\0\\x2\\0\\0\\0\\0"));
-        s->setValue("mainwindow/battlestate", QVariant("\\0\\0\\0\\xff\\0\\0\\0\\0\\xfd\\0\\0\\0\\x3\\0\\0\\0\\0\\0\\0\\x1\\xd2\\0\\0\\x2?\\xfc\\x2\\0\\0\\0\\x1\\xfb\\0\\0\\0$\\0u\\0s\\0\\x65\\0r\\0L\\0i\\0s\\0t\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\x38\\0\\0\\x2?\\0\\0\\0\\x96\\x1\\0\\0\\x2\\0\\0\\0\\x2\\0\\0\\x5\\0\\0\\0\\0\\xa6\\xfc\\x1\\0\\0\\0\\x1\\xfb\\0\\0\\0\\x14\\0\\x64\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\0\\0\\0\\x3p\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\x3\\0\\0\\x5\\0\\0\\0\\x1\\x30\\xfc\\x1\\0\\0\\0\\x2\\xfb\\0\\0\\0(\\0\\x62\\0\\x61\\0t\\0t\\0l\\0\\x65\\0L\\0i\\0s\\0t\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\0\\0\\0\\x3\\x93\\0\\0\\x1v\\x1\\0\\0\\x5\\xfb\\0\\0\\0(\\0\\x62\\0\\x61\\0t\\0t\\0l\\0\\x65\\0I\\0n\\0\\x66\\0o\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\x3\\x96\\0\\0\\x1j\\0\\0\\0N\\x1\\0\\0\\x5\\0\\0\\x3+\\0\\0\\x2?\\0\\0\\0\\x4\\0\\0\\0\\x4\\0\\0\\0\\b\\0\\0\\0\\b\\xfc\\0\\0\\0\\x1\\0\\0\\0\\x2\\0\\0\\0\\x1\\0\\0\\0\\x16\\0t\\0\\x61\\0\\x62\\0s\\0T\\0o\\0o\\0l\\0\\x42\\0\\x61\\0r\\x1\\0\\0\\0\\0\\xff\\xff\\xff\\xff\\0\\0\\0\\0\\0\\0\\0\\0"));
+        s->setValue("mainwindow/geometry", QVariant("\\x1\\xd9\\xd0\\xcb\\0\\x1\\0\\0\\0\\0\\0_\\0\\0\\0\\x1d\\0\\0\\x4\\x37\\0\\0\\x2\\xd1\\0\\0\\0\\x63\\0\\0\\0\\x36\\0\\0\\x4\\x33\\0\\0\\x2\\xcd\\0\\0\\0\\0\\0\\0"));
+        s->setValue("mainwindow/state", QVariant("\\0\\0\\0\\xff\\0\\0\\0\\0\\xfd\\0\\0\\0\\x4\\0\\0\\0\\0\\0\\0\\0\\x8a\\0\\0\\x1\\x9a\\xfc\\x2\\0\\0\\0\\x1\\xfb\\0\\0\\0$\\0\\x43\\0h\\0\\x61\\0n\\0n\\0\\x65\\0l\\0s\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\x17\\0\\0\\x1\\x9a\\0\\0\\0z\\x1\\0\\0\\x2\\0\\0\\0\\x1\\0\\0\\0\\xce\\0\\0\\x1\\x9a\\xfc\\x2\\0\\0\\0\\x1\\xfb\\0\\0\\0$\\0u\\0s\\0\\x65\\0r\\0L\\0i\\0s\\0t\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\x17\\0\\0\\x1\\x9a\\0\\0\\0\\x92\\x1\\0\\0\\x2\\0\\0\\0\\x2\\0\\0\\x4\\xe3\\0\\0\\0z\\xfc\\x1\\0\\0\\0\\x2\\xfb\\0\\0\\0\\x1c\\0t\\0\\x61\\0\\x62\\0s\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\0\\0\\0\\x4\\xe3\\0\\0\\0\\0\\0\\0\\0\\0\\xfb\\0\\0\\0\\x14\\0\\x64\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\0\\0\\0\\x3p\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\x3\\0\\0\\x3\\xd1\\0\\0\\0\\xd0\\xfc\\x1\\0\\0\\0\\x2\\xfb\\0\\0\\0(\\0\\x62\\0\\x61\\0t\\0t\\0l\\0\\x65\\0L\\0i\\0s\\0t\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\0\\0\\0\\x2\\xe5\\0\\0\\x1N\\x1\\0\\0\\x5\\xfb\\0\\0\\0(\\0\\x62\\0\\x61\\0t\\0t\\0l\\0\\x65\\0I\\0n\\0\\x66\\0o\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\x2\\xe8\\0\\0\\0\\xe9\\0\\0\\0M\\x1\\0\\0\\x5\\0\\0\\x2s\\0\\0\\x1\\x9a\\0\\0\\0\\x4\\0\\0\\0\\x4\\0\\0\\0\\b\\0\\0\\0\\b\\xfc\\0\\0\\0\\x1\\0\\0\\0\\x2\\0\\0\\0\\0"));
+        s->setValue("mainwindow/battlestate", QVariant("\\0\\0\\0\\xff\\0\\0\\0\\0\\xfd\\0\\0\\0\\x4\\0\\0\\0\\0\\0\\0\\0\\x8a\\0\\0\\x1\\x9a\\xfc\\x2\\0\\0\\0\\x1\\xfb\\0\\0\\0$\\0\\x43\\0h\\0\\x61\\0n\\0n\\0\\x65\\0l\\0s\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\x17\\0\\0\\x1\\x9a\\0\\0\\0z\\x1\\0\\0\\x2\\0\\0\\0\\x1\\0\\0\\0\\xce\\0\\0\\x1\\x9a\\xfc\\x2\\0\\0\\0\\x1\\xfb\\0\\0\\0$\\0u\\0s\\0\\x65\\0r\\0L\\0i\\0s\\0t\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\x17\\0\\0\\x1\\x9a\\0\\0\\0\\x92\\x1\\0\\0\\x2\\0\\0\\0\\x2\\0\\0\\x4\\xe3\\0\\0\\0z\\xfc\\x1\\0\\0\\0\\x2\\xfb\\0\\0\\0\\x1c\\0t\\0\\x61\\0\\x62\\0s\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\0\\0\\0\\x4\\xe3\\0\\0\\0\\0\\0\\0\\0\\0\\xfb\\0\\0\\0\\x14\\0\\x64\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\0\\0\\0\\x3p\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\x3\\0\\0\\x3\\xd1\\0\\0\\0\\xd0\\xfc\\x1\\0\\0\\0\\x2\\xfb\\0\\0\\0(\\0\\x62\\0\\x61\\0t\\0t\\0l\\0\\x65\\0L\\0i\\0s\\0t\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\0\\0\\0\\0\\x2\\xe5\\0\\0\\x1N\\x1\\0\\0\\x5\\xfb\\0\\0\\0(\\0\\x62\\0\\x61\\0t\\0t\\0l\\0\\x65\\0I\\0n\\0\\x66\\0o\\0\\x44\\0o\\0\\x63\\0k\\0W\\0i\\0\\x64\\0g\\0\\x65\\0t\\x1\\0\\0\\x2\\xe8\\0\\0\\0\\xe9\\0\\0\\0M\\x1\\0\\0\\x5\\0\\0\\x2s\\0\\0\\x1\\x9a\\0\\0\\0\\x4\\0\\0\\0\\x4\\0\\0\\0\\b\\0\\0\\0\\b\\xfc\\0\\0\\0\\x1\\0\\0\\0\\x2\\0\\0\\0\\0"));
         move(100,50);
     }
     restoreGeometry(s->value("mainwindow/geometry").toByteArray());
@@ -300,7 +298,7 @@ void MainWindow::setupIcons() {
     action_Disconnect->setIcon(QIcon(P("icons/Connect_no.png")));
     action_Exit->setIcon(QIcon(P("icons/Exit.png")));
     actionDownloads->setIcon(QIcon(P("icons/download_map.xpm")));
-    toolBarWidget->ui->joinToolButton->setIcon(QIcon(P("icons/trolltech/plus.png")));
+    joinToolButton->setIcon(QIcon(P("icons/trolltech/plus.png")));
     setWindowIcon(QIcon(P("icons/qtlobby-64x64.png")));
     QApplication::setWindowIcon(QIcon(P("icons/qtlobby-64x64.png")));
 #ifdef Q_WS_WIN
@@ -311,7 +309,7 @@ void MainWindow::setupIcons() {
 }
 
 void MainWindow::setupToolbar() {
-    tabBar = toolBarWidget->ui->tabBar;
+    /*tabBar = toolBarWidget->ui->tabBar;
     newTabButton = toolBarWidget->ui->joinToolButton;
     connect(newTabButton, SIGNAL(clicked()), this, SLOT(onJoinRequested()));
     nextTab = new QShortcut(QKeySequence(QKeySequence::NextChild), this);
@@ -325,7 +323,7 @@ void MainWindow::setupToolbar() {
              this, SLOT( onJoinRequested() ) );
     openNewTab2 = new QShortcut(QKeySequence(QKeySequence::New), this);
     connect( openNewTab2, SIGNAL( activated() ),
-             this, SLOT( onJoinRequested() ) );
+             this, SLOT( onJoinRequested() ) );*/
 }
 
 MainWindow::~MainWindow() {
@@ -564,7 +562,7 @@ void MainWindow::connectionStatusChanged(ConnectionState state) {
     }
 }
 
-void MainWindow::onCurrentTabChanged() {
+void MainWindow::onChannelActivated() {
     onTeamPlayerSpecCountChanged(users->teamPlayerSpecCount());
 }
 
@@ -605,20 +603,6 @@ void MainWindow::on_hostPushButton_clicked( bool closeFirst ) {
 
 void MainWindow::onBlockInput(bool b) {
     inputLineEdit->setDisabled(b);
-}
-
-void MainWindow::onJoinRequested() {
-    bool ok;
-    QString channel = QInputDialog::getText(this,
-                                            tr("Join channel"),
-                                            tr("Specify a channel you want to join"),
-                                            QLineEdit::Normal,
-                                            "",
-                                            &ok);
-    if(!ok) return;
-    QRegExp re("#?(\\w+)");
-    if(!re.exactMatch(channel)) return;
-    lobbyTabs->receiveInput("/j " + re.cap(1));
 }
 
 void MainWindow::on_actionDownloads_triggered() {
@@ -666,4 +650,10 @@ HistoryDialog* MainWindow::getHistoryDialog() {
 
 ConnectionWidget* MainWindow::getConnectionDialog() {
     return connectionWidget;
+}
+
+void MainWindow::on_joinToolButton_clicked() {
+    QRegExp re("#?(\\w+)");
+    if(!re.exactMatch(joinChannelLineEdit->text())) return;
+    lobbyTabs->receiveInput("/j " + re.cap(1));
 }

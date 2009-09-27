@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QIcon>
 #include <QMap>
+#include <QStandardItem>
 
 #include "Command.h"
 #include "Battles.h"
@@ -22,12 +23,14 @@ public:
     virtual void setActive( bool isActive ) = 0;
     void setUserNameCountryCodeMap( QMap<QString, QString>* userNameCountryCodeMap );
     virtual QString getTabTitle();
+    virtual void setItem(QStandardItem* item);
+    QStandardItem* getItem();
 
     QString myUserName;
     QIcon icon;
     QColor color;
     bool isActive;
-    QWidget* currentWidget;
+    QWidget* widget;
     int currentTabIndex;
 
 signals:
@@ -41,6 +44,17 @@ public slots:
 
 protected:
     QMap<QString, QString>* userNameCountryCodeMap;
+    QStandardItem* item;
 };
+Q_DECLARE_METATYPE(AbstractLobbyTab*);
+
+inline void AbstractLobbyTab::setItem(QStandardItem* item) {
+    this->item = item;
+    item->setText(objectName());
+}
+
+inline QStandardItem* AbstractLobbyTab::getItem() {
+    return item;
+}
 
 #endif
