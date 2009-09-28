@@ -221,6 +221,9 @@ void LobbyTabs::channelActivated(const QModelIndex & index) {
         }
     }
     lastTab = tab;
+    AbstractChannel* ac = qobject_cast<AbstractChannel*>(tab);
+    if(ac)
+        ac->scrollToMaximum();
     tab->setActive(true);
 }
 
