@@ -13,6 +13,7 @@ AbstractChannel::AbstractChannel( QString name, QObject * parent ) : AbstractLob
     inlineHistoryMode = false;
     previous = QDateTime::currentDateTime();
     firstBlock = true;
+    firstExtraBlock = true;
     scrollToMax = true;
 }
 
@@ -20,14 +21,21 @@ AbstractChannel::~AbstractChannel() {}
 
 void AbstractChannel::setupUi( QWidget * channelTabWidget ) {
     channelTabWidget->setObjectName( QString::fromUtf8( "channelTabWidget" ) + objectName() );
+    splitter = new QSplitter( channelTabWidget );
     channelTextBrowser = new ChannelTextBrowser( channelTabWidget );
     channelTextBrowser->setObjectName( "channelTextBrowser_" + objectName() );
     setChannelBrowser(channelTextBrowser);
     channelTextBrowser->document()->setMaximumBlockCount(500);
+    channelExtraTextBrowser = new QTextBrowser( channelTabWidget );
+    channelExtraTextBrowser->document()->setMaximumBlockCount(500);
+    splitter->setOrientation(Qt::Vertical);
+    splitter->addWidget(channelExtraTextBrowser);
+    splitter->addWidget(channelTextBrowser);
+    splitter->setSizes(QList<int>() << 1 << 100000);
     gridLayout = new QGridLayout( channelTabWidget );
     gridLayout->setContentsMargins(0,0,0,0);
     gridLayout->setObjectName( QString::fromUtf8( "channelGridLayout" ) + objectName() );
-    gridLayout->addWidget( channelTextBrowser, 1, 0, 1, 1 );
+    gridLayout->addWidget( splitter, 1, 0, 1, 1 );
     connect(channelTextBrowser, SIGNAL(anchorClicked(QUrl)),
             this, SLOT(anchorClicked(QUrl)));
     connect(channelTextBrowser->verticalScrollBar(), SIGNAL(valueChanged(int)),
@@ -134,15 +142,15 @@ bool AbstractChannel::executeChannelInput( QString input ) {
     return true;
 }
 
-void AbstractChannel::insertBlock(QTextCursor& c) {
-    if(firstBlock) {
-        firstBlock = false;
+void AbstractChannel::insertBlock(QTextCursor& c, bool& var) {
+    if(var) {
+        var = false;
         return;
     }
     c.insertBlock(QTextBlockFormat());
 }
 
-void AbstractChannel::insertLine( QString line ) {
+void AbstractChannel::insertLine( QString line, bool extra ) {
     QDateTime t;
     if(historyMode || inlineHistoryMode)
         t = historyDateTime;
@@ -151,14 +159,17 @@ void AbstractChannel::insertLine( QString line ) {
     QTextCursor c;
     if(!inlineHistoryMode) {
         scrollToMax = channelTextBrowser->verticalScrollBar()->value() == channelTextBrowser->verticalScrollBar()->maximum();
-        c = channelTextBrowser->textCursor();
+        if(extra)
+            c = channelExtraTextBrowser->textCursor();
+        else
+            c = channelTextBrowser->textCursor();
         c.movePosition(QTextCursor::End);
     }
     if(previous.date().day() != t.date().day()) {
         if(inlineHistoryMode) {
             historyBuffer << makeHtml("<b>" + t.toString( "MMMM d, dddd, yyyy") + "</b>" );
         } else {
-            insertBlock(c);
+            insertBlock(c, extra ? firstExtraBlock : firstBlock);
             c.insertHtml( makeHtml("<b>" + t.toString( "MMMM d, dddd, yyyy" ) + "</b>" ) );
         }
     }
@@ -167,11 +178,16 @@ void AbstractChannel::insertLine( QString line ) {
     if(inlineHistoryMode) {
         historyBuffer << "<font color=\"gray\">"+timeString.append( line ).remove(QRegExp("<[a-zA-Z\\/][^>]*>"))+"</font>";
     } else {
-        insertBlock(c);
+        insertBlock(c, extra ? firstExtraBlock : firstBlock);
         c.insertHtml( makeHtml( timeString.append( line ) ) );
     }
-    scrollToMaximum();
-    if ( !isActive ) {
+    if(extra)
+        channelExtraTextBrowser->verticalScrollBar()->setValue(channelExtraTextBrowser->verticalScrollBar()->maximum());
+    else
+        scrollToMaximum();
+    if ( extra && !isActive) {
+        item->setData(QBrush(Qt::gray), Qt::ForegroundRole);
+    } else if ( !isActive ) {
         item->setData(QBrush(Qt::green), Qt::ForegroundRole);
     }
 }
@@ -448,12 +464,11 @@ void AbstractChannel::onHistoryFinished() {
     c.movePosition(QTextCursor::Start);
     firstBlock = true;
     foreach(QString s, historyBuffer) {
-        insertBlock(c);
+        insertBlock(c, firstBlock);
         c.insertHtml(s);
     }
-    insertBlock(c);
+    insertBlock(c, firstBlock);
     c.insertHtml("<b>-------------------</b><br/>");
-    insertBlock(c);
     scrollToMax = true;
     scrollToMaximum();
 }

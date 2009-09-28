@@ -9,6 +9,7 @@
 #include <QDateTime>
 #include <QGridLayout>
 #include <QDesktopServices>
+#include <QSplitter>
 
 #include "Command.h"
 #include "AbstractLobbyTab.h"
@@ -41,7 +42,7 @@ protected:
     void setActive( bool isActive );
     virtual void setupUi( QWidget * tab );
     bool executeChannelInput( QString input );
-    void insertLine( QString line );
+    void insertLine( QString line, bool extra = false );
     QString makeHtml( QString in );
     QString processBBCodes(QString in);
     QString processInput(QString input, bool formatting = true);
@@ -49,15 +50,18 @@ protected:
     QString processIRCCodes(QString in);
     QString urlify(QString in);
     QString userNameLink( const QString userName );
-    void insertBlock(QTextCursor& c);
+    void insertBlock(QTextCursor& c, bool& var);
     QString flag( const QString userName );
 
     ChannelTextBrowser * channelTextBrowser;
+    QTextBrowser * channelExtraTextBrowser;
+    QSplitter* splitter;
     QGridLayout * gridLayout;
     bool historyMode;
     QDateTime historyDateTime;
     QDateTime previous;
     bool firstBlock;
+    bool firstExtraBlock;
     bool scrollToMax;
     bool inlineHistoryMode;
     QStringList historyBuffer;

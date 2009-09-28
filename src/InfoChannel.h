@@ -13,6 +13,7 @@ public:
     InfoChannel( QString name, QObject * parent = 0 );
     virtual ~InfoChannel();
     virtual void setItem(QStandardItem* item);
+    virtual void setupUi( QWidget * tab );
 
 public slots:
     void receiveInput( QString input );

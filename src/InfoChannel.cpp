@@ -24,3 +24,8 @@ void InfoChannel::receiveInput( QString input ) {
         return;
     emit sendCommand( Command( input ) );
 }
+
+void InfoChannel::setupUi( QWidget * tab ) {
+    AbstractChannel::setupUi(tab);
+    channelExtraTextBrowser->setVisible(false);
+}
