@@ -14,6 +14,7 @@ History::History() : QThread(0) {
             << "JOINED"
             << "LEFT"
             ;
+    m_collecting = false;
     initialize();
     start();
     moveToThread(this);
@@ -51,11 +52,25 @@ void History::receiveMessage(QString message) {
 }
 
 void History::play(QDate from, QDate to) {
+    if(m_collecting) {
+        if(from < m_from) m_from = from;
+        if(to < m_to) m_to = to;
+    } else {
+        m_from = from;
+        m_to = to;
+        startTimer(1500);
+        m_collecting = true;
+    }
+    m_requestsNumber++;
+}
+
+void History::timerEvent(QTimerEvent* event) {
+    if(!m_requestsNumber) return;
     if(!m_enabled) return;
     initialize();
     if(!m_initialized) return;
-    m_fetchQuery.bindValue(0, QDateTime(from).toTime_t());
-    m_fetchQuery.bindValue(1, QDateTime(to).toTime_t());
+    m_fetchQuery.bindValue(0, QDateTime(m_from).toTime_t());
+    m_fetchQuery.bindValue(1, QDateTime(m_to).toTime_t());
     m_fetchQuery.exec();
     while(m_fetchQuery.next()) {
         emit historyMessage(QDateTime::fromTime_t(m_fetchQuery.value(0).toUInt()), m_fetchQuery.value(1).toString());
@@ -63,4 +78,7 @@ void History::play(QDate from, QDate to) {
     disconnect(this, SIGNAL(historyMessage(QDateTime,QString)), 0, 0);
     emit finished();
     disconnect(this, SIGNAL(finished()), 0, 0);
+    m_requestsNumber = 0;
+    killTimer(event->timerId());
+    m_collecting = false;
 }

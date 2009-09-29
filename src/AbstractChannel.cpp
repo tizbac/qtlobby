@@ -463,12 +463,17 @@ void AbstractChannel::onHistoryFinished() {
     QTextCursor c = channelTextBrowser->textCursor();
     c.movePosition(QTextCursor::Start);
     firstBlock = true;
+    QString historyText;
     foreach(QString s, historyBuffer) {
-        insertBlock(c, firstBlock);
-        c.insertHtml(s);
+        historyText += "<div>" + s + "</div>";
     }
     insertBlock(c, firstBlock);
+    QApplication::processEvents();
+    c.insertHtml(historyText);
+    insertBlock(c, firstBlock);
     c.insertHtml("<b>-------------------</b><br/>");
+    c.movePosition(QTextCursor::End);
+    insertBlock(c, firstBlock);
     scrollToMax = true;
     scrollToMaximum();
 }

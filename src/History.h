@@ -4,6 +4,7 @@
 #include <QThread>
 #include <QtSql>
 #include <QSet>
+#include <QTimerEvent>
 #include "Singleton.h"
 
 class History : public QThread, public Singleton<History> {
@@ -19,6 +20,7 @@ signals:
     void finished();
 protected:
     virtual void run();
+    void timerEvent(QTimerEvent* event);
 private:
     QSqlDatabase m_db;
     QSqlQuery m_insertQuery;
@@ -26,6 +28,10 @@ private:
     bool m_initialized;
     QSet<QString> m_filter;
     bool m_enabled;
+    int m_requestsNumber;
+    QDate m_from;
+    QDate m_to;
+    bool m_collecting;
 
     History();
     void initialize();
