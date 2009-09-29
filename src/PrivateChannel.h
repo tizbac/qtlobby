@@ -12,6 +12,7 @@ class PrivateChannel : public AbstractChannel {
 public:
     PrivateChannel( QString name, QObject * parent = 0 );
     virtual ~PrivateChannel();
+    virtual void setupUi( QWidget * tab );
 private:
     Notification* notify;
 public slots:

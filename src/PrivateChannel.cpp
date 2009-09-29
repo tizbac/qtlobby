@@ -69,3 +69,8 @@ void PrivateChannel::receiveInput( QString input ) {
     emit sendCommand( ret );
 }
 
+
+void PrivateChannel::setupUi( QWidget * tab ) {
+    AbstractChannel::setupUi(tab);
+    channelExtraTextBrowser->setVisible(false);
+}

@@ -172,10 +172,13 @@ void LobbyTabs::createLobbyTab( AbstractLobbyTab* lobbyTab, bool focus) {
         channelActivated(lobbyTab->getItem()->index());
     } else if(tabClass == "BattleChannel") {
         battle->appendRow(lobbyTab->getItem());
+        tabTreeView->expand(battle->index());
     } else if(tabClass == "Channel") {
         channels->appendRow(lobbyTab->getItem());
+        tabTreeView->expand(channels->index());
     } else if(tabClass == "PrivateChannel") {
         privates->appendRow(lobbyTab->getItem());
+        tabTreeView->expand(privates->index());
     }
 
     //connect the lobbyTab to that it can send commands
