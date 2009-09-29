@@ -255,7 +255,7 @@ void BattleChannel::receiveCommand( Command command ) {
         insertLine( flag( userName ) + line
                     .arg( "<span style=\"color:magenta;\">* %1 %2</span>" )
                     .arg( userName )
-                    .arg( processInput(command.attributes.join( " " ), false)), true );
+                    .arg( processInput(command.attributes.join( " " ), false)), Settings::Instance()->value("Chat/splitActionB").toBool() ? true : false );
     } else if ( command.name == "FORCEQUITBATTLE" ) {
         QMessageBox::critical(NULL, tr("Kicked from battle"), tr("You have been kicked from the battle!"));
         battleWindowForm_ui->setEnabled(false);
@@ -266,7 +266,7 @@ void BattleChannel::receiveCommand( Command command ) {
             insertLine( flag( userName ) + line
                         .arg( "<span style=\"color:darkgreen;\">** %1</span>" )
                         .arg( tr( "%2 joined the battle." ) )
-                        .arg( userName ), true );
+                        .arg( userName ), Settings::Instance()->value("Chat/splitJLB").toBool() ? true : false );
         }
     } else if ( command.name == "LEFTBATTLE" ) {
         if ( command.attributes.takeFirst() == objectName() ) {
@@ -274,13 +274,13 @@ void BattleChannel::receiveCommand( Command command ) {
             insertLine( flag( userName ) + line
                         .arg( "<span style=\"color:darkkhaki;\">** %1</span>" )
                         .arg( tr( "%1 left the battle." ) )
-                        .arg( userName ), true );
+                        .arg( userName ), Settings::Instance()->value("Chat/splitJLB").toBool() ? true : false );
         }
     } else if ( command.name == "JOINBATTLE" ) {} else if ( command.name == "CLIENTMSG" ) {
         if ( command.attributes.takeFirst() == objectName() ) {
             insertLine( line
                         .arg( "<span style=\"color:blue;\">** CLIENTMSG ** %1</span>" )
-                        .arg( command.attributes.join( " " ) ), true );
+                        .arg( command.attributes.join( " " ) ), Settings::Instance()->value("Chat/splitJLB").toBool() ? true : false );
         }
     } else if ( command.name == "BATTLECLOSED" ) {
         if ( command.attributes.takeFirst() == objectName() ) {
@@ -295,7 +295,7 @@ void BattleChannel::receiveCommand( Command command ) {
             if ( this->locked != locked ) {
                 insertLine( line
                             .arg( "<span style=\"color:blue;\">** %1</span>" )
-                            .arg( locked ? tr( "Battle locked." ) : tr( "Battle unlocked." ) ), true );
+                            .arg( locked ? tr( "Battle locked." ) : tr( "Battle unlocked." ) ), Settings::Instance()->value("Chat/splitChanB").toBool() ? true : false );
                 this->locked = locked;
                 QString table="<table><tr><td><img src=\"%1\"</td><td>%2</td></tr></table>";
                 if(locked)

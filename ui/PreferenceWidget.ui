@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>609</width>
-    <height>440</height>
+    <height>526</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -67,7 +67,7 @@
      </item>
     </widget>
    </item>
-   <item row="1" column="0" colspan="2">
+   <item row="1" column="0" colspan="3">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <spacer>
@@ -120,7 +120,7 @@
       <enum>QFrame::Raised</enum>
      </property>
      <property name="currentIndex">
-      <number>7</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="pathWidget"/>
      <widget class="QWidget" name="chatWidget">
@@ -161,6 +161,16 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
+           <widget class="QCheckBox" name="chatHighlightUserNameCheckBox">
+            <property name="text">
+             <string>Highlight my username in Chat messages</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QCheckBox" name="chatShowFlagsCheckBox">
             <property name="text">
              <string>Show Flags near user names</string>
@@ -171,9 +181,69 @@
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="chatHighlightUserNameCheckBox">
+           <widget class="QCheckBox" name="chatSplitTopicCheckBox">
             <property name="text">
-             <string>Highlight my username in Chat messages</string>
+             <string>Split Topic from Chat</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="chatSplitChanCheckBox">
+            <property name="text">
+             <string>Split Channel-Messages from Chat</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="chatSplitJLCheckBox">
+            <property name="text">
+             <string>Split Join/Leave-Messages from Chat</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="chatSplitActionCheckBox">
+            <property name="text">
+             <string>Split &quot;/me&quot;-Actions from Chat</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="chatSplitChanBCheckBox">
+            <property name="text">
+             <string>Split Channel-Messages from Battle-Chat</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="chatSplitJLBCheckBox">
+            <property name="text">
+             <string>Split Join/Leave-Messages from Battle-Chat</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="chatSplitActionBCheckBox">
+            <property name="text">
+             <string>Split &quot;/me&quot;-Actions from Battle-Chat</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -496,15 +566,22 @@ Large maps like Dworld or Nation can occupy up to 400 Mb of video card memory(if
          <property name="title">
           <string>General</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_6">
-          <item row="0" column="0">
+         <layout class="QVBoxLayout" name="verticalLayout_11">
+          <item>
            <widget class="QCheckBox" name="battleAutoCloseFirstCheckBox">
             <property name="text">
              <string>Always close the battle before opening new</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
+          <item>
+           <widget class="QCheckBox" name="battleReadyCheckBox">
+            <property name="text">
+             <string>Stay ready after a Game is played</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <spacer name="verticalSpacer_4">
             <property name="orientation">
              <enum>Qt::Vertical</enum>

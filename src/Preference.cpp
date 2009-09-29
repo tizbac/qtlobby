@@ -32,6 +32,20 @@ void Preference::loadPreferences() {
     joinQtlobbyCheckBox->setChecked(settings->value("Chat/joinQtlobby").toBool());
     INIT_PREF("Chat/showFlags", true);
     chatShowFlagsCheckBox->setChecked(settings->value("Chat/showFlags").toBool());
+    INIT_PREF("Chat/splitJL", true);
+    chatSplitJLCheckBox->setChecked(settings->value("Chat/splitJL").toBool());
+    INIT_PREF("Chat/splitTopic", true);
+    chatSplitTopicCheckBox->setChecked(settings->value("Chat/splitTopic").toBool());
+    INIT_PREF("Chat/splitAction", true);
+    chatSplitActionCheckBox->setChecked(settings->value("Chat/splitAction").toBool());
+    INIT_PREF("Chat/splitChan", true);
+    chatSplitChanCheckBox->setChecked(settings->value("Chat/splitChan").toBool());
+    INIT_PREF("Chat/splitJLB", false);
+    chatSplitJLBCheckBox->setChecked(settings->value("Chat/splitJLB").toBool());
+    INIT_PREF("Chat/splitActionB", false);
+    chatSplitActionBCheckBox->setChecked(settings->value("Chat/splitActionB").toBool());
+    INIT_PREF("Chat/splitChanB", false);
+    chatSplitChanBCheckBox->setChecked(settings->value("Chat/splitChanB").toBool());
     INIT_PREF("Chat/highlightUserName", true);
     chatHighlightUserNameCheckBox->setChecked(settings->value("Chat/highlightUserName").toBool());
     INIT_PREF("Chat/popupNewPrivateChannel", false);
@@ -70,8 +84,10 @@ void Preference::loadPreferences() {
     startRectAlphaSpinBox->setValue(settings->value("MapViewing/startPos/startRect/alpha").toInt());
 
     /*General*/
-    INIT_PREF("Battle/autoCloseFirst", false);
-    battleAutoCloseFirstCheckBox->setChecked( settings->value("Battle/autoCloseFirst").toBool() );
+    INIT_PREF("Battle/autoReady", false);
+    battleReadyCheckBox->setChecked( settings->value("Battle/autoReady").toBool() );
+    INIT_PREF("Battle/autoReady", false);
+    battleReadyCheckBox->setChecked( settings->value("Battle/autoReady").toBool() );
 
     /*Language*/
     QString fullLocale = QLocale::system().name();
@@ -114,6 +130,13 @@ void Preference::onApply() {
     settings->setValue("Chat/joinMain", joinMainCheckBox->isChecked());
     settings->setValue("Chat/joinQtlobby", joinQtlobbyCheckBox->isChecked());
     settings->setValue("Chat/showFlags", chatShowFlagsCheckBox->isChecked());
+    settings->setValue("Chat/splitJL", chatSplitJLCheckBox->isChecked());
+    settings->setValue("Chat/splitTopic", chatSplitTopicCheckBox->isChecked());
+    settings->setValue("Chat/splitAction", chatSplitActionCheckBox->isChecked());
+    settings->setValue("Chat/splitChan", chatSplitChanCheckBox->isChecked());
+    settings->setValue("Chat/splitJLB", chatSplitJLBCheckBox->isChecked());
+    settings->setValue("Chat/splitActionB", chatSplitActionBCheckBox->isChecked());
+    settings->setValue("Chat/splitChanB", chatSplitChanBCheckBox->isChecked());
     settings->setValue("Chat/highlightUserName", chatHighlightUserNameCheckBox->isChecked());
     settings->setValue("Chat/popupNewPrivateChannel", popupNewPrivateChannelCheckBox->isChecked());
     settings->setValue("Chat/notifyNewPrivateMessages", notifyNewPrivateMessagesCheckBox->isChecked());
@@ -136,6 +159,7 @@ void Preference::onApply() {
 
     /*General*/
     settings->setValue( "Battle/autoCloseFirst", battleAutoCloseFirstCheckBox->isChecked() );
+    settings->setValue( "Battle/autoReady", battleReadyCheckBox->isChecked() );
 
     /*Language*/
     settings->setValue( "locale", languageComboBox->itemData( languageComboBox->currentIndex(), Qt::UserRole ).toString() );

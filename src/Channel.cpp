@@ -47,7 +47,7 @@ void Channel::receiveCommand( Command command ) {
                 insertLine( flag( userName ) + line
                             .arg( "<span style=\"color:magenta;\">* %1 %2</span>" )
                             .arg( userNameLink( userName ) )
-                            .arg( processInput(command.attributes.join( " " ), false)));
+                            .arg( processInput(command.attributes.join( " " ), false)), Settings::Instance()->value("Chat/splitAction").toBool() ? true : false);
             }
         }
     } else if ( command.name == "JOINED"  && (historyMode || showJoinLeave) ) {
@@ -56,7 +56,7 @@ void Channel::receiveCommand( Command command ) {
             insertLine( flag( userName ) + line
                         .arg( "<span style=\"color:darkgreen;\">%1</span>" )
                         .arg( tr( "** %1 joined the channel." ) )
-                        .arg( userNameLink( userName ) ), true );
+                        .arg( userNameLink( userName ) ), Settings::Instance()->value("Chat/splitJL").toBool() ? true : false );
         }
     } else if ( command.name == "LEFT" && (historyMode || showJoinLeave)) {
         if ( command.attributes.takeFirst() == objectName()) {
@@ -64,20 +64,20 @@ void Channel::receiveCommand( Command command ) {
             insertLine( flag( userName ) + line
                         .arg( "<span style=\"color:darkkhaki;\">** %1</span>" )
                         .arg( tr( "%1 left the channel." ) )
-                        .arg( userNameLink( userName ) ), true );
+                        .arg( userNameLink( userName ) ), Settings::Instance()->value("Chat/splitJL").toBool() ? true : false );
         }
     } else if ( command.name == "JOIN" ) {
         if ( command.attributes.takeFirst() == objectName() ) {
             insertLine( line
                         .arg( "<span style=\"color:darkgreen;\">** %1</span>" )
                         .arg( tr( "%1 joined the channel." ) )
-                        .arg( myUserName ), true  );
+                        .arg( myUserName ), Settings::Instance()->value("Chat/splitJL").toBool() ? true : false  );
         }
     } else if ( command.name == "CLIENTMSG" ) {
         if ( command.attributes.takeFirst() == objectName() ) {
             insertLine( line
                         .arg( "<span style=\"color:blue;\">** CLIENTMSG ** %1</span>" )
-                        .arg( command.attributes.join( " " ) ), true  );
+                        .arg( command.attributes.join( " " ) ), Settings::Instance()->value("Chat/splitChan").toBool() ? true : false  );
         }
     } else if ( command.name == "CHANNELTOPIC" ) {
         if (command.attributes.takeFirst() == objectName()) {
@@ -94,7 +94,7 @@ void Channel::receiveCommand( Command command ) {
                        .arg(tr("Topic is ' %1 ' set by %2 %3"))
                        .arg( urlify(msg) )
                        .arg( name )
-                       .arg( date.toString(tr("dd.MM.yyyy hh:mm")) ), true );
+                       .arg( date.toString(tr("dd.MM.yyyy hh:mm")) ), Settings::Instance()->value("Chat/splitTopic").toBool() ? true : false );
         }
     } else if ( command.name == "CHANNELMESSAGE" ) {
         if (command.attributes.takeFirst() == objectName()) {
@@ -103,7 +103,7 @@ void Channel::receiveCommand( Command command ) {
 
             insertLine(line
                        .arg("<span style=\"color: #5673a4;\">** %1</span>")
-                       .arg( processInput(msg) ), true );
+                       .arg( processInput(msg) ), Settings::Instance()->value("Chat/splitChan").toBool() ? true : false );
         }
     } else if ( command.name == "MUTELISTBEGIN" ) {
         if (command.attributes.takeFirst() == objectName()) {

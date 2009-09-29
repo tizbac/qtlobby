@@ -357,9 +357,12 @@ void Battles::startGame( Battle b, bool host ) {
     scriptFile.close();
     qDebug() << QString("Script file %1 written.").arg(springDir + "/script_qtlobby.txt");
     User me = users->getUser(ServerProfilesModel::getInstance()->getActiveProfile().userName());
-    me.battleState.setReady(false);
-    users->modUserInAllManagers(me);
-    users->onMyBattleStateChanged( me );
+    if( Settings::Instance()->value("Battle/autoReady").toBool() == false )
+    {
+        me.battleState.setReady(false);
+        users->modUserInAllManagers(me);
+        users->onMyBattleStateChanged(me);
+    }
     emit start();
 }
 
