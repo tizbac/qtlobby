@@ -22,6 +22,7 @@ LobbyTabs::LobbyTabs( QObject * parent, Battles* battles, UnitSyncLib* unitSyncL
 
     lastTab = NULL;
 
+    connect(tabTreeView, SIGNAL(clicked(QModelIndex)), this, SLOT(channelActivated(QModelIndex)));
     connect(tabTreeView, SIGNAL(activated(QModelIndex)), this, SLOT(channelActivated(QModelIndex)));
     connect( UnitSyncLib::getInstance(), SIGNAL(rebooted()), SLOT(onMapsModsReload()));
     connect( battles, SIGNAL( closeBattleChannel() ), SLOT( onCloseBattleChannel() ) );
@@ -330,4 +331,14 @@ void LobbyTabs::activateChannel(AbstractLobbyTab* channel) {
     QModelIndex idx = channel->getItem()->index();
     tabTreeView->setCurrentIndex(idx);
     channelActivated(idx);
+}
+
+void LobbyTabs::onNextTab() {
+    qDebug() << "onNextTab()";
+    QModelIndex idx = tabTreeView->model()->sibling( (currentTab->getItem()->row() + 1) % tabTreeView->model()->rowCount(tabTreeView->rootIndex()), 0, tabTreeView->rootIndex() );
+    tabTreeView->setCurrentIndex(idx);
+    channelActivated(idx);
+}
+
+void LobbyTabs::onPreviousTab() {
 }

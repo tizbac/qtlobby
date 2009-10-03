@@ -16,10 +16,10 @@ else("$ENV{SVN_REV}" GREATER 0)
 endif("$ENV{SVN_REV}" GREATER 0)
 
 
-option(BUILDBOT "Use buildbot build configuration(used for cross compiling)" OFF)
+option(BUILDBOT "Use buildbot build configuration (used for cross compiling)" OFF)
 mark_as_advanced(BUILDBOT)
 
-option(TRANSLATIONS "Create .qm files)" ON)
+option(TRANSLATIONS "Create .qm files" ON)
 
 set(QT_USE_QTCORE true)
 set(QT_USE_QTGUI true)
@@ -53,7 +53,7 @@ file(GLOB shaders "${CMAKE_SOURCE_DIR}/share/qtlobby/shaders/?*.*")
 install(FILES ${shaders} DESTINATION share/qtlobby/shaders)
 file(GLOB javascript "${CMAKE_SOURCE_DIR}/share/qtlobby/javascript/?*.*")
 install(FILES ${javascript} DESTINATION share/qtlobby/javascript)
-
+file(GLOB i18n "${CMAKE_SOURCE_DIR}/i18n/?*.qm")
+install(FILES ${i18n} DESTINATION share/qtlobby/i18n)
 
 add_subdirectory(src)
-

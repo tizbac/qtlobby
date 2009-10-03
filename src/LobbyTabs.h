@@ -54,6 +54,8 @@ public slots:
     void onEnableJoinLeaveDefault(bool b);
     void onMapsModsReload();
     void onBattleHosted(int id);
+    void onNextTab();
+    void onPreviousTab();
 
 private slots:
     void channelActivated(const QModelIndex & index);

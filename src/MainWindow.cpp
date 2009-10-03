@@ -312,18 +312,19 @@ void MainWindow::setupToolbar() {
     /*tabBar = toolBarWidget->ui->tabBar;
     newTabButton = toolBarWidget->ui->joinToolButton;
     connect(newTabButton, SIGNAL(clicked()), this, SLOT(onJoinRequested()));
+    */
     nextTab = new QShortcut(QKeySequence(QKeySequence::NextChild), this);
     connect( nextTab, SIGNAL( activated() ),
-             toolBarWidget, SLOT( onNextTab() ) );
+             lobbyTabs, SLOT( onNextTab() ) );
     previousTab = new QShortcut(QKeySequence(QKeySequence::PreviousChild), this);
     connect( previousTab, SIGNAL( activated() ),
-             toolBarWidget, SLOT( onPreviousTab() ) );
+             lobbyTabs, SLOT( onPreviousTab() ) );
     openNewTab = new QShortcut(QKeySequence(QKeySequence::Open), this);
     connect( openNewTab, SIGNAL( activated() ),
              this, SLOT( onJoinRequested() ) );
     openNewTab2 = new QShortcut(QKeySequence(QKeySequence::New), this);
     connect( openNewTab2, SIGNAL( activated() ),
-             this, SLOT( onJoinRequested() ) );*/
+             this, SLOT( onJoinRequested() ) );
 }
 
 MainWindow::~MainWindow() {
