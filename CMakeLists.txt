@@ -40,7 +40,7 @@ endif(WIN32 OR BUILDBOT)
 
 find_package(QScintilla REQUIRED)
 find_package(QtScriptTools REQUIRED)
-
+find_package(OpenGL REQUIRED)
 file(GLOB jobjol "${CMAKE_SOURCE_DIR}/share/qtlobby/icons/jobjol/?*.*")
 install(FILES ${jobjol} DESTINATION share/qtlobby/icons/jobjol)
 file(GLOB trolltech "${CMAKE_SOURCE_DIR}/share/qtlobby/icons/trolltech/?*.*")

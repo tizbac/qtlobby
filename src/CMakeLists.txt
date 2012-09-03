@@ -228,7 +228,7 @@ if(BUILDBOT)
 SET_TARGET_PROPERTIES(qtlobby PROPERTIES LINK_FLAGS "-static-libgcc -Wl,-subsystem,windows")
 endif(BUILDBOT)
 
-target_link_libraries(qtlobby ${QT_LIBRARIES} ${QSCINTILLA_LIBRARIES} ${QTSCRIPTTOOLS_LIBRARIES})
+target_link_libraries(qtlobby ${QT_LIBRARIES} ${QSCINTILLA_LIBRARIES} ${QTSCRIPTTOOLS_LIBRARIES} ${OPENGL_LIBRARIES})
 
 #install
 install(TARGETS qtlobby DESTINATION bin)
