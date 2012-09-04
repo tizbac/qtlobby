@@ -200,8 +200,8 @@ void MapRendererWidget::paintGL() {
     if ( !m_glslSupported )
         glEnable( GL_LIGHTING );
 
-    GLfloat LightPosition[] = {40, 50, 40, 1.0 };
-    //GLfloat LightDirection[]= {m_heightmap.getHeight()/2, 0, m_heightmap.getWidth()/2, 0 };
+    //GLfloat LightPosition[] = {40, 50, 40, 1.0 };
+    GLfloat LightPosition[]= {m_heightmap.getHeight()/2, 50, m_heightmap.getWidth()/2, 0 };
     //glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, LightDirection);
 
 
