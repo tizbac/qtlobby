@@ -85,11 +85,13 @@ void BattleHost::receiveCommand( Command command ) {
         quit();
     } else if ( command.name == "JOINEDBATTLE" ) {
         int id = command.attributes[0].toInt();
+        
         if(id == m_id) {
             QString user = command.attributes[1];
             User u;
             u.name = user;
             u.battleState = 0;
+            u.script_pass = command.attributes[1];
             m_users.append(u);
             emit userJoined(u.name);
         }

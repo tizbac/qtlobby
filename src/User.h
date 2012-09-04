@@ -148,6 +148,7 @@ public:
     ~User();
 
     void setColor( int TASColor );
+    void setScriptPass(QString pass);
     int color();
     QString colorForScript();
 
@@ -160,6 +161,7 @@ public:
     UserState userState;     //!< like 0 to 2^7-1 = 127
     QColor m_color;          //!< the in game color for the units
     bool founder;
+    QString script_pass;
 };
 Q_DECLARE_METATYPE( User );
 #endif

@@ -141,7 +141,14 @@ void Battles::receiveCommand( Command command ) {
             return;
         Battle b = battleManager->getBattle( command.attributes[0].toInt() );
         b.playerCount++;
+        
         battleManager->modBattle( b );
+        if ( command.attributes.size() > 2 ) //Contains script password
+        {
+            User u = users->getUser(command.attributes[1]);
+            u.setScriptPass(command.attributes[2]);
+            users->modUserInAllManagers(u);
+        }
     } else if ( command.name == "LEFTBATTLE" ) {
         if ( !battleManager->isBattleId( command.attributes[0].toInt() ) )
             return;
@@ -321,8 +328,11 @@ void Battles::joinBattleCommand( unsigned int id, QString password, bool closeFi
             emit closeBattleChannel();
         }
     }
+    
+    QString script_password = QString().sprintf("%08x",rand()); //Generate random password
+
     Command command( "JOINBATTLE" );
-    command.attributes << QString( "%1 %2" ).arg( id ).arg( password );
+    command.attributes << QString( "%1 %2 %3" ).arg( id ).arg( password ).arg( script_password);
     emit sendCommand( command );
 }
 
@@ -383,12 +393,15 @@ QString Battles::generateScript( Battle b, bool host ) {
     // this is because in the UserTreeModel users are prepended to the list, when joining
     QList<User> battleUsers;
     foreach( User u, battleUsersUnsorted )
+    {
         battleUsers.prepend( u );
+    }
     /// process ordered users, convert teams and allies
     QMap<int, int> teamConv, allyConv, allyReverseConv;
     int  numTeams = 0, numAllies = 0, myPlayerNum = -1;
     for ( int i = 0; i < battleUsers.size(); ++i ) {
         User u = battleUsers[i];
+        
         if ( u.name == ServerProfilesModel::getInstance()->getActiveProfile().userName() )
             myPlayerNum = i;
         if ( !u.battleState.isPlayer() )
@@ -421,107 +434,116 @@ QString Battles::generateScript( Battle b, bool host ) {
     int numBots = 0; //ordered_bots.size();
     // first the general game options
     QMap<QString, QString> gameOptions;
-    gameOptions["Mapname"]  = b.mapName;
-    gameOptions["GameType"] = UnitSyncLib::getInstance()->modArchive( UnitSyncLib::getInstance()->modIndex( b.modName ) );
     //append options from the battle
-    foreach( QString k, b.options.keys() ) {
-        if (k.contains("/")) continue;
-        gameOptions[k] = QString::number( b.options[k].toFloat() );
+    if ( host )
+    {
+        foreach( QString k, b.options.keys() ) {
+            if (k.contains("/")) continue;
+            gameOptions[k] = QString::number( b.options[k].toFloat() );
+        }
     }
     gameOptions["HostPort"]     = QString::number(m_portOverride > 0 ? m_portOverride : b.port );
     gameOptions["HostIP"]       = b.founder == ServerProfilesModel::getInstance()->getActiveProfile().userName() ? QString( "localhost" ) : b.ip;
     gameOptions["IsHost"]       = host ? "1" : "0";
-    gameOptions["MyPlayerNum"]  = QString::number( myPlayerNum );
+    //gameOptions["MyPlayerNum"]  = QString::number( myPlayerNum );
     gameOptions["MyPlayerName"] = ServerProfilesModel::getInstance()->getActiveProfile().userName();
-    gameOptions["NumPlayers"]   = QString::number( b.playerCount );
-    gameOptions["NumTeams"]     = QString::number( numTeams + numBots );
-    gameOptions["NumAllyTeams"] = QString::number( numAllies );
-
-    //fill now all sections with options
+    if ( host )
+    {
+        gameOptions["NumPlayers"]   = QString::number( b.playerCount );
+        gameOptions["NumTeams"]     = QString::number( numTeams + numBots );
+        gameOptions["NumAllyTeams"] = QString::number( numAllies );
+    }
+    gameOptions["MyPasswd"] = users->getUser(ServerProfilesModel::getInstance()->getActiveProfile().userName()).script_pass;
     QMap<QString, QMap<QString, QString> > sectionsOptionMap;
     QMap<QString, QString> options;
-    for ( int i = 0; i < battleUsers.size(); ++i ) {
-        options.clear();
-        options["Name"]        = battleUsers[i].name;
-        options["CountryCode"] = battleUsers[i].countryCode;
-        options["Spectator"]   = battleUsers[i].battleState.isPlayer() ? "0" : "1";
-        options["Team"]        = QString::number( teamConv[battleUsers[i].battleState.getTeamNo()] );
-        sectionsOptionMap[QString( "PLAYER%1" ).arg( i )] = options;
-    }
-
-    // first user in team is the leader, though he's the last one who will overwrite the value for the team
-    QMap<int, int> teamNumberLeaderUserNumberMap;
-    for ( int j = battleUsers.size() - 1; j >= 0; --j ) {
-        teamNumberLeaderUserNumberMap[battleUsers[j].battleState.getTeamNo()] = j;
-        qDebug() << battleUsers[j].battleState.getTeamNo() << " " << j;
-    }
-
-    for ( int i = 0; i < numTeams; i++ ) {
-        options.clear();
-        int teamLeader = teamNumberLeaderUserNumberMap.values()[i];
-        User u = battleUsers[teamLeader];
-        options["TeamLeader"] = QString::number( teamLeader );
-        options["AllyTeam"] = QString::number( allyConv[u.battleState.getAllyTeamNo()] );
-        options["RGBColor"] = u.colorForScript();
-        UnitSyncLib::getInstance()->setCurrentMod(b.modName);
-        options["Side"] = UnitSyncLib::getInstance()->sideName( u.battleState.getSide() );
-        options["Handicap"] = QString::number( u.battleState.getHandicap() );
-        sectionsOptionMap[QString( "TEAM%1" ).arg( i )] = options;
-    }
-
-    //   for ( int i = 0; i < numBots; i++ ) {
-    //     options.clear();
-    //     int teamLeader = teamNumberLeaderUserNumberMap[i];
-    //     User u = battleUsers[teamLeader];
-    //     options["TeamLeader"] = QString::number( teamLeader );
-    //     options["AllyTeam"] = QString::number( allyConv[u.battleState.s.ally] );
-    //     options["RGBColor"] = u.colorForScript();
-    //     options["Side"] = usync()->GetSideName( b.modName, u.battleState.s.side );
-    //     options["Handicap"] = QString::number( u.battleState.s.handicap );
-    //     options["AIDLL"] = "bot.aidll";
-    //     sectionsOptionMap[QString( "TEAM%1" ).arg( i + numTeams )] = options;
-    //   }
-
-    int startpostype = b.options["StartPosType"].toFloat();
-    for ( int i = 0; i < numAllies; i++ ) {
-        int numInAlly = 0;
-        options.clear();
-        options["NumAllies"] = QString::number( numInAlly );
-        if ( b.allyNumberStartRectMap.contains( allyReverseConv[i] )
-            && startpostype == StartPosType::Choose ) {
-            StartRect sr = b.allyNumberStartRectMap[allyReverseConv[i]];
-            options["StartRectLeft"]   = QString( "%1" ).arg( sr.left   / 200.0, 0, 'f', 3 );
-            options["StartRectTop"]    = QString( "%1" ).arg( sr.top    / 200.0, 0, 'f', 3 );
-            options["StartRectRight"]  = QString( "%1" ).arg( sr.right  / 200.0, 0, 'f', 3 );
-            options["StartRectBottom"] = QString( "%1" ).arg( sr.bottom / 200.0, 0, 'f', 3 );
+    //fill now all sections with options
+    if ( host )
+    {
+        
+        for ( int i = 0; i < battleUsers.size(); ++i ) {
+            options.clear();
+            options["Name"]        = battleUsers[i].name;
+            options["CountryCode"] = battleUsers[i].countryCode;
+            options["Spectator"]   = battleUsers[i].battleState.isPlayer() ? "0" : "1";
+            options["Team"]        = QString::number( teamConv[battleUsers[i].battleState.getTeamNo()] );
+            sectionsOptionMap[QString( "PLAYER%1" ).arg( i )] = options;
         }
-        sectionsOptionMap[QString( "ALLYTEAM%1" ).arg( i )] = options;
-    }
-    options.clear();
-    // restrictions
-    gameOptions["NumRestrictions"] = QString::number( b.disabledUnits.size() );
-    for ( int i = 0; i < b.disabledUnits.size(); ++i ) {
-        options[QString( "Unit%1" ).arg( i )] = b.disabledUnits[i];
-        options[QString( "Limit%1" ).arg( i )] = "0";
-    }
-    sectionsOptionMap["RESTRICT"] = options;
-    options.clear();
-    sectionsOptionMap["MAPOPTIONS"] = options;
-    sectionsOptionMap["MODOPTIONS"] = options;
+    
 
-    // the scripttags like GAME/MODOPTIONS/...
-    foreach( QString tag, b.options.keys() ) {
+        // first user in team is the leader, though he's the last one who will overwrite the value for the team
+        QMap<int, int> teamNumberLeaderUserNumberMap;
+        for ( int j = battleUsers.size() - 1; j >= 0; --j ) {
+            teamNumberLeaderUserNumberMap[battleUsers[j].battleState.getTeamNo()] = j;
+            qDebug() << battleUsers[j].battleState.getTeamNo() << " " << j;
+        }
+
+        for ( int i = 0; i < numTeams; i++ ) {
+            options.clear();
+            int teamLeader = teamNumberLeaderUserNumberMap.values()[i];
+            User u = battleUsers[teamLeader];
+            options["TeamLeader"] = QString::number( teamLeader );
+            options["AllyTeam"] = QString::number( allyConv[u.battleState.getAllyTeamNo()] );
+            options["RGBColor"] = u.colorForScript();
+            UnitSyncLib::getInstance()->setCurrentMod(b.modName);
+            options["Side"] = UnitSyncLib::getInstance()->sideName( u.battleState.getSide() );
+            options["Handicap"] = QString::number( u.battleState.getHandicap() );
+            sectionsOptionMap[QString( "TEAM%1" ).arg( i )] = options;
+        }
+        
+
+        //   for ( int i = 0; i < numBots; i++ ) {
+        //     options.clear();
+        //     int teamLeader = teamNumberLeaderUserNumberMap[i];
+        //     User u = battleUsers[teamLeader];
+        //     options["TeamLeader"] = QString::number( teamLeader );
+        //     options["AllyTeam"] = QString::number( allyConv[u.battleState.s.ally] );
+        //     options["RGBColor"] = u.colorForScript();
+        //     options["Side"] = usync()->GetSideName( b.modName, u.battleState.s.side );
+        //     options["Handicap"] = QString::number( u.battleState.s.handicap );
+        //     options["AIDLL"] = "bot.aidll";
+        //     sectionsOptionMap[QString( "TEAM%1" ).arg( i + numTeams )] = options;
+        //   }
+
+        int startpostype = b.options["StartPosType"].toFloat();
+        for ( int i = 0; i < numAllies; i++ ) {
+            int numInAlly = 0;
+            options.clear();
+            options["NumAllies"] = QString::number( numInAlly );
+            if ( b.allyNumberStartRectMap.contains( allyReverseConv[i] )
+                && startpostype == StartPosType::Choose ) {
+                StartRect sr = b.allyNumberStartRectMap[allyReverseConv[i]];
+                options["StartRectLeft"]   = QString( "%1" ).arg( sr.left   / 200.0, 0, 'f', 3 );
+                options["StartRectTop"]    = QString( "%1" ).arg( sr.top    / 200.0, 0, 'f', 3 );
+                options["StartRectRight"]  = QString( "%1" ).arg( sr.right  / 200.0, 0, 'f', 3 );
+                options["StartRectBottom"] = QString( "%1" ).arg( sr.bottom / 200.0, 0, 'f', 3 );
+            }
+            sectionsOptionMap[QString( "ALLYTEAM%1" ).arg( i )] = options;
+        }
         options.clear();
-        if ( tag.contains( "/" ) ) {
-            if ( sectionsOptionMap.contains( tag.section( "/", 0, 0 ) ) ) {
-                sectionsOptionMap[tag.section( "/", 0, 0 )][tag.section( "/", 1, 1 )] = b.options.value(tag).toString();
-            } else {
-                options[tag.section( "/", 1, 1 )] = b.options.value( tag ).toString();
-                sectionsOptionMap[tag.section( "/", 0, 0 )] = options;
+        // restrictions
+        gameOptions["NumRestrictions"] = QString::number( b.disabledUnits.size() );
+        for ( int i = 0; i < b.disabledUnits.size(); ++i ) {
+            options[QString( "Unit%1" ).arg( i )] = b.disabledUnits[i];
+            options[QString( "Limit%1" ).arg( i )] = "0";
+        }
+        sectionsOptionMap["RESTRICT"] = options;
+        options.clear();
+        sectionsOptionMap["MAPOPTIONS"] = options;
+        sectionsOptionMap["MODOPTIONS"] = options;
+
+        // the scripttags like GAME/MODOPTIONS/...
+        foreach( QString tag, b.options.keys() ) {
+            options.clear();
+            if ( tag.contains( "/" ) ) {
+                if ( sectionsOptionMap.contains( tag.section( "/", 0, 0 ) ) ) {
+                    sectionsOptionMap[tag.section( "/", 0, 0 )][tag.section( "/", 1, 1 )] = b.options.value(tag).toString();
+                } else {
+                    options[tag.section( "/", 1, 1 )] = b.options.value( tag ).toString();
+                    sectionsOptionMap[tag.section( "/", 0, 0 )] = options;
+                }
             }
         }
     }
-
     // generate the script from the options
     QString ret; //!< the returned script file string
     QString sectionPattern = "%1[%2]\n%1{\n%3%1}\n"; // %1 "\t" or "", %2 name, %3 values

@@ -114,9 +114,15 @@ void Users::receiveCommand( Command command ) {
         if ( url.userName() != command.attributes.first() ) {
             User u = infoChannelUserManager->getUser( command.attributes.first() );
             u.joinedBattleId = id;
+            if ( command.attributes.size() > 1 )
+            {
+                u.setScriptPass(command.attributes[1]);
+            }
             modUserInAllManagers( u );
             battleIdUserManagerMap[id]->addUser( u );
+            
         }
+        
     } else if ( command.name == "BATTLEOPENED" ) {
         //      BATTLE_ID type natType founder
         int id = command.attributes.takeFirst().toInt();
@@ -212,7 +218,9 @@ void Users::modUserInAllManagers( User u ) {
 void Users::joinSameBattle( User u ) {
     if ( !u.userState.isIngame() && u.joinedBattleId >= 0 ) {
         Command command( "JOINBATTLE" );
-        command.attributes << QString( "%1" ).arg( u.joinedBattleId );
+        unsigned int p;
+        p = rand();
+        command.attributes << QString().sprintf("%d %08x",u.joinedBattleId,p);
         emit sendCommand( command );
     }
 }

@@ -37,3 +37,9 @@ QString User::colorForScript() {
             .arg( m_color.greenF(), 0, 'f', 5 )
             .arg( m_color.blueF(), 0, 'f', 5 );
 }
+
+void User::setScriptPass(QString pass)
+{
+    qWarning("User %s , set pass: %s",name.toStdString().c_str(),pass.toStdString().c_str());
+    script_pass = pass;
+}
