@@ -181,15 +181,24 @@ void Battles::receiveCommand( Command command ) {
         if ( !battleManager->isBattleId( battleId ) )
             return;
         Battle b = battleManager->getBattle( battleId );
+        bool mapchanged = false;
         b.spectatorCount = command.attributes.takeFirst().toInt();
         b.isLocked = command.attributes.takeFirst().toInt() > 0;
-        b.mapHash = command.attributes.takeFirst().toInt();
+        int newHash = command.attributes.takeFirst().toInt();
+        if ( b.mapHash != newHash )
+        {
+            mapchanged = true;
+        }
+        b.mapHash = newHash;
         b.mapName = command.attributes.join( " " );
         battleManager->modBattle( b );
-        if ( users->getUser( url.userName() ).joinedBattleId == battleId ) {
+        if ( users->getUser( url.userName() ).joinedBattleId == battleId && mapchanged ) {
             User u = users->getUser( url.userName() );
-            u.battleState.setSyncState(resyncStatus());
-            users->onMyBattleStateChanged( u );
+            if ( resyncStatus() != u.battleState.syncState() )
+            {
+                u.battleState.setSyncState(resyncStatus());
+                users->onMyBattleStateChanged( u );
+            }
         }
     } else if ( command.name == "SETSCRIPTTAGS" ) {
         int bi = users->getUser( url.userName() ).joinedBattleId;

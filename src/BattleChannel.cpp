@@ -6,7 +6,8 @@
 #include "config.h"
 #include <QSplitter>
 #include <QInputDialog>
-
+#include <QCheckBox>
+#include <iostream>
 #define BLOCK_UI_SIGNALS battleWindowForm->startPositionComboBox->blockSignals(true); \
 battleWindowForm->gameEndComboBox->blockSignals(true); \
         battleWindowForm->limitDGunCheckBox->blockSignals(true); \
@@ -115,7 +116,7 @@ void BattleChannel::setupUi( QWidget * tab ) {
     connect( battles, SIGNAL( addStartRect( int, QRect ) ), SLOT( onAddStartRect( int, QRect ) ) );
     connect( battles, SIGNAL( removeStartRect( int ) ), SLOT( onRemoveStartRect( int ) ) );
     connect( battleWindowForm->overviewPushButton, SIGNAL(clicked()), SLOT(openMapOverview()));
-
+    connect( battleWindowForm->btSpec , SIGNAL(clicked()), SLOT(on_btSpec_clicked()));
     /*set drawing of start positions from preferences*/
     battleWindowForm->minimapWidget->setDrawStartPositions(settings->value("MapViewing/startPos/showOnMinimapCheckBox").toBool());
     battleWindowForm->heightmapWidget->setDrawStartPositions(settings->value("MapViewing/startPos/showOnHeightmapCheckBox").toBool());
@@ -555,7 +556,7 @@ void BattleChannel::onColorClicked() {
 void BattleChannel::onMyStateChanged(User u) {
     if (noMapUpdates) return;
     BLOCK_UI_SIGNALS;
-
+    std::cout << "onMyStateChanged" << std::endl;
     battleWindowForm->readyCheckBox->setChecked(u.battleState.isReady());
     battleWindowForm->specCheckBox->setChecked(!u.battleState.isPlayer());
     battleWindowForm->factionsComboBox->setCurrentIndex(u.battleState.getSide());
@@ -721,4 +722,9 @@ bool BattleChannel::isBlocked() const {
 
 void BattleChannel::onSideComboBoxChanged(int side) {
     Settings::Instance()->setValue("sidesPreferences/" + m_battle.modName, side);
+}
+
+void BattleChannel::on_btSpec_clicked()
+{
+    battleWindowForm->specCheckBox->setChecked(true);
 }

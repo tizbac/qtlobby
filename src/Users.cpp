@@ -6,7 +6,7 @@
 #include "ServerProfilesModel.h"
 #include <QInputDialog>
 #include <QColorDialog>
-
+#include <iostream>
 Users* Users::lastThis = 0;
 
 Users::Users( QWidget* parent ) : UsersTreeView( parent ) {
@@ -257,6 +257,7 @@ void Users::onSpecStateChanged( int state ) {
     User u = infoChannelUserManager->getUser( ServerProfilesModel::getInstance()->getActiveProfile().userName() );
     u.battleState.setPlayer(!isSpec);
     onMyBattleStateChanged( u );
+    std::cout << "User:" << u.name.toStdString() << " spec change" << std::endl;
 }
 
 void Users::onReadyStateChanged( int state ) {

@@ -59,6 +59,8 @@ private slots:
     void onAddStartRect(int ally, QRect r);
     void onRemoveStartRect(int ally);
     void onSideComboBoxChanged(int side);
+    void on_btSpec_clicked();
+
 private:
     QString currentMap;
     Ui::BattleWindowForm * battleWindowForm;
