@@ -57,6 +57,7 @@ public slots:
     void invalidateModel();
     void connectionStateChanged(ConnectionState state);
     void onSpringStopped();
+    void onSpringStart();
 protected slots:
     void customContextMenuRequestedSlot( const QPoint & point );
     void joinSameBattle( User u );

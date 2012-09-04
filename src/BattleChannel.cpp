@@ -725,5 +725,9 @@ void BattleChannel::onSideComboBoxChanged(int side) {
 
 void BattleChannel::on_btSpec_clicked()
 {
+    if ( m_battle.isStarted == false )
+        return;
+    Users::getCurrentUsers()->onSpringStart();
     battleWindowForm->specCheckBox->setChecked(true);
+    battles->startGame(m_battle,false);
 }

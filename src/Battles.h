@@ -33,6 +33,7 @@ public:
     void setUsers( Users* users );
     void wipeModels();
     BattleCloseFirstWidget* battleCloseFirstWidget;
+    void startGame( Battle b, bool host );
 signals:
     void sendCommand( Command command );
     void wantJoinBattle( unsigned int battleId, QString password, bool closeFirst );
@@ -68,7 +69,6 @@ protected slots:
     void selectionChanged(const QItemSelection & selected, const QItemSelection & deselected );
 protected:
     int resyncStatus();
-    void startGame( Battle b, bool host );
     QString generateScript( Battle b, bool host );
     bool event(QEvent* event);
     void retranslateUi();

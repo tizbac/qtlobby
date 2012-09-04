@@ -364,3 +364,11 @@ void Users::onSpringStopped() {
     u.userState.setIngame(false);
     onMyStateChanged( u );
 }
+
+void Users::onSpringStart()
+{
+    User u = infoChannelUserManager->getUser( ServerProfilesModel::getInstance()->getActiveProfile().userName() );
+    u.userState.setIngame(true);
+    onMyStateChanged( u );
+    
+}
