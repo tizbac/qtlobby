@@ -556,7 +556,6 @@ void BattleChannel::onColorClicked() {
 void BattleChannel::onMyStateChanged(User u) {
     if (noMapUpdates) return;
     BLOCK_UI_SIGNALS;
-    std::cout << "onMyStateChanged" << std::endl;
     battleWindowForm->readyCheckBox->setChecked(u.battleState.isReady());
     battleWindowForm->specCheckBox->setChecked(!u.battleState.isPlayer());
     battleWindowForm->factionsComboBox->setCurrentIndex(u.battleState.getSide());

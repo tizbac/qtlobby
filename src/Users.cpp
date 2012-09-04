@@ -257,7 +257,6 @@ void Users::onSpecStateChanged( int state ) {
     User u = infoChannelUserManager->getUser( ServerProfilesModel::getInstance()->getActiveProfile().userName() );
     u.battleState.setPlayer(!isSpec);
     onMyBattleStateChanged( u );
-    std::cout << "User:" << u.name.toStdString() << " spec change" << std::endl;
 }
 
 void Users::onReadyStateChanged( int state ) {
