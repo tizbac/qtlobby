@@ -188,14 +188,14 @@ void MapRendererWidget::paintGL() {
     }
 
     if ( m_perspective ) {
-        glTranslatef( 0, -( lastZoom*100 ), 0 );
+        glTranslatef( 0, 0, -( lastZoom*100 ) );
     }
 
     glTranslatef( dx, dy, dz );
     glRotated( xRot / 16.0, 1.0, 0.0, 0.0 );
     glRotated( yRot / 16.0, 0.0, 1.0, 0.0 );
     glRotated( zRot / 16.0, 0.0, 0.0, 1.0 );
-    glTranslatef( -m_heightmap.getWidth() / 2, 0, -m_heightmap.getHeight() / 2 );
+    glTranslatef( -m_heightmap.getHeight() / 2, 0, -m_heightmap.getWidth() / 2 );
 
     if ( !m_glslSupported )
         glEnable( GL_LIGHTING );
