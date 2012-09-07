@@ -625,7 +625,8 @@ void MainWindow::changeEvent(QEvent *e) {
 
 void MainWindow::onServerSpringVersion(QString version) {
     QString unitsyncSpringVersion = UnitSyncLib::getInstance()->getSpringVersion();
-    if(version != unitsyncSpringVersion)
+    // Since release 89, we must only match the big version number
+    if(version.section(QChar('.'), 0, 0) != unitsyncSpringVersion.section(QChar('.'), 0, 0))
         QMessageBox::warning(this, tr("Wrong spring version"),
                              tr("Lobby server reported spring version") + " " + version +
                              "\n" + tr("Your unitsync reported that you have") + " " + unitsyncSpringVersion +
