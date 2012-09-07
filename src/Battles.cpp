@@ -676,5 +676,6 @@ void Battles::selectionChanged ( const QItemSelection & selected, const QItemSel
 }
 
 void Battles::onServerSpringVersion(QString version) {
-    serverSpringVersion = version;
+    // We only need to match the major version.
+    serverSpringVersion = version.section(QChar('.'), 0, 0);
 }

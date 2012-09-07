@@ -252,8 +252,6 @@ MainWindow::MainWindow( QWidget* parent ) : QMainWindow( parent ) {
     //Spring version signal
     connect(serverContextState, SIGNAL(serverSpringVersion(QString)),
             battles, SLOT(onServerSpringVersion(QString)));
-    connect(serverContextState, SIGNAL(serverSpringVersion(QString)),
-            this, SLOT(onServerSpringVersion(QString)));
 
     //user menu builder stuff
     UserMenuBuilder* b = UserMenuBuilder::getInstance();
@@ -621,17 +619,6 @@ void MainWindow::changeEvent(QEvent *e) {
     default:
         break;
     }
-}
-
-void MainWindow::onServerSpringVersion(QString version) {
-    QString unitsyncSpringVersion = UnitSyncLib::getInstance()->getSpringVersion();
-    // Since release 89, we must only match the big version number
-    if(version.section(QChar('.'), 0, 0) != unitsyncSpringVersion.section(QChar('.'), 0, 0))
-        QMessageBox::warning(this, tr("Wrong spring version"),
-                             tr("Lobby server reported spring version") + " " + version +
-                             "\n" + tr("Your unitsync reported that you have") + " " + unitsyncSpringVersion +
-                             "\n" + tr("You can desync if you have wrong spring version!!!")
-                             );
 }
 
 void MainWindow::reloadPreferences() {

@@ -127,7 +127,6 @@ private slots:
     void onStatsChange(int battles);
     void connectionStatusChanged(ConnectionState);
     void onBlockInput(bool b);
-    void onServerSpringVersion(QString);
     void onChangedToBattleTab();
     void onChangedFromBattleTab();
     void reloadPreferences();
