@@ -86,7 +86,7 @@ HistoryDialog.cpp
 
 if(MINGW)
 if(BUILDBOT)
-SET(WINDRES_BINARY mingw32-windres)
+SET(WINDRES_BINARY ${CMAKE_RC_COMPILER})
 else(BUILDBOT)
 SET(WINDRES_BINARY windres.exe)
 endif(BUILDBOT)
