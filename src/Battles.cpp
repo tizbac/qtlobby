@@ -452,6 +452,9 @@ QString Battles::generateScript( Battle b, bool host ) {
         gameOptions["NumPlayers"]   = QString::number( b.playerCount );
         gameOptions["NumTeams"]     = QString::number( numTeams + numBots );
         gameOptions["NumAllyTeams"] = QString::number( numAllies );
+	gameOptions["MapName"]	    = b.mapName;
+	gameOptions["MapHash"]	    = QString::number(b.mapHash);
+	gameOptions["GameType"]	    = b.modName;
     }
     gameOptions["MyPasswd"] = users->getUser(ServerProfilesModel::getInstance()->getActiveProfile().userName()).script_pass;
     QMap<QString, QMap<QString, QString> > sectionsOptionMap;
