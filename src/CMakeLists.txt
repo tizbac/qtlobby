@@ -86,10 +86,7 @@ HistoryDialog.cpp
 )
 
 if(MINGW)
-if(BUILDBOT)
 SET(WINDRES_BINARY ${CMAKE_RC_COMPILER})
-else(BUILDBOT)
-SET(WINDRES_BINARY windres.exe)
 endif(BUILDBOT)
 # resource compilation for mingw
 ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/qtlobby_rc.o
