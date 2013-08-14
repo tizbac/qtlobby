@@ -203,6 +203,7 @@ void DownloadThread::reportProgress()
   qint64 downloaded_size = 0.0;
   for ( QList<IDownload*>::iterator it = m_searchres.begin(); it != m_searchres.end(); it++ )
   {
+    
     totalsize += (*it)->size;
     downloaded_size += (*it)->getProgress();//hopefully piece.size will not change during download
   }
