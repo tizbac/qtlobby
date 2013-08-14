@@ -27,6 +27,8 @@
 
 class Battles : public QTreeView {
     Q_OBJECT
+    QAction* downloadMapAction;
+    QAction* downloadGameAction;
 public:
     Battles( QWidget* parent = 0 );
     ~Battles();
@@ -53,6 +55,7 @@ public slots:
     void connectionStateChanged( ConnectionState state );
     void onJoin();
     void onServerSpringVersion(QString version);
+
 
 protected slots:
     void customContextMenuRequested( const QPoint & point );

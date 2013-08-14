@@ -6,7 +6,7 @@
 #include "MapInfoLoader.h"
 #include "MapOverviewDialog.h"
 #include "PathManager.h"
-
+#include "IDownloader.h"
 #ifdef Q_WS_WIN
 #include <windows.h>
 #endif
@@ -28,6 +28,7 @@ void cmd_3dpreview(QApplication& app, QString mapname) {
 
 
 int main( int argc, char *argv[] ) {
+    IDownloader::Initialize();
 #ifdef Q_WS_WIN
     LoadLibrary(TEXT("exchndl.dll"));
 #endif

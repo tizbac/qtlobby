@@ -2,6 +2,7 @@ include(${QT_USE_FILE})
 include_directories(${QTSCRIPTTOOLS_INCLUDE_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${CMAKE_SOURCE_DIR}/pr-downloader/src ${CMAKE_SOURCE_DIR}/pr-downloader/src/Downloader)
 CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/src/config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h )
 CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/src/qtlobby.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/qtlobby.rc )
 
@@ -228,7 +229,7 @@ if(BUILDBOT)
 SET_TARGET_PROPERTIES(qtlobby PROPERTIES LINK_FLAGS "-static-libgcc -Wl,-subsystem,windows")
 endif(BUILDBOT)
 
-target_link_libraries(qtlobby ${QT_LIBRARIES} ${QSCINTILLA_LIBRARIES} ${QTSCRIPTTOOLS_LIBRARIES} ${OPENGL_LIBRARIES})
+target_link_libraries(qtlobby ${QT_LIBRARIES} ${QSCINTILLA_LIBRARIES} ${QTSCRIPTTOOLS_LIBRARIES} ${OPENGL_LIBRARIES} Util Http Plasma Widget Rapid FileSystem  CurlWrapper  ${ZLIB_LIBRARY})
 
 #install
 install(TARGETS qtlobby DESTINATION bin)

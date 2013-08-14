@@ -5,7 +5,7 @@
 #include <QStringList>
 #include <algorithm>
 #include <list>
-
+#include "DownloadsModel.h"
 using namespace std;
 
 Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
@@ -35,6 +35,10 @@ Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
     m_menu->addAction(openPrivateChannelAction);
     joinBattleAction = new QAction(tr("Join Battle"), this);
     m_menu->addAction(joinBattleAction);
+    downloadMapAction = new QAction(tr("Download map"), this);
+    m_menu->addAction(downloadMapAction);
+    downloadGameAction = new QAction(tr("Download game"), this);
+    m_menu->addAction(downloadGameAction);
     m_filterMenu = new QMenu(tr("Filter Battles"));
     filterPasswordedAction = new QAction(tr("Hide battles with password"), this);
     filterPasswordedAction->setCheckable(true);
@@ -85,6 +89,7 @@ Battles::Battles( QWidget* parent ) : QTreeView( parent ) {
              this, SLOT( setFilterWithoutFriendsSlot( bool ) ) );
     connect (UnitSyncLib::getInstance(), SIGNAL(rebooted()),
              this, SLOT(onReboot()));
+
 
     battleCount = 0;
     QSettings* s = Settings::Instance();
@@ -343,6 +348,8 @@ void Battles::customContextMenuRequested( const QPoint & point ) {
         m_menu->exec( this->viewport()->mapToGlobal( point ) );
         openPrivateChannelAction->setVisible(true);
         joinBattleAction->setVisible(true);
+	downloadGameAction->setVisible(false);
+	downloadMapAction->setVisible(false);
     } else {
         QModelIndex index = selectedIndexes().first();
         if ( !index.isValid() ) return;
@@ -354,7 +361,13 @@ void Battles::customContextMenuRequested( const QPoint & point ) {
                 emit sendInput( b.founder.prepend( "/query " ) );
             } else if ( action == joinBattleAction ) {
                 emit doubleClicked( index );
-            }
+            } else if ( action == downloadGameAction )
+	    {
+		DownloadsModel::getInstance()->startModDownload(b.modName);
+	    } else if ( action == downloadMapAction )
+	    {
+	        DownloadsModel::getInstance()->startMapDownload(b.mapName);
+	    }
         }
     }
 }

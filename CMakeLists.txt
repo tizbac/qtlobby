@@ -3,10 +3,10 @@
 project(QtLobby) # the name of your project
 
 cmake_minimum_required(VERSION 2.6)
-
+add_subdirectory( pr-downloader )
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
 
-set(QTLOBBY_VERSION 1.0alpha)
+set(QTLOBBY_VERSION 1.1)
 
 if("$ENV{SVN_REV}" GREATER 0)
   set(SVN_REV $ENV{SVN_REV})
@@ -41,6 +41,7 @@ endif(WIN32 OR BUILDBOT)
 find_package(QScintilla REQUIRED)
 find_package(QtScriptTools REQUIRED)
 find_package(OpenGL REQUIRED)
+find_package(ZLIB REQUIRED)
 file(GLOB jobjol "${CMAKE_SOURCE_DIR}/share/qtlobby/icons/jobjol/?*.*")
 install(FILES ${jobjol} DESTINATION share/qtlobby/icons/jobjol)
 file(GLOB trolltech "${CMAKE_SOURCE_DIR}/share/qtlobby/icons/trolltech/?*.*")
