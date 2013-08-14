@@ -4,7 +4,7 @@
 #include "Preference.h"
 #include "UnitSyncLib.h"
 #include "PathManager.h"
-
+#include <QDesktopServices>
 Preference::Preference( QDialog* parent ) : QDialog( parent ) {
     settings = Settings::Instance();
     setupUi( this );
@@ -313,11 +313,12 @@ void Preference::initPathExamples() {
             "/usr/games/lib/spring/unitsync.so;"
             "/usr/games/lib64/libunitsync.so";
 #endif
+	    
     springUserDirConfig << "spring_user_dir"
             << tr("On multi user systems this path is used to store maps, mods and configurations which are user specific since most normal users won't have write access to the global spring directory.")
 #ifdef Q_WS_WIN
             <<
-            pfiles+"/Spring/;"
+             QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation)+"/My Games/Spring/;"
             + pfiles2+"/Spring/;"
             "../;"
             "./;";

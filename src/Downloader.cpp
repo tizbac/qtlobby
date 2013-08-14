@@ -207,7 +207,7 @@ void DownloadThread::reportProgress()
     totalsize += (*it)->size;
     downloaded_size += (*it)->getProgress();//hopefully piece.size will not change during download
   }
-  if ( totalsize != 0 )
+  if ( totalsize != 0 && downloaded_size >= 0 && totalsize >= 0 && downloaded_size <= totalsize)
     emit progressReport(downloaded_size,totalsize);
 }
 
