@@ -188,7 +188,12 @@ void Battles::receiveCommand( Command command ) {
         battleCount--;
         emit statsChange(battleCount);
     } else if ( command.name == "UPDATEBATTLEINFO" ) {
-        Q_ASSERT( command.attributes.size() >= 5 );
+        Q_ASSERT( command.attributes.size() >= 4 );
+	if ( command.attributes.size() < 5 )
+	{
+	  //WTF , empty map name???
+	  return;
+	}
         int battleId = command.attributes.takeFirst().toInt();
         if ( !battleManager->isBattleId( battleId ) )
             return;

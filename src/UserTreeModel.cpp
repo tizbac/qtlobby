@@ -165,9 +165,7 @@ bool UserTreeModel::removeRows( int position, int /*rows*/, const QModelIndex& /
 }
 
 QModelIndex UserTreeModel::index( int row, int column, const QModelIndex &parent ) const {
-    if ( !hasIndex( row, column, parent ) )
-        return QModelIndex();
-    return createIndex( row, column/*, &User()*/ );
+    return createIndex( row, column,0x1 );
 }
 
 QModelIndex UserTreeModel::parent( const QModelIndex& /*child*/ ) const {
